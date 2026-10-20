@@ -7,6 +7,7 @@ import {
   FaQuran, FaBookOpen, FaHeart, FaMosque, FaVenus, FaCalculator, FaBookReader,
   FaHandPointer, FaCloudSun, FaPrayingHands, FaClipboardCheck, FaCompass,
   FaCalendarAlt, FaListUl, FaBook, FaGraduationCap, FaUniversalAccess,
+  FaSearch, FaBookmark, FaBrain, FaPalette, FaTint, FaMoon,
 } from 'react-icons/fa';
 import Logo from './Logo.jsx';
 import { GirihPattern } from './ornaments/index.js';
@@ -284,6 +285,10 @@ const MENU = [
       { to: '/surah/18', icon: <FaBookOpen />, label: 'Surah Al-Kahf' },
       { to: '/surah/67', icon: <FaBookOpen />, label: 'Surah Al-Mulk' },
       { to: '/surah/55', icon: <FaBookOpen />, label: 'Surah Ar-Rahman' },
+      { to: '/cari', icon: <FaSearch />, label: 'Cari Ayat' },
+      { to: '/hafalan', icon: <FaBrain />, label: 'Mode Hafalan' },
+      { to: '/bookmark', icon: <FaBookmark />, label: 'Bookmark Ayat' },
+      { to: '/panduan-tajwid', icon: <FaPalette />, label: 'Panduan Tajwid' },
     ],
   },
   {
@@ -294,6 +299,11 @@ const MENU = [
       { to: '/dzikir', icon: <FaCloudSun />, label: 'Dzikir Pagi & Petang' },
       { to: '/doa', icon: <FaPrayingHands />, label: 'Doa Harian' },
       { to: '/sholat-tracker', icon: <FaClipboardCheck />, label: 'Sholat Tracker' },
+      { to: '/wudhu', icon: <FaTint />, label: 'Panduan Wudhu & Tayammum' },
+      { to: '/panduan-sholat', icon: <FaPrayingHands />, label: 'Panduan Sholat' },
+      { to: '/sholat-sunnah', icon: <FaMoon />, label: 'Sholat Sunnah' },
+      { to: '/dzikir-bada-sholat', icon: <FaCloudSun />, label: "Dzikir Ba'da Sholat" },
+      { to: '/sholat-jenazah', icon: <FaBook />, label: 'Sholat Jenazah' },
     ],
   },
   {

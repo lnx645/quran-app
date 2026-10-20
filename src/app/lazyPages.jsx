@@ -43,6 +43,15 @@ const _MuslimahMandiWajib = lazy(() => import('../presentation/pages/MuslimahMan
 const _MuslimahDoa = lazy(() => import('../presentation/pages/MuslimahDoaPage.jsx'));
 const _MuslimahFikih = lazy(() => import('../presentation/pages/MuslimahFikihPage.jsx'));
 const _Aksesibilitas = lazy(() => import('../presentation/pages/AksesibilitasPage.jsx'));
+const _Cari = lazy(() => import('../presentation/pages/CariPage.jsx'));
+const _PanduanTajwid = lazy(() => import('../presentation/pages/PanduanTajwidPage.jsx'));
+const _Hafalan = lazy(() => import('../presentation/pages/HafalanPage.jsx'));
+const _Bookmark = lazy(() => import('../presentation/pages/BookmarkPage.jsx'));
+const _PanduanWudhu = lazy(() => import('../presentation/pages/PanduanWudhuPage.jsx'));
+const _PanduanSholat = lazy(() => import('../presentation/pages/PanduanSholatPage.jsx'));
+const _SholatSunnah = lazy(() => import('../presentation/pages/SholatSunnahPage.jsx'));
+const _DzikirBadaSholat = lazy(() => import('../presentation/pages/DzikirBadaSholatPage.jsx'));
+const _SholatJenazah = lazy(() => import('../presentation/pages/SholatJenazahPage.jsx'));
 
 export function SurahPage() {
   return (
@@ -195,6 +204,69 @@ export function AksesibilitasPage() {
   return (
     <Suspense fallback={<PageFallback />}>
       <_Aksesibilitas />
+    </Suspense>
+  );
+}
+export function CariPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_Cari />
+    </Suspense>
+  );
+}
+export function PanduanTajwidPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_PanduanTajwid />
+    </Suspense>
+  );
+}
+export function HafalanPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_Hafalan />
+    </Suspense>
+  );
+}
+export function BookmarkPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_Bookmark />
+    </Suspense>
+  );
+}
+export function PanduanWudhuPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_PanduanWudhu />
+    </Suspense>
+  );
+}
+export function PanduanSholatPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_PanduanSholat />
+    </Suspense>
+  );
+}
+export function SholatSunnahPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_SholatSunnah />
+    </Suspense>
+  );
+}
+export function DzikirBadaSholatPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_DzikirBadaSholat />
+    </Suspense>
+  );
+}
+export function SholatJenazahPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_SholatJenazah />
     </Suspense>
   );
 }

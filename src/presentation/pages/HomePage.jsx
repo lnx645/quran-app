@@ -4,8 +4,10 @@ import {
   FaQuran, FaBookOpen, FaClock, FaCoins, FaBookReader, FaGraduationCap,
   FaHandPointer, FaCloudSun, FaPrayingHands, FaClipboardCheck, FaCompass,
   FaCalendarAlt, FaListUl, FaBook, FaHeart, FaMoon, FaVenus,
+  FaSearch, FaBookmark, FaBrain, FaPalette, FaTint,
 } from 'react-icons/fa';
 import { Page, SectionTitle, MenuCard } from '../components/common.jsx';
+import LanjutkanMembaca from '../components/LanjutkanMembaca.jsx';
 import Logo from '../components/Logo.jsx';
 import OrnamentDivider from '../components/OrnamentDivider.jsx';
 import { GirihPattern, OrnamentBand, CornerOrnament, MosqueSilhouette, MoonStar } from '../components/ornaments/index.js';
@@ -76,6 +78,10 @@ const SEKSI = [
       { to: '/surah/18', icon: <FaBookOpen />, judul: 'Surah Al-Kahf', desc: '110 ayat, dianjurkan hari Jumat' },
       { to: '/surah/67', icon: <FaBookOpen />, judul: 'Surah Al-Mulk', desc: '30 ayat dibaca sebelum tidur' },
       { to: '/surah/55', icon: <FaBookOpen />, judul: 'Surah Ar-Rahman', desc: '78 ayat tentang nikmat Allah' },
+      { to: '/cari', icon: <FaSearch />, judul: 'Cari Ayat', desc: 'Temukan ayat dari kata kunci' },
+      { to: '/hafalan', icon: <FaBrain />, judul: 'Mode Hafalan', desc: 'Tahfidz bertahap, uji & audio ulang' },
+      { to: '/bookmark', icon: <FaBookmark />, judul: 'Bookmark Ayat', desc: 'Ayat tersimpan & catatan pribadi' },
+      { to: '/panduan-tajwid', icon: <FaPalette />, judul: 'Panduan Tajwid', desc: 'Warna tajwid, makhraj & hukum bacaan' },
     ],
   },
   {
@@ -87,6 +93,11 @@ const SEKSI = [
       { to: '/dzikir', icon: <FaCloudSun />, judul: 'Dzikir Pagi & Petang', desc: 'Al-Ma\u2019tsurat ringkas dengan penghitung dzikir' },
       { to: '/doa', icon: <FaPrayingHands />, judul: 'Doa Harian', desc: 'Sepuluh doa: Arab, latin & arti' },
       { to: '/sholat-tracker', icon: <FaClipboardCheck />, judul: 'Sholat Tracker', desc: 'Checklist lima waktu & streak harian' },
+      { to: '/wudhu', icon: <FaTint />, judul: 'Wudhu & Tayammum', desc: 'Langkah bersuci & doa sesudah wudhu' },
+      { to: '/panduan-sholat', icon: <FaPrayingHands />, judul: 'Panduan Sholat', desc: 'Niat, gerakan & bacaan tiap gerakan' },
+      { to: '/sholat-sunnah', icon: <FaMoon />, judul: 'Sholat Sunnah', desc: 'Dhuha, tahajud, witir & lainnya' },
+      { to: '/dzikir-bada-sholat', icon: <FaCloudSun />, judul: "Dzikir Ba'da Sholat", desc: 'Wirid sesudah sholat dengan penghitung' },
+      { to: '/sholat-jenazah', icon: <FaBook />, judul: 'Sholat Jenazah', desc: 'Empat takbir & bacaan tiap takbir' },
     ],
   },
   {
@@ -147,6 +158,7 @@ export default function HomePage() {
         </div>
       </Hero>
       <OrnamentDivider />
+      <LanjutkanMembaca />
       {SEKSI.map((seksi) => (
         <div key={seksi.nama}>
           <SectionTitle>
