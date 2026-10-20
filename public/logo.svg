@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="Noor">
+  <defs>
+    <linearGradient id="eg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0B5345"/>
+      <stop offset="100%" stop-color="#117A65"/>
+    </linearGradient>
+    <linearGradient id="gg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#E7C65A"/>
+      <stop offset="100%" stop-color="#C9A227"/>
+    </linearGradient>
+  </defs>
+  <rect x="3" y="3" width="90" height="90" rx="24" fill="url(#eg)" stroke="#C9A227" stroke-width="2.5"/>
+  <rect x="8.5" y="8.5" width="79" height="79" rx="19" fill="none" stroke="#C9A227" stroke-width="1" opacity="0.35"/>
+  <path fill-rule="evenodd" fill="url(#gg)" d="M 25 41 a 19 19 0 1 0 38 0 a 19 19 0 1 0 -38 0 Z M 34.9 34.7 a 17.5 17.5 0 1 0 35 0 a 17.5 17.5 0 1 0 -35 0 Z"/>
+  <path fill="url(#gg)" d="M 63 20.06 L 64.74 21.8 L 67.2 21.8 L 67.2 24.26 L 68.94 26 L 67.2 27.74 L 67.2 30.2 L 64.74 30.2 L 63 31.94 L 61.26 30.2 L 58.8 30.2 L 58.8 27.74 L 57.06 26 L 58.8 24.26 L 58.8 21.8 L 61.26 21.8 Z"/>
+  <circle cx="63" cy="26" r="1.6" fill="#0B5345"/>
+  <path fill="url(#gg)" d="M 48 66.5 C 41.8 62 34.2 61 27 62.6 L 27 74.8 C 34.2 73.2 41.8 74.2 48 78.6 C 54.2 74.2 61.8 73.2 69 74.8 L 69 62.6 C 61.8 61 54.2 62 48 66.5 Z"/>
+  <path d="M 48 66.5 L 48 78.6" stroke="#0B5345" stroke-width="1.5" opacity="0.4"/>
+  <path d="M 32.5 66.8 C 35.8 65.9 39.4 66.2 43 67.8 M 53 67.8 C 56.6 66.2 60.2 65.9 63.5 66.8" fill="none" stroke="#0B5345" stroke-width="1.3" stroke-linecap="round" opacity="0.38"/>
+</svg>

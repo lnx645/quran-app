@@ -6,6 +6,7 @@ import {
   FaCalendarAlt, FaListUl, FaBook, FaHeart, FaMoon, FaVenus,
 } from 'react-icons/fa';
 import { Page, SectionTitle, MenuCard } from '../components/common.jsx';
+import Logo from '../components/Logo.jsx';
 import OrnamentDivider from '../components/OrnamentDivider.jsx';
 import { GirihPattern, OrnamentBand, CornerOrnament, MosqueSilhouette, MoonStar } from '../components/ornaments/index.js';
 import { mountUp, reduceMotion, stagger } from '../components/motion.js';
@@ -127,6 +128,9 @@ export default function HomePage() {
         <CornerOrnament corner="tl" style={{ top: 6, left: 6 }} />
         <MoonStar size={66} opacity={0.95} style={{ top: 10, right: 12 }} />
         <HeroIsi>
+          <div css={{ display: 'flex', justifyContent: 'center', marginBottom: 12 }}>
+            <Logo size={76} />
+          </div>
           <div className="arab-hero" lang="ar">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
           <h1>Ahlan wa Sahlan</h1>
           <p>
