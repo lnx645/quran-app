@@ -16,7 +16,7 @@ const Kotak = styled.div`
   gap: 13px;
   background: ${({ theme }) => theme.colors.surface};
   border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.radius.lg};
+  border-radius: ${({ theme }) => theme.radii.lg}px;
   box-shadow: ${({ theme }) => theme.shadows.card};
   padding: 14px 16px;
 `;
