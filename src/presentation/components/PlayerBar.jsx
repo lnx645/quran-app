@@ -85,7 +85,8 @@ const Fill = styled.div`
   transition: width 0.2s linear;
 `;
 
-const PenandaAyat = styled.span`
+// Thumb handle: lingkaran putih bergaris emas tepat di ujung posisi putar.
+const Pegangan = styled.span`
   position: absolute;
   top: 50%;
   width: 18px;
@@ -95,6 +96,20 @@ const PenandaAyat = styled.span`
   border: 2px solid ${({ theme }) => theme.colors.gold};
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
   transform: translate(-50%, -50%);
+  left: ${({ persen }) => persen}%;
+`;
+
+// Penanda posisi ayat aktif: tick kecil halus di atas bar (bukan lingkaran besar,
+// agar tidak tertukar dengan handle putar).
+const PenandaAyat = styled.span`
+  position: absolute;
+  top: -5px;
+  width: 5px;
+  height: 9px;
+  border-radius: 3px;
+  background: ${({ theme }) => theme.colors.gold};
+  opacity: 0.85;
+  transform: translateX(-50%);
   left: ${({ persen }) => persen}%;
 `;
 
@@ -245,6 +260,7 @@ export default function PlayerBar({
           <BarVisual>
             <Fill persen={persen} />
             {persenAyat != null && <PenandaAyat persen={persenAyat} />}
+            <Pegangan persen={persen} />
           </BarVisual>
         </Track>
         <Kontrol>
