@@ -67,6 +67,14 @@ const _AqiqahKurban = lazy(() => import('../presentation/pages/AqiqahKurbanPage.
 const _Mutabaah = lazy(() => import('../presentation/pages/MutabaahPage.jsx'));
 const _NamaBayi = lazy(() => import('../presentation/pages/NamaBayiPage.jsx'));
 const _MasjidTerdekat = lazy(() => import('../presentation/pages/MasjidTerdekatPage.jsx'));
+const _SholatId = lazy(() => import('../presentation/pages/SholatIdPage.jsx'));
+const _SholatMusafir = lazy(() => import('../presentation/pages/SholatMusafirPage.jsx'));
+const _SholatSakit = lazy(() => import('../presentation/pages/SholatSakitPage.jsx'));
+const _DoaQunut = lazy(() => import('../presentation/pages/DoaQunutPage.jsx'));
+const _PanduanImam = lazy(() => import('../presentation/pages/PanduanImamPage.jsx'));
+const _IndeksTematik = lazy(() => import('../presentation/pages/IndeksTematikPage.jsx'));
+const _Sujud = lazy(() => import('../presentation/pages/SujudPage.jsx'));
+const _Kuis = lazy(() => import('../presentation/pages/KuisPage.jsx'));
 
 export function SurahPage() {
   return (
@@ -387,6 +395,70 @@ export function MasjidTerdekatPage() {
   return (
     <Suspense fallback={<PageFallback />}>
       <_MasjidTerdekat />
+    </Suspense>
+  );
+}
+
+export function SholatIdPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_SholatId />
+    </Suspense>
+  );
+}
+
+export function SholatMusafirPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_SholatMusafir />
+    </Suspense>
+  );
+}
+
+export function SholatSakitPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_SholatSakit />
+    </Suspense>
+  );
+}
+
+export function DoaQunutPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_DoaQunut />
+    </Suspense>
+  );
+}
+
+export function PanduanImamPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_PanduanImam />
+    </Suspense>
+  );
+}
+
+export function IndeksTematikPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_IndeksTematik />
+    </Suspense>
+  );
+}
+
+export function SujudPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_Sujud />
+    </Suspense>
+  );
+}
+
+export function KuisPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_Kuis />
     </Suspense>
   );
 }

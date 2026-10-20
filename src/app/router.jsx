@@ -11,6 +11,8 @@ import {
   SholatJenazahPage, PanduanPuasaPage, QadhaPuasaPage, RamadhanPage, HaditsPage,
   HisnulMuslimPage, SirahPage, WarisPage, FidyahPage, KafaratPage, HajiUmrahPage,
   PanduanJenazahPage, AqiqahKurbanPage, MutabaahPage, NamaBayiPage, MasjidTerdekatPage,
+  SholatIdPage, SholatMusafirPage, SholatSakitPage, DoaQunutPage, PanduanImamPage,
+  IndeksTematikPage, SujudPage, KuisPage,
 } from './lazyPages.jsx';
 
 // HomePage eager (chunk awal); halaman lain lazy lewat lazyPages.jsx.
@@ -45,6 +47,14 @@ const router = createBrowserRouter([
       { path: 'mutabaah', element: <MutabaahPage /> },
       { path: 'nama-bayi', element: <NamaBayiPage /> },
       { path: 'masjid-terdekat', element: <MasjidTerdekatPage /> },
+      { path: 'sholat-id', element: <SholatIdPage /> },
+      { path: 'sholat-musafir', element: <SholatMusafirPage /> },
+      { path: 'sholat-sakit', element: <SholatSakitPage /> },
+      { path: 'qunut', element: <DoaQunutPage /> },
+      { path: 'panduan-imam', element: <PanduanImamPage /> },
+      { path: 'indeks-tematik', element: <IndeksTematikPage /> },
+      { path: 'sujud', element: <SujudPage /> },
+      { path: 'kuis', element: <KuisPage /> },
       { path: 'muslimah', element: <MuslimahHubPage /> },
       { path: 'muslimah/kalkulator', element: <MuslimahKalkulatorPage /> },
       { path: 'muslimah/mandi-wajib', element: <MuslimahMandiWajibPage /> },
