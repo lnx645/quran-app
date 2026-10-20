@@ -1,4 +1,5 @@
 import { HURUF_HIJAIYAH, CONTOH_BACAAN_JILID_1, IQRO_JILID } from '../sources/iqroData.js';
+import { IQRO_FULL } from '../sources/iqroFull.js';
 
 /** Implementasi IqroRepository memakai data statis lokal. */
 export const IqroRepositoryImpl = {
@@ -26,5 +27,21 @@ export const IqroRepositoryImpl = {
       huruf,
       contohBacaan: meta.jilid === 1 ? CONTOH_BACAAN_JILID_1 : undefined,
     };
+  },
+  /** Daftar jilid versi lengkap (halaman latihan + evaluasi) — tambahan W1, fungsi lama utuh. */
+  async listJilidFull() {
+    return IQRO_FULL.map(({ jilid, judul, deskripsi, halaman, evaluasi }) => ({
+      jilid,
+      judul,
+      deskripsi,
+      jumlahHalaman: halaman.length,
+      jumlahSoal: evaluasi.soal.length,
+    }));
+  },
+  /** Satu jilid lengkap (halaman latihan + evaluasi) — tambahan W1, fungsi lama utuh. */
+  async getJilidFull(jilid) {
+    const data = IQRO_FULL.find((j) => j.jilid === Number(jilid));
+    if (!data) throw new Error(`Iqro Jilid ${jilid} tidak ditemukan`);
+    return data;
   },
 };
