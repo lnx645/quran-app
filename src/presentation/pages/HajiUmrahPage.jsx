@@ -10,6 +10,7 @@ import {
   Page, PageHero, Card, GoldCard, SectionTitle, GhostButton,
 } from '../components/common.jsx';
 import { SegmenWadah, SegmenTab } from '../components/SegmentedControl.jsx';
+import NomorMedali from '../components/NomorMedali.jsx';
 import {
   HAJI, UMRAH, CHECKLIST_HAJI, DISCLAIMER_HAJI,
 } from '../../data/sources/hajiUmrahData.js';
@@ -57,21 +58,6 @@ const Step = styled.div`
   svg { flex-shrink: 0; margin-top: 3px; color: ${({ theme }) => theme.colors.primary}; }
   .t { font-size: 14px; font-weight: 700; }
   .c { font-size: 13px; color: ${({ theme }) => theme.colors.muted}; line-height: 1.6; margin-top: 3px; }
-`;
-
-const Nomor = styled.span`
-  flex-shrink: 0;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: ${({ theme }) => theme.colors.primarySoft};
-  color: ${({ theme }) => theme.colors.primary};
-  font-weight: 800;
-  font-size: 13.5px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 1px;
 `;
 
 const Paragraf = styled.p`
@@ -236,7 +222,7 @@ export default function HajiUmrahPage() {
           <Card>
             {HAJI.rukun.map((s, i) => (
               <Step key={s.judul}>
-                <Nomor>{i + 1}</Nomor>
+                <NomorMedali nomor={i + 1} ukuran={30} />
                 <div>
                   <div className="t">{s.judul}</div>
                   <div className="c">{s.desc}</div>
@@ -259,7 +245,7 @@ export default function HajiUmrahPage() {
           <Card>
             {HAJI.manasik.map((s, i) => (
               <Step key={s.hari}>
-                <Nomor>{i + 1}</Nomor>
+                <NomorMedali nomor={i + 1} ukuran={30} />
                 <div>
                   <div className="t">{s.hari}</div>
                   <div className="c">{s.desc}</div>
@@ -286,7 +272,7 @@ export default function HajiUmrahPage() {
           <Card>
             {UMRAH.langkah.map((s, i) => (
               <Step key={s.judul}>
-                <Nomor>{i + 1}</Nomor>
+                <NomorMedali nomor={i + 1} ukuran={30} />
                 <div>
                   <div className="t">{s.judul}</div>
                   <div className="c">{s.desc}</div>
