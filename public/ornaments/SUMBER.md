@@ -50,3 +50,36 @@ buatan sendiri** di `src/presentation/components/ornaments/`:
 
 Karya orisinal ini **bebas lisensi pihak ketiga** dan warnanya mengikuti
 token tema aplikasi (emerald `#0B5345`, emas `#C9A227`).
+
+---
+
+## 2026-10-20 — Ornamen unduhan untuk halaman baca mushaf (Commit: `feat(ornamen)`)
+
+**Dipakai — sudah diverifikasi visual sebagai pola Islami otentik & simetris sempurna:**
+
+6. `rub-el-hizb.svg` (dalam folder `public/ornaments/`)
+   Lisensi: **CC BY-SA 4.0** — karya Dudaweyll
+   https://commons.wikimedia.org/wiki/File:Rub_El_Hizb_Outline.svg
+   Verifikasi: render PNG 500px diperiksa manual — bintang-8 (khatam) yang
+   dibangun dari dua kotak berotasi 45° dengan jalinan mulus, simetri
+   8-lipat sempurna, tanpa cacat. Merupakan simbol ۞ otentik penanda
+   pembagian Juz dalam mushaf — dipakai sebagai medali panel nama surah
+   dan penanda awal Juz.
+   Catatan lisensi: atribusi pada file SUMBER.md ini sudah memenuhi
+   kewajiban CC BY-SA 4.0 (file juga tetap tersedia apa adanya).
+
+**Ditolak setelah verifikasi visual:**
+
+7. `Islamic geometric pattern.svg` (Moelja, CC BY-SA 4.0)
+   https://commons.wikimedia.org/wiki/File:Islamic_geometric_pattern.svg
+   Alasan: setelah dirender dan diperiksa, polanya adalah hasil
+   *auto-trace* (2157 path garis bebas) yang tidak rapi untuk UI — garis
+   tidak mengikuti konstruksi geometris konsisten, skala terlalu padat,
+   tidak transparan-friendly. Tidak dipakai.
+
+**Keputusan desain:** unduhan dipakai untuk medali panel surah (aset di
+atas). Seluruh ornamen lain tetap **SVG orisinal yang dihitung secara
+matematis** (lihat `ornaments/geometry.js`): bintang-8 dari star-polygon
+{8/3} dengan koordinat trigonomtri presisi, ubin girih dengan simetri
+lipat-8 yang menyambung sempurna di tepi repeat, bingkai mushaf dengan
+medali sudut proporsional.

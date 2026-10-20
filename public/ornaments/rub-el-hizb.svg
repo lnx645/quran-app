@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="180"
+   height="180"
+   viewBox="0 0 180 180"
+   version="1.1"
+   id="svg5"
+   inkscape:export-filename="Rub-el-Hizb-Outline.png"
+   inkscape:export-xdpi="853.33002"
+   inkscape:export-ydpi="853.33002"
+   sodipodi:docname="qufaal outline.svg"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="px"
+     showgrid="true"
+     inkscape:zoom="2.8284271"
+     inkscape:cx="-7.601398"
+     inkscape:cy="86.974135"
+     inkscape:window-width="1920"
+     inkscape:window-height="1011"
+     inkscape:window-x="0"
+     inkscape:window-y="32"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid846" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Camada 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       id="path39742-2"
+       style="color:#000000;fill:#000000;-inkscape-stroke:none"
+       d="M 90.000004,25.65234 108.84571,44.499996 H 135.5 V 71.15234 L 154.34766,89.999996 135.5,108.8457 V 135.5 H 108.84571 L 90.000004,154.34766 71.152342,135.5 H 44.500002 V 108.8457 L 25.652342,89.999996 44.500002,71.15234 V 44.499996 h 26.65234 z m 0,1.416015 -17.433592,17.431641 h 12.728514 l 4.705078,-4.705078 4.851562,4.851562 10.000004,10 L 124.5,74.294918 V 61.568355 L 108.28516,45.353512 Z m 0,14.140625 -3.291016,3.291016 H 93.29102 Z M 134.5,45.499996 h -24.65429 l 8.99999,9 H 125.5 v 6.861328 14.142578 27.787118 l 9,-9.000008 V 85.70898 85.501949 71.359371 Z m -40.20898,0 H 84.294926 71.359382 45.500002 V 70.15234 l 9,-9 v -6.652344 h 6.86133 14.14062 27.789068 z m 30.20898,10 h -4.6543 l 4.6543,4.654297 z m -20.20898,0 H 75.710942 L 55.500002,75.70898 v 28.58008 L 75.708982,124.5 H 104.28907 L 124.5,104.29102 V 75.710934 Z m -29.996098,0 h -12.72656 l -6.21484,6.212891 -10,10 -18.28516,18.287109 17.43164,17.431644 V 94.703121 l -4.70508,-4.703125 4.85156,-4.851562 10,-10 z m -14.14062,0 h -4.6543 V 60.15234 Z M 135.5,72.566402 v 12.728516 l 4.70508,4.705078 -4.85156,4.851562 L 125.5,104.70508 105.70508,124.5 h 12.72656 l 6.21484,-6.21484 10,-10 18.28516,-18.285164 z m -80.999998,4.142578 -9,9 V 95.703121 108.63867 134.5 h 24.65234 l -9,-9 h -6.65234 v -6.86133 -13.93359 z m 80.999998,10 v 6.582032 l 3.29102,-3.291016 z m -90.999998,0 -3.29102,3.291016 3.29102,3.289062 z m 11,18.9961 v 12.72656 l 7.06641,7.06836 9.14648,9.14648 18.287112,18.28516 L 107.43164,135.5 H 94.703129 l -4.703125,4.70508 -4.851562,-4.85156 -10,-10 z M 134.5,109.8457 l -9,9 V 125.5 H 117.43164 104.4961 76.708982 l 9.000006,9 H 94.496098 108.63868 134.5 Z m -10,10 -4.6543,4.6543 H 124.5 Z m -68.999998,0 V 124.5 h 4.65234 z M 93.289066,135.5 h -6.580078 l 3.291016,3.29102 z" />
+  </g>
+</svg>
