@@ -43,6 +43,17 @@ const globalStyles = (t) => css`
       scroll-behavior: auto !important;
     }
   }
+  /* Shell native (class ditambahkan main.jsx hanya di Capacitor): matikan
+     seleksi teks agar aplikasi terasa native; kolom isian tetap bisa
+     diedit & teksnya dipilih. Di web aturan ini tidak pernah aktif. */
+  .native-app, .native-app *:not(input):not(textarea):not([contenteditable="true"]) {
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  .native-app input, .native-app textarea, .native-app [contenteditable="true"] {
+    -webkit-user-select: text;
+    user-select: text;
+  }
   /* Override manual "Kurangi animasi" dari Pengaturan Aksesibilitas */
   html.noor-kurangi-gerakan *, html.noor-kurangi-gerakan *::before, html.noor-kurangi-gerakan *::after {
     animation-duration: 0.01ms !important;

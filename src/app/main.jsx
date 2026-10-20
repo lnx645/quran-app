@@ -4,6 +4,13 @@ import { Capacitor } from '@capacitor/core';
 import PengaturanProvider from '../presentation/a11y/PengaturanProvider.jsx';
 import Aplikasi from './Aplikasi.jsx';
 
+// Shell native: tandai akar dokumen SEBELUM render agar gaya global
+// (Aplikasi.jsx) mematikan seleksi teks — terasa seperti aplikasi native.
+// Di peramban class ini tidak pernah ditambahkan; perilaku web utuh.
+if (Capacitor.isNativePlatform()) {
+  document.documentElement.classList.add('native-app');
+}
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <PengaturanProvider>
