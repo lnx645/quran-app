@@ -27,7 +27,7 @@ import {
   LoadingBox,
   Spinner,
 } from '../components/common.jsx';
-import { SegmenWadah, SegmenTab } from '../components/SegmentedControl.jsx';
+import { SegmenWadah, SegmenTab, SegmenKompakWadah, SegmenKompak } from '../components/SegmentedControl.jsx';
 import StateKosong from '../components/StateKosong.jsx';
 import NomorMedali from '../components/NomorMedali.jsx';
 import { useChapters } from '../hooks/useChapters.js';
@@ -377,17 +377,19 @@ export default function RadioPage() {
       <SectionTitle>
         <FaMoon /> Pengatur Waktu Tidur
       </SectionTitle>
-      <SegmenWadah role="tablist" aria-label="Pengatur waktu tidur">
+      <SegmenKompakWadah role="tablist" aria-label="Pengatur waktu tidur" css={{ marginBottom: 16 }}>
         {OPSI_TIDUR.map((o) => (
-          <SegmenTab
+          <SegmenKompak
             key={o.menit}
+            role="tab"
+            aria-selected={radio.tidurMenit === o.menit}
             aktif={radio.tidurMenit === o.menit}
             onClick={() => radio.aturTidur(o.menit)}
           >
             {o.label}
-          </SegmenTab>
+          </SegmenKompak>
         ))}
-      </SegmenWadah>
+      </SegmenKompakWadah>
       {radio.tidurSisa !== null && (
         <SisaTidur aria-live="polite">
           Radio akan berhenti dalam {formatSisaTidur(radio.tidurSisa)}.

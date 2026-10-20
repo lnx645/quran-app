@@ -13,7 +13,7 @@ import {
   Page, PageHero, Card, GoldCard, SectionTitle, GhostButton, PrimaryButton,
   ErrorBox, Skeleton, TextInput,
 } from '../components/common.jsx';
-import { SegmenWadah, SegmenTab, Segmen } from '../components/SegmentedControl.jsx';
+import { SegmenWadah, SegmenTab, SegmenKompakWadah, SegmenKompak } from '../components/SegmentedControl.jsx';
 import NomorMedali from '../components/NomorMedali.jsx';
 
 const PREFS_KUNCI = 'noor.hafalan.prefs.v1';
@@ -734,9 +734,9 @@ export default function HafalanPage() {
               >
                 <FaInfinity aria-hidden="true" /> Ulang audio per ayat
               </span>
-              <SegmenWadah role="group" aria-labelledby="label-ulang" css={{ marginBottom: 0 }}>
+              <SegmenKompakWadah role="group" aria-labelledby="label-ulang">
                 {OPSI_ULANG.map((o) => (
-                  <Segmen
+                  <SegmenKompak
                     key={o.nilai}
                     type="button"
                     aktif={ulangStr === o.nilai}
@@ -744,9 +744,9 @@ export default function HafalanPage() {
                     onClick={() => setUlangStr(o.nilai)}
                   >
                     {o.label}
-                  </Segmen>
+                  </SegmenKompak>
                 ))}
-              </SegmenWadah>
+              </SegmenKompakWadah>
             </div>
           </KontrolBar>
 

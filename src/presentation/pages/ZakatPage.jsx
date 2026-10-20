@@ -14,7 +14,7 @@ import {
 import {
   Page, PageHero, Card, SectionTitle, Field, TextInput, ResultRow, GoldCard,
 } from '../components/common.jsx';
-import { SegmenWadah, SegmenTab } from '../components/SegmentedControl.jsx';
+import { SegmenWadah, SegmenTab, SegmenKompakWadah, SegmenKompak } from '../components/SegmentedControl.jsx';
 
 const LencanaWajib = styled.span`
   display: inline-flex;
@@ -361,14 +361,14 @@ export default function ZakatPage() {
       {tab === 'pertanian' && (
         <Card>
           <GrupLabel>Satuan hasil</GrupLabel>
-          <SegmenWadah role="tablist" aria-label="Satuan hasil panen">
-            <SegmenTab css={SEGMENT_TOUCH} aktif={satuanTani === 'gabah'} onClick={() => setSatuanTani('gabah')}>
+          <SegmenKompakWadah role="tablist" aria-label="Satuan hasil panen" css={{ marginBottom: 16 }}>
+            <SegmenKompak role="tab" aria-selected={satuanTani === 'gabah'} aktif={satuanTani === 'gabah'} onClick={() => setSatuanTani('gabah')}>
               Gabah
-            </SegmenTab>
-            <SegmenTab css={SEGMENT_TOUCH} aktif={satuanTani === 'beras'} onClick={() => setSatuanTani('beras')}>
+            </SegmenKompak>
+            <SegmenKompak role="tab" aria-selected={satuanTani === 'beras'} aktif={satuanTani === 'beras'} onClick={() => setSatuanTani('beras')}>
               Beras
-            </SegmenTab>
-          </SegmenWadah>
+            </SegmenKompak>
+          </SegmenKompakWadah>
           <Field>
             <label htmlFor="hasil">Hasil panen (kg {satuanTani})</label>
             <TextInput
