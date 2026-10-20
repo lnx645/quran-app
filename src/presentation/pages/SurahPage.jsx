@@ -234,6 +234,7 @@ export default function SurahPage() {
           <AyatCard
             key={ayat.key}
             ayah={ayat}
+            namaSurah={surah.nameLatin}
             aktif={sync.activeIndex === i}
             kataAktif={sync.activeIndex === i && sorotKataAktif ? sync.activeWord : -1}
             onSelect={() => sync.seekToAyah(i)}

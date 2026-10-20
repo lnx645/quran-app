@@ -1,11 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import styled from '@emotion/styled';
-import { FaBookOpen, FaChevronUp, FaRedo } from 'react-icons/fa';
+import { FaBookOpen, FaBookmark, FaChevronUp, FaRedo, FaRegBookmark } from 'react-icons/fa';
 import AyatRosette from './ornaments/AyatRosette.jsx';
 import RubElHizb from './ornaments/RubElHizb.jsx';
 import KhatamStar from './ornaments/KhatamStar.jsx';
 import { QuranRepositoryImpl } from '../../data/repositories/QuranRepositoryImpl.js';
+import { LocalBookmarkRepository } from '../../data/repositories/LocalBookmarkRepository.js';
+import { useToast } from './feedback/toastStore.js';
 import { parseTajweed } from '../../data/dto/tajweedParser.js';
 import { ATURAN_TAJWID } from '../../data/sources/tajwidData.js';
 
@@ -186,6 +188,8 @@ const PenandaSajdah = styled.p`
 const BarisAksi = styled.div`
   display: flex;
   justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 8px;
   margin-top: 10px;
 `;
 
@@ -251,7 +255,34 @@ function AyatCard({
   sorotAwal = false,
   juzAwal = 0,
   kataPerKata = null,
+  namaSurah = '',
 }) {
+  const toast = useToast();
+  const [ditandai, setDitandai] = useState(() =>
+    LocalBookmarkRepository.adaBookmark(ayah.key),
+  );
+
+  // Tandai/hapus tanda ayat ini (tersimpan lokal, tampil di halaman Penanda).
+  const alihTandai = (e) => {
+    e.stopPropagation();
+    if (ditandai) {
+      LocalBookmarkRepository.hapusBookmark(ayah.key);
+      setDitandai(false);
+      toast.sukses(`Tanda Ayat ${ayah.number} dihapus.`);
+    } else {
+      const [surahId] = String(ayah.key).split(':');
+      LocalBookmarkRepository.tambahBookmark({
+        key: ayah.key,
+        surahId: Number(surahId) || 0,
+        nomorAyat: ayah.number,
+        namaSurah,
+        teksArab: ayah.arabic,
+        terjemahan: ayah.translation ?? '',
+      });
+      setDitandai(true);
+      toast.sukses(`Ayat ${ayah.number} ditandai — tersimpan di Bookmark Ayat.`);
+    }
+  };
   const ref = useRef(null);
   const [sorot, setSorot] = useState(false);
   const sudahSorotRef = useRef(false);
@@ -409,6 +440,21 @@ function AyatCard({
         >
           {tafsirBuka ? <FaChevronUp aria-hidden="true" /> : <FaBookOpen aria-hidden="true" />}
           Tafsir
+        </TombolTafsir>
+        <TombolTafsir
+          type="button"
+          onClick={alihTandai}
+          onKeyDown={(e) => e.stopPropagation()}
+          aria-pressed={ditandai}
+          aria-label={ditandai ? `Hapus tanda ayat ${ayah.number}` : `Tandai ayat ${ayah.number}`}
+          css={(t) =>
+            ditandai
+              ? { background: t.gradients.gold, color: t.colors.primaryDeep, borderColor: t.colors.gold }
+              : undefined
+          }
+        >
+          {ditandai ? <FaBookmark aria-hidden="true" /> : <FaRegBookmark aria-hidden="true" />}
+          {ditandai ? 'Ditandai' : 'Tandai'}
         </TombolTafsir>
       </BarisAksi>
       {tafsirBuka && (
