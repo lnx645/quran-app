@@ -30,6 +30,7 @@ const LABEL_KUNCI = {
   'noor.hafalan.prefs.v1': 'Preferensi Hafalan',
   'noor.muslimah.riwayat.v1': 'Riwayat Muslimah (privat)',
   'noor.muslimah.pinHash.v1': 'PIN Muslimah (tersimpan sebagai hash)',
+  'noor.streak.v1': 'Streak & Target Ibadah',
 };
 
 const ukuranBytes = (teks) => new TextEncoder().encode(teks ?? '').length;

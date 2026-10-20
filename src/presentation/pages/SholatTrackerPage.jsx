@@ -2,6 +2,7 @@
 import styled from '@emotion/styled';
 import { FaFire, FaCheckCircle, FaRegCircle } from 'react-icons/fa';
 import { useSholatTracker, LIMA_WAKTU } from '../hooks/useSholatTracker.js';
+import { catatAktivitasGlobal } from '../hooks/useStreak.js';
 import {
   Page, PageTitle, PageSubtitle, Card, GoldCard, SectionTitle,
 } from '../components/common.jsx';
@@ -48,6 +49,14 @@ const StreakBox = styled(GoldCard)`
 export default function SholatTrackerPage() {
   const { hariIni, toggle, selesaiHariIni, streak } = useSholatTracker();
 
+  // Streak ibadah gabungan: centang BARU (bukan melepas centang) ikut
+  // menghidupkan hari ini di streak Noor.
+  const alihSholat = (w) => {
+    const menambah = !hariIni[w];
+    toggle(w);
+    if (menambah) catatAktivitasGlobal('sholat');
+  };
+
   return (
     <Page>
       <PageTitle>Sholat Tracker</PageTitle>
@@ -73,7 +82,7 @@ export default function SholatTrackerPage() {
       <SectionTitle>Hari Ini</SectionTitle>
       <Card>
         {LIMA_WAKTU.map((w) => (
-          <Baris key={w} selesai={!!hariIni[w]} onClick={() => toggle(w)} aria-pressed={!!hariIni[w]}>
+          <Baris key={w} selesai={!!hariIni[w]} onClick={() => alihSholat(w)} aria-pressed={!!hariIni[w]}>
             {hariIni[w] ? <FaCheckCircle /> : <FaRegCircle />}
             Sholat {w}
             <span className="kanan">{hariIni[w] ? 'SUDAH' : 'BELUM'}</span>

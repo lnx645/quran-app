@@ -65,7 +65,7 @@ const DAFTAR_FITUR = [
   { tujuan: '/haji-umrah', judul: 'Haji & Umrah', sub: 'Manasik per tahap + checklist', kata: "haji umrah umroh manasik ihram thawaf sai wukuf checklist ka'bah makkah ibadah haji" },
   { tujuan: '/kalender', judul: 'Kalender Hijriah', sub: 'Tanggal Hijriah & hari besar Islam', kata: 'kalender hijriah tanggal hari besar islam puasa sunnah bulan' },
   { tujuan: '/konverter', judul: 'Konverter Hijriah', sub: 'Hijriah ↔ Masehi + usia Hijriah', kata: 'konverter konversi hijriah masehi tanggal usia hijriah ubah tanggal' },
-  { tujuan: '/statistik', judul: 'Statistik Ibadah', sub: 'Gabungan tracker 7 & 30 hari', kata: 'statistik ibadah gabungan tracker ringkasan grafik laporan' },
+  { tujuan: '/statistik', judul: 'Statistik Ibadah', sub: 'Gabungan tracker 7 & 30 hari', kata: 'statistik ibadah gabungan tracker ringkasan grafik laporan streak lencana target harian' },
   { tujuan: '/data-progres', judul: 'Data Progres', sub: 'Ekspor & impor cadangan data', kata: 'data progres ekspor eksport impor import backup cadangan simpan pulihkan' },
   { tujuan: '/khatam', judul: 'Khatam Tracker', sub: 'Checklist 30 juz & target harian', kata: 'khatam tracker 30 juz target baca quran tamat' },
   { tujuan: '/sholat-tracker', judul: 'Sholat Tracker', sub: 'Checklist lima waktu & streak', kata: 'tracker sholat shalat checklist lima waktu streak catatan harian' },

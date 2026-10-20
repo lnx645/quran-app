@@ -8,6 +8,7 @@ import {
 } from 'react-icons/fa';
 import { LocalMutabaahRepository } from '../../data/repositories/LocalMutabaahRepository.js';
 import { kunciTanggal } from '../hooks/useSholatTracker.js';
+import { catatAktivitasGlobal } from '../hooks/useStreak.js';
 import {
   Page, PageTitle, PageSubtitle, Card, GoldCard, SectionTitle, TextInput, Field,
   PrimaryButton, GhostButton,
@@ -183,7 +184,11 @@ export default function MutabaahPage() {
   };
 
   const toggle = (kunciAmal) => {
+    const menambah = !record[kunciAmal];
     simpanRecord({ ...record, [kunciAmal]: !record[kunciAmal] });
+    // Streak ibadah gabungan: centang baru pada HARI INI ikut menghidupkan
+    // streak Noor; mengedit hari lampau tidak mengubah streak hari ini.
+    if (menambah && adalahHariIni) catatAktivitasGlobal('mutabaah');
   };
 
   const ubahTilawah = (nilai) => {

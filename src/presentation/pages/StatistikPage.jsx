@@ -4,7 +4,10 @@ import styled from '@emotion/styled';
 import { useTheme } from '@emotion/react';
 import {
   FaChartBar, FaPrayingHands, FaMoon, FaClipboardCheck, FaBookReader, FaChartLine,
+  FaFire, FaLock, FaCalendarAlt, FaBookOpen,
 } from 'react-icons/fa';
+import { useStreak } from '../hooks/useStreak.js';
+import { totalHariAktif, totalAyat } from '../../domain/usecases/streakIbadah.js';
 import { LocalSholatTrackerRepository } from '../../data/repositories/LocalSholatTrackerRepository.js';
 import { LocalQadhaRepository } from '../../data/repositories/LocalQadhaRepository.js';
 import { LocalMutabaahRepository } from '../../data/repositories/LocalMutabaahRepository.js';
@@ -59,6 +62,59 @@ const AngkaBesar = styled(GoldCard)`
     color: ${({ theme }) => theme.colors.muted};
     margin-top: 2px;
   }
+`;
+
+// Pemetaan nama ikon lencana (string dari domain) → ikon react-icons.
+const IKON_LENCANA = {
+  api: <FaFire aria-hidden="true" />,
+  buku: <FaBookOpen aria-hidden="true" />,
+  kalender: <FaCalendarAlt aria-hidden="true" />,
+};
+
+const BarisLencana = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  padding: 11px 0;
+  border-bottom: 1px dashed ${({ theme }) => theme.colors.border};
+  &:last-child {
+    border-bottom: none;
+  }
+  .nama {
+    font-size: 14.5px;
+    font-weight: 700;
+    color: ${({ theme, terbuka }) => (terbuka ? theme.colors.judul : theme.colors.muted)};
+  }
+  .progres {
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: ${({ theme }) => theme.colors.muted};
+    margin-top: 1px;
+  }
+`;
+
+const LingkaranLencana = styled.span`
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  background: ${({ theme, terbuka }) =>
+    terbuka ? theme.colors.goldSoft : theme.colors.surfaceAlt};
+  border: 1px solid
+    ${({ theme, terbuka }) => (terbuka ? theme.colors.gold : theme.colors.border)};
+  color: ${({ theme, terbuka }) => (terbuka ? theme.colors.goldDeep : theme.colors.faint)};
+`;
+
+const LabelTarget = styled.p`
+  font-size: ${({ theme }) => theme.type.caption.size}px;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.muted};
+  margin: 16px 0 8px;
 `;
 
 const GridAngka = styled.div`
@@ -153,6 +209,14 @@ function muatSemua() {
 export default function StatistikPage() {
   const [periode, setPeriode] = useState(7);
   const [data] = useState(muatSemua);
+  const {
+    state: stateStreak,
+    streak,
+    lencana,
+    ubahTarget,
+  } = useStreak();
+  const totalAktifStreak = totalHariAktif(stateStreak);
+  const totalAyatStreak = totalAyat(stateStreak);
 
   const stats = useMemo(() => {
     const hariIni = new Date();
@@ -316,6 +380,53 @@ export default function StatistikPage() {
           </Card>
         </>
       )}
+
+      <SectionTitle>
+        <FaFire /> Streak &amp; Lencana
+      </SectionTitle>
+      <Card>
+        <ResultRow>
+          <span className="label">Streak saat ini</span>
+          <span className="value">{streak} hari</span>
+        </ResultRow>
+        <ResultRow>
+          <span className="label">Total hari aktif</span>
+          <span className="value">{totalAktifStreak} hari</span>
+        </ResultRow>
+        <ResultRow>
+          <span className="label">Total ayat terbaca</span>
+          <span className="value">{totalAyatStreak} ayat</span>
+        </ResultRow>
+
+        <LabelTarget id="label-target-ayat">Target ayat per hari</LabelTarget>
+        <SegmenWadah role="tablist" aria-labelledby="label-target-ayat" css={{ marginBottom: 6 }}>
+          {[5, 10, 20, 50].map((n) => (
+            <SegmenTab
+              key={n}
+              aktif={stateStreak.targetAyat === n}
+              onClick={() => ubahTarget(n)}
+            >
+              {n} ayat
+            </SegmenTab>
+          ))}
+        </SegmenWadah>
+
+        <div>
+          {lencana.map((l) => (
+            <BarisLencana key={l.id} terbuka={l.terbuka}>
+              <LingkaranLencana terbuka={l.terbuka}>
+                {l.terbuka ? (IKON_LENCANA[l.ikon] ?? <FaFire aria-hidden="true" />) : <FaLock aria-hidden="true" />}
+              </LingkaranLencana>
+              <span>
+                <span className="nama">{l.nama}</span>
+                <span className="progres" css={{ display: 'block' }}>
+                  {l.terbuka ? `Terbuka · ${l.deskripsi}` : l.progres}
+                </span>
+              </span>
+            </BarisLencana>
+          ))}
+        </div>
+      </Card>
     </Page>
   );
 }

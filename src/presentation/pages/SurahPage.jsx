@@ -9,6 +9,7 @@ import { useQari } from '../hooks/useQari.js';
 import { useSurah } from '../hooks/useSurah.js';
 import { useAudioSync } from '../hooks/useAudioSync.js';
 import { useReadingPrefs } from '../hooks/useReadingPrefs.js';
+import { catatAyatGlobal } from '../hooks/useStreak.js';
 import SurahHeader from '../components/SurahHeader.jsx';
 import AyatCard from '../components/AyatCard.jsx';
 import PlayerBar from '../components/PlayerBar.jsx';
@@ -104,6 +105,7 @@ export default function SurahPage() {
   const sinkronKurang = qari !== RECITER_ALAFASY && data && (!data.sinkronAyatTersedia || !data.sorotKataTersedia);
   const { pref, ubah, tambahArab, kurangArab } = useReadingPrefs();
   const sentinelRef = useRef(null);
+  const wadahAyatRef = useRef(null);
   const [miniTampil, setMiniTampil] = useState(false);
   const ayatUcapRef = useRef(-1);
 
@@ -140,6 +142,30 @@ export default function SurahPage() {
     }
     if (!sync.playing) ayatUcapRef.current = -1;
   });
+
+  // Catat ayat terbaca untuk streak & target harian: SATU IntersectionObserver
+  // untuk semua kartu ayat dalam wadah ini. Penanda DOM = atribut data-ayat
+  // pada elemen akar AyatCard (Blok) yang berisi kunci ayat 'surah:ayat'
+  // (ayah.key). Kartu yang terlihat ≥50% dianggap terbaca lalu berhenti
+  // diamati (dedupe per hari di domain menahan catatan ganda). Observer
+  // diputus saat unmount / ganti surah / data berubah.
+  useEffect(() => {
+    const wadah = wadahAyatRef.current;
+    if (!wadah || typeof IntersectionObserver === 'undefined') return;
+    const obs = new IntersectionObserver(
+      (entries) => {
+        for (const ent of entries) {
+          if (!ent.isIntersecting) continue;
+          const kunci = ent.target.getAttribute('data-ayat');
+          if (kunci) catatAyatGlobal(kunci);
+          obs.unobserve(ent.target);
+        }
+      },
+      { threshold: 0.5 }
+    );
+    wadah.querySelectorAll('[data-ayat]').forEach((el) => obs.observe(el));
+    return () => obs.disconnect();
+  }, [data, id]);
 
   // Munculkan mini-header begitu panel surah tergulir keluar.
   useEffect(() => {
@@ -203,6 +229,7 @@ export default function SurahPage() {
             diputar per bab tanpa sorotan {data.sinkronAyatTersedia ? 'kata' : 'ayat/kata'}.
           </p>
         )}
+        <div ref={wadahAyatRef}>
         {ayahs.map((ayat, i) => (
           <AyatCard
             key={ayat.key}
@@ -219,6 +246,7 @@ export default function SurahPage() {
             kataPerKata={pref.perKata && petaKata ? petaKata.get(ayat.key) ?? null : null}
           />
         ))}
+        </div>
         {/* Spacer bawah: konten terakhir tidak tertutup ReadingControls + PlayerBar (fixed) */}
         <div aria-hidden="true" css={{ height: 'calc(166px + 54px + 28px + env(safe-area-inset-bottom))' }} />
       </MushafFrame>

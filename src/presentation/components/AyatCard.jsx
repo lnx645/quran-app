@@ -326,7 +326,7 @@ function AyatCard({
       ref={ref}
       aktif={aktif}
       sorot={sorot}
-      data-ayat={ayah.number}
+      data-ayat={ayah.key}
       onClick={pilih}
       onKeyDown={tekan}
       role="button"

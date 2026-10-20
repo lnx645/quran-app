@@ -10,6 +10,7 @@ import {
   Page, PageTitle, PageSubtitle, Card, GhostButton, PrimaryButton,
 } from '../components/common.jsx';
 import OrnamentDivider from '../components/OrnamentDivider.jsx';
+import { catatAktivitasGlobal } from '../hooks/useStreak.js';
 import { SegmenWadah, SegmenTab } from '../components/SegmentedControl.jsx';
 
 const KartuDzikir = styled(Card)`
@@ -192,6 +193,17 @@ export default function DzikirPage() {
     () => daftar.every((d, i) => (hitung[i] ?? 0) >= d.hitung),
     [daftar, hitung]
   );
+
+  // Streak ibadah: dzikir tuntas (semua bacaan mencapai hitungan anjuran)
+  // dicatat sekali per sesi halaman; dedupe per hari di domain menahan
+  // catatan ganda bila mode pagi & petang sama-sama dituntaskan.
+  const dzikirTercatatRef = useRef(false);
+  useEffect(() => {
+    if (selesaiSemua && !dzikirTercatatRef.current) {
+      dzikirTercatatRef.current = true;
+      catatAktivitasGlobal('dzikir');
+    }
+  }, [selesaiSemua]);
 
   return (
     <Page>

@@ -1,18 +1,20 @@
 /** @jsxImportSource @emotion/react */
 import { useState } from 'react';
 import styled from '@emotion/styled';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   FaQuran, FaBookOpen, FaClock, FaCoins, FaBookReader, FaGraduationCap,
   FaHandPointer, FaCloudSun, FaPrayingHands, FaClipboardCheck, FaCompass,
   FaCalendarAlt, FaListUl, FaBook, FaHeart, FaMoon, FaVenus,
   FaSearch, FaBookmark, FaBrain, FaPalette, FaTint, FaTasks, FaBroadcastTower, FaMicrophone, FaChild,
   FaBalanceScale, FaKaaba, FaBaby, FaGift, FaHandHoldingHeart, FaMosque,
-  FaDownload, FaTimes,
+  FaDownload, FaTimes, FaFire, FaChevronRight,
 } from 'react-icons/fa';
 import { useInstallPrompt } from '../hooks/useInstallPrompt.js';
+import { useStreak } from '../hooks/useStreak.js';
+import { kunciHari, hariAktif } from '../../domain/usecases/streakIbadah.js';
 import { useBahasa } from '../../app/bahasa.js';
-import { Page, SectionTitle, MenuCard } from '../components/common.jsx';
+import { Page, SectionTitle, MenuCard, Card } from '../components/common.jsx';
 import LanjutkanMembaca from '../components/LanjutkanMembaca.jsx';
 import HaditsHariIni from '../components/HaditsHariIni.jsx';
 import AyatHariIni from '../components/AyatHariIni.jsx';
@@ -216,6 +218,98 @@ const SEKSI = [
   },
 ];
 
+// Kartu Streak Ibadah di beranda: api + angka streak besar, progres target
+// ayat hari ini (pola BarProgres yang sama dengan HajiUmrahPage), tautan ke
+// /statistik untuk lencana & pengatur target.
+const KartuStreak = styled(Card)`
+  .baris-atas {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .lingkaran-api {
+    flex-shrink: 0;
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: ${({ theme }) => theme.colors.goldSoft};
+    border: 1px solid ${({ theme }) => theme.colors.gold};
+    color: ${({ theme }) => theme.colors.goldDeep};
+    font-size: 25px;
+  }
+  .info {
+    flex: 1;
+    min-width: 0;
+  }
+  .angka {
+    font-family: ${({ theme }) => theme.fonts.display};
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.1;
+    color: ${({ theme }) => theme.colors.judul};
+    span {
+      font-family: ${({ theme }) => theme.fonts.body};
+      font-size: 13.5px;
+      font-weight: 700;
+      color: ${({ theme }) => theme.colors.muted};
+      margin-left: 6px;
+    }
+  }
+  .label {
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    color: ${({ theme }) => theme.colors.goldDeep};
+  }
+  .teks-target {
+    font-size: 13.5px;
+    color: ${({ theme }) => theme.colors.text};
+    margin: 14px 0 8px;
+    strong {
+      color: ${({ theme }) => theme.colors.primary};
+    }
+  }
+  .ajakan {
+    font-size: 13px;
+    line-height: 1.6;
+    color: ${({ theme }) => theme.colors.muted};
+    margin-top: 10px;
+  }
+`;
+
+const BarProgres = styled.div`
+  height: 10px;
+  border-radius: 999px;
+  background: ${({ theme }) => theme.colors.primarySoft};
+  overflow: hidden;
+  > div {
+    height: 100%;
+    border-radius: 999px;
+    background: ${({ theme }) => theme.gradients.gold};
+    transition: width ${({ theme }) => theme.anim.med} ${({ theme }) => theme.anim.ease};
+  }
+`;
+
+const TautanStatistik = styled(Link)`
+  flex-shrink: 0;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 6px;
+  font-size: 13.5px;
+  font-weight: 800;
+  color: ${({ theme }) => theme.colors.primary};
+  svg {
+    font-size: 11px;
+    color: ${({ theme }) => theme.colors.goldDeep};
+  }
+`;
+
 const KUNCI_BANNER_TUTUP = 'noor.bannerInstall.tutup.v1';
 
 const BannerInstall = styled.div`
@@ -273,6 +367,10 @@ const TombolTutupBanner = styled.button`
 export default function HomePage() {
   const navigate = useNavigate();
   const { bisaInstall, pasang } = useInstallPrompt();
+  const { state: stateStreak, streak, ringkasanHariIni } = useStreak();
+  const [kunciHariIni] = useState(() => kunciHari(new Date()));
+  const belumAdaAktivitas =
+    streak === 0 && !hariAktif(stateStreak.hari[kunciHariIni]);
   const { t } = useBahasa();
   const [bannerTutup, setBannerTutup] = useState(() => {
     try {
@@ -331,6 +429,39 @@ export default function HomePage() {
         <span>{t('beranda.cariPlaceholder')}</span>
       </BarCari>
       <OrnamentDivider />
+      <KartuStreak aria-label="Streak ibadah">
+        <div className="baris-atas">
+          <span className="lingkaran-api" aria-hidden="true">
+            <FaFire />
+          </span>
+          <div className="info">
+            <div className="angka">
+              {streak}
+              <span>hari beruntun</span>
+            </div>
+            <div className="label">Streak Ibadah</div>
+          </div>
+          <TautanStatistik to="/statistik" aria-label="Buka statistik, lencana & target harian">
+            Statistik <FaChevronRight aria-hidden="true" />
+          </TautanStatistik>
+        </div>
+        <p className="teks-target">
+          Ayat dibaca hari ini: <strong>{ringkasanHariIni.ayatHariIni}</strong> dari{' '}
+          {ringkasanHariIni.target}
+        </p>
+        <BarProgres
+          role="progressbar"
+          aria-valuenow={ringkasanHariIni.persenTarget}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-label={`Progres target ayat hari ini ${ringkasanHariIni.persenTarget} persen`}
+        >
+          <div style={{ width: `${ringkasanHariIni.persenTarget}%` }} />
+        </BarProgres>
+        {belumAdaAktivitas && (
+          <p className="ajakan">Mulai streak hari ini — baca satu ayat saja cukup.</p>
+        )}
+      </KartuStreak>
       <LanjutkanMembaca />
       <HaditsHariIni />
       <AyatHariIni />
