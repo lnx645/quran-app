@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import {
   FaQuran, FaBookOpen, FaClock, FaCoins, FaBookReader, FaGraduationCap,
   FaHandPointer, FaCloudSun, FaPrayingHands, FaClipboardCheck, FaCompass,
-  FaCalendarAlt, FaListUl, FaBook, FaHeart, FaMoon,
+  FaCalendarAlt, FaListUl, FaBook, FaHeart, FaMoon, FaVenus,
 } from 'react-icons/fa';
 import { Page, SectionTitle, MenuCard } from '../components/common.jsx';
 import OrnamentDivider from '../components/OrnamentDivider.jsx';
@@ -61,6 +61,7 @@ const SEKSI = [
     nama: "Al-Qur'an",
     ikon: <FaQuran />,
     items: [
+      { to: '/quran', icon: <FaQuran />, judul: 'Al-Qur\u2019an — 114 Surah', desc: 'Daftar lengkap semua surah + pencarian — baca dengan audio & highlight perkata' },
       { to: '/surah/36', icon: <FaHeart />, judul: 'Surah Ya-Sin', desc: 'Jantung Al-Qur\u2019an — 83 ayat, audio + highlight perkata' },
       { to: '/surah/18', icon: <FaBookOpen />, judul: 'Surah Al-Kahf', desc: 'Dianjurkan dibaca hari Jumat — 110 ayat' },
       { to: '/surah/67', icon: <FaBookOpen />, judul: 'Surah Al-Mulk', desc: 'Dibaca sebelum tidur — 30 ayat' },
@@ -85,6 +86,17 @@ const SEKSI = [
       { to: '/iqro', icon: <FaGraduationCap />, judul: 'Belajar Iqro', desc: 'Jilid 1–6: huruf hijaiyah, harakat, tajwid dasar' },
       { to: '/kisah', icon: <FaBook />, judul: 'Kisah 25 Nabi', desc: 'Ringkasan kisah teladan para nabi & rasul' },
       { to: '/asmaul-husna', icon: <FaListUl />, judul: 'Asmaul Husna', desc: '99 nama Allah + mode hafalan' },
+    ],
+  },
+  {
+    nama: 'Muslimah',
+    ikon: <FaVenus />,
+    items: [
+      { to: '/muslimah', icon: <FaVenus />, judul: 'Ruang Muslimah', desc: 'Kalkulator haid, mandi wajib, doa & fikih wanita (Syafi\u2019i)' },
+      { to: '/muslimah/kalkulator', icon: <FaClipboardCheck />, judul: 'Kalkulator Haid', desc: 'Vonis haid/istihadah + status ibadah — terkunci PIN' },
+      { to: '/muslimah/mandi-wajib', icon: <FaHandPointer />, judul: 'Panduan Mandi Wajib', desc: 'Niat & tata cara setelah haid/nifas' },
+      { to: '/muslimah/doa', icon: <FaPrayingHands />, judul: 'Doa Khusus Wanita', desc: 'Doa hamil, persalinan, menyusui & keturunan' },
+      { to: '/muslimah/fikih', icon: <FaBook />, judul: 'Fikih Wanita', desc: 'Ringkasan haid/nifas/istihadah + mitos vs hukum' },
     ],
   },
   {

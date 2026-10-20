@@ -16,6 +16,12 @@ import KalenderPage from '../presentation/pages/KalenderPage.jsx';
 import AsmaulHusnaPage from '../presentation/pages/AsmaulHusnaPage.jsx';
 import KisahPage from '../presentation/pages/KisahPage.jsx';
 import KisahDetailPage from '../presentation/pages/KisahDetailPage.jsx';
+import QuranListPage from '../presentation/pages/QuranListPage.jsx';
+import MuslimahHubPage from '../presentation/pages/MuslimahHubPage.jsx';
+import MuslimahKalkulatorPage from '../presentation/pages/MuslimahKalkulatorPage.jsx';
+import MuslimahMandiWajibPage from '../presentation/pages/MuslimahMandiWajibPage.jsx';
+import MuslimahDoaPage from '../presentation/pages/MuslimahDoaPage.jsx';
+import MuslimahFikihPage from '../presentation/pages/MuslimahFikihPage.jsx';
 
 const router = createBrowserRouter([
   {
@@ -23,6 +29,12 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       { index: true, element: <HomePage /> },
+      { path: 'quran', element: <QuranListPage /> },
+      { path: 'muslimah', element: <MuslimahHubPage /> },
+      { path: 'muslimah/kalkulator', element: <MuslimahKalkulatorPage /> },
+      { path: 'muslimah/mandi-wajib', element: <MuslimahMandiWajibPage /> },
+      { path: 'muslimah/doa', element: <MuslimahDoaPage /> },
+      { path: 'muslimah/fikih', element: <MuslimahFikihPage /> },
       { path: 'surah/:id', element: <SurahPage /> },
       { path: 'yasin', element: <Navigate to="/surah/36" replace /> },
       { path: 'iqro', element: <IqroHubPage /> },
