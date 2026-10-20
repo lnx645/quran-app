@@ -6,7 +6,7 @@ import {
   FaQuran, FaBookOpen, FaClock, FaCoins, FaBookReader, FaGraduationCap,
   FaHandPointer, FaCloudSun, FaPrayingHands, FaClipboardCheck, FaCompass,
   FaCalendarAlt, FaListUl, FaBook, FaHeart, FaMoon, FaVenus,
-  FaSearch, FaBookmark, FaBrain, FaPalette, FaTint, FaTasks,
+  FaSearch, FaBookmark, FaBrain, FaPalette, FaTint, FaTasks, FaBroadcastTower,
   FaBalanceScale, FaKaaba, FaBaby, FaGift, FaHandHoldingHeart, FaMosque,
   FaDownload, FaTimes,
 } from 'react-icons/fa';
@@ -122,6 +122,7 @@ const SEKSI = [
       { to: '/panduan-tajwid', icon: <FaPalette />, judul: 'Panduan Tajwid', desc: 'Warna tajwid, makhraj & hukum bacaan' },
       { to: '/indeks-tematik', icon: <FaListUl />, judul: 'Indeks Tematik', desc: 'Ayat per topik: sabar, rezeki, sembuh' },
       { to: '/kuis', icon: <FaBrain />, judul: 'Kuis Islami', desc: 'Sambung ayat, tebak surah & fikih' },
+      { to: '/radio', icon: <FaBroadcastTower />, judul: 'Radio Murottal', desc: 'Putar murottal terus-menerus + timer tidur' },
     ],
   },
   {

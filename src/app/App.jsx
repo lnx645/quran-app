@@ -104,6 +104,7 @@ const JUDUL_RUTE = [
   [/^\/indeks-tematik$/, 'Indeks Tematik Al-Qur\'an'],
   [/^\/sujud$/, 'Panduan Sujud Sahwi, Syukur & Tilawah'],
   [/^\/kuis$/, 'Kuis Islami'],
+  [/^\/radio$/, 'Radio Murottal'],
   [/^\/panduan-nikah$/, 'Panduan Nikah'],
   [/^\/fikih-keluarga$/, 'Fikih Keluarga'],
   [/^\/muamalah$/, 'Fikih Muamalah'],

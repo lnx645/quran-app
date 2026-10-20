@@ -88,6 +88,7 @@ const _Riyadhus = lazy(() => import('../presentation/pages/RiyadhusPage.jsx'));
 const _Konverter = lazy(() => import('../presentation/pages/KonverterPage.jsx'));
 const _Statistik = lazy(() => import('../presentation/pages/StatistikPage.jsx'));
 const _DataProgres = lazy(() => import('../presentation/pages/DataProgresPage.jsx'));
+const _Radio = lazy(() => import('../presentation/pages/RadioPage.jsx'));
 
 export function SurahPage() {
   return (
@@ -472,6 +473,14 @@ export function KuisPage() {
   return (
     <Suspense fallback={<PageFallback />}>
       <_Kuis />
+    </Suspense>
+  );
+}
+
+export function RadioPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_Radio />
     </Suspense>
   );
 }
