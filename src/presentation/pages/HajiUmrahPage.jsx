@@ -56,8 +56,9 @@ const Step = styled.div`
   border-bottom: 1px dashed ${({ theme }) => theme.colors.border};
   &:last-child { border-bottom: none; }
   svg { flex-shrink: 0; margin-top: 3px; color: ${({ theme }) => theme.colors.primary}; }
-  .t { font-size: 14px; font-weight: 700; }
-  .c { font-size: 13px; color: ${({ theme }) => theme.colors.muted}; line-height: 1.6; margin-top: 3px; }
+  > div { flex: 1; min-width: 0; }
+  .t { font-size: 14px; font-weight: 700; overflow-wrap: break-word; }
+  .c { font-size: 13px; color: ${({ theme }) => theme.colors.muted}; line-height: 1.6; margin-top: 3px; overflow-wrap: break-word; }
 `;
 
 const Paragraf = styled.p`

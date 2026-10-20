@@ -26,7 +26,8 @@ const Baris = styled.div`
   border-bottom: 1px dashed ${({ theme }) => theme.colors.border};
   &:last-child { border-bottom: none; }
   svg { flex-shrink: 0; margin-top: 3px; color: ${({ theme }) => theme.colors.primary}; }
-  .c { font-size: 13.5px; line-height: 1.6; }
+  > div { flex: 1; min-width: 0; }
+  .c { font-size: 13.5px; line-height: 1.6; overflow-wrap: break-word; }
 `;
 
 const Paragraf = styled.p`
