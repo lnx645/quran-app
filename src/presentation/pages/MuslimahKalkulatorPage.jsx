@@ -10,6 +10,7 @@ import { DISCLAIMER } from '../../data/sources/muslimahData.js';
 import {
   Page, PageHero, Card, SectionTitle, Field, TextInput, SelectInput, PrimaryButton, GhostButton, ErrorBox,
 } from '../components/common.jsx';
+import { useToast } from '../components/feedback/toastStore.js';
 
 const VonisBadge = styled.div`
   display: inline-flex;
@@ -94,6 +95,7 @@ function FormPin({ mode }) {
   const [pin, setPin] = useState('');
   const [konfirmasi, setKonfirmasi] = useState('');
   const [error, setError] = useState('');
+  const toast = useToast();
 
   const buat = mode === 'buat';
   return (
@@ -143,6 +145,7 @@ function FormPin({ mode }) {
             if (pin !== konfirmasi) return setError('PIN dan ulangi PIN tidak sama.');
             try {
               LocalMuslimahRepository.simpanPin(pin);
+              toast.sukses('PIN tersimpan. Kalkulator terbuka.');
               window.dispatchEvent(new Event('muslimah-pin-ok'));
             } catch (e) {
               setError(e.message);
@@ -175,6 +178,7 @@ export default function MuslimahKalkulatorPage() {
   const [tamyiz, setTamyiz] = useState(false);
   const [hasil, setHasil] = useState(null);
   const [error, setError] = useState('');
+  const toast = useToast();
 
   const siap = useMemo(() => mulai && berhenti, [mulai, berhenti]);
 
@@ -225,6 +229,7 @@ export default function MuslimahKalkulatorPage() {
       penjelasan: r.penjelasan,
     });
     setRiwayat(LocalMuslimahRepository.ambilRiwayat());
+    toast.sukses(`Vonis: ${r.vonis} — hasil tersimpan di riwayat perangkat ini.`);
   };
 
   return (

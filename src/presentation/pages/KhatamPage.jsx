@@ -8,6 +8,8 @@ import {
   ResultRow, GhostButton,
 } from '../components/common.jsx';
 import OrnamentDivider from '../components/OrnamentDivider.jsx';
+import { useDialog } from '../components/feedback/dialogStore.js';
+import { useToast } from '../components/feedback/toastStore.js';
 
 const Bar = styled.div`
   height: 14px;
@@ -80,6 +82,8 @@ const Stat = styled.div`
 
 export default function KhatamPage() {
   const { progres, toggleJuz, setTarget, reset, ringkasan } = useKhatam();
+  const dialog = useDialog();
+  const toast = useToast();
 
   const maxTarget = (() => {
     const d = new Date();
@@ -177,8 +181,19 @@ export default function KhatamPage() {
       <OrnamentDivider />
       <div css={{ display: 'flex', justifyContent: 'center' }}>
         <GhostButton
-          onClick={() => {
-            if (window.confirm('Hapus semua progres khatam?')) reset();
+          onClick={async () => {
+            const yakin = await dialog.confirm({
+              judul: 'Hapus semua progres khatam?',
+              pesan:
+                'Seluruh tanda juz selesai dan target khatam akan dihapus dari perangkat ini. Tindakan ini tidak bisa dibatalkan.',
+              teksYa: 'Ya, Hapus Semua',
+              teksTidak: 'Batal',
+              bahaya: true,
+            });
+            if (yakin) {
+              reset();
+              toast.sukses('Progres khatam sudah dihapus. Semangat mulai lagi!');
+            }
           }}
         >
           <FaRedoAlt /> Ulangi dari Awal

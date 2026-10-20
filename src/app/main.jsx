@@ -5,6 +5,8 @@ import { ThemeProvider, Global, css } from '@emotion/react';
 import { RouterProvider } from 'react-router-dom';
 import theme from './theme.js';
 import router from './router.jsx';
+import ToastProvider from '../presentation/components/feedback/Toast.jsx';
+import DialogProvider from '../presentation/components/feedback/Dialog.jsx';
 
 const globalStyles = (t) => css`
   *, *::before, *::after { box-sizing: border-box; }
@@ -27,7 +29,11 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ThemeProvider theme={theme}>
       <Global styles={globalStyles} />
-      <RouterProvider router={router} />
+      <DialogProvider>
+        <ToastProvider>
+          <RouterProvider router={router} />
+        </ToastProvider>
+      </DialogProvider>
     </ThemeProvider>
   </StrictMode>
 );

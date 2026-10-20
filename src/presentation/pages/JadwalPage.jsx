@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import {
-  FaClock, FaMapMarkerAlt, FaBell, FaSun, FaMoon, FaCloudSun,
+  FaClock, FaMapMarkerAlt, FaSun, FaMoon, FaCloudSun,
 } from 'react-icons/fa';
 import { useJadwal, KOTA_OPSI } from '../hooks/useJadwal.js';
 import { CornerOrnament } from '../components/ornaments/index.js';
@@ -10,6 +10,7 @@ import {
   Page, PageTitle, PageSubtitle, Card, GoldCard, SelectInput, Field,
   ErrorBox, SectionTitle, Skeleton,
 } from '../components/common.jsx';
+import { useToast } from '../components/feedback/toastStore.js';
 
 const hijriBulanId = (en) =>
   ({
@@ -98,31 +99,6 @@ const CountdownBox = styled.div`
   letter-spacing: 2px;
 `;
 
-const Toast = styled.div`
-  position: fixed;
-  top: 74px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 80;
-  background: ${({ theme }) => theme.colors.primaryDeep};
-  color: #fff;
-  border: 1.5px solid ${({ theme }) => theme.colors.gold};
-  border-radius: 14px;
-  padding: 12px 18px;
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  font-weight: 600;
-  box-shadow: ${({ theme }) => theme.shadows.lift};
-  animation: turun 0.4s ease;
-  @keyframes turun {
-    from {
-      opacity: 0;
-      transform: translate(-50%, -12px);
-    }
-  }
-`;
-
 const menitDariJam = (jam) => {
   const [h, m] = jam.split(':').map(Number);
   return h * 60 + m;
@@ -184,7 +160,7 @@ export default function JadwalPage() {
   const [kota, setKota] = useState('Sumedang');
   const { loading, error, data } = useJadwal(kota);
   const [sekarang, setSekarang] = useState(new Date());
-  const [toast, setToast] = useState(null);
+  const toast = useToast();
   const teriakTerakhir = useRef('');
 
   useEffect(() => {
@@ -215,19 +191,13 @@ export default function JadwalPage() {
     });
     if (match && teriakTerakhir.current !== kunci + match.kunci) {
       teriakTerakhir.current = kunci + match.kunci;
-      setToast(`Waktu sholat ${match.nama} telah tiba`);
+      toast.sukses(`Waktu sholat ${match.nama} telah tiba (${match.jam})`, 9000);
       beepAdzan();
-      setTimeout(() => setToast(null), 9000);
     }
-  }, [sekarang, data, kota]);
+  }, [sekarang, data, kota, toast]);
 
   return (
     <Page>
-      {toast && (
-        <Toast>
-          <FaBell /> {toast}
-        </Toast>
-      )}
       <PageTitle>
         <FaClock /> Jadwal Sholat
       </PageTitle>
