@@ -23,6 +23,10 @@ export const theme = {
     faint: '#8B9890', // meta/dekoratif saja (bukan teks penting)
     border: '#E6D9BC', // border hangat
     onPrimary: '#FFFFFF', // teks di atas emerald
+    // Kertas mushaf — halaman baca (SurahPage) ala mushaf cetak
+    paper: '#FBF3DC', // kertas hangat area baca
+    paperCard: '#FFFDF4', // kartu ayat di atas kertas (sedikit lebih terang)
+    paperDeep: '#F3E7C3', // kertas lebih gelap: highlight ayat aktif (halus)
     danger: '#B91C1C',
     success: '#15803D',
   },
