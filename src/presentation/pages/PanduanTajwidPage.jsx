@@ -153,6 +153,30 @@ export default function PanduanTajwidPage() {
       <SectionTitle>
         <FaMicrophone /> Makhraj Huruf (Ringkas)
       </SectionTitle>
+      <Card>
+        <figure css={{ margin: 0 }}>
+          <img
+            src="/ilustrasi/makhraj-sakkaki.png"
+            alt="Diagram makharijul huruf klasik karya as-Sakkaki: potongan mulut dan tenggorokan dengan letak titik keluar huruf — tenggorokan di kanan, lidah di tengah, dan bibir di kiri"
+            loading="lazy"
+            css={(t) => ({
+              width: '100%',
+              height: 'auto',
+              borderRadius: 12,
+              background: '#fff',
+              border: `1px solid ${t.colors.border}`,
+            })}
+          />
+          <figcaption
+            css={(t) => ({ fontSize: 13, lineHeight: 1.6, color: t.colors.muted, marginTop: 8 })}
+          >
+            Diagram makhraj klasik dari kitab <em>Miftāḥ al-ʿUlūm</em> karya as-Sakkaki (abad
+            ke-13): huruf-huruf tenggorokan tertulis di sisi kanan, huruf lidah di tengah, dan
+            huruf bibir di sisi kiri — cocokkan dengan lima kelompok di bawah ini. Sumber:
+            Wikimedia Commons (domain publik).
+          </figcaption>
+        </figure>
+      </Card>
       {MAKHRAJ_HURUF.map((m) => (
         <KartuTeks key={m.tempat}>
           <div className="nama">{m.tempat}</div>
