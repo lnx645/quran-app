@@ -65,9 +65,14 @@ const TombolPutarMelayang = styled.button`
   align-items: center;
   justify-content: center;
   font-size: 19px;
-  transition: transform ${({ theme }) => theme.anim.fast} ${({ theme }) => theme.anim.ease};
+  /* Saat tumpukan bilah bawah sembunyi (prop turun), FAB ikut turun ke
+     dekat tepi bawah layar (bottom efektif 232px → 16px, jadi geser
+     216px) dengan transisi & token anim yang sama persis dengan bilah —
+     satu gerakan sinkron, bukan lompatan. Perilaku FAB tidak berubah. */
+  transform: translateY(${({ turun }) => (turun ? '216px' : '0')});
+  transition: transform ${({ theme }) => theme.anim.med} ${({ theme }) => theme.anim.ease};
   &:active {
-    transform: scale(0.93);
+    transform: translateY(${({ turun }) => (turun ? '216px' : '0')}) scale(0.93);
   }
   /* Fokus keyboard: pola global :focus-visible di Aplikasi.jsx
      (cincin emas 3px + offset) berlaku untuk tombol ini juga. */
@@ -176,6 +181,63 @@ export default function SurahPage() {
     sync.seekMs(0, false);
     setPlayerDibuka(false);
   };
+
+  // Bilah pintar: strip ReadingControls + PlayerBar diperlakukan sebagai
+  // SATU unit — bergeser turun keluar layar saat pengguna menggulir ke
+  // BAWAH untuk membaca, dan muncul lagi begitu menggulir ke ATAS sedikit
+  // saja. TIDAK ada pemunculan otomatis karena diam/idle. Arah dihitung
+  // dari AKUMULASI delta scroll (bukan delta per-event) agar jitter kecil
+  // tidak memicu flip: sembunyi setelah terkumpul ≥10px ke bawah, tampil
+  // setelah terkumpul ≥5px ke atas; akumulator direset tiap ganti arah.
+  // Di dekat puncak halaman bilah selalu tampil.
+  const [bilahSembunyi, setBilahSembunyi] = useState(false);
+  useEffect(() => {
+    let yTerakhir = window.scrollY;
+    let akumulasi = 0;
+    const padaScroll = () => {
+      const y = window.scrollY;
+      const delta = y - yTerakhir;
+      yTerakhir = y;
+      if (delta === 0) return;
+      if ((delta > 0 && akumulasi < 0) || (delta < 0 && akumulasi > 0)) {
+        akumulasi = 0;
+      }
+      akumulasi += delta;
+      if (y <= 64) {
+        akumulasi = 0;
+        setBilahSembunyi(false);
+      } else if (akumulasi >= 10) {
+        akumulasi = 0;
+        setBilahSembunyi(true);
+      } else if (akumulasi <= -5) {
+        akumulasi = 0;
+        setBilahSembunyi(false);
+      }
+    };
+    window.addEventListener('scroll', padaScroll, { passive: true });
+    return () => window.removeEventListener('scroll', padaScroll);
+  }, []);
+
+  // Pengecualian pemutar: PlayerBar TIDAK ikut sembunyi selama pengguna
+  // berinteraksi dengannya — pointer/touch sedang di atasnya (termasuk
+  // menggeser seek) menahan tanpa batas waktu; interaksi putar/jeda/
+  // ganti ayat/seek menahan sembunyi selama 3 detik setelah yang
+  // terakhir. Strip ReadingControls tidak punya pengecualian ini.
+  const [playerDitahan, setPlayerDitahan] = useState(false);
+  const timerTahanPlayerRef = useRef(null);
+  const tahanPlayerSelama = (ms) => {
+    setPlayerDitahan(true);
+    if (timerTahanPlayerRef.current) clearTimeout(timerTahanPlayerRef.current);
+    timerTahanPlayerRef.current =
+      ms > 0 ? setTimeout(() => setPlayerDitahan(false), ms) : null;
+  };
+  useEffect(
+    () => () => {
+      if (timerTahanPlayerRef.current) clearTimeout(timerTahanPlayerRef.current);
+    },
+    [],
+  );
+  const playerSembunyi = bilahSembunyi && !playerDitahan;
 
   // Mode terjemahan per kata: data kata (Map<verse_key, kata[]>) dimuat
   // MALAS — fetch hanya terjadi saat pref.perKata pertama kali menyala,
@@ -332,27 +394,51 @@ export default function SurahPage() {
         qari={qari}
         daftarQari={DAFTAR_QARI}
         ubahQari={ubahQari}
+        sembunyi={bilahSembunyi}
       />
       {playerTampil ? (
-        <PlayerBar
-          playing={sync.playing}
-          onToggle={sync.toggle}
-          onClose={tutupPlayer}
-          onPrev={() => sync.seekToAyah(Math.max(0, sync.activeIndex - 1))}
-          onNext={() => sync.seekToAyah(Math.min(ayahs.length - 1, (sync.activeIndex < 0 ? -1 : sync.activeIndex) + 1))}
-          posisiMs={sync.positionMs}
-          durasiMs={sync.durationMs}
-          onSeek={(ms) => sync.seekMs(ms)}
-          ayatAktif={ayatAktifNomor}
-          totalAyat={ayahs.length}
-          posisiAyatMs={sync.activeIndex >= 0 ? ayahs[sync.activeIndex].timing?.fromMs : null}
-          namaSurah={`Surah ${surah.nameLatin}`}
-        />
+        // Pembungkus penahan interaksi: event pointer dari PlayerBar
+        // (fixed) tetap menggelembung ke sini lewat pohon React — pointer
+        // turun menahan sembunyi, pointer lepas menunda sembunyi 3 detik.
+        <div
+          onPointerDown={() => tahanPlayerSelama(0)}
+          onPointerUp={() => tahanPlayerSelama(3000)}
+          onPointerCancel={() => tahanPlayerSelama(3000)}
+        >
+          <PlayerBar
+            playing={sync.playing}
+            onToggle={() => {
+              tahanPlayerSelama(3000);
+              sync.toggle();
+            }}
+            onClose={tutupPlayer}
+            onPrev={() => {
+              tahanPlayerSelama(3000);
+              sync.seekToAyah(Math.max(0, sync.activeIndex - 1));
+            }}
+            onNext={() => {
+              tahanPlayerSelama(3000);
+              sync.seekToAyah(Math.min(ayahs.length - 1, (sync.activeIndex < 0 ? -1 : sync.activeIndex) + 1));
+            }}
+            posisiMs={sync.positionMs}
+            durasiMs={sync.durationMs}
+            onSeek={(ms) => {
+              tahanPlayerSelama(3000);
+              sync.seekMs(ms);
+            }}
+            ayatAktif={ayatAktifNomor}
+            totalAyat={ayahs.length}
+            posisiAyatMs={sync.activeIndex >= 0 ? ayahs[sync.activeIndex].timing?.fromMs : null}
+            namaSurah={`Surah ${surah.nameLatin}`}
+            sembunyi={playerSembunyi}
+          />
+        </div>
       ) : (
         <TombolPutarMelayang
           type="button"
           onClick={mulaiPutarDariFab}
           aria-label="Putar audio surah"
+          turun={bilahSembunyi}
         >
           <FaPlay style={{ marginLeft: 3 }} aria-hidden="true" />
         </TombolPutarMelayang>
