@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import {
   FaClock, FaMapMarkerAlt, FaBell, FaSun, FaMoon, FaCloudSun, FaTimes, FaBan,
@@ -8,7 +8,7 @@ import { useJadwal, KOTA_OPSI } from '../hooks/useJadwal.js';
 import { CornerOrnament } from '../components/ornaments/index.js';
 import {
   Page, PageTitle, PageSubtitle, Card, GoldCard, SelectInput, Field,
-  ErrorBox, SectionTitle, Skeleton,
+  ErrorBox, SectionTitle, Skeleton, GhostButton,
 } from '../components/common.jsx';
 import { useToast } from '../components/feedback/toastStore.js';
 import { umumkan } from '../components/feedback/umumkan.js';
@@ -198,6 +198,33 @@ const fmtCountdown = (detik) => {
   return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(r).padStart(2, '0')}`;
 };
 
+// Pref jadwal sholat (localStorage): pilihan suara saat waktu sholat tiba.
+// suaraAdzan: 'asli' (rekaman adzan Commons) | 'bip' (beep WebAudio) | 'mati'.
+const KUNCI_PREF_JADWAL = 'noor.jadwal.v1';
+
+function bacaSuaraAdzan() {
+  try {
+    const data = JSON.parse(localStorage.getItem(KUNCI_PREF_JADWAL) ?? '{}');
+    return ['asli', 'bip', 'mati'].includes(data.suaraAdzan) ? data.suaraAdzan : 'asli';
+  } catch {
+    return 'asli';
+  }
+}
+
+function simpanSuaraAdzan(nilai) {
+  try {
+    const data = JSON.parse(localStorage.getItem(KUNCI_PREF_JADWAL) ?? '{}');
+    localStorage.setItem(KUNCI_PREF_JADWAL, JSON.stringify({ ...data, suaraAdzan: nilai }));
+  } catch {
+    /* penyimpanan tidak tersedia — pilihan berlaku sesi ini saja */
+  }
+}
+
+// Rekaman adzan asli (public/audio/adzan.mp3): "The Adhan - Muslim Call to
+// Prayer" oleh Aaqib Azeez, CC BY-SA 4.0, Wikimedia Commons — atribusi
+// lengkap di public/audio/SUMBER.md.
+const URL_ADZAN_ASLI = `${import.meta.env.BASE_URL}audio/adzan.mp3`;
+
 /** Bunyi beep pendek via WebAudio (tanpa file eksternal). */
 function beepAdzan() {
   try {
@@ -231,6 +258,38 @@ export default function JadwalPage() {
   const { pengaturan } = useAkses();
   const [bannerAdzan, setBannerAdzan] = useState(null);
   const teriakTerakhir = useRef('');
+  const [suaraAdzan, setSuaraAdzan] = useState(bacaSuaraAdzan);
+  const adzanAudioRef = useRef(null);
+
+  const ubahSuaraAdzan = (nilai) => {
+    setSuaraAdzan(nilai);
+    simpanSuaraAdzan(nilai);
+  };
+
+  // Putar suara sesuai pref. Dipicu HANYA oleh pemicu yang sudah ada:
+  // efek waktu sholat tiba (pengaturan notifikasi pengguna) dan tombol
+  // "Tes Suara" (interaksi langsung). play() yang ditolak kebijakan
+  // autoplay ditelan diam-diam — banner persisten tetap tampil.
+  const putarSuaraAdzan = useCallback(() => {
+    if (suaraAdzan === 'mati') return;
+    if (suaraAdzan === 'bip') {
+      beepAdzan();
+      return;
+    }
+    try {
+      if (adzanAudioRef.current === null && typeof Audio !== 'undefined') {
+        adzanAudioRef.current = new Audio();
+        adzanAudioRef.current.preload = 'none';
+      }
+      const el = adzanAudioRef.current;
+      if (!el) return;
+      el.src = URL_ADZAN_ASLI;
+      el.currentTime = 0;
+      el.play()?.catch(() => {});
+    } catch {
+      /* audio tidak didukung — banner tetap tampil */
+    }
+  }, [suaraAdzan]);
 
   useEffect(() => {
     const id = setInterval(() => setSekarang(new Date()), 1000);
@@ -263,7 +322,7 @@ export default function JadwalPage() {
       toast.sukses(`Waktu sholat ${match.nama} telah tiba (${match.jam})`, 9000);
       // Pengumuman tegas untuk screen reader: waktu apa yang masuk.
       umumkan(`Sudah masuk waktu sholat ${match.nama}, pukul ${match.jam}.`, 'tegas');
-      beepAdzan();
+      putarSuaraAdzan();
       // Banner persisten untuk pengguna tuli — menetap sampai ditutup.
       setBannerAdzan({ nama: match.nama, jam: match.jam });
       if (pengaturan.getarAdzan) {
@@ -274,7 +333,7 @@ export default function JadwalPage() {
         }
       }
     }
-  }, [sekarang, data, kota, toast, pengaturan.getarAdzan]);
+  }, [sekarang, data, kota, toast, pengaturan.getarAdzan, putarSuaraAdzan]);
 
   return (
     <Page>
@@ -306,6 +365,27 @@ export default function JadwalPage() {
             </option>
           ))}
         </SelectInput>
+      </Field>
+
+      <Field>
+        <label htmlFor="suara-adzan">Suara Adzan</label>
+        <SelectInput
+          id="suara-adzan"
+          value={suaraAdzan}
+          onChange={(e) => ubahSuaraAdzan(e.target.value)}
+        >
+          <option value="asli">Adzan asli (rekaman)</option>
+          <option value="bip">Bip (bunyi penanda)</option>
+          <option value="mati">Mati (hanya banner &amp; getar)</option>
+        </SelectInput>
+        <div css={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', marginTop: 10 }}>
+          <GhostButton type="button" onClick={putarSuaraAdzan} aria-label="Putar tes suara adzan terpilih">
+            <FaBell /> Tes Suara
+          </GhostButton>
+          <span css={(t) => ({ fontSize: 12, color: t.colors.muted, lineHeight: 1.5 })}>
+            Adzan asli: rekaman Aaqib Azeez, CC BY-SA 4.0 (Wikimedia Commons).
+          </span>
+        </div>
       </Field>
 
       {loading && <JadwalSkeleton />}
