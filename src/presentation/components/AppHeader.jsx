@@ -9,8 +9,11 @@ import {
   FaCalendarAlt, FaListUl, FaBook, FaGraduationCap, FaUniversalAccess,
   FaSearch, FaBookmark, FaBrain, FaPalette, FaTint, FaMoon,
   FaBalanceScale, FaKaaba, FaBaby, FaGift, FaHandHoldingHeart, FaTasks,
+  FaDownload,
 } from 'react-icons/fa';
 import Logo from './Logo.jsx';
+import { PrimaryButton } from './common.jsx';
+import { useInstallPrompt } from '../hooks/useInstallPrompt.js';
 import { GirihPattern } from './ornaments/index.js';
 import { reduceMotion } from './motion.js';
 import { useAkses } from '../a11y/pengaturanStore.js';
@@ -380,6 +383,7 @@ const MENU = [
 
 export default function AppHeader() {
   const [open, setOpen] = useState(false);
+  const { bisaInstall, pasang } = useInstallPrompt();
   const location = useLocation();
   const { pengaturan, ubah } = useAkses();
   const closeRef = useRef(null);
@@ -479,6 +483,18 @@ export default function AppHeader() {
             Beranda
             <FiChevronRight className="chev" />
           </Item>
+          {bisaInstall && (
+            <PrimaryButton
+              type="button"
+              css={{ width: '100%', marginTop: 10 }}
+              onClick={async () => {
+                await pasang();
+                setOpen(false);
+              }}
+            >
+              <FaDownload aria-hidden="true" /> Install Noor
+            </PrimaryButton>
+          )}
           {MENU.map((grup) => (
             <div key={grup.nama}>
               <GroupLabel>{grup.nama}</GroupLabel>

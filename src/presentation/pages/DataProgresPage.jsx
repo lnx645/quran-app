@@ -258,6 +258,18 @@ export default function DataProgresPage() {
         </GhostButton>
       </Card>
 
+      <SectionTitle>
+        <FaInfoCircle /> Akses Offline
+      </SectionTitle>
+      <Card>
+        <Catatan>
+          <FaInfoCircle /> Surah yang pernah dibuka tersimpan untuk dibaca offline, begitu pula
+          jadwal sholat yang pernah dimuat. Audio murottal tidak ikut tersimpan — berkas audio
+          diputar langsung dari server penyedia (download.quranicaudio.com &amp; verses.quran.com),
+          jadi memutar audio tetap membutuhkan koneksi internet.
+        </Catatan>
+      </Card>
+
       <SectionTitle>Data Tersimpan di Perangkat Ini</SectionTitle>
       <Card>
         {daftar.length === 0 ? (

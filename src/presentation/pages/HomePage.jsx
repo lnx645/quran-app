@@ -1,4 +1,5 @@
 /** @jsxImportSource @emotion/react */
+import { useState } from 'react';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -7,7 +8,9 @@ import {
   FaCalendarAlt, FaListUl, FaBook, FaHeart, FaMoon, FaVenus,
   FaSearch, FaBookmark, FaBrain, FaPalette, FaTint, FaTasks,
   FaBalanceScale, FaKaaba, FaBaby, FaGift, FaHandHoldingHeart, FaMosque,
+  FaDownload, FaTimes,
 } from 'react-icons/fa';
+import { useInstallPrompt } from '../hooks/useInstallPrompt.js';
 import { Page, SectionTitle, MenuCard } from '../components/common.jsx';
 import LanjutkanMembaca from '../components/LanjutkanMembaca.jsx';
 import HaditsHariIni from '../components/HaditsHariIni.jsx';
@@ -209,10 +212,93 @@ const SEKSI = [
   },
 ];
 
+const KUNCI_BANNER_TUTUP = 'noor.bannerInstall.tutup.v1';
+
+const BannerInstall = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  margin-bottom: ${({ theme }) => theme.spacing.md}px;
+  background: ${({ theme }) => theme.colors.surface};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.radii.md}px;
+  box-shadow: ${({ theme }) => theme.shadows.card};
+  .teks {
+    flex: 1;
+    min-width: 0;
+    font-size: ${({ theme }) => theme.type.bodySm.size}px;
+    line-height: ${({ theme }) => theme.type.bodySm.lineHeight};
+    color: ${({ theme }) => theme.colors.text};
+  }
+  ${reduceMotion}
+`;
+
+const TombolPasang = styled.button`
+  flex-shrink: 0;
+  min-height: 44px;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 12px;
+  background: ${({ theme }) => theme.gradients.gold};
+  color: ${({ theme }) => theme.colors.primaryDeep};
+  font-size: 13.5px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  ${reduceMotion}
+`;
+
+const TombolTutupBanner = styled.button`
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  background: transparent;
+  color: ${({ theme }) => theme.colors.muted};
+  font-size: 15px;
+  ${reduceMotion}
+`;
+
 export default function HomePage() {
   const navigate = useNavigate();
+  const { bisaInstall, pasang } = useInstallPrompt();
+  const [bannerTutup, setBannerTutup] = useState(() => {
+    try {
+      return localStorage.getItem(KUNCI_BANNER_TUTUP) === '1';
+    } catch {
+      return false;
+    }
+  });
+  const tutupBanner = () => {
+    setBannerTutup(true);
+    try {
+      localStorage.setItem(KUNCI_BANNER_TUTUP, '1');
+    } catch {
+      /* abaikan: penyimpanan tidak tersedia */
+    }
+  };
   return (
     <Page>
+      {bisaInstall && !bannerTutup && (
+        <BannerInstall role="region" aria-label="Pasang aplikasi Noor">
+          <span className="teks">
+            Pasang Noor di layar utama — akses cepat &amp; bisa offline
+          </span>
+          <TombolPasang type="button" onClick={() => pasang()}>
+            <FaDownload aria-hidden="true" /> Pasang
+          </TombolPasang>
+          <TombolTutupBanner type="button" onClick={tutupBanner} aria-label="Tutup banner pasang aplikasi">
+            <FaTimes aria-hidden="true" />
+          </TombolTutupBanner>
+        </BannerInstall>
+      )}
       <Hero>
         <GirihPattern opacity={0.15} />
         <CornerOrnament corner="tl" style={{ top: 6, left: 6 }} />
