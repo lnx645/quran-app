@@ -70,6 +70,7 @@ const DAFTAR_FITUR = [
   { tujuan: '/data-progres', judul: 'Data Progres', sub: 'Ekspor & impor cadangan data', kata: 'data progres ekspor eksport impor import backup cadangan simpan pulihkan' },
   { tujuan: '/khatam', judul: 'Khatam Tracker', sub: 'Checklist 30 juz & target harian', kata: 'khatam tracker 30 juz target baca quran tamat' },
   { tujuan: '/sholat-tracker', judul: 'Sholat Tracker', sub: 'Checklist lima waktu & streak', kata: 'tracker sholat shalat checklist lima waktu streak catatan harian' },
+  { tujuan: '/utang-puasa', judul: 'Catatan Utang Puasa', sub: 'Buku utang puasa per tahun', kata: 'utang puasa qadha catatan tahun lunas hutang puasa ramadhan' },
   { tujuan: '/qadha-puasa', judul: 'Tracker Qadha Puasa', sub: 'Catat utang & pembayaran puasa', kata: 'qadha qada puasa utang puasa bayar tracker ganti puasa hutang' },
   { tujuan: '/mutabaah', judul: "Mutaba'ah Yaumiyah", sub: 'Checklist amal harian', kata: "mutabaah mutaba'ah yaumiyah checklist amal harian evaluasi diri muhasabah" },
   { tujuan: '/iqro', judul: 'Belajar Iqro', sub: 'Jilid 1–6 untuk anak & pemula', kata: 'iqro belajar huruf hijaiyah anak jilid membaca quran pemula' },

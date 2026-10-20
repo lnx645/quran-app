@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { useState } from 'react';
 import styled from '@emotion/styled';
+import { Link } from 'react-router-dom';
 import {
   FaMoon,
   FaCheckCircle,
@@ -9,6 +10,8 @@ import {
   FaInfoCircle,
   FaHistory,
   FaClipboardList,
+  FaBookOpen,
+  FaArrowRight,
 } from 'react-icons/fa';
 import {
   Page,
@@ -257,6 +260,29 @@ export default function QadhaPuasaPage() {
             </BarisRiwayat>
           ))
         )}
+      </Card>
+
+      <SectionTitle>
+        <FaBookOpen /> Buku Catatan Utang per Tahun
+      </SectionTitle>
+      <Card>
+        <Catatan>
+          <FaInfoCircle />
+          <span>
+            Punya utang dari beberapa Ramadhan yang berbeda? Catat tiap tahun secara
+            terpisah di buku catatan utang per tahun, lalu centang tanggal pelunasannya
+            satu per satu sampai lunas.
+          </span>
+        </Catatan>
+        <GhostButton
+          as={Link}
+          to="/utang-puasa"
+          css={{ width: '100%', marginTop: 12 }}
+          aria-label="Buka buku catatan utang puasa per tahun"
+        >
+          <FaBookOpen aria-hidden="true" /> Buka Buku Catatan per Tahun{' '}
+          <FaArrowRight aria-hidden="true" />
+        </GhostButton>
       </Card>
     </Page>
   );

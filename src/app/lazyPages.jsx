@@ -58,6 +58,7 @@ const _SholatJenazah = lazyDenganPemulihan(() => import('../presentation/pages/S
 const _Tahlil = lazyDenganPemulihan(() => import('../presentation/pages/TahlilPage.jsx'));
 const _PanduanPuasa = lazyDenganPemulihan(() => import('../presentation/pages/PanduanPuasaPage.jsx'));
 const _QadhaPuasa = lazyDenganPemulihan(() => import('../presentation/pages/QadhaPuasaPage.jsx'));
+const _UtangPuasa = lazyDenganPemulihan(() => import('../presentation/pages/UtangPuasaPage.jsx'));
 const _Ramadhan = lazyDenganPemulihan(() => import('../presentation/pages/RamadhanPage.jsx'));
 const _Hadits = lazyDenganPemulihan(() => import('../presentation/pages/HaditsPage.jsx'));
 const _HisnulMuslim = lazyDenganPemulihan(() => import('../presentation/pages/HisnulMuslimPage.jsx'));
@@ -347,6 +348,13 @@ export function QadhaPuasaPage() {
   return (
     <Suspense fallback={<PageFallback />}>
       <_QadhaPuasa />
+    </Suspense>
+  );
+}
+export function UtangPuasaPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_UtangPuasa />
     </Suspense>
   );
 }

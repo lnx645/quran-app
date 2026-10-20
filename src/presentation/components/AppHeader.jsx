@@ -324,6 +324,7 @@ const MENU = [
       { to: '/sujud', icon: <FaBookOpen />, kunci: 'menu.sujud' },
       { to: '/panduan-puasa', icon: <FaBookOpen />, kunci: 'menu.puasa' },
       { to: '/qadha-puasa', icon: <FaClipboardCheck />, kunci: 'menu.qadha' },
+      { to: '/utang-puasa', icon: <FaBookOpen />, kunci: 'menu.utangPuasa' },
       { to: '/ramadhan', icon: <FaMoon />, kunci: 'menu.ramadhan' },
       { to: '/hisnul-muslim', icon: <FaPrayingHands />, kunci: 'menu.hisnul' },
       { to: '/itikaf', icon: <FaMoon />, kunci: 'menu.itikaf' },
