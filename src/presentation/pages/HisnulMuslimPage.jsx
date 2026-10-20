@@ -29,14 +29,19 @@ const IKON = {
 };
 
 const BarisCari = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  position: relative;
   margin-bottom: ${({ theme }) => theme.spacing.md}px;
-  svg {
+  > svg {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
     color: ${({ theme }) => theme.colors.goldDeep};
-    flex-shrink: 0;
-    font-size: 17px;
+    font-size: 16px;
+    pointer-events: none;
+  }
+  input {
+    padding-left: 43px;
   }
 `;
 
@@ -45,8 +50,17 @@ const BarisChip = styled.div`
   gap: 8px;
   overflow-x: auto;
   padding-bottom: 6px;
+  scroll-padding-right: 16px;
   margin-bottom: ${({ theme }) => theme.spacing.sm}px;
   scrollbar-width: none;
+  /* Ujung kanan memudar halus sebagai isyarat rel bisa digeser,
+     bukan chip yang terpotong rusak. */
+  -webkit-mask-image: linear-gradient(90deg, #000 88%, transparent 99%);
+  mask-image: linear-gradient(90deg, #000 88%, transparent 99%);
+  &::after {
+    content: '';
+    flex: 0 0 16px;
+  }
   &::-webkit-scrollbar {
     display: none;
   }
