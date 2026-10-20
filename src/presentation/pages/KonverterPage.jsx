@@ -175,13 +175,13 @@ export default function KonverterPage() {
       </PageSubtitle>
 
       <SegmenWadah role="tablist" aria-label="Mode konverter">
-        <SegmenTab css={{ minHeight: 44 }} aktif={mode === 'masehi'} onClick={() => setMode('masehi')}>
+        <SegmenTab aktif={mode === 'masehi'} onClick={() => setMode('masehi')}>
           <FaCalendarAlt /> Ke Hijriah
         </SegmenTab>
-        <SegmenTab css={{ minHeight: 44 }} aktif={mode === 'hijriah'} onClick={() => setMode('hijriah')}>
+        <SegmenTab aktif={mode === 'hijriah'} onClick={() => setMode('hijriah')}>
           <FaCalendarAlt /> Ke Masehi
         </SegmenTab>
-        <SegmenTab css={{ minHeight: 44 }} aktif={mode === 'usia'} onClick={() => setMode('usia')}>
+        <SegmenTab aktif={mode === 'usia'} onClick={() => setMode('usia')}>
           <FaBirthdayCake /> Usia Hijriah
         </SegmenTab>
       </SegmenWadah>

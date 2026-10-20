@@ -28,25 +28,27 @@ export const SegmenWadah = styled.div`
 export const Segmen = styled.button`
   flex: 1;
   min-width: 0;
-  min-height: 40px;
-  padding: 6px 8px;
+  min-height: 52px;
+  padding: 7px 6px 6px;
   border: none;
   border-radius: 999px;
   background: ${({ theme, aktif }) => (aktif ? theme.gradients.gold : 'transparent')};
   color: ${({ theme, aktif }) => (aktif ? theme.colors.primaryDeep : theme.colors.muted)};
   box-shadow: ${({ theme, aktif }) => (aktif ? theme.shadows.gold : 'none')};
-  font-size: 13.5px;
+  font-size: 12.5px;
   font-weight: 800;
   letter-spacing: 0.2px;
-  /* Label panjang MELIPAT rapi ke baris kedua — tidak boleh terpotong di
-     tengah kata (temuan user di Konverter: "Hijriah → Mase…"). */
-  white-space: normal;
+  /* Tata letak tab: ikon DI ATAS, label satu baris di bawahnya (seperti tab
+     bar aplikasi). Label tidak pernah melipat/terpotong — temuan user di
+     Konverter dua kali: sebaris ikon+teks selalu sempit & berantakan. */
+  white-space: nowrap;
   text-align: center;
-  line-height: 1.3;
+  line-height: 1.2;
   display: inline-flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 7px;
+  gap: 3px;
   transition: background ${({ theme }) => theme.anim.fast} ${({ theme }) => theme.anim.ease},
     color ${({ theme }) => theme.anim.fast} ${({ theme }) => theme.anim.ease},
     box-shadow ${({ theme }) => theme.anim.fast} ${({ theme }) => theme.anim.ease},
@@ -56,7 +58,7 @@ export const Segmen = styled.button`
   }
   svg {
     flex-shrink: 0;
-    font-size: 15px;
+    font-size: 16px;
   }
 `;
 
