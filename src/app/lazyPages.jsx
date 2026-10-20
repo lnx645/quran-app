@@ -42,6 +42,7 @@ const _MuslimahKalkulator = lazy(() => import('../presentation/pages/MuslimahKal
 const _MuslimahMandiWajib = lazy(() => import('../presentation/pages/MuslimahMandiWajibPage.jsx'));
 const _MuslimahDoa = lazy(() => import('../presentation/pages/MuslimahDoaPage.jsx'));
 const _MuslimahFikih = lazy(() => import('../presentation/pages/MuslimahFikihPage.jsx'));
+const _Aksesibilitas = lazy(() => import('../presentation/pages/AksesibilitasPage.jsx'));
 
 export function SurahPage() {
   return (
@@ -187,6 +188,13 @@ export function MuslimahFikihPage() {
   return (
     <Suspense fallback={<PageFallback />}>
       <_MuslimahFikih />
+    </Suspense>
+  );
+}
+export function AksesibilitasPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_Aksesibilitas />
     </Suspense>
   );
 }

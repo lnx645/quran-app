@@ -6,7 +6,7 @@ import { FiMenu, FiX, FiHome, FiChevronRight } from 'react-icons/fi';
 import {
   FaQuran, FaBookOpen, FaHeart, FaMosque, FaVenus, FaCalculator, FaBookReader,
   FaHandPointer, FaCloudSun, FaPrayingHands, FaClipboardCheck, FaCompass,
-  FaCalendarAlt, FaListUl, FaBook, FaGraduationCap,
+  FaCalendarAlt, FaListUl, FaBook, FaGraduationCap, FaUniversalAccess,
 } from 'react-icons/fa';
 import Logo from './Logo.jsx';
 import { GirihPattern } from './ornaments/index.js';
@@ -321,6 +321,7 @@ const MENU = [
       { to: '/khatam', icon: <FaBookReader />, label: 'Khatam Tracker' },
       { to: '/kiblat', icon: <FaCompass />, label: 'Arah Kiblat' },
       { to: '/kalender', icon: <FaCalendarAlt />, label: 'Kalender Hijriah' },
+      { to: '/aksesibilitas', icon: <FaUniversalAccess />, label: 'Aksesibilitas' },
     ],
   },
 ];

@@ -6,6 +6,7 @@ import {
   TasbihPage, DzikirPage, DoaPage, SholatTrackerPage, KiblatPage, KalenderPage,
   AsmaulHusnaPage, KisahPage, KisahDetailPage, QuranListPage, MuslimahHubPage,
   MuslimahKalkulatorPage, MuslimahMandiWajibPage, MuslimahDoaPage, MuslimahFikihPage,
+  AksesibilitasPage,
 } from './lazyPages.jsx';
 
 // HomePage eager (chunk awal); halaman lain lazy lewat lazyPages.jsx.
@@ -33,6 +34,7 @@ const router = createBrowserRouter([
       { path: 'doa', element: <DoaPage /> },
       { path: 'sholat-tracker', element: <SholatTrackerPage /> },
       { path: 'kiblat', element: <KiblatPage /> },
+      { path: 'aksesibilitas', element: <AksesibilitasPage /> },
       { path: 'kalender', element: <KalenderPage /> },
       { path: 'asmaul-husna', element: <AsmaulHusnaPage /> },
       { path: 'kisah', element: <KisahPage /> },
