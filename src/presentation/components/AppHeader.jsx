@@ -345,6 +345,7 @@ export default function AppHeader() {
   useEffect(() => {
     if (!open) return undefined;
     const prev = document.body.style.overflow;
+    const tombolMenu = menuBtnRef.current;
     document.body.style.overflow = 'hidden';
     closeRef.current?.focus({ preventScroll: true });
     const onKey = (e) => {
@@ -369,7 +370,7 @@ export default function AppHeader() {
     return () => {
       document.body.style.overflow = prev;
       window.removeEventListener('keydown', onKey);
-      menuBtnRef.current?.focus({ preventScroll: true });
+      tombolMenu?.focus({ preventScroll: true });
     };
   }, [open ]);
 

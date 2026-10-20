@@ -42,11 +42,6 @@ function sistemGelap() {
   }
 }
 
-function resolusiMode(modeTema) {
-  if (modeTema === 'gelap' || modeTema === 'kontras' || modeTema === 'terang') return modeTema;
-  return sistemGelap() ? 'gelap' : 'terang';
-}
-
 /**
  * PengaturanProvider — sumber kebenaran preferensi aksesibilitas.
  * Tersimpan di localStorage; menghormati prefers-color-scheme sebagai
@@ -54,28 +49,35 @@ function resolusiMode(modeTema) {
  */
 export default function PengaturanProvider({ children }) {
   const [pengaturan, setPengaturan] = useState(muat);
-  const [modeEfektif, setModeEfektif] = useState(() => resolusiMode(muat().modeTema));
+  const [gelapSistem, setGelapSistem] = useState(sistemGelap);
 
   const ubah = useCallback((patch) => setPengaturan((p) => ({ ...p, ...patch })), []);
 
-  // Simpan + resolusi mode setiap pengaturan berubah.
+  // Resolusi mode efektif — diturunkan dari modeTema + skema warna sistem.
+  const modeEfektif = useMemo(() => {
+    if (pengaturan.modeTema === 'gelap' || pengaturan.modeTema === 'kontras' || pengaturan.modeTema === 'terang') {
+      return pengaturan.modeTema;
+    }
+    return gelapSistem ? 'gelap' : 'terang';
+  }, [pengaturan.modeTema, gelapSistem]);
+
+  // Simpan setiap pengaturan berubah.
   useEffect(() => {
     try {
       localStorage.setItem(KUNCI, JSON.stringify(pengaturan));
     } catch {
       /* penyimpanan tidak tersedia */
     }
-    setModeEfektif(resolusiMode(pengaturan.modeTema));
   }, [pengaturan]);
 
-  // Ikuti perubahan skema warna sistem selama mode = 'ikut'.
+  // Ikuti perubahan skema warna sistem (untuk mode 'ikut').
   useEffect(() => {
-    if (pengaturan.modeTema !== 'ikut' || typeof window === 'undefined') return undefined;
+    if (typeof window === 'undefined') return undefined;
     const mq = window.matchMedia('(prefers-color-scheme: dark)');
-    const handler = () => setModeEfektif(mq.matches ? 'gelap' : 'terang');
+    const handler = () => setGelapSistem(mq.matches);
     mq.addEventListener?.('change', handler);
     return () => mq.removeEventListener?.('change', handler);
-  }, [pengaturan.modeTema]);
+  }, []);
 
   // Override kurangi-gerakan: kelas global di <html>.
   useEffect(() => {
