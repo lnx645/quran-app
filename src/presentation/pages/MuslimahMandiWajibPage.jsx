@@ -3,19 +3,8 @@ import { useState } from 'react';
 import styled from '@emotion/styled';
 import { FaShower, FaCheckCircle, FaInfoCircle } from 'react-icons/fa';
 import { Page, PageHero, Card, SectionTitle, GoldCard } from '../components/common.jsx';
+import { SegmenWadah, SegmenTab } from '../components/SegmentedControl.jsx';
 import { MANDI_WAJIB, DISCLAIMER } from '../../data/sources/muslimahData.js';
-
-const Tab = styled.button`
-  flex: 1;
-  padding: 11px 8px;
-  border-radius: 12px;
-  border: 1.5px solid ${({ theme }) => theme.colors.border};
-  background: ${({ theme, aktif }) => (aktif ? theme.colors.primary : theme.colors.surface)};
-  color: ${({ theme, aktif }) => (aktif ? '#fff' : theme.colors.text)};
-  font-weight: 700;
-  font-size: 14px;
-  transition: background 0.15s ease;
-`;
 
 const Arab = styled.p`
   font-family: ${({ theme }) => theme.fonts.arabic};
@@ -92,14 +81,14 @@ export default function MuslimahMandiWajibPage() {
         </p>
       </PageHero>
 
-      <div css={{ display: 'flex', gap: 8, marginBottom: 16 }}>
-        <Tab aktif={tab === 'haid'} onClick={() => setTab('haid')}>
+      <SegmenWadah role="tablist" aria-label="Niat mandi wajib">
+        <SegmenTab aktif={tab === 'haid'} onClick={() => setTab('haid')}>
           Niat setelah Haid
-        </Tab>
-        <Tab aktif={tab === 'nifas'} onClick={() => setTab('nifas')}>
+        </SegmenTab>
+        <SegmenTab aktif={tab === 'nifas'} onClick={() => setTab('nifas')}>
           Niat setelah Nifas
-        </Tab>
-      </div>
+        </SegmenTab>
+      </SegmenWadah>
 
       <GoldCard>
         <h3 css={{ fontSize: 16, marginBottom: 12 }}>{niat.label}</h3>

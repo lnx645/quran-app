@@ -9,22 +9,7 @@ import {
 import {
   Page, PageHero, Card, SectionTitle, Field, TextInput, ResultRow, GoldCard,
 } from '../components/common.jsx';
-
-const Tab = styled.button`
-  flex: 1;
-  padding: 11px 8px;
-  border-radius: 12px;
-  border: 1.5px solid ${({ theme }) => theme.colors.border};
-  background: ${({ theme, aktif }) => (aktif ? theme.colors.primary : theme.colors.surface)};
-  color: ${({ theme, aktif }) => (aktif ? '#fff' : theme.colors.text)};
-  font-weight: 700;
-  font-size: 14px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  transition: background 0.15s ease;
-`;
+import { SegmenWadah, SegmenTab } from '../components/SegmentedControl.jsx';
 
 const LencanaWajib = styled.span`
   display: inline-flex;
@@ -84,17 +69,17 @@ export default function ZakatPage() {
         </p>
       </PageHero>
 
-      <div css={{ display: 'flex', gap: 8, marginBottom: 16 }}>
-        <Tab aktif={tab === 'mal'} onClick={() => setTab('mal')}>
+      <SegmenWadah role="tablist" aria-label="Jenis zakat">
+        <SegmenTab aktif={tab === 'mal'} onClick={() => setTab('mal')}>
           <FaCoins /> Zakat Mal
-        </Tab>
-        <Tab aktif={tab === 'profesi'} onClick={() => setTab('profesi')}>
+        </SegmenTab>
+        <SegmenTab aktif={tab === 'profesi'} onClick={() => setTab('profesi')}>
           <FaBriefcase /> Profesi
-        </Tab>
-        <Tab aktif={tab === 'fitrah'} onClick={() => setTab('fitrah')}>
+        </SegmenTab>
+        <SegmenTab aktif={tab === 'fitrah'} onClick={() => setTab('fitrah')}>
           <FaHandshake /> Fitrah
-        </Tab>
-      </div>
+        </SegmenTab>
+      </SegmenWadah>
 
       {tab !== 'fitrah' && (
         <Card>

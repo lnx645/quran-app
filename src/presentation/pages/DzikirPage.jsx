@@ -7,26 +7,7 @@ import {
   Page, PageTitle, PageSubtitle, Card, GhostButton,
 } from '../components/common.jsx';
 import OrnamentDivider from '../components/OrnamentDivider.jsx';
-
-const Tabs = styled.div`
-  display: flex;
-  gap: 8px;
-  margin-bottom: 16px;
-`;
-
-const Tab = styled.button`
-  flex: 1;
-  padding: 12px;
-  border-radius: 14px;
-  border: 1.5px solid ${({ theme, aktif }) => (aktif ? theme.colors.gold : theme.colors.border)};
-  background: ${({ theme, aktif }) => (aktif ? theme.colors.goldSoft : theme.colors.surface)};
-  color: ${({ theme }) => theme.colors.judul};
-  font-weight: 700;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-`;
+import { SegmenWadah, SegmenTab } from '../components/SegmentedControl.jsx';
 
 const KartuDzikir = styled(Card)`
   .arab {
@@ -94,14 +75,14 @@ export default function DzikirPage() {
       <PageSubtitle>
         Ringkasan Al-Ma&apos;tsurat. Ketuk tombol di tiap dzikir sesuai jumlah anjuran.
       </PageSubtitle>
-      <Tabs>
-        <Tab aktif={mode === 'pagi'} onClick={() => setMode('pagi')}>
+      <SegmenWadah role="tablist" aria-label="Waktu dzikir">
+        <SegmenTab aktif={mode === 'pagi'} onClick={() => setMode('pagi')}>
           <FaSun /> Pagi
-        </Tab>
-        <Tab aktif={mode === 'petang'} onClick={() => setMode('petang')}>
+        </SegmenTab>
+        <SegmenTab aktif={mode === 'petang'} onClick={() => setMode('petang')}>
           <FaMoon /> Petang
-        </Tab>
-      </Tabs>
+        </SegmenTab>
+      </SegmenWadah>
 
       {selesaiSemua && (
         <Card css={{ textAlign: 'center', fontWeight: 700 }}>
