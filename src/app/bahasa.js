@@ -1,0 +1,510 @@
+import { createContext, createElement, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+
+/**
+ * Bahasa Antarmuka Noor (Gelombang 6 — Item 7).
+ *
+ * Pola mengikuti pengaturanStore.js: konteks + hook dalam satu modul.
+ * LanguageProvider memakai createElement (bukan JSX) agar modul ini tetap
+ * .js seperti store lain di aplikasi. Provider dipasang di Aplikasi.jsx
+ * membungkus RouterProvider, sehingga semua komponen rute (termasuk App)
+ * bisa memakai useBahasa().
+ *
+ * Cakupan terjemahan: CHROME saja — label menu drawer & Beranda, judul
+ * dokumen, label PlayerBar & ReadingControls, dan label umum header.
+ * Isi halaman (judul halaman, panduan, konten) tetap Bahasa Indonesia.
+ *
+ * useBahasa(): { bahasa: 'id'|'en', setBahasa(b), t(kunci, params?) }
+ * - Tersimpan di localStorage `noor.bahasa.v1`; bawaan 'id'.
+ * - t(): kunci hilang di kamus bahasa aktif → fallback kamus 'id';
+ *   kunci hilang di keduanya → kunci itu sendiri (tidak pernah crash).
+ * - params: pengganti placeholder {nama} pada nilai kamus.
+ */
+
+export const KUNCI_BAHASA = 'noor.bahasa.v1';
+
+export const KAMUS = {
+  id: {
+    // ——— Umum / header ———
+    'umum.beranda': 'Beranda',
+    'umum.lewatiKonten': 'Lewati ke konten utama',
+    'umum.bukaMenu': 'Buka menu navigasi',
+    'umum.tutupMenu': 'Tutup menu',
+    'umum.menuNavigasi': 'Menu navigasi',
+    'umum.menuUtama': 'Menu utama',
+    'umum.tagline': "Al-Qur'an & Ibadah",
+    'umum.footerDrawer': 'Noor — menemani ibadah harian',
+    'umum.install': 'Install Noor',
+    'umum.tampilan': 'Tampilan',
+    'umum.modeTemaAria': 'Mode tema tampilan',
+    'umum.modeIkut': 'Ikut Sistem',
+    'umum.modeTerang': 'Terang',
+    'umum.modeGelap': 'Mode Gelap',
+    'umum.modeKontras': 'Kontras Tinggi',
+    // ——— Grup menu ———
+    'grup.quran': "Al-Qur'an",
+    'grup.ibadah': 'Ibadah Harian',
+    'grup.panduan': 'Panduan & Hitungan',
+    'grup.belajar': 'Belajar & Kisah',
+    'grup.muslimah': 'Muslimah',
+    'grup.utilitas': 'Utilitas',
+    // ——— Menu drawer (label persis seperti tampilan ID saat ini) ———
+    'menu.quran': "Al-Qur'an — 114 Surah",
+    'menu.yasin': 'Surah Ya-Sin',
+    'menu.kahf': 'Surah Al-Kahf',
+    'menu.mulk': 'Surah Al-Mulk',
+    'menu.rahman': 'Surah Ar-Rahman',
+    'menu.cari': 'Cari',
+    'menu.hafalan': 'Mode Hafalan',
+    'menu.bookmark': 'Bookmark Ayat',
+    'menu.tajwid': 'Panduan Tajwid',
+    'menu.indeks': 'Indeks Tematik',
+    'menu.kuis': 'Kuis Islami',
+    'menu.radio': 'Radio Murottal',
+    'menu.tesBaca': 'Tes Baca',
+    'menu.anak': 'Mode Anak',
+    'menu.jadwal': 'Jadwal Sholat',
+    'menu.tasbih': 'Tasbih Digital',
+    'menu.dzikir': 'Dzikir Pagi & Petang',
+    'menu.doa': 'Doa Harian',
+    'menu.sholatTracker': 'Sholat Tracker',
+    'menu.wudhu': 'Panduan Wudhu & Tayammum',
+    'menu.panduanSholat': 'Panduan Sholat',
+    'menu.sholatSunnah': 'Sholat Sunnah',
+    'menu.dzikirBada': "Dzikir Ba'da Sholat",
+    'menu.sholatJenazah': 'Sholat Jenazah',
+    'menu.sholatId': 'Sholat Id (Fitri & Adha)',
+    'menu.sholatMusafir': "Sholat Musafir (Jama' & Qashar)",
+    'menu.sholatSakit': 'Sholat Orang Sakit',
+    'menu.qunut': 'Doa Qunut',
+    'menu.imam': 'Panduan Imam & Muadzin',
+    'menu.sujud': 'Sujud Sahwi, Syukur & Tilawah',
+    'menu.puasa': 'Panduan Puasa',
+    'menu.qadha': 'Tracker Qadha Puasa',
+    'menu.ramadhan': 'Mode Ramadhan',
+    'menu.hisnul': 'Hisnul Muslim',
+    'menu.itikaf': "Panduan I'tikaf",
+    'menu.ruqyah': "Ruqyah Syar'iyyah",
+    'menu.mutabaah': "Mutaba'ah Yaumiyah",
+    'menu.waris': 'Kalkulator Waris',
+    'menu.fidyah': 'Kalkulator Fidyah',
+    'menu.kafarat': 'Kafarat',
+    'menu.haji': 'Panduan Haji & Umrah',
+    'menu.panduanJenazah': 'Panduan Jenazah',
+    'menu.aqiqah': 'Aqiqah & Kurban',
+    'menu.namaBayi': 'Nama Bayi Islami',
+    'menu.masjid': 'Masjid Terdekat',
+    'menu.nikah': 'Panduan Nikah',
+    'menu.fikihKeluarga': 'Fikih Keluarga',
+    'menu.muamalah': 'Fikih Muamalah',
+    'menu.wakaf': 'Wakaf & Wasiat',
+    'menu.halal': 'Makanan Halal & Adab Makan',
+    'menu.khutbah': 'Teks Khutbah',
+    'menu.iqro': 'Belajar Iqro',
+    'menu.kisah': 'Kisah 25 Nabi',
+    'menu.asmaul': 'Asmaul Husna',
+    'menu.hadits': 'Hadits Arbain Nawawi',
+    'menu.sirah': 'Sirah Nabawiyah',
+    'menu.riyadhus': 'Riyadhus Shalihin',
+    'menu.peristiwa': 'Peristiwa Islam',
+    'menu.muslimah': 'Ruang Muslimah',
+    'menu.haid': 'Kalkulator Haid',
+    'menu.mandiWajib': 'Panduan Mandi Wajib',
+    'menu.doaWanita': 'Doa Khusus Wanita',
+    'menu.fikihWanita': 'Fikih Wanita',
+    'menu.zakat': 'Kalkulator Zakat',
+    'menu.khatam': 'Khatam Tracker',
+    'menu.kiblat': 'Arah Kiblat',
+    'menu.kalender': 'Kalender Hijriah',
+    'menu.konverter': 'Konverter Hijriah',
+    'menu.statistik': 'Statistik Ibadah',
+    'menu.dataProgres': 'Data Progres (Ekspor/Impor)',
+    'menu.aksesibilitas': 'Aksesibilitas',
+    // ——— Beranda: judul kartu yang redaksinya berbeda dari drawer ———
+    'beranda.quran': 'Al-Qur\u2019an — 114 Surah',
+    'beranda.cariAyat': 'Cari Ayat',
+    'beranda.wudhu': 'Wudhu & Tayammum',
+    'beranda.sholatId': 'Sholat Id',
+    'beranda.sholatMusafir': 'Sholat Musafir',
+    'beranda.imam': 'Imam & Muadzin',
+    'beranda.sujud': 'Sujud',
+    'beranda.qadha': 'Tracker Qadha',
+    'beranda.itikaf': "I'tikaf",
+    'beranda.ruqyah': 'Ruqyah',
+    'beranda.haji': 'Haji & Umrah',
+    'beranda.halal': 'Halal & Adab Makan',
+    'beranda.hadits': 'Hadits Arbain',
+    'beranda.dataProgres': 'Data Progres',
+    // ——— Beranda: chrome lain (bar cari & banner pasang) ———
+    'beranda.bukaPencarian': 'Buka pencarian',
+    'beranda.cariPlaceholder': 'Cari surah, doa, fitur, topik…',
+    'beranda.bannerAria': 'Pasang aplikasi Noor',
+    'beranda.bannerTeks': 'Pasang Noor di layar utama — akses cepat & bisa offline',
+    'beranda.pasang': 'Pasang',
+    'beranda.tutupBanner': 'Tutup banner pasang aplikasi',
+    // ——— Judul dokumen per rute (document.title) ———
+    'judul.beranda': 'Beranda',
+    'judul.quran': "Al-Qur'an — 114 Surah",
+    'judul.bacaSurah': 'Baca Surah',
+    'judul.iqro': 'Belajar Iqro',
+    'judul.jadwal': 'Jadwal Sholat',
+    'judul.zakat': 'Kalkulator Zakat',
+    'judul.khatam': 'Khatam Tracker',
+    'judul.tasbih': 'Tasbih Digital',
+    'judul.dzikir': 'Dzikir Pagi & Petang',
+    'judul.doa': 'Doa Harian',
+    'judul.sholatTracker': 'Sholat Tracker',
+    'judul.kiblat': 'Arah Kiblat',
+    'judul.kalender': 'Kalender Hijriah',
+    'judul.asmaul': 'Asmaul Husna',
+    'judul.kisah': 'Kisah 25 Nabi',
+    'judul.kisahDetail': 'Kisah Nabi',
+    'judul.haidNifas': 'Kalkulator Haid & Nifas',
+    'judul.mandiWajib': 'Panduan Mandi Wajib',
+    'judul.doaWanita': 'Doa Khusus Wanita',
+    'judul.fikihWanita': 'Fikih Wanita',
+    'judul.muslimah': 'Ruang Muslimah',
+    'judul.aksesibilitas': 'Pengaturan Aksesibilitas',
+    'judul.cari': 'Cari',
+    'judul.tajwid': 'Panduan Tajwid',
+    'judul.hafalan': 'Mode Hafalan',
+    'judul.bookmark': 'Bookmark Ayat',
+    'judul.wudhu': 'Panduan Wudhu & Tayammum',
+    'judul.panduanSholat': 'Panduan Sholat',
+    'judul.sholatSunnah': 'Panduan Sholat Sunnah',
+    'judul.dzikirBada': "Dzikir Ba'da Sholat",
+    'judul.sholatJenazah': 'Panduan Sholat Jenazah',
+    'judul.puasa': 'Panduan Puasa',
+    'judul.qadha': 'Tracker Qadha Puasa',
+    'judul.ramadhan': 'Mode Ramadhan',
+    'judul.hadits': 'Hadits Arbain Nawawi',
+    'judul.hisnul': 'Hisnul Muslim',
+    'judul.sirah': 'Sirah Nabawiyah',
+    'judul.waris': 'Kalkulator Waris',
+    'judul.fidyah': 'Kalkulator Fidyah',
+    'judul.kafarat': 'Kafarat',
+    'judul.haji': 'Panduan Haji & Umrah',
+    'judul.panduanJenazah': 'Panduan Jenazah',
+    'judul.aqiqah': 'Aqiqah & Kurban',
+    'judul.mutabaah': "Mutaba'ah Yaumiyah",
+    'judul.namaBayi': 'Nama Bayi Islami',
+    'judul.masjid': 'Masjid Terdekat',
+    'judul.sholatId': 'Panduan Sholat Id',
+    'judul.sholatMusafir': 'Panduan Sholat Musafir',
+    'judul.sholatSakit': 'Panduan Sholat Orang Sakit',
+    'judul.qunut': 'Doa Qunut',
+    'judul.imam': 'Panduan Imam & Muadzin',
+    'judul.indeks': "Indeks Tematik Al-Qur'an",
+    'judul.sujud': 'Panduan Sujud Sahwi, Syukur & Tilawah',
+    'judul.kuis': 'Kuis Islami',
+    'judul.radio': 'Radio Murottal',
+    'judul.tesBaca': 'Tes Baca (Eksperimental)',
+    'judul.anak': 'Mode Anak',
+    'judul.nikah': 'Panduan Nikah',
+    'judul.fikihKeluarga': 'Fikih Keluarga',
+    'judul.muamalah': 'Fikih Muamalah',
+    'judul.wakaf': 'Wakaf & Wasiat',
+    'judul.halal': 'Makanan Halal & Adab Makan',
+    'judul.itikaf': "Panduan I'tikaf",
+    'judul.ruqyah': "Ruqyah Syar'iyyah",
+    'judul.khutbah': 'Teks Khutbah',
+    'judul.peristiwa': 'Peristiwa Islam',
+    'judul.riyadhus': 'Riyadhus Shalihin',
+    'judul.konverter': 'Konverter Hijriah',
+    'judul.statistik': 'Statistik Ibadah',
+    'judul.dataProgres': 'Data Progres (Ekspor & Impor)',
+    // ——— PlayerBar ———
+    'player.putar': 'Putar',
+    'player.jeda': 'Jeda',
+    'player.sebelumnya': 'Ayat sebelumnya',
+    'player.berikutnya': 'Ayat berikutnya',
+    'player.posisiAudio': 'Posisi audio',
+    'player.infoAyat': 'Ayat {aktif} dari {total}',
+    'player.dari': 'dari',
+    // ——— ReadingControls ———
+    'baca.kontrol': 'Kontrol baca',
+    'baca.perkecilArab': 'Perkecil huruf Arab',
+    'baca.perbesarArab': 'Perbesar huruf Arab',
+    'baca.latin': 'Latin',
+    'baca.arti': 'Arti',
+    'baca.tajwid': 'Tajwid',
+    'baca.tajwidAria': 'Warnai huruf sesuai aturan tajwid',
+    'baca.perKata': 'Per Kata',
+    'baca.perKataAria': 'Tampilkan terjemahan per kata (Bahasa Inggris)',
+    'baca.pilihQari': 'Pilih qari murottal',
+    // ——— Sakelar bahasa (Aksesibilitas) ———
+    'bahasa.judul': 'Bahasa Antarmuka',
+    'bahasa.catatan': 'Bahasa Inggris berlaku untuk menu & judul; panduan dan isi tetap Bahasa Indonesia.',
+  },
+  en: {
+    // ——— General / header ———
+    'umum.beranda': 'Home',
+    'umum.lewatiKonten': 'Skip to main content',
+    'umum.bukaMenu': 'Open navigation menu',
+    'umum.tutupMenu': 'Close menu',
+    'umum.menuNavigasi': 'Navigation menu',
+    'umum.menuUtama': 'Main menu',
+    'umum.tagline': "Al-Qur'an & Worship",
+    'umum.footerDrawer': 'Noor — your daily worship companion',
+    'umum.install': 'Install Noor',
+    'umum.tampilan': 'Appearance',
+    'umum.modeTemaAria': 'Display theme',
+    'umum.modeIkut': 'System',
+    'umum.modeTerang': 'Light',
+    'umum.modeGelap': 'Dark Mode',
+    'umum.modeKontras': 'High Contrast',
+    // ——— Menu groups ———
+    'grup.quran': "Al-Qur'an",
+    'grup.ibadah': 'Daily Worship',
+    'grup.panduan': 'Guides & Calculators',
+    'grup.belajar': 'Learn & Stories',
+    'grup.muslimah': 'Muslimah',
+    'grup.utilitas': 'Utilities',
+    // ——— Drawer menu ———
+    'menu.quran': "Al-Qur'an — 114 Surahs",
+    'menu.yasin': 'Surah Ya-Sin',
+    'menu.kahf': 'Surah Al-Kahf',
+    'menu.mulk': 'Surah Al-Mulk',
+    'menu.rahman': 'Surah Ar-Rahman',
+    'menu.cari': 'Search',
+    'menu.hafalan': 'Memorization Mode',
+    'menu.bookmark': 'Verse Bookmarks',
+    'menu.tajwid': 'Tajweed Guide',
+    'menu.indeks': 'Thematic Index',
+    'menu.kuis': 'Islamic Quiz',
+    'menu.radio': 'Murottal Radio',
+    'menu.tesBaca': 'Reading Test',
+    'menu.anak': 'Kids Mode',
+    'menu.jadwal': 'Prayer Times',
+    'menu.tasbih': 'Digital Tasbih',
+    'menu.dzikir': 'Morning & Evening Dhikr',
+    'menu.doa': 'Daily Prayers',
+    'menu.sholatTracker': 'Prayer Tracker',
+    'menu.wudhu': 'Wudu & Tayammum Guide',
+    'menu.panduanSholat': 'Prayer Guide',
+    'menu.sholatSunnah': 'Sunnah Prayers',
+    'menu.dzikirBada': 'Dhikr After Prayer',
+    'menu.sholatJenazah': 'Funeral Prayer',
+    'menu.sholatId': 'Eid Prayer (Fitr & Adha)',
+    'menu.sholatMusafir': "Traveler's Prayer (Jam' & Qasr)",
+    'menu.sholatSakit': 'Prayer When Ill',
+    'menu.qunut': 'Qunut Supplication',
+    'menu.imam': 'Imam & Muezzin Guide',
+    'menu.sujud': 'Sujud Sahwi, Shukr & Tilawah',
+    'menu.puasa': 'Fasting Guide',
+    'menu.qadha': 'Qadha Fasting Tracker',
+    'menu.ramadhan': 'Ramadan Mode',
+    'menu.hisnul': 'Hisnul Muslim',
+    'menu.itikaf': "I'tikaf Guide",
+    'menu.ruqyah': 'Ruqyah',
+    'menu.mutabaah': "Daily Mutaba'ah",
+    'menu.waris': 'Inheritance Calculator',
+    'menu.fidyah': 'Fidyah Calculator',
+    'menu.kafarat': 'Expiation (Kafarat)',
+    'menu.haji': 'Hajj & Umrah Guide',
+    'menu.panduanJenazah': 'Funeral Guide',
+    'menu.aqiqah': 'Aqiqah & Qurban',
+    'menu.namaBayi': 'Islamic Baby Names',
+    'menu.masjid': 'Nearby Mosques',
+    'menu.nikah': 'Marriage Guide',
+    'menu.fikihKeluarga': 'Family Fiqh',
+    'menu.muamalah': 'Muamalah Fiqh',
+    'menu.wakaf': 'Waqf & Wills',
+    'menu.halal': 'Halal Food & Eating Manners',
+    'menu.khutbah': 'Sermon Texts',
+    'menu.iqro': 'Learn Iqro',
+    'menu.kisah': 'Stories of 25 Prophets',
+    'menu.asmaul': 'Asmaul Husna',
+    'menu.hadits': "Arba'in Nawawi Hadith",
+    'menu.sirah': 'Prophetic Biography',
+    'menu.riyadhus': 'Riyadhus Shalihin',
+    'menu.peristiwa': 'Islamic Events',
+    'menu.muslimah': 'Muslimah Corner',
+    'menu.haid': 'Menstruation Calculator',
+    'menu.mandiWajib': 'Ritual Bath Guide',
+    'menu.doaWanita': 'Prayers for Women',
+    'menu.fikihWanita': "Women's Fiqh",
+    'menu.zakat': 'Zakat Calculator',
+    'menu.khatam': 'Khatam Tracker',
+    'menu.kiblat': 'Qibla Direction',
+    'menu.kalender': 'Hijri Calendar',
+    'menu.konverter': 'Hijri Converter',
+    'menu.statistik': 'Worship Statistics',
+    'menu.dataProgres': 'Progress Data (Export/Import)',
+    'menu.aksesibilitas': 'Accessibility',
+    // ——— Home: card titles that differ from the drawer ———
+    'beranda.quran': "Al-Qur'an — 114 Surahs",
+    'beranda.cariAyat': 'Search Verses',
+    'beranda.wudhu': 'Wudu & Tayammum',
+    'beranda.sholatId': 'Eid Prayer',
+    'beranda.sholatMusafir': "Traveler's Prayer",
+    'beranda.imam': 'Imam & Muezzin',
+    'beranda.sujud': 'Prostration',
+    'beranda.qadha': 'Qadha Tracker',
+    'beranda.itikaf': "I'tikaf",
+    'beranda.ruqyah': 'Ruqyah',
+    'beranda.haji': 'Hajj & Umrah',
+    'beranda.halal': 'Halal & Eating Manners',
+    'beranda.hadits': "Arba'in Hadith",
+    'beranda.dataProgres': 'Progress Data',
+    // ——— Home: other chrome (search bar & install banner) ———
+    'beranda.bukaPencarian': 'Open search',
+    'beranda.cariPlaceholder': 'Search surahs, prayers, features, topics…',
+    'beranda.bannerAria': 'Install Noor app',
+    'beranda.bannerTeks': 'Install Noor on your home screen — quick access & works offline',
+    'beranda.pasang': 'Install',
+    'beranda.tutupBanner': 'Close install banner',
+    // ——— Document titles per route ———
+    'judul.beranda': 'Home',
+    'judul.quran': "Al-Qur'an — 114 Surahs",
+    'judul.bacaSurah': 'Read Surah',
+    'judul.iqro': 'Learn Iqro',
+    'judul.jadwal': 'Prayer Times',
+    'judul.zakat': 'Zakat Calculator',
+    'judul.khatam': 'Khatam Tracker',
+    'judul.tasbih': 'Digital Tasbih',
+    'judul.dzikir': 'Morning & Evening Dhikr',
+    'judul.doa': 'Daily Prayers',
+    'judul.sholatTracker': 'Prayer Tracker',
+    'judul.kiblat': 'Qibla Direction',
+    'judul.kalender': 'Hijri Calendar',
+    'judul.asmaul': 'Asmaul Husna',
+    'judul.kisah': 'Stories of 25 Prophets',
+    'judul.kisahDetail': 'Prophet Story',
+    'judul.haidNifas': 'Menstruation & Postpartum Calculator',
+    'judul.mandiWajib': 'Ritual Bath Guide',
+    'judul.doaWanita': 'Prayers for Women',
+    'judul.fikihWanita': "Women's Fiqh",
+    'judul.muslimah': 'Muslimah Corner',
+    'judul.aksesibilitas': 'Accessibility Settings',
+    'judul.cari': 'Search',
+    'judul.tajwid': 'Tajweed Guide',
+    'judul.hafalan': 'Memorization Mode',
+    'judul.bookmark': 'Verse Bookmarks',
+    'judul.wudhu': 'Wudu & Tayammum Guide',
+    'judul.panduanSholat': 'Prayer Guide',
+    'judul.sholatSunnah': 'Sunnah Prayer Guide',
+    'judul.dzikirBada': 'Dhikr After Prayer',
+    'judul.sholatJenazah': 'Funeral Prayer Guide',
+    'judul.puasa': 'Fasting Guide',
+    'judul.qadha': 'Qadha Fasting Tracker',
+    'judul.ramadhan': 'Ramadan Mode',
+    'judul.hadits': "Arba'in Nawawi Hadith",
+    'judul.hisnul': 'Hisnul Muslim',
+    'judul.sirah': 'Prophetic Biography',
+    'judul.waris': 'Inheritance Calculator',
+    'judul.fidyah': 'Fidyah Calculator',
+    'judul.kafarat': 'Expiation (Kafarat)',
+    'judul.haji': 'Hajj & Umrah Guide',
+    'judul.panduanJenazah': 'Funeral Guide',
+    'judul.aqiqah': 'Aqiqah & Qurban',
+    'judul.mutabaah': "Daily Mutaba'ah",
+    'judul.namaBayi': 'Islamic Baby Names',
+    'judul.masjid': 'Nearby Mosques',
+    'judul.sholatId': 'Eid Prayer Guide',
+    'judul.sholatMusafir': "Traveler's Prayer Guide",
+    'judul.sholatSakit': 'Prayer When Ill Guide',
+    'judul.qunut': 'Qunut Supplication',
+    'judul.imam': 'Imam & Muezzin Guide',
+    'judul.indeks': "Qur'an Thematic Index",
+    'judul.sujud': 'Sujud Guide',
+    'judul.kuis': 'Islamic Quiz',
+    'judul.radio': 'Murottal Radio',
+    'judul.tesBaca': 'Reading Test (Experimental)',
+    'judul.anak': 'Kids Mode',
+    'judul.nikah': 'Marriage Guide',
+    'judul.fikihKeluarga': 'Family Fiqh',
+    'judul.muamalah': 'Muamalah Fiqh',
+    'judul.wakaf': 'Waqf & Wills',
+    'judul.halal': 'Halal Food & Eating Manners',
+    'judul.itikaf': "I'tikaf Guide",
+    'judul.ruqyah': 'Ruqyah',
+    'judul.khutbah': 'Sermon Texts',
+    'judul.peristiwa': 'Islamic Events',
+    'judul.riyadhus': 'Riyadhus Shalihin',
+    'judul.konverter': 'Hijri Converter',
+    'judul.statistik': 'Worship Statistics',
+    'judul.dataProgres': 'Progress Data (Export & Import)',
+    // ——— PlayerBar ———
+    'player.putar': 'Play',
+    'player.jeda': 'Pause',
+    'player.sebelumnya': 'Previous verse',
+    'player.berikutnya': 'Next verse',
+    'player.posisiAudio': 'Audio position',
+    'player.infoAyat': 'Verse {aktif} of {total}',
+    'player.dari': 'of',
+    // ——— ReadingControls ———
+    'baca.kontrol': 'Reading controls',
+    'baca.perkecilArab': 'Decrease Arabic font size',
+    'baca.perbesarArab': 'Increase Arabic font size',
+    'baca.latin': 'Latin',
+    'baca.arti': 'Meaning',
+    'baca.tajwid': 'Tajwid',
+    'baca.tajwidAria': 'Color letters by tajweed rules',
+    'baca.perKata': 'Word by Word',
+    'baca.perKataAria': 'Show word-by-word translation (English)',
+    'baca.pilihQari': 'Choose reciter',
+    // ——— Language switch (Accessibility) ———
+    'bahasa.judul': 'Interface Language',
+    'bahasa.catatan': 'English applies to menus & titles; guides and content remain in Bahasa Indonesia.',
+  },
+};
+
+const BahasaContext = createContext(null);
+
+function muatBahasa() {
+  try {
+    return localStorage.getItem(KUNCI_BAHASA) === 'en' ? 'en' : 'id';
+  } catch {
+    return 'id';
+  }
+}
+
+export function LanguageProvider({ children }) {
+  const [bahasa, setBahasaState] = useState(muatBahasa);
+
+  const setBahasa = useCallback((b) => {
+    if (b === 'id' || b === 'en') setBahasaState(b);
+  }, []);
+
+  // Simpan pilihan + selaraskan atribut lang dokumen untuk screen reader.
+  useEffect(() => {
+    try {
+      localStorage.setItem(KUNCI_BAHASA, bahasa);
+    } catch {
+      /* penyimpanan tidak tersedia */
+    }
+    try {
+      document.documentElement.lang = bahasa === 'en' ? 'en' : 'id';
+    } catch {
+      /* abaikan di lingkungan non-DOM */
+    }
+  }, [bahasa]);
+
+  const t = useCallback(
+    (kunci, params) => {
+      let teks = KAMUS[bahasa]?.[kunci] ?? KAMUS.id[kunci] ?? kunci;
+      if (params) {
+        teks = teks.replace(/\{(\w+)\}/g, (cocok, nama) =>
+          params[nama] != null ? String(params[nama]) : cocok,
+        );
+      }
+      return teks;
+    },
+    [bahasa],
+  );
+
+  const nilai = useMemo(
+    () => ({ bahasa, setBahasa, t }),
+    [bahasa, setBahasa, t],
+  );
+
+  return createElement(BahasaContext.Provider, { value: nilai }, children);
+}
+
+export function useBahasa() {
+  const ctx = useContext(BahasaContext);
+  if (!ctx) throw new Error('useBahasa harus dipakai di dalam <LanguageProvider>');
+  return ctx;
+}
+
+export default LanguageProvider;

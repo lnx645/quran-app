@@ -17,6 +17,7 @@ import { useInstallPrompt } from '../hooks/useInstallPrompt.js';
 import { GirihPattern } from './ornaments/index.js';
 import { reduceMotion } from './motion.js';
 import { useAkses } from '../a11y/pengaturanStore.js';
+import { useBahasa } from '../../app/bahasa.js';
 
 // ===== Header ramping (~60px) =====
 // Kiri: logo + "Noor" satu baris. Kanan: tombol hamburger saja.
@@ -282,103 +283,103 @@ const SegBtn = styled.button`
 // Daftar menu drawer — mengikuti rute router.jsx & seksi Home.
 const MENU = [
   {
-    nama: "Al-Qur'an",
+    kunciGrup: 'grup.quran',
     items: [
-      { to: '/quran', icon: <FaQuran />, label: "Al-Qur'an — 114 Surah" },
-      { to: '/surah/36', icon: <FaHeart />, label: 'Surah Ya-Sin' },
-      { to: '/surah/18', icon: <FaBookOpen />, label: 'Surah Al-Kahf' },
-      { to: '/surah/67', icon: <FaBookOpen />, label: 'Surah Al-Mulk' },
-      { to: '/surah/55', icon: <FaBookOpen />, label: 'Surah Ar-Rahman' },
-      { to: '/cari', icon: <FaSearch />, label: 'Cari' },
-      { to: '/hafalan', icon: <FaBrain />, label: 'Mode Hafalan' },
-      { to: '/bookmark', icon: <FaBookmark />, label: 'Bookmark Ayat' },
-      { to: '/panduan-tajwid', icon: <FaPalette />, label: 'Panduan Tajwid' },
-      { to: '/indeks-tematik', icon: <FaListUl />, label: 'Indeks Tematik' },
-      { to: '/kuis', icon: <FaBrain />, label: 'Kuis Islami' },
-      { to: '/radio', icon: <FaBroadcastTower />, label: 'Radio Murottal' },
-      { to: '/tes-baca', icon: <FaMicrophone />, label: 'Tes Baca' },
+      { to: '/quran', icon: <FaQuran />, kunci: 'menu.quran' },
+      { to: '/surah/36', icon: <FaHeart />, kunci: 'menu.yasin' },
+      { to: '/surah/18', icon: <FaBookOpen />, kunci: 'menu.kahf' },
+      { to: '/surah/67', icon: <FaBookOpen />, kunci: 'menu.mulk' },
+      { to: '/surah/55', icon: <FaBookOpen />, kunci: 'menu.rahman' },
+      { to: '/cari', icon: <FaSearch />, kunci: 'menu.cari' },
+      { to: '/hafalan', icon: <FaBrain />, kunci: 'menu.hafalan' },
+      { to: '/bookmark', icon: <FaBookmark />, kunci: 'menu.bookmark' },
+      { to: '/panduan-tajwid', icon: <FaPalette />, kunci: 'menu.tajwid' },
+      { to: '/indeks-tematik', icon: <FaListUl />, kunci: 'menu.indeks' },
+      { to: '/kuis', icon: <FaBrain />, kunci: 'menu.kuis' },
+      { to: '/radio', icon: <FaBroadcastTower />, kunci: 'menu.radio' },
+      { to: '/tes-baca', icon: <FaMicrophone />, kunci: 'menu.tesBaca' },
     ],
   },
   {
-    nama: 'Ibadah Harian',
+    kunciGrup: 'grup.ibadah',
     items: [
-      { to: '/jadwal', icon: <FaMosque />, label: 'Jadwal Sholat' },
-      { to: '/tasbih', icon: <FaHandPointer />, label: 'Tasbih Digital' },
-      { to: '/dzikir', icon: <FaCloudSun />, label: 'Dzikir Pagi & Petang' },
-      { to: '/doa', icon: <FaPrayingHands />, label: 'Doa Harian' },
-      { to: '/sholat-tracker', icon: <FaClipboardCheck />, label: 'Sholat Tracker' },
-      { to: '/wudhu', icon: <FaTint />, label: 'Panduan Wudhu & Tayammum' },
-      { to: '/panduan-sholat', icon: <FaPrayingHands />, label: 'Panduan Sholat' },
-      { to: '/sholat-sunnah', icon: <FaMoon />, label: 'Sholat Sunnah' },
-      { to: '/dzikir-bada-sholat', icon: <FaCloudSun />, label: "Dzikir Ba'da Sholat" },
-      { to: '/sholat-jenazah', icon: <FaBook />, label: 'Sholat Jenazah' },
-      { to: '/sholat-id', icon: <FaMoon />, label: 'Sholat Id (Fitri & Adha)' },
-      { to: '/sholat-musafir', icon: <FaBookOpen />, label: 'Sholat Musafir (Jama\' & Qashar)' },
-      { to: '/sholat-sakit', icon: <FaBook />, label: 'Sholat Orang Sakit' },
-      { to: '/qunut', icon: <FaPrayingHands />, label: 'Doa Qunut' },
-      { to: '/panduan-imam', icon: <FaMosque />, label: 'Panduan Imam & Muadzin' },
-      { to: '/sujud', icon: <FaBookOpen />, label: 'Sujud Sahwi, Syukur & Tilawah' },
-      { to: '/panduan-puasa', icon: <FaBookOpen />, label: 'Panduan Puasa' },
-      { to: '/qadha-puasa', icon: <FaClipboardCheck />, label: 'Tracker Qadha Puasa' },
-      { to: '/ramadhan', icon: <FaMoon />, label: 'Mode Ramadhan' },
-      { to: '/hisnul-muslim', icon: <FaPrayingHands />, label: 'Hisnul Muslim' },
-      { to: '/itikaf', icon: <FaMoon />, label: "Panduan I'tikaf" },
-      { to: '/ruqyah', icon: <FaBookOpen />, label: "Ruqyah Syar'iyyah" },
-      { to: '/mutabaah', icon: <FaTasks />, label: "Mutaba'ah Yaumiyah" },
+      { to: '/jadwal', icon: <FaMosque />, kunci: 'menu.jadwal' },
+      { to: '/tasbih', icon: <FaHandPointer />, kunci: 'menu.tasbih' },
+      { to: '/dzikir', icon: <FaCloudSun />, kunci: 'menu.dzikir' },
+      { to: '/doa', icon: <FaPrayingHands />, kunci: 'menu.doa' },
+      { to: '/sholat-tracker', icon: <FaClipboardCheck />, kunci: 'menu.sholatTracker' },
+      { to: '/wudhu', icon: <FaTint />, kunci: 'menu.wudhu' },
+      { to: '/panduan-sholat', icon: <FaPrayingHands />, kunci: 'menu.panduanSholat' },
+      { to: '/sholat-sunnah', icon: <FaMoon />, kunci: 'menu.sholatSunnah' },
+      { to: '/dzikir-bada-sholat', icon: <FaCloudSun />, kunci: 'menu.dzikirBada' },
+      { to: '/sholat-jenazah', icon: <FaBook />, kunci: 'menu.sholatJenazah' },
+      { to: '/sholat-id', icon: <FaMoon />, kunci: 'menu.sholatId' },
+      { to: '/sholat-musafir', icon: <FaBookOpen />, kunci: 'menu.sholatMusafir' },
+      { to: '/sholat-sakit', icon: <FaBook />, kunci: 'menu.sholatSakit' },
+      { to: '/qunut', icon: <FaPrayingHands />, kunci: 'menu.qunut' },
+      { to: '/panduan-imam', icon: <FaMosque />, kunci: 'menu.imam' },
+      { to: '/sujud', icon: <FaBookOpen />, kunci: 'menu.sujud' },
+      { to: '/panduan-puasa', icon: <FaBookOpen />, kunci: 'menu.puasa' },
+      { to: '/qadha-puasa', icon: <FaClipboardCheck />, kunci: 'menu.qadha' },
+      { to: '/ramadhan', icon: <FaMoon />, kunci: 'menu.ramadhan' },
+      { to: '/hisnul-muslim', icon: <FaPrayingHands />, kunci: 'menu.hisnul' },
+      { to: '/itikaf', icon: <FaMoon />, kunci: 'menu.itikaf' },
+      { to: '/ruqyah', icon: <FaBookOpen />, kunci: 'menu.ruqyah' },
+      { to: '/mutabaah', icon: <FaTasks />, kunci: 'menu.mutabaah' },
     ],
   },
   {
-    nama: 'Panduan & Hitungan',
+    kunciGrup: 'grup.panduan',
     items: [
-      { to: '/waris', icon: <FaBalanceScale />, label: 'Kalkulator Waris' },
-      { to: '/fidyah', icon: <FaHandHoldingHeart />, label: 'Kalkulator Fidyah' },
-      { to: '/kafarat', icon: <FaBookOpen />, label: 'Kafarat' },
-      { to: '/haji-umrah', icon: <FaKaaba />, label: 'Panduan Haji & Umrah' },
-      { to: '/panduan-jenazah', icon: <FaBook />, label: 'Panduan Jenazah' },
-      { to: '/aqiqah-kurban', icon: <FaGift />, label: 'Aqiqah & Kurban' },
-      { to: '/nama-bayi', icon: <FaBaby />, label: 'Nama Bayi Islami' },
-      { to: '/masjid-terdekat', icon: <FaMosque />, label: 'Masjid Terdekat' },
-      { to: '/panduan-nikah', icon: <FaHeart />, label: 'Panduan Nikah' },
-      { to: '/fikih-keluarga', icon: <FaBook />, label: 'Fikih Keluarga' },
-      { to: '/muamalah', icon: <FaBalanceScale />, label: 'Fikih Muamalah' },
-      { to: '/wakaf-wasiat', icon: <FaHandHoldingHeart />, label: 'Wakaf & Wasiat' },
-      { to: '/halal', icon: <FaBookOpen />, label: 'Makanan Halal & Adab Makan' },
-      { to: '/khutbah', icon: <FaBook />, label: 'Teks Khutbah' },
+      { to: '/waris', icon: <FaBalanceScale />, kunci: 'menu.waris' },
+      { to: '/fidyah', icon: <FaHandHoldingHeart />, kunci: 'menu.fidyah' },
+      { to: '/kafarat', icon: <FaBookOpen />, kunci: 'menu.kafarat' },
+      { to: '/haji-umrah', icon: <FaKaaba />, kunci: 'menu.haji' },
+      { to: '/panduan-jenazah', icon: <FaBook />, kunci: 'menu.panduanJenazah' },
+      { to: '/aqiqah-kurban', icon: <FaGift />, kunci: 'menu.aqiqah' },
+      { to: '/nama-bayi', icon: <FaBaby />, kunci: 'menu.namaBayi' },
+      { to: '/masjid-terdekat', icon: <FaMosque />, kunci: 'menu.masjid' },
+      { to: '/panduan-nikah', icon: <FaHeart />, kunci: 'menu.nikah' },
+      { to: '/fikih-keluarga', icon: <FaBook />, kunci: 'menu.fikihKeluarga' },
+      { to: '/muamalah', icon: <FaBalanceScale />, kunci: 'menu.muamalah' },
+      { to: '/wakaf-wasiat', icon: <FaHandHoldingHeart />, kunci: 'menu.wakaf' },
+      { to: '/halal', icon: <FaBookOpen />, kunci: 'menu.halal' },
+      { to: '/khutbah', icon: <FaBook />, kunci: 'menu.khutbah' },
     ],
   },
   {
-    nama: 'Belajar & Kisah',
+    kunciGrup: 'grup.belajar',
     items: [
-      { to: '/iqro', icon: <FaGraduationCap />, label: 'Belajar Iqro' },
-      { to: '/kisah', icon: <FaBook />, label: 'Kisah 25 Nabi' },
-      { to: '/asmaul-husna', icon: <FaListUl />, label: 'Asmaul Husna' },
-      { to: '/hadits', icon: <FaBook />, label: 'Hadits Arbain Nawawi' },
-      { to: '/sirah', icon: <FaBookOpen />, label: 'Sirah Nabawiyah' },
-      { to: '/riyadhus', icon: <FaBook />, label: 'Riyadhus Shalihin' },
-      { to: '/peristiwa', icon: <FaCalendarAlt />, label: 'Peristiwa Islam' },
+      { to: '/iqro', icon: <FaGraduationCap />, kunci: 'menu.iqro' },
+      { to: '/kisah', icon: <FaBook />, kunci: 'menu.kisah' },
+      { to: '/asmaul-husna', icon: <FaListUl />, kunci: 'menu.asmaul' },
+      { to: '/hadits', icon: <FaBook />, kunci: 'menu.hadits' },
+      { to: '/sirah', icon: <FaBookOpen />, kunci: 'menu.sirah' },
+      { to: '/riyadhus', icon: <FaBook />, kunci: 'menu.riyadhus' },
+      { to: '/peristiwa', icon: <FaCalendarAlt />, kunci: 'menu.peristiwa' },
     ],
   },
   {
-    nama: 'Muslimah',
+    kunciGrup: 'grup.muslimah',
     items: [
-      { to: '/muslimah', icon: <FaVenus />, label: 'Ruang Muslimah' },
-      { to: '/muslimah/kalkulator', icon: <FaClipboardCheck />, label: 'Kalkulator Haid' },
-      { to: '/muslimah/mandi-wajib', icon: <FaHandPointer />, label: 'Panduan Mandi Wajib' },
-      { to: '/muslimah/doa', icon: <FaPrayingHands />, label: 'Doa Khusus Wanita' },
-      { to: '/muslimah/fikih', icon: <FaBook />, label: 'Fikih Wanita' },
+      { to: '/muslimah', icon: <FaVenus />, kunci: 'menu.muslimah' },
+      { to: '/muslimah/kalkulator', icon: <FaClipboardCheck />, kunci: 'menu.haid' },
+      { to: '/muslimah/mandi-wajib', icon: <FaHandPointer />, kunci: 'menu.mandiWajib' },
+      { to: '/muslimah/doa', icon: <FaPrayingHands />, kunci: 'menu.doaWanita' },
+      { to: '/muslimah/fikih', icon: <FaBook />, kunci: 'menu.fikihWanita' },
     ],
   },
   {
-    nama: 'Utilitas',
+    kunciGrup: 'grup.utilitas',
     items: [
-      { to: '/zakat', icon: <FaCalculator />, label: 'Kalkulator Zakat' },
-      { to: '/khatam', icon: <FaBookReader />, label: 'Khatam Tracker' },
-      { to: '/kiblat', icon: <FaCompass />, label: 'Arah Kiblat' },
-      { to: '/kalender', icon: <FaCalendarAlt />, label: 'Kalender Hijriah' },
-      { to: '/konverter', icon: <FaCalendarAlt />, label: 'Konverter Hijriah' },
-      { to: '/statistik', icon: <FaClipboardCheck />, label: 'Statistik Ibadah' },
-      { to: '/data-progres', icon: <FaTasks />, label: 'Data Progres (Ekspor/Impor)' },
-      { to: '/aksesibilitas', icon: <FaUniversalAccess />, label: 'Aksesibilitas' },
+      { to: '/zakat', icon: <FaCalculator />, kunci: 'menu.zakat' },
+      { to: '/khatam', icon: <FaBookReader />, kunci: 'menu.khatam' },
+      { to: '/kiblat', icon: <FaCompass />, kunci: 'menu.kiblat' },
+      { to: '/kalender', icon: <FaCalendarAlt />, kunci: 'menu.kalender' },
+      { to: '/konverter', icon: <FaCalendarAlt />, kunci: 'menu.konverter' },
+      { to: '/statistik', icon: <FaClipboardCheck />, kunci: 'menu.statistik' },
+      { to: '/data-progres', icon: <FaTasks />, kunci: 'menu.dataProgres' },
+      { to: '/aksesibilitas', icon: <FaUniversalAccess />, kunci: 'menu.aksesibilitas' },
     ],
   },
 ];
@@ -388,6 +389,7 @@ export default function AppHeader() {
   const { bisaInstall, pasang } = useInstallPrompt();
   const location = useLocation();
   const { pengaturan, ubah } = useAkses();
+  const { t } = useBahasa();
   const closeRef = useRef(null);
   const menuBtnRef = useRef(null);
   const panelRef = useRef(null);
@@ -440,18 +442,18 @@ export default function AppHeader() {
           <GirihPattern opacity={0.1} />
         </div>
         <Inner>
-          <Brand to="/" aria-label="Noor — Beranda">
+          <Brand to="/" aria-label={`Noor — ${t('umum.beranda')}`}>
             <Logo size={38} />
             <Wordmark>
               Noor
-              <span className="tag">Al-Qur&apos;an &amp; Ibadah</span>
+              <span className="tag">{t('umum.tagline')}</span>
             </Wordmark>
           </Brand>
           <IconBtn
             type="button"
             ref={menuBtnRef}
             onClick={() => setOpen(true)}
-            aria-label="Buka menu navigasi"
+            aria-label={t('umum.bukaMenu')}
             aria-expanded={open}
             aria-controls="panel-navigasi"
           >
@@ -462,7 +464,7 @@ export default function AppHeader() {
       </Bar>
 
       <Overlay $open={open} onClick={() => setOpen(false)} aria-hidden="true" />
-      <Panel $open={open} aria-hidden={!open} aria-label="Menu navigasi" id="panel-navigasi" ref={panelRef}>
+      <Panel $open={open} aria-hidden={!open} aria-label={t('umum.menuNavigasi')} id="panel-navigasi" ref={panelRef}>
         <PanelHead>
           <div css={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
             <GirihPattern opacity={0.1} />
@@ -470,19 +472,19 @@ export default function AppHeader() {
           <Logo size={42} />
           <PanelTitle>
             Noor
-            <span className="sub">Al-Qur&apos;an &amp; Ibadah</span>
+            <span className="sub">{t('umum.tagline')}</span>
           </PanelTitle>
-          <CloseBtn ref={closeRef} type="button" onClick={() => setOpen(false)} aria-label="Tutup menu">
+          <CloseBtn ref={closeRef} type="button" onClick={() => setOpen(false)} aria-label={t('umum.tutupMenu')}>
             <FiX />
           </CloseBtn>
         </PanelHead>
         <GoldStrip />
-        <PanelNav aria-label="Menu utama">
+        <PanelNav aria-label={t('umum.menuUtama')}>
           <Item to="/" end onClick={() => setOpen(false)}>
             <ItemIcon>
               <FiHome />
             </ItemIcon>
-            Beranda
+            {t('umum.beranda')}
             <FiChevronRight className="chev" />
           </Item>
           {bisaInstall && (
@@ -494,30 +496,30 @@ export default function AppHeader() {
                 setOpen(false);
               }}
             >
-              <FaDownload aria-hidden="true" /> Install Noor
+              <FaDownload aria-hidden="true" /> {t('umum.install')}
             </PrimaryButton>
           )}
           {MENU.map((grup) => (
-            <div key={grup.nama}>
-              <GroupLabel>{grup.nama}</GroupLabel>
+            <div key={grup.kunciGrup}>
+              <GroupLabel>{t(grup.kunciGrup)}</GroupLabel>
               {grup.items.map((item) => (
                 <Item key={item.to} to={item.to} onClick={() => setOpen(false)}>
                   <ItemIcon>{item.icon}</ItemIcon>
-                  {item.label}
+                  {t(item.kunci)}
                   <FiChevronRight className="chev" />
                 </Item>
               ))}
             </div>
           ))}
           <div>
-            <GroupLabel>Tampilan</GroupLabel>
-            <SegTema role="group" aria-label="Mode tema tampilan">
+            <GroupLabel>{t('umum.tampilan')}</GroupLabel>
+            <SegTema role="group" aria-label={t('umum.modeTemaAria')}>
               {[
-                ['ikut', 'Ikut Sistem'],
-                ['terang', 'Terang'],
-                ['gelap', 'Mode Gelap'],
-                ['kontras', 'Kontras Tinggi'],
-              ].map(([nilai, label]) => (
+                ['ikut', 'umum.modeIkut'],
+                ['terang', 'umum.modeTerang'],
+                ['gelap', 'umum.modeGelap'],
+                ['kontras', 'umum.modeKontras'],
+              ].map(([nilai, kunciLabel]) => (
                 <SegBtn
                   key={nilai}
                   type="button"
@@ -525,13 +527,13 @@ export default function AppHeader() {
                   aria-pressed={pengaturan.modeTema === nilai}
                   onClick={() => ubah({ modeTema: nilai })}
                 >
-                  {label}
+                  {t(kunciLabel)}
                 </SegBtn>
               ))}
             </SegTema>
           </div>
         </PanelNav>
-        <PanelFoot>Noor — menemani ibadah harian</PanelFoot>
+        <PanelFoot>{t('umum.footerDrawer')}</PanelFoot>
       </Panel>
     </>
   );

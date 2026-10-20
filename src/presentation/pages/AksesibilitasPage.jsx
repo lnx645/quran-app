@@ -1,12 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import styled from '@emotion/styled';
 import {
-  FaUniversalAccess, FaPalette, FaFont, FaVideo, FaBell, FaInfoCircle, FaCompass,
+  FaUniversalAccess, FaPalette, FaFont, FaVideo, FaBell, FaInfoCircle, FaCompass, FaGlobe,
 } from 'react-icons/fa';
 import {
   Page, PageHero, Card, SectionTitle,
 } from '../components/common.jsx';
 import { useAkses } from '../a11y/pengaturanStore.js';
+import { useBahasa } from '../../app/bahasa.js';
 
 /**
  * Halaman Pengaturan Aksesibilitas (/aksesibilitas).
@@ -119,6 +120,7 @@ const SKALA_TEKS = [
 
 export default function AksesibilitasPage() {
   const { pengaturan, ubah } = useAkses();
+  const { bahasa, setBahasa, t } = useBahasa();
 
   return (
     <Page>
@@ -153,6 +155,32 @@ export default function AksesibilitasPage() {
             </SegBtn>
           ))}
         </SegGrid>
+      </Card>
+
+
+      <Card>
+        <SectionTitle css={{ marginTop: 0 }}>
+          <FaGlobe /> {t('bahasa.judul')}
+        </SectionTitle>
+        <SegGrid role="group" aria-label={t('bahasa.judul')}>
+          <SegBtn
+            type="button"
+            aktif={bahasa === 'id'}
+            aria-pressed={bahasa === 'id'}
+            onClick={() => setBahasa('id')}
+          >
+            Bahasa Indonesia
+          </SegBtn>
+          <SegBtn
+            type="button"
+            aktif={bahasa === 'en'}
+            aria-pressed={bahasa === 'en'}
+            onClick={() => setBahasa('en')}
+          >
+            English
+          </SegBtn>
+        </SegGrid>
+        <p css={{ fontSize: 13, lineHeight: 1.6, marginTop: 10 }}>{t('bahasa.catatan')}</p>
       </Card>
 
       <Card>

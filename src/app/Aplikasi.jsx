@@ -4,6 +4,7 @@ import { ThemeProvider, Global, css } from '@emotion/react';
 import { RouterProvider } from 'react-router-dom';
 import { buatTema } from './theme.js';
 import router from './router.jsx';
+import { LanguageProvider } from './bahasa.js';
 import ToastProvider from '../presentation/components/feedback/Toast.jsx';
 import DialogProvider from '../presentation/components/feedback/Dialog.jsx';
 import { useAkses } from '../presentation/a11y/pengaturanStore.js';
@@ -63,7 +64,9 @@ export default function Aplikasi() {
       <Global styles={globalStyles} />
       <DialogProvider>
         <ToastProvider>
-          <RouterProvider router={router} />
+          <LanguageProvider>
+            <RouterProvider router={router} />
+          </LanguageProvider>
         </ToastProvider>
       </DialogProvider>
     </ThemeProvider>

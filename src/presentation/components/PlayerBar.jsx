@@ -2,6 +2,7 @@
 import styled from '@emotion/styled';
 import { FaPlay, FaPause, FaStepBackward, FaStepForward } from 'react-icons/fa';
 import { GirihPattern, OrnamentBand } from './ornaments/index.js';
+import { useBahasa } from '../../app/bahasa.js';
 
 const Bar = styled.div`
   position: fixed;
@@ -186,6 +187,7 @@ export default function PlayerBar({
   posisiAyatMs,
   namaSurah,
 }) {
+  const { t } = useBahasa();
   const persen = durasiMs > 0 ? Math.min(100, (posisiMs / durasiMs) * 100) : 0;
   const persenAyat =
     durasiMs > 0 && posisiAyatMs != null ? (posisiAyatMs / durasiMs) * 100 : null;
@@ -239,7 +241,7 @@ export default function PlayerBar({
       <Inner>
         <InfoBaris>
           <span>
-            {namaSurah} — Ayat {ayatAktif > 0 ? ayatAktif : '–'} dari {totalAyat}
+            {namaSurah} — {t('player.infoAyat', { aktif: ayatAktif > 0 ? ayatAktif : '–', total: totalAyat })}
           </span>
           <span>
             {fmt(posisiMs)} / {fmt(durasiMs)}
@@ -250,11 +252,11 @@ export default function PlayerBar({
           onKeyDown={tekanTrack}
           tabIndex={0}
           role="slider"
-          aria-label="Posisi audio"
+          aria-label={t('player.posisiAudio')}
           aria-valuemin={0}
           aria-valuemax={Math.round(durasiMs / 1000)}
           aria-valuenow={Math.round(posisiMs / 1000)}
-          aria-valuetext={`${fmt(posisiMs)} dari ${fmt(durasiMs)}`}
+          aria-valuetext={`${fmt(posisiMs)} ${t('player.dari')} ${fmt(durasiMs)}`}
           aria-orientation="horizontal"
         >
           <BarVisual>
@@ -264,13 +266,13 @@ export default function PlayerBar({
           </BarVisual>
         </Track>
         <Kontrol>
-          <TombolSamping onClick={onPrev} aria-label="Ayat sebelumnya">
+          <TombolSamping onClick={onPrev} aria-label={t('player.sebelumnya')}>
             <FaStepBackward />
           </TombolSamping>
-          <TombolUtama onClick={onToggle} aria-label={playing ? 'Jeda' : 'Putar'}>
+          <TombolUtama onClick={onToggle} aria-label={playing ? t('player.jeda') : t('player.putar')}>
             {playing ? <FaPause /> : <FaPlay style={{ marginLeft: 3 }} />}
           </TombolUtama>
-          <TombolSamping onClick={onNext} aria-label="Ayat berikutnya">
+          <TombolSamping onClick={onNext} aria-label={t('player.berikutnya')}>
             <FaStepForward />
           </TombolSamping>
         </Kontrol>

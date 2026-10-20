@@ -11,6 +11,7 @@ import {
   FaDownload, FaTimes,
 } from 'react-icons/fa';
 import { useInstallPrompt } from '../hooks/useInstallPrompt.js';
+import { useBahasa } from '../../app/bahasa.js';
 import { Page, SectionTitle, MenuCard } from '../components/common.jsx';
 import LanjutkanMembaca from '../components/LanjutkanMembaca.jsx';
 import HaditsHariIni from '../components/HaditsHariIni.jsx';
@@ -108,108 +109,108 @@ const GridMenu = styled.div`
 
 const SEKSI = [
   {
-    nama: "Al-Qur'an",
+    kunciNama: 'grup.quran',
     ikon: <FaQuran />,
     items: [
-      { to: '/quran', icon: <FaQuran />, judul: 'Al-Qur\u2019an — 114 Surah', desc: 'Semua surah lengkap dengan pencarian cepat' },
-      { to: '/surah/36', icon: <FaHeart />, judul: 'Surah Ya-Sin', desc: '83 ayat dengan audio & highlight' },
-      { to: '/surah/18', icon: <FaBookOpen />, judul: 'Surah Al-Kahf', desc: '110 ayat, dianjurkan hari Jumat' },
-      { to: '/surah/67', icon: <FaBookOpen />, judul: 'Surah Al-Mulk', desc: '30 ayat dibaca sebelum tidur' },
-      { to: '/surah/55', icon: <FaBookOpen />, judul: 'Surah Ar-Rahman', desc: '78 ayat tentang nikmat Allah' },
-      { to: '/cari', icon: <FaSearch />, judul: 'Cari Ayat', desc: 'Temukan ayat dari kata kunci' },
-      { to: '/hafalan', icon: <FaBrain />, judul: 'Mode Hafalan', desc: 'Tahfidz bertahap, uji & audio ulang' },
-      { to: '/bookmark', icon: <FaBookmark />, judul: 'Bookmark Ayat', desc: 'Ayat tersimpan & catatan pribadi' },
-      { to: '/panduan-tajwid', icon: <FaPalette />, judul: 'Panduan Tajwid', desc: 'Warna tajwid, makhraj & hukum bacaan' },
-      { to: '/indeks-tematik', icon: <FaListUl />, judul: 'Indeks Tematik', desc: 'Ayat per topik: sabar, rezeki, sembuh' },
-      { to: '/kuis', icon: <FaBrain />, judul: 'Kuis Islami', desc: 'Sambung ayat, tebak surah & fikih' },
-      { to: '/radio', icon: <FaBroadcastTower />, judul: 'Radio Murottal', desc: 'Putar murottal terus-menerus + timer tidur' },
-      { to: '/tes-baca', icon: <FaMicrophone />, judul: 'Tes Baca', desc: 'Latihan baca dengan mikrofon (eksperimental)' },
+      { to: '/quran', icon: <FaQuran />, kunci: 'beranda.quran', desc: 'Semua surah lengkap dengan pencarian cepat' },
+      { to: '/surah/36', icon: <FaHeart />, kunci: 'menu.yasin', desc: '83 ayat dengan audio & highlight' },
+      { to: '/surah/18', icon: <FaBookOpen />, kunci: 'menu.kahf', desc: '110 ayat, dianjurkan hari Jumat' },
+      { to: '/surah/67', icon: <FaBookOpen />, kunci: 'menu.mulk', desc: '30 ayat dibaca sebelum tidur' },
+      { to: '/surah/55', icon: <FaBookOpen />, kunci: 'menu.rahman', desc: '78 ayat tentang nikmat Allah' },
+      { to: '/cari', icon: <FaSearch />, kunci: 'beranda.cariAyat', desc: 'Temukan ayat dari kata kunci' },
+      { to: '/hafalan', icon: <FaBrain />, kunci: 'menu.hafalan', desc: 'Tahfidz bertahap, uji & audio ulang' },
+      { to: '/bookmark', icon: <FaBookmark />, kunci: 'menu.bookmark', desc: 'Ayat tersimpan & catatan pribadi' },
+      { to: '/panduan-tajwid', icon: <FaPalette />, kunci: 'menu.tajwid', desc: 'Warna tajwid, makhraj & hukum bacaan' },
+      { to: '/indeks-tematik', icon: <FaListUl />, kunci: 'menu.indeks', desc: 'Ayat per topik: sabar, rezeki, sembuh' },
+      { to: '/kuis', icon: <FaBrain />, kunci: 'menu.kuis', desc: 'Sambung ayat, tebak surah & fikih' },
+      { to: '/radio', icon: <FaBroadcastTower />, kunci: 'menu.radio', desc: 'Putar murottal terus-menerus + timer tidur' },
+      { to: '/tes-baca', icon: <FaMicrophone />, kunci: 'menu.tesBaca', desc: 'Latihan baca dengan mikrofon (eksperimental)' },
     ],
   },
   {
-    nama: 'Ibadah Harian',
+    kunciNama: 'grup.ibadah',
     ikon: <FaPrayingHands />,
     items: [
-      { to: '/jadwal', icon: <FaClock />, judul: 'Jadwal Sholat', desc: 'Waktu sholat & countdown adzan harian' },
-      { to: '/tasbih', icon: <FaHandPointer />, judul: 'Tasbih Digital', desc: 'Counter dzikir dengan target & getar' },
-      { to: '/dzikir', icon: <FaCloudSun />, judul: 'Dzikir Pagi & Petang', desc: 'Al-Ma\u2019tsurat ringkas dengan penghitung dzikir' },
-      { to: '/doa', icon: <FaPrayingHands />, judul: 'Doa Harian', desc: 'Sepuluh doa: Arab, latin & arti' },
-      { to: '/sholat-tracker', icon: <FaClipboardCheck />, judul: 'Sholat Tracker', desc: 'Checklist lima waktu & streak harian' },
-      { to: '/wudhu', icon: <FaTint />, judul: 'Wudhu & Tayammum', desc: 'Langkah bersuci & doa sesudah wudhu' },
-      { to: '/panduan-sholat', icon: <FaPrayingHands />, judul: 'Panduan Sholat', desc: 'Niat, gerakan & bacaan tiap gerakan' },
-      { to: '/sholat-sunnah', icon: <FaMoon />, judul: 'Sholat Sunnah', desc: 'Dhuha, tahajud, witir & lainnya' },
-      { to: '/dzikir-bada-sholat', icon: <FaCloudSun />, judul: "Dzikir Ba'da Sholat", desc: 'Wirid sesudah sholat dengan penghitung' },
-      { to: '/sholat-jenazah', icon: <FaBook />, judul: 'Sholat Jenazah', desc: 'Empat takbir & bacaan tiap takbir' },
-      { to: '/sholat-id', icon: <FaMoon />, judul: 'Sholat Id', desc: 'Idul Fitri & Adha plus teks takbiran' },
-      { to: '/sholat-musafir', icon: <FaBookOpen />, judul: 'Sholat Musafir', desc: "Jama' & qashar plus hitung jarak safar" },
-      { to: '/sholat-sakit', icon: <FaBook />, judul: 'Sholat Orang Sakit', desc: 'Duduk, berbaring, isyarat & kendaraan' },
-      { to: '/qunut', icon: <FaPrayingHands />, judul: 'Doa Qunut', desc: 'Qunut Subuh & witir: Arab, latin, arti' },
-      { to: '/panduan-imam', icon: <FaMosque />, judul: 'Imam & Muadzin', desc: 'Syarat, tugas, teks adzan & iqamah' },
-      { to: '/sujud', icon: <FaBookOpen />, judul: 'Sujud', desc: 'Sahwi, syukur & tilawah plus bacaannya' },
-      { to: '/panduan-puasa', icon: <FaBookOpen />, judul: 'Panduan Puasa', desc: 'Rukun, pembatal, niat & doa berbuka' },
-      { to: '/qadha-puasa', icon: <FaClipboardCheck />, judul: 'Tracker Qadha', desc: 'Catat utang & pembayaran puasa' },
-      { to: '/ramadhan', icon: <FaMoon />, judul: 'Mode Ramadhan', desc: 'Hitung mundur, imsakiyah & tarawih' },
-      { to: '/hisnul-muslim', icon: <FaPrayingHands />, judul: 'Hisnul Muslim', desc: '37 doa per aktivitas & situasi' },
-      { to: '/itikaf', icon: <FaMoon />, judul: "I'tikaf", desc: 'Panduan 10 malam terakhir Ramadhan' },
-      { to: '/ruqyah', icon: <FaBookOpen />, judul: 'Ruqyah', desc: "Syar'iyyah + playlist ayat ruqyah" },
-      { to: '/mutabaah', icon: <FaTasks />, judul: "Mutaba'ah Yaumiyah", desc: 'Checklist amal harian & ringkasan 7 hari' },
+      { to: '/jadwal', icon: <FaClock />, kunci: 'menu.jadwal', desc: 'Waktu sholat & countdown adzan harian' },
+      { to: '/tasbih', icon: <FaHandPointer />, kunci: 'menu.tasbih', desc: 'Counter dzikir dengan target & getar' },
+      { to: '/dzikir', icon: <FaCloudSun />, kunci: 'menu.dzikir', desc: 'Al-Ma\u2019tsurat ringkas dengan penghitung dzikir' },
+      { to: '/doa', icon: <FaPrayingHands />, kunci: 'menu.doa', desc: 'Sepuluh doa: Arab, latin & arti' },
+      { to: '/sholat-tracker', icon: <FaClipboardCheck />, kunci: 'menu.sholatTracker', desc: 'Checklist lima waktu & streak harian' },
+      { to: '/wudhu', icon: <FaTint />, kunci: 'beranda.wudhu', desc: 'Langkah bersuci & doa sesudah wudhu' },
+      { to: '/panduan-sholat', icon: <FaPrayingHands />, kunci: 'menu.panduanSholat', desc: 'Niat, gerakan & bacaan tiap gerakan' },
+      { to: '/sholat-sunnah', icon: <FaMoon />, kunci: 'menu.sholatSunnah', desc: 'Dhuha, tahajud, witir & lainnya' },
+      { to: '/dzikir-bada-sholat', icon: <FaCloudSun />, kunci: 'menu.dzikirBada', desc: 'Wirid sesudah sholat dengan penghitung' },
+      { to: '/sholat-jenazah', icon: <FaBook />, kunci: 'menu.sholatJenazah', desc: 'Empat takbir & bacaan tiap takbir' },
+      { to: '/sholat-id', icon: <FaMoon />, kunci: 'beranda.sholatId', desc: 'Idul Fitri & Adha plus teks takbiran' },
+      { to: '/sholat-musafir', icon: <FaBookOpen />, kunci: 'beranda.sholatMusafir', desc: "Jama' & qashar plus hitung jarak safar" },
+      { to: '/sholat-sakit', icon: <FaBook />, kunci: 'menu.sholatSakit', desc: 'Duduk, berbaring, isyarat & kendaraan' },
+      { to: '/qunut', icon: <FaPrayingHands />, kunci: 'menu.qunut', desc: 'Qunut Subuh & witir: Arab, latin, arti' },
+      { to: '/panduan-imam', icon: <FaMosque />, kunci: 'beranda.imam', desc: 'Syarat, tugas, teks adzan & iqamah' },
+      { to: '/sujud', icon: <FaBookOpen />, kunci: 'beranda.sujud', desc: 'Sahwi, syukur & tilawah plus bacaannya' },
+      { to: '/panduan-puasa', icon: <FaBookOpen />, kunci: 'menu.puasa', desc: 'Rukun, pembatal, niat & doa berbuka' },
+      { to: '/qadha-puasa', icon: <FaClipboardCheck />, kunci: 'beranda.qadha', desc: 'Catat utang & pembayaran puasa' },
+      { to: '/ramadhan', icon: <FaMoon />, kunci: 'menu.ramadhan', desc: 'Hitung mundur, imsakiyah & tarawih' },
+      { to: '/hisnul-muslim', icon: <FaPrayingHands />, kunci: 'menu.hisnul', desc: '37 doa per aktivitas & situasi' },
+      { to: '/itikaf', icon: <FaMoon />, kunci: 'beranda.itikaf', desc: 'Panduan 10 malam terakhir Ramadhan' },
+      { to: '/ruqyah', icon: <FaBookOpen />, kunci: 'beranda.ruqyah', desc: "Syar'iyyah + playlist ayat ruqyah" },
+      { to: '/mutabaah', icon: <FaTasks />, kunci: 'menu.mutabaah', desc: 'Checklist amal harian & ringkasan 7 hari' },
     ],
   },
   {
-    nama: 'Panduan & Hitungan',
+    kunciNama: 'grup.panduan',
     ikon: <FaBalanceScale />,
     items: [
-      { to: '/waris', icon: <FaBalanceScale />, judul: 'Kalkulator Waris', desc: 'Hitung faraidh dasar + penjelasan' },
-      { to: '/fidyah', icon: <FaHandHoldingHeart />, judul: 'Kalkulator Fidyah', desc: 'Fidyah puasa per hari & harga pokok' },
-      { to: '/kafarat', icon: <FaBookOpen />, judul: 'Kafarat', desc: 'Sumpah, zhihar & lainnya — ringkas' },
-      { to: '/haji-umrah', icon: <FaKaaba />, judul: 'Haji & Umrah', desc: 'Manasik per tahap + checklist barang' },
-      { to: '/panduan-jenazah', icon: <FaBook />, judul: 'Panduan Jenazah', desc: 'Memandikan sampai menguburkan' },
-      { to: '/aqiqah-kurban', icon: <FaGift />, judul: 'Aqiqah & Kurban', desc: 'Syarat, waktu & kalkulator hewan' },
-      { to: '/nama-bayi', icon: <FaBaby />, judul: 'Nama Bayi Islami', desc: '110 nama + arti, bisa dicari' },
-      { to: '/masjid-terdekat', icon: <FaMosque />, judul: 'Masjid Terdekat', desc: 'Cari masjid di sekitarmu + rute' },
-      { to: '/panduan-nikah', icon: <FaHeart />, judul: 'Panduan Nikah', desc: 'Rukun, mahar, akad & doa pengantin' },
-      { to: '/fikih-keluarga', icon: <FaBook />, judul: 'Fikih Keluarga', desc: 'Menyusui, khitan & mendidik anak' },
-      { to: '/muamalah', icon: <FaBalanceScale />, judul: 'Fikih Muamalah', desc: 'Riba, utang, jual beli & gadai' },
-      { to: '/wakaf-wasiat', icon: <FaHandHoldingHeart />, judul: 'Wakaf & Wasiat', desc: 'Ketentuan + contoh redaksi wasiat' },
-      { to: '/halal', icon: <FaBookOpen />, judul: 'Halal & Adab Makan', desc: 'Haram, sembelihan & adab makan' },
-      { to: '/khutbah', icon: <FaBook />, judul: 'Teks Khutbah', desc: 'Jumat & hari raya untuk khatib' },
+      { to: '/waris', icon: <FaBalanceScale />, kunci: 'menu.waris', desc: 'Hitung faraidh dasar + penjelasan' },
+      { to: '/fidyah', icon: <FaHandHoldingHeart />, kunci: 'menu.fidyah', desc: 'Fidyah puasa per hari & harga pokok' },
+      { to: '/kafarat', icon: <FaBookOpen />, kunci: 'menu.kafarat', desc: 'Sumpah, zhihar & lainnya — ringkas' },
+      { to: '/haji-umrah', icon: <FaKaaba />, kunci: 'beranda.haji', desc: 'Manasik per tahap + checklist barang' },
+      { to: '/panduan-jenazah', icon: <FaBook />, kunci: 'menu.panduanJenazah', desc: 'Memandikan sampai menguburkan' },
+      { to: '/aqiqah-kurban', icon: <FaGift />, kunci: 'menu.aqiqah', desc: 'Syarat, waktu & kalkulator hewan' },
+      { to: '/nama-bayi', icon: <FaBaby />, kunci: 'menu.namaBayi', desc: '110 nama + arti, bisa dicari' },
+      { to: '/masjid-terdekat', icon: <FaMosque />, kunci: 'menu.masjid', desc: 'Cari masjid di sekitarmu + rute' },
+      { to: '/panduan-nikah', icon: <FaHeart />, kunci: 'menu.nikah', desc: 'Rukun, mahar, akad & doa pengantin' },
+      { to: '/fikih-keluarga', icon: <FaBook />, kunci: 'menu.fikihKeluarga', desc: 'Menyusui, khitan & mendidik anak' },
+      { to: '/muamalah', icon: <FaBalanceScale />, kunci: 'menu.muamalah', desc: 'Riba, utang, jual beli & gadai' },
+      { to: '/wakaf-wasiat', icon: <FaHandHoldingHeart />, kunci: 'menu.wakaf', desc: 'Ketentuan + contoh redaksi wasiat' },
+      { to: '/halal', icon: <FaBookOpen />, kunci: 'beranda.halal', desc: 'Haram, sembelihan & adab makan' },
+      { to: '/khutbah', icon: <FaBook />, kunci: 'menu.khutbah', desc: 'Jumat & hari raya untuk khatib' },
     ],
   },
   {
-    nama: 'Belajar & Kisah',
+    kunciNama: 'grup.belajar',
     ikon: <FaGraduationCap />,
     items: [
-      { to: '/iqro', icon: <FaGraduationCap />, judul: 'Belajar Iqro', desc: 'Jilid 1\u20136: huruf, harakat & tajwid' },
-      { to: '/kisah', icon: <FaBook />, judul: 'Kisah 25 Nabi', desc: 'Ringkasan teladan para nabi & rasul' },
-      { to: '/asmaul-husna', icon: <FaListUl />, judul: 'Asmaul Husna', desc: '99 nama Allah & mode hafalan' },
-      { to: '/hadits', icon: <FaBook />, judul: 'Hadits Arbain', desc: '42 hadits: Arab, arti & perawi' },
-      { to: '/sirah', icon: <FaBookOpen />, judul: 'Sirah Nabawiyah', desc: 'Garis waktu kehidupan Rasulullah' },
-      { to: '/riyadhus', icon: <FaBook />, judul: 'Riyadhus Shalihin', desc: '141 hadits bab inti + terjemahan' },
-      { to: '/peristiwa', icon: <FaCalendarAlt />, judul: 'Peristiwa Islam', desc: 'Maulid, Isra Mi\'raj, Nuzulul Qur\'an' },
+      { to: '/iqro', icon: <FaGraduationCap />, kunci: 'menu.iqro', desc: 'Jilid 1\u20136: huruf, harakat & tajwid' },
+      { to: '/kisah', icon: <FaBook />, kunci: 'menu.kisah', desc: 'Ringkasan teladan para nabi & rasul' },
+      { to: '/asmaul-husna', icon: <FaListUl />, kunci: 'menu.asmaul', desc: '99 nama Allah & mode hafalan' },
+      { to: '/hadits', icon: <FaBook />, kunci: 'beranda.hadits', desc: '42 hadits: Arab, arti & perawi' },
+      { to: '/sirah', icon: <FaBookOpen />, kunci: 'menu.sirah', desc: 'Garis waktu kehidupan Rasulullah' },
+      { to: '/riyadhus', icon: <FaBook />, kunci: 'menu.riyadhus', desc: '141 hadits bab inti + terjemahan' },
+      { to: '/peristiwa', icon: <FaCalendarAlt />, kunci: 'menu.peristiwa', desc: 'Maulid, Isra Mi\'raj, Nuzulul Qur\'an' },
     ],
   },
   {
-    nama: 'Muslimah',
+    kunciNama: 'grup.muslimah',
     ikon: <FaVenus />,
     items: [
-      { to: '/muslimah', icon: <FaVenus />, judul: 'Ruang Muslimah', desc: 'Kalkulator haid, doa & fikih wanita' },
-      { to: '/muslimah/kalkulator', icon: <FaClipboardCheck />, judul: 'Kalkulator Haid', desc: 'Vonis haid/istihadah terkunci PIN pribadi' },
-      { to: '/muslimah/mandi-wajib', icon: <FaHandPointer />, judul: 'Panduan Mandi Wajib', desc: 'Niat & tata cara pasca haid/nifas' },
-      { to: '/muslimah/doa', icon: <FaPrayingHands />, judul: 'Doa Khusus Wanita', desc: 'Doa hamil, persalinan & menyusui' },
-      { to: '/muslimah/fikih', icon: <FaBook />, judul: 'Fikih Wanita', desc: 'Haid, nifas, istihadah & mitos' },
+      { to: '/muslimah', icon: <FaVenus />, kunci: 'menu.muslimah', desc: 'Kalkulator haid, doa & fikih wanita' },
+      { to: '/muslimah/kalkulator', icon: <FaClipboardCheck />, kunci: 'menu.haid', desc: 'Vonis haid/istihadah terkunci PIN pribadi' },
+      { to: '/muslimah/mandi-wajib', icon: <FaHandPointer />, kunci: 'menu.mandiWajib', desc: 'Niat & tata cara pasca haid/nifas' },
+      { to: '/muslimah/doa', icon: <FaPrayingHands />, kunci: 'menu.doaWanita', desc: 'Doa hamil, persalinan & menyusui' },
+      { to: '/muslimah/fikih', icon: <FaBook />, kunci: 'menu.fikihWanita', desc: 'Haid, nifas, istihadah & mitos' },
     ],
   },
   {
-    nama: 'Utilitas',
+    kunciNama: 'grup.utilitas',
     ikon: <FaCoins />,
     items: [
-      { to: '/zakat', icon: <FaCoins />, judul: 'Kalkulator Zakat', desc: 'Mal, profesi & fitrah, otomatis terhitung' },
-      { to: '/khatam', icon: <FaBookReader />, judul: 'Khatam Tracker', desc: 'Checklist 30 juz & target harian' },
-      { to: '/kiblat', icon: <FaCompass />, judul: 'Arah Kiblat', desc: 'Kompas kiblat & sensor arah perangkat' },
-      { to: '/kalender', icon: <FaCalendarAlt />, judul: 'Kalender Hijriah', desc: 'Tanggal hijriah & hari besar Islam' },
-      { to: '/konverter', icon: <FaCalendarAlt />, judul: 'Konverter Hijriah', desc: 'Hijriah-Masehi + hitung usia Hijriah' },
-      { to: '/statistik', icon: <FaClipboardCheck />, judul: 'Statistik Ibadah', desc: 'Gabungan tracker 7 & 30 hari' },
-      { to: '/data-progres', icon: <FaTasks />, judul: 'Data Progres', desc: 'Ekspor & impor cadangan data' },
+      { to: '/zakat', icon: <FaCoins />, kunci: 'menu.zakat', desc: 'Mal, profesi & fitrah, otomatis terhitung' },
+      { to: '/khatam', icon: <FaBookReader />, kunci: 'menu.khatam', desc: 'Checklist 30 juz & target harian' },
+      { to: '/kiblat', icon: <FaCompass />, kunci: 'menu.kiblat', desc: 'Kompas kiblat & sensor arah perangkat' },
+      { to: '/kalender', icon: <FaCalendarAlt />, kunci: 'menu.kalender', desc: 'Tanggal hijriah & hari besar Islam' },
+      { to: '/konverter', icon: <FaCalendarAlt />, kunci: 'menu.konverter', desc: 'Hijriah-Masehi + hitung usia Hijriah' },
+      { to: '/statistik', icon: <FaClipboardCheck />, kunci: 'menu.statistik', desc: 'Gabungan tracker 7 & 30 hari' },
+      { to: '/data-progres', icon: <FaTasks />, kunci: 'beranda.dataProgres', desc: 'Ekspor & impor cadangan data' },
     ],
   },
 ];
@@ -271,6 +272,7 @@ const TombolTutupBanner = styled.button`
 export default function HomePage() {
   const navigate = useNavigate();
   const { bisaInstall, pasang } = useInstallPrompt();
+  const { t } = useBahasa();
   const [bannerTutup, setBannerTutup] = useState(() => {
     try {
       return localStorage.getItem(KUNCI_BANNER_TUTUP) === '1';
@@ -289,14 +291,14 @@ export default function HomePage() {
   return (
     <Page>
       {bisaInstall && !bannerTutup && (
-        <BannerInstall role="region" aria-label="Pasang aplikasi Noor">
+        <BannerInstall role="region" aria-label={t('beranda.bannerAria')}>
           <span className="teks">
-            Pasang Noor di layar utama — akses cepat &amp; bisa offline
+            {t('beranda.bannerTeks')}
           </span>
           <TombolPasang type="button" onClick={() => pasang()}>
-            <FaDownload aria-hidden="true" /> Pasang
+            <FaDownload aria-hidden="true" /> {t('beranda.pasang')}
           </TombolPasang>
-          <TombolTutupBanner type="button" onClick={tutupBanner} aria-label="Tutup banner pasang aplikasi">
+          <TombolTutupBanner type="button" onClick={tutupBanner} aria-label={t('beranda.tutupBanner')}>
             <FaTimes aria-hidden="true" />
           </TombolTutupBanner>
         </BannerInstall>
@@ -323,22 +325,22 @@ export default function HomePage() {
           </div>
         </div>
       </Hero>
-      <BarCari type="button" onClick={() => navigate('/cari')} aria-label="Buka pencarian">
+      <BarCari type="button" onClick={() => navigate('/cari')} aria-label={t('beranda.bukaPencarian')}>
         <FaSearch aria-hidden="true" />
-        <span>Cari surah, doa, fitur, topik…</span>
+        <span>{t('beranda.cariPlaceholder')}</span>
       </BarCari>
       <OrnamentDivider />
       <LanjutkanMembaca />
       <HaditsHariIni />
       <AyatHariIni />
       {SEKSI.map((seksi) => (
-        <div key={seksi.nama}>
+        <div key={seksi.kunciNama}>
           <SectionTitle>
-            {seksi.ikon} {seksi.nama}
+            {seksi.ikon} {t(seksi.kunciNama)}
           </SectionTitle>
           <GridMenu>
             {seksi.items.map((item) => (
-              <MenuCard key={item.to} {...item} />
+              <MenuCard key={item.to} to={item.to} icon={item.icon} judul={t(item.kunci)} desc={item.desc} />
             ))}
           </GridMenu>
         </div>

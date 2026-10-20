@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import styled from '@emotion/styled';
 import { FaMinus, FaPlus } from 'react-icons/fa';
+import { useBahasa } from '../../app/bahasa.js';
 
 /**
  * Bar kontrol baca: strip ramping selebar area baca yang MENYATU di tepi
@@ -123,30 +124,31 @@ const PilihQari = styled.select`
 `;
 
 export default function ReadingControls({ pref, ubah, tambahArab, kurangArab, qari, daftarQari, ubahQari }) {
+  const { t } = useBahasa();
   return (
-    <Bar role="group" aria-label="Kontrol baca">
+    <Bar role="group" aria-label={t('baca.kontrol')}>
       <GrupFont>
-        <TombolFont onClick={kurangArab} disabled={pref.arabSize <= 26} aria-label="Perkecil huruf Arab">
+        <TombolFont onClick={kurangArab} disabled={pref.arabSize <= 26} aria-label={t('baca.perkecilArab')}>
           <FaMinus />
         </TombolFont>
         <LabelUkuran aria-live="polite">{pref.arabSize}</LabelUkuran>
-        <TombolFont onClick={tambahArab} disabled={pref.arabSize >= 46} aria-label="Perbesar huruf Arab">
+        <TombolFont onClick={tambahArab} disabled={pref.arabSize >= 46} aria-label={t('baca.perbesarArab')}>
           <FaPlus />
         </TombolFont>
       </GrupFont>
       <Pembatas aria-hidden="true" />
       <GrupChip>
         <Chip aktif={pref.latin} onClick={() => ubah({ latin: !pref.latin })} aria-pressed={pref.latin}>
-          Latin
+          {t('baca.latin')}
         </Chip>
         <Chip aktif={pref.terjemah} onClick={() => ubah({ terjemah: !pref.terjemah })} aria-pressed={pref.terjemah}>
-          Arti
+          {t('baca.arti')}
         </Chip>
-        <Chip aktif={pref.tajwid} onClick={() => ubah({ tajwid: !pref.tajwid })} aria-pressed={pref.tajwid} aria-label="Warnai huruf sesuai aturan tajwid">
-          Tajwid
+        <Chip aktif={pref.tajwid} onClick={() => ubah({ tajwid: !pref.tajwid })} aria-pressed={pref.tajwid} aria-label={t('baca.tajwidAria')}>
+          {t('baca.tajwid')}
         </Chip>
-        <Chip aktif={pref.perKata} onClick={() => ubah({ perKata: !pref.perKata })} aria-pressed={pref.perKata} aria-label="Tampilkan terjemahan per kata (Bahasa Inggris)">
-          Per Kata
+        <Chip aktif={pref.perKata} onClick={() => ubah({ perKata: !pref.perKata })} aria-pressed={pref.perKata} aria-label={t('baca.perKataAria')}>
+          {t('baca.perKata')}
         </Chip>
       </GrupChip>
       {daftarQari && ubahQari && (
@@ -155,7 +157,7 @@ export default function ReadingControls({ pref, ubah, tambahArab, kurangArab, qa
           <PilihQari
             value={qari}
             onChange={(e) => ubahQari(e.target.value)}
-            aria-label="Pilih qari murottal"
+            aria-label={t('baca.pilihQari')}
           >
             {daftarQari.map((q) => (
               <option key={q.id} value={q.id}>

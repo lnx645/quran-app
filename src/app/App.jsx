@@ -3,6 +3,7 @@ import { useEffect, useRef } from 'react';
 import styled from '@emotion/styled';
 import { Outlet, useLocation } from 'react-router-dom';
 import AppHeader from '../presentation/components/AppHeader.jsx';
+import { useBahasa } from './bahasa.js';
 import LiveRegion from '../presentation/components/feedback/LiveRegion.jsx';
 
 // App shell: ThemeProvider sudah dipasang di main.jsx.
@@ -49,84 +50,86 @@ const SkipLink = styled.a`
 // Peta judul per rute → document.title (screen reader mengumumkan perpindahan
 // halaman SPA lewat judul dokumen + fokus yang dipindah ke <main>).
 const JUDUL_RUTE = [
-  [/^\/$/, 'Beranda'],
-  [/^\/quran$/, "Al-Qur'an — 114 Surah"],
-  [/^\/surah\/\d+$/, 'Baca Surah'],
-  [/^\/iqro$/, 'Belajar Iqro'],
-  [/^\/iqro\/\d+$/, 'Belajar Iqro'],
-  [/^\/jadwal$/, 'Jadwal Sholat'],
-  [/^\/zakat$/, 'Kalkulator Zakat'],
-  [/^\/khatam$/, 'Khatam Tracker'],
-  [/^\/tasbih$/, 'Tasbih Digital'],
-  [/^\/dzikir$/, 'Dzikir Pagi & Petang'],
-  [/^\/doa$/, 'Doa Harian'],
-  [/^\/sholat-tracker$/, 'Sholat Tracker'],
-  [/^\/kiblat$/, 'Arah Kiblat'],
-  [/^\/kalender$/, 'Kalender Hijriah'],
-  [/^\/asmaul-husna$/, 'Asmaul Husna'],
-  [/^\/kisah$/, 'Kisah 25 Nabi'],
-  [/^\/kisah\//, 'Kisah Nabi'],
-  [/^\/muslimah\/kalkulator$/, 'Kalkulator Haid & Nifas'],
-  [/^\/muslimah\/mandi-wajib$/, 'Panduan Mandi Wajib'],
-  [/^\/muslimah\/doa$/, 'Doa Khusus Wanita'],
-  [/^\/muslimah\/fikih$/, 'Fikih Wanita'],
-  [/^\/muslimah$/, 'Ruang Muslimah'],
-  [/^\/aksesibilitas$/, 'Pengaturan Aksesibilitas'],
-  [/^\/cari$/, 'Cari'],
-  [/^\/panduan-tajwid$/, 'Panduan Tajwid'],
-  [/^\/hafalan$/, 'Mode Hafalan'],
-  [/^\/bookmark$/, 'Bookmark Ayat'],
-  [/^\/wudhu$/, 'Panduan Wudhu & Tayammum'],
-  [/^\/panduan-sholat$/, 'Panduan Sholat'],
-  [/^\/sholat-sunnah$/, 'Panduan Sholat Sunnah'],
-  [/^\/dzikir-bada-sholat$/, "Dzikir Ba'da Sholat"],
-  [/^\/sholat-jenazah$/, 'Panduan Sholat Jenazah'],
-  [/^\/panduan-puasa$/, 'Panduan Puasa'],
-  [/^\/qadha-puasa$/, 'Tracker Qadha Puasa'],
-  [/^\/ramadhan$/, 'Mode Ramadhan'],
-  [/^\/hadits$/, 'Hadits Arbain Nawawi'],
-  [/^\/hisnul-muslim$/, 'Hisnul Muslim'],
-  [/^\/sirah$/, 'Sirah Nabawiyah'],
-  [/^\/waris$/, 'Kalkulator Waris'],
-  [/^\/fidyah$/, 'Kalkulator Fidyah'],
-  [/^\/kafarat$/, 'Kafarat'],
-  [/^\/haji-umrah$/, 'Panduan Haji & Umrah'],
-  [/^\/panduan-jenazah$/, 'Panduan Jenazah'],
-  [/^\/aqiqah-kurban$/, 'Aqiqah & Kurban'],
-  [/^\/mutabaah$/, "Mutaba'ah Yaumiyah"],
-  [/^\/nama-bayi$/, 'Nama Bayi Islami'],
-  [/^\/masjid-terdekat$/, 'Masjid Terdekat'],
-  [/^\/sholat-id$/, 'Panduan Sholat Id'],
-  [/^\/sholat-musafir$/, 'Panduan Sholat Musafir'],
-  [/^\/sholat-sakit$/, 'Panduan Sholat Orang Sakit'],
-  [/^\/qunut$/, 'Doa Qunut'],
-  [/^\/panduan-imam$/, 'Panduan Imam & Muadzin'],
-  [/^\/indeks-tematik$/, 'Indeks Tematik Al-Qur\'an'],
-  [/^\/sujud$/, 'Panduan Sujud Sahwi, Syukur & Tilawah'],
-  [/^\/kuis$/, 'Kuis Islami'],
-  [/^\/radio$/, 'Radio Murottal'],
-  [/^\/tes-baca$/, 'Tes Baca (Eksperimental)'],
-  [/^\/panduan-nikah$/, 'Panduan Nikah'],
-  [/^\/fikih-keluarga$/, 'Fikih Keluarga'],
-  [/^\/muamalah$/, 'Fikih Muamalah'],
-  [/^\/wakaf-wasiat$/, 'Wakaf & Wasiat'],
-  [/^\/halal$/, 'Makanan Halal & Adab Makan'],
-  [/^\/itikaf$/, "Panduan I'tikaf"],
-  [/^\/ruqyah$/, "Ruqyah Syar'iyyah"],
-  [/^\/khutbah$/, 'Teks Khutbah'],
-  [/^\/peristiwa$/, 'Peristiwa Islam'],
-  [/^\/riyadhus$/, 'Riyadhus Shalihin'],
-  [/^\/konverter$/, 'Konverter Hijriah'],
-  [/^\/statistik$/, 'Statistik Ibadah'],
-  [/^\/data-progres$/, 'Data Progres (Ekspor & Impor)'],
+  [/^\/$/, 'judul.beranda'],
+  [/^\/quran$/, 'judul.quran'],
+  [/^\/surah\/\d+$/, 'judul.bacaSurah'],
+  [/^\/iqro$/, 'judul.iqro'],
+  [/^\/iqro\/\d+$/, 'judul.iqro'],
+  [/^\/jadwal$/, 'judul.jadwal'],
+  [/^\/zakat$/, 'judul.zakat'],
+  [/^\/khatam$/, 'judul.khatam'],
+  [/^\/tasbih$/, 'judul.tasbih'],
+  [/^\/dzikir$/, 'judul.dzikir'],
+  [/^\/doa$/, 'judul.doa'],
+  [/^\/sholat-tracker$/, 'judul.sholatTracker'],
+  [/^\/kiblat$/, 'judul.kiblat'],
+  [/^\/kalender$/, 'judul.kalender'],
+  [/^\/asmaul-husna$/, 'judul.asmaul'],
+  [/^\/kisah$/, 'judul.kisah'],
+  [/^\/kisah\//, 'judul.kisahDetail'],
+  [/^\/muslimah\/kalkulator$/, 'judul.haidNifas'],
+  [/^\/muslimah\/mandi-wajib$/, 'judul.mandiWajib'],
+  [/^\/muslimah\/doa$/, 'judul.doaWanita'],
+  [/^\/muslimah\/fikih$/, 'judul.fikihWanita'],
+  [/^\/muslimah$/, 'judul.muslimah'],
+  [/^\/aksesibilitas$/, 'judul.aksesibilitas'],
+  [/^\/cari$/, 'judul.cari'],
+  [/^\/panduan-tajwid$/, 'judul.tajwid'],
+  [/^\/hafalan$/, 'judul.hafalan'],
+  [/^\/bookmark$/, 'judul.bookmark'],
+  [/^\/wudhu$/, 'judul.wudhu'],
+  [/^\/panduan-sholat$/, 'judul.panduanSholat'],
+  [/^\/sholat-sunnah$/, 'judul.sholatSunnah'],
+  [/^\/dzikir-bada-sholat$/, 'judul.dzikirBada'],
+  [/^\/sholat-jenazah$/, 'judul.sholatJenazah'],
+  [/^\/panduan-puasa$/, 'judul.puasa'],
+  [/^\/qadha-puasa$/, 'judul.qadha'],
+  [/^\/ramadhan$/, 'judul.ramadhan'],
+  [/^\/hadits$/, 'judul.hadits'],
+  [/^\/hisnul-muslim$/, 'judul.hisnul'],
+  [/^\/sirah$/, 'judul.sirah'],
+  [/^\/waris$/, 'judul.waris'],
+  [/^\/fidyah$/, 'judul.fidyah'],
+  [/^\/kafarat$/, 'judul.kafarat'],
+  [/^\/haji-umrah$/, 'judul.haji'],
+  [/^\/panduan-jenazah$/, 'judul.panduanJenazah'],
+  [/^\/aqiqah-kurban$/, 'judul.aqiqah'],
+  [/^\/mutabaah$/, 'judul.mutabaah'],
+  [/^\/nama-bayi$/, 'judul.namaBayi'],
+  [/^\/masjid-terdekat$/, 'judul.masjid'],
+  [/^\/sholat-id$/, 'judul.sholatId'],
+  [/^\/sholat-musafir$/, 'judul.sholatMusafir'],
+  [/^\/sholat-sakit$/, 'judul.sholatSakit'],
+  [/^\/qunut$/, 'judul.qunut'],
+  [/^\/panduan-imam$/, 'judul.imam'],
+  [/^\/indeks-tematik$/, 'judul.indeks'],
+  [/^\/sujud$/, 'judul.sujud'],
+  [/^\/kuis$/, 'judul.kuis'],
+  [/^\/radio$/, 'judul.radio'],
+  [/^\/tes-baca$/, 'judul.tesBaca'],
+  [/^\/anak(\/|$)/, 'judul.anak'],
+  [/^\/panduan-nikah$/, 'judul.nikah'],
+  [/^\/fikih-keluarga$/, 'judul.fikihKeluarga'],
+  [/^\/muamalah$/, 'judul.muamalah'],
+  [/^\/wakaf-wasiat$/, 'judul.wakaf'],
+  [/^\/halal$/, 'judul.halal'],
+  [/^\/itikaf$/, 'judul.itikaf'],
+  [/^\/ruqyah$/, 'judul.ruqyah'],
+  [/^\/khutbah$/, 'judul.khutbah'],
+  [/^\/peristiwa$/, 'judul.peristiwa'],
+  [/^\/riyadhus$/, 'judul.riyadhus'],
+  [/^\/konverter$/, 'judul.konverter'],
+  [/^\/statistik$/, 'judul.statistik'],
+  [/^\/data-progres$/, 'judul.dataProgres'],
 ];
 
-function judulUntuk(pathname) {
+function judulUntuk(pathname, t) {
   const cocok = JUDUL_RUTE.find(([pola]) => pola.test(pathname));
-  return cocok ? cocok[1] : 'Noor';
+  return cocok ? t(cocok[1]) : 'Noor';
 }
 
 export default function App() {
+  const { t } = useBahasa();
   const location = useLocation();
   const mainRef = useRef(null);
   const pertamaRef = useRef(true);
@@ -134,17 +137,17 @@ export default function App() {
   // Setiap ganti rute: perbarui judul dokumen & pindahkan fokus ke konten
   // utama, supaya pengguna keyboard/screen reader mulai dari awal halaman baru.
   useEffect(() => {
-    document.title = `${judulUntuk(location.pathname)} — Noor`;
+    document.title = `${judulUntuk(location.pathname, t)} — Noor`;
     window.scrollTo(0, 0);
     if (!pertamaRef.current) {
       mainRef.current?.focus({ preventScroll: true });
     }
     pertamaRef.current = false;
-  }, [location.pathname]);
+  }, [location.pathname, t]);
 
   return (
     <Shell>
-      <SkipLink href="#konten">Lewati ke konten utama</SkipLink>
+      <SkipLink href="#konten">{t('umum.lewatiKonten')}</SkipLink>
       <AppHeader />
       <LiveRegion />
       <Main id="konten" ref={mainRef} tabIndex={-1}>
