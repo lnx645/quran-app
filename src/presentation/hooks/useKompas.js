@@ -1,70 +1,88 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 /**
- * useKompas — membaca sensor orientasi perangkat dan menghasilkan heading
- * dalam acuan UTARA SEJATI (true north), siap dibandingkan dengan bearing kiblat.
+ * useKompas — kompas HP yang perilakunya MENIRU kompas kiblat daring referensi
+ * (al-habib.info kiblat-kompas.js v2.0), karena terbukti dirasakan akurat pengguna:
  *
- * Konvensi yang dipakai (hasil riset spesifikasi W3C DeviceOrientation):
- *  - iOS Safari: `e.webkitCompassHeading` SUDAH acuan utara sejati (termasuk
- *    koreksi deklinasi oleh sistem), akurasi di `e.webkitCompassAccuracy`.
- *  - Android Chrome: dengarkan `deviceorientationabsolute` DULU (event
- *    non-standar Chromium; alpha acuan "sistem koordinat Bumi" = utara
- *    MAGNETIK pada implementasi Android), fallback ke `deviceorientation`
- *    dengan syarat `e.absolute === true`. Abaikan event relatif bila data
- *    absolut sudah diterima.
- *  - `alpha`: 0 saat atas perangkat menunjuk utara, bertambah BERLAWANAN
- *    arah jarum jam (konvensi matematis) → heading magnetik = (360 − alpha).
- *    Koreksi ke utara sejati: true = magnetik − D, dengan D = deklinasi
- *    (positif = timur) yang dioper dari luar (hook tidak tahu sumbernya).
+ *  - SATU jalur listener: 'deviceorientationabsolute' bila didukung, selain itu
+ *    'deviceorientation'.
+ *  - Heading mentah per event: h = (-1 * e.webkitCompassHeading) || e.alpha
+ *    (Android = alpha MENTAH, iOS = -webkitCompassHeading).
+ *  - Rose diputar LANGSUNG per event: rotateZ(h - (window.orientation || 0))
+ *    tanpa transisi CSS dan tanpa akumulasi jalur-terpendek.
+ *  - TANPA koreksi deklinasi pada jalur heading (sama seperti referensi).
+ *
+ * Heading tampil (untuk angka & zona kiblat) juga mengikuti referensi:
+ *    hng = h - window.orientation
+ *    phase = hng < 0 ? 360 + hng : hng
+ *    tampil = 360 - phase
+ *
+ * Listener dipasang otomatis saat hook dipakai (halaman dibuka); iOS meminta
+ * izin sensor di klik/tap pertama — sama seperti referensi. Tombol "Aktifkan
+ * Kompas" tetap tersedia lewat `mulai()`.
  *
  * Status: 'mati' | 'meminta-izin' | 'aktif' | 'ditolak' | 'tidak-didukung'.
- * `tanpaAbsolut` true bila yang datang hanya event relatif → arah tak bisa dipercaya.
+ * `tanpaAbsolut` true bila event bukan absolut → arah tak bisa dipercaya.
  */
-export function useKompas(deklinasi = 0) {
-  const [status, setStatus] = useState('mati');
-  const [heading, setHeading] = useState(null); // ° dari utara SEJATI, searah jarum jam
+export function useKompas() {
+  // Status awal langsung benar untuk perangkat tanpa API orientasi.
+  const didukung =
+    typeof window !== 'undefined' &&
+    ('ondeviceorientationabsolute' in window || 'ondeviceorientation' in window);
+  const [status, setStatus] = useState(didukung ? 'aktif' : 'tidak-didukung');
+  const [heading, setHeading] = useState(null); // heading TAMPIL ala referensi (°)
+  const [rotasi, setRotasi] = useState(null); // nilai rotateZ mentah untuk rose
   const [akurasi, setAkurasi] = useState(null); // webkitCompassAccuracy (°), bila ada
   const [sumberEvent, setSumberEvent] = useState(null); // 'webkit' | 'absolute' | 'relative'
   const [tanpaAbsolut, setTanpaAbsolut] = useState(false);
   const [butuhKalibrasi, setButuhKalibrasi] = useState(false);
 
-  const deklRef = useRef(deklinasi);
-  deklRef.current = deklinasi;
-  const terimaAbsolut = useRef(false);
+  const namaEventRef = useRef(null);
+  const terpasangRef = useRef(false);
   const punyaData = useRef(false);
+  const izinDimintaRef = useRef(false);
 
-  const terapkan = useCallback((e) => {
-    // 1) iOS: webkitCompassHeading sudah utara sejati.
+  const tangani = useCallback((e) => {
+    const h = -1 * e.webkitCompassHeading || e.alpha; // persis referensi
+    if (typeof h !== 'number' || !Number.isFinite(h)) return;
+    punyaData.current = true;
+    const hng = h - ((typeof window !== 'undefined' && window.orientation) || 0);
+    const phase = hng < 0 ? 360 + hng : hng;
+    setRotasi(hng);
+    setHeading(360 - phase);
     if (typeof e.webkitCompassHeading === 'number' && Number.isFinite(e.webkitCompassHeading)) {
-      punyaData.current = true;
       setSumberEvent('webkit');
       setTanpaAbsolut(false);
-      setHeading((((e.webkitCompassHeading % 360) + 360) % 360));
       if (typeof e.webkitCompassAccuracy === 'number' && e.webkitCompassAccuracy >= 0) {
         setAkurasi(e.webkitCompassAccuracy);
       }
-      return;
+    } else {
+      setSumberEvent(
+        namaEventRef.current === 'deviceorientationabsolute' ? 'absolute' : 'relative',
+      );
+      setTanpaAbsolut(e.absolute !== true);
     }
-    // 2) Android: alpha (+ beta/gamma bila perlu). Hanya pakai data absolut.
-    if (typeof e.alpha !== 'number' || !Number.isFinite(e.alpha)) return;
-    if (!e.absolute && terimaAbsolut.current) return; // event relatif usang — abaikan
-    punyaData.current = true;
-    if (e.absolute === true) terimaAbsolut.current = true;
-    setSumberEvent(e.absolute === true ? 'absolute' : 'relative');
-    setTanpaAbsolut(e.absolute !== true);
-    const magnetik = (((360 - e.alpha) % 360) + 360) % 360; // acuan: utara magnetik
-    setHeading((((magnetik - deklRef.current) % 360) + 360) % 360); // → utara sejati
+    setStatus('aktif');
   }, []);
+
+  const pasang = useCallback(() => {
+    if (typeof window === 'undefined' || terpasangRef.current) return false;
+    const nama =
+      'ondeviceorientationabsolute' in window ? 'deviceorientationabsolute' : 'deviceorientation';
+    namaEventRef.current = nama;
+    window.addEventListener(nama, tangani, true);
+    terpasangRef.current = true;
+    return true;
+  }, [tangani]);
 
   const saatButuhKalibrasi = useCallback(() => setButuhKalibrasi(true), []);
 
   const mulai = useCallback(async () => {
-    const adaEvent =
-      typeof window !== 'undefined' &&
-      ('ondeviceorientationabsolute' in window || 'ondeviceorientation' in window);
-    const adaWebkit =
-      typeof window !== 'undefined' && 'ondeviceorientation' in window; // iOS juga di sini
-    if (!adaEvent && !adaWebkit) {
+    if (typeof window === 'undefined') {
+      setStatus('tidak-didukung');
+      return;
+    }
+    if (!('ondeviceorientationabsolute' in window) && !('ondeviceorientation' in window)) {
       setStatus('tidak-didukung');
       return;
     }
@@ -74,16 +92,14 @@ export function useKompas(deklinasi = 0) {
         typeof DeviceOrientationEvent !== 'undefined' &&
         typeof DeviceOrientationEvent.requestPermission === 'function'
       ) {
+        izinDimintaRef.current = true;
         const izin = await DeviceOrientationEvent.requestPermission();
         if (izin !== 'granted') {
           setStatus('ditolak');
           return;
         }
       }
-      // deviceorientationabsolute dulu (Android Chrome), lalu fallback standar.
-      window.addEventListener('deviceorientationabsolute', terapkan, true);
-      window.addEventListener('deviceorientation', terapkan, true);
-      window.addEventListener('compassneedscalibration', saatButuhKalibrasi, true);
+      pasang();
       setStatus('aktif');
       // Anjing penjaga: bila 6 detik tak ada data sama sekali → anggap tak didukung.
       setTimeout(() => {
@@ -92,28 +108,61 @@ export function useKompas(deklinasi = 0) {
     } catch {
       setStatus('tidak-didukung');
     }
-  }, [terapkan, saatButuhKalibrasi]);
+  }, [pasang]);
 
-  const berhenti = useCallback(() => {
-    if (typeof window === 'undefined') return;
-    window.removeEventListener('deviceorientationabsolute', terapkan, true);
-    window.removeEventListener('deviceorientation', terapkan, true);
-    window.removeEventListener('compassneedscalibration', saatButuhKalibrasi, true);
-    setStatus('mati');
-    setHeading(null);
-  }, [terapkan, saatButuhKalibrasi]);
-
-  useEffect(() => berhenti, [berhenti]);
+  // Auto-start ala referensi: pasang listener begitu halaman dibuka.
+  // iOS: izin sensor diminta di klik/tap pertama.
+  useEffect(() => {
+    if (!didukung) return undefined;
+    pasang();
+    let klikPertama = null;
+    if (
+      typeof DeviceOrientationEvent !== 'undefined' &&
+      typeof DeviceOrientationEvent.requestPermission === 'function'
+    ) {
+      klikPertama = async () => {
+        if (izinDimintaRef.current) return;
+        izinDimintaRef.current = true;
+        try {
+          const izin = await DeviceOrientationEvent.requestPermission();
+          if (izin !== 'granted') setStatus('ditolak');
+        } catch {
+          /* abaikan */
+        }
+        window.removeEventListener('click', klikPertama);
+        window.removeEventListener('touchend', klikPertama);
+      };
+      window.addEventListener('click', klikPertama);
+      window.addEventListener('touchend', klikPertama);
+    }
+    window.addEventListener('compassneedscalibration', saatButuhKalibrasi, true);
+    const w = setTimeout(() => {
+      if (!punyaData.current) setStatus((s) => (s === 'aktif' ? 'tidak-didukung' : s));
+    }, 6000);
+    return () => {
+      clearTimeout(w);
+      if (klikPertama) {
+        window.removeEventListener('click', klikPertama);
+        window.removeEventListener('touchend', klikPertama);
+      }
+      window.removeEventListener('compassneedscalibration', saatButuhKalibrasi, true);
+      if (namaEventRef.current && terpasangRef.current) {
+        window.removeEventListener(namaEventRef.current, tangani, true);
+        terpasangRef.current = false;
+      }
+      punyaData.current = false;
+    };
+  }, [pasang, tangani, saatButuhKalibrasi, didukung]);
 
   return {
     status, // 'mati' | 'meminta-izin' | 'aktif' | 'ditolak' | 'tidak-didukung'
-    heading, // null bila belum ada data
+    heading, // heading tampil (°), null bila belum ada data
+    rotasi, // nilai rotateZ mentah untuk rose, null bila belum ada data
     akurasi, // null bila perangkat tak melapor
     sumberEvent, // 'webkit' | 'absolute' | 'relative' | null
     tanpaAbsolut, // true → data relatif saja, arah tak bisa dipercaya
     butuhKalibrasi,
     mulai,
-    berhenti,
     sensorAktif: status === 'aktif',
   };
 }

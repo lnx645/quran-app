@@ -68,34 +68,24 @@ const MATA_ANGIN = ['Utara', 'Timur Laut', 'Timur', 'Tenggara', 'Selatan', 'Bara
 const namaMataAngin = (derajat) => MATA_ANGIN[Math.round(derajat / 45) % 8];
 
 const NAMA_SUMBER = {
-  webkit: 'iOS — utara sejati bawaan sistem',
-  absolute: 'Android — absolut, dikoreksi deklinasi',
+  webkit: 'iOS — bawaan sistem',
+  absolute: 'Android — absolut',
   relative: 'relatif (TIDAK akurat)',
 };
 
-function KompasDial({ bearing, heading }) {
+function KompasDial({ bearing, heading, rotasi }) {
   const theme = useTheme();
   const c = 130;
 
-  // Rotasi rose: SELURUH rose (ticks, huruf, penanda utara & kiblat) berputar
-  // -heading seperti kompas sungguhan. Nilai diakumulasi lewat jalur terpendek
-  // agar rose tidak berputar penuh saat heading menyeberang 359°→0°.
-  // (Pola "sesuaikan state saat render" dari React docs — tanpa effect.)
-  const [rotState, setRotState] = useState({ heading: null, rotasi: 0 });
-  if (heading !== rotState.heading) {
-    let rotasiBaru = 0;
-    if (heading != null) {
-      const target = -heading;
-      const delta = (((target - rotState.rotasi + 540) % 360) + 360) % 360 - 180;
-      rotasiBaru = rotState.rotasi + delta;
-    }
-    setRotState({ heading, rotasi: rotasiBaru });
-  }
-  const rotasi = rotState.rotasi;
+  // ROSE diputar LANGSUNG per nilai sensor (rotateZ mentah dari hook), tanpa
+  // transisi CSS dan tanpa akumulasi jalur-terpendek — persis referensi.
+  const sudut = rotasi == null ? 0 : rotasi;
 
-  // Zona sejajar kiblat: |selisih sudut terkecil bearing−heading| ≤ 3°.
+  // Zona dekat kiblat (ala referensi): selisih terkecil bearing−heading tampil.
+  // < 15° → banner "Arah Kiblat Ditemukan"; ≤ 3° → glow + getar.
   const selisih =
     heading == null ? null : Math.abs((((bearing - heading + 540) % 360) + 360) % 360 - 180);
+  const dekat = selisih != null && selisih < 15;
   const sejajar = selisih != null && selisih <= 3;
 
   // Getar SEKALI per masuk zona sejajar (flag ref; reset saat keluar zona).
@@ -112,14 +102,6 @@ function KompasDial({ bearing, heading }) {
       getarRef.current = false;
     }
   }, [sejajar]);
-
-  const kurangiGerak = useMemo(
-    () =>
-      typeof window !== 'undefined' &&
-      typeof window.matchMedia === 'function' &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches,
-    [],
-  );
 
   const ticks = [];
   for (let d = 0; d < 360; d += 5) {
@@ -149,10 +131,9 @@ function KompasDial({ bearing, heading }) {
         {/* ROSE — satu grup berputar mengikuti heading */}
         <g
           style={{
-            transform: `rotate(${rotasi}deg)`,
+            transform: `rotate(${sudut}deg)`,
             transformBox: 'view-box',
             transformOrigin: 'center',
-            transition: kurangiGerak ? 'none' : 'transform 160ms linear',
           }}
         >
           {ticks}
@@ -220,6 +201,23 @@ function KompasDial({ bearing, heading }) {
           ▲ Arah hadapmu yang di atas — penanda Ka&apos;bah emas bergerak mengikuti putaran HP-mu.
         </div>
       )}
+      {dekat && (
+        <div
+          css={(t) => ({
+            marginTop: 10,
+            padding: '10px 14px',
+            borderRadius: 999,
+            background: t.gradients.gold,
+            color: t.colors.primaryDeep,
+            fontSize: 16,
+            fontWeight: 800,
+            boxShadow: t.shadows.gold,
+            display: 'inline-block',
+          })}
+        >
+          <FaCompass css={{ verticalAlign: -2, marginRight: 6 }} /> Arah Kiblat Ditemukan
+        </div>
+      )}
       {sejajar && (
         <div
           css={(t) => ({
@@ -260,8 +258,8 @@ export default function KiblatPage() {
   }, [lokasi.lat, lokasi.lng]);
 
   const {
-    status, heading, akurasi, sumberEvent, tanpaAbsolut, butuhKalibrasi, mulai, sensorAktif,
-  } = useKompas(dekl.nilai);
+    status, heading, rotasi, akurasi, sumberEvent, tanpaAbsolut, butuhKalibrasi, mulai, sensorAktif,
+  } = useKompas();
 
   const bearing = useMemo(
     () => hitungBearingKiblat({ lat: lokasi.lat, lng: lokasi.lng }),
@@ -272,6 +270,49 @@ export default function KiblatPage() {
     [lokasi.lat, lokasi.lng],
   );
 
+  // GPS otomatis saat halaman dibuka (seperti referensi): memperbarui lokasi
+  // & bearing terus-menerus. Input manual / pilihan lokasi menghentikannya.
+  const watchIdRef = useRef(null);
+  const lokasiManualRef = useRef(false);
+  const gpsErrorRef = useRef(false);
+
+  const hentikanWatchGps = useCallback(() => {
+    if (watchIdRef.current != null) {
+      navigator.geolocation.clearWatch(watchIdRef.current);
+      watchIdRef.current = null;
+    }
+  }, []);
+
+  const mulaiWatchGps = useCallback(() => {
+    if (!('geolocation' in navigator)) return;
+    if (watchIdRef.current != null) return;
+    watchIdRef.current = navigator.geolocation.watchPosition(
+      (pos) => {
+        if (lokasiManualRef.current) return;
+        setMencariGps(false);
+        setLokasi({
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude,
+          nama: 'Lokasi saya (GPS)',
+        });
+      },
+      (err) => {
+        if (!gpsErrorRef.current && err.code === err.PERMISSION_DENIED) {
+          gpsErrorRef.current = true;
+          setPesanLokasi(
+            'Izin lokasi ditolak — bearing dihitung dari Sumedang. Aktifkan izin lokasi di browser untuk arah dari posisimu.',
+          );
+        }
+      },
+      { enableHighAccuracy: false, maximumAge: 30000, timeout: 27000 },
+    );
+  }, []);
+
+  useEffect(() => {
+    mulaiWatchGps();
+    return () => hentikanWatchGps();
+  }, [mulaiWatchGps, hentikanWatchGps]);
+
   const pakaiGps = useCallback(() => {
     if (!('geolocation' in navigator)) {
       setPesanLokasi('Perangkat ini tidak mendukung Geolocation.');
@@ -279,6 +320,7 @@ export default function KiblatPage() {
     }
     setMencariGps(true);
     setPesanLokasi(null);
+    lokasiManualRef.current = false;
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         setMencariGps(false);
@@ -287,6 +329,7 @@ export default function KiblatPage() {
           lng: pos.coords.longitude,
           nama: 'Lokasi saya (GPS)',
         });
+        mulaiWatchGps();
       },
       (err) => {
         setMencariGps(false);
@@ -298,7 +341,7 @@ export default function KiblatPage() {
       },
       { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 },
     );
-  }, []);
+  }, [mulaiWatchGps]);
 
   const terapkanManual = useCallback(() => {
     const lat = Number(String(latInput).replace(',', '.'));
@@ -308,14 +351,18 @@ export default function KiblatPage() {
       return;
     }
     setPesanLokasi(null);
+    lokasiManualRef.current = true;
+    hentikanWatchGps();
     setLokasi({ lat, lng, nama: 'Lokasi manual' });
     setTampilManual(false);
-  }, [latInput, lonInput]);
+  }, [latInput, lonInput, hentikanWatchGps]);
 
   const kembaliSumedang = useCallback(() => {
     setPesanLokasi(null);
+    lokasiManualRef.current = true;
+    hentikanWatchGps();
     setLokasi(LOKASI_AWAL);
-  }, []);
+  }, [hentikanWatchGps]);
 
   return (
     <Page>
@@ -324,8 +371,9 @@ export default function KiblatPage() {
           <FaCompass /> Arah Kiblat Akurat
         </h2>
         <p>
-          Kompas kiblat dengan koreksi deklinasi magnetik — jarum emas menunjuk Ka&apos;bah
-          dari posisi Anda, bukan sekadar dari utara magnetik HP.
+          Kompas kiblat penunjuk Ka&apos;bah dari posisimu — rose berputar mengikuti arah
+          hadap HP dan penanda emas berhenti tepat di arah kiblat. Lokasi dibaca otomatis
+          lewat GPS saat halaman dibuka.
         </p>
       </PageHero>
 
@@ -393,7 +441,7 @@ export default function KiblatPage() {
 
       {/* Kompas */}
       <GoldCard css={{ textAlign: 'center' }}>
-        <KompasDial bearing={bearing} heading={heading} />
+        <KompasDial bearing={bearing} heading={heading} rotasi={rotasi} />
         <div
           css={(t) => ({
             fontFamily: t.fonts.display,
@@ -459,7 +507,7 @@ export default function KiblatPage() {
       {/* Data & koreksi */}
       <Card>
         <SectionTitle css={{ marginTop: 0 }}>
-          <FaInfoCircle /> Data &amp; Koreksi Deklinasi
+          <FaInfoCircle /> Data Arah &amp; Deklinasi
         </SectionTitle>
         <ResultRow>
           <span className="label">Bearing kiblat (utara sejati)</span>
@@ -481,9 +529,10 @@ export default function KiblatPage() {
           </div>
         )}
         <Info css={{ marginTop: 8 }}>
-          <FaInfoCircle /> Kompas HP menunjuk utara magnetik. Bearing kiblat di atas sudah dalam
-          acuan utara sejati: untuk Android, bacaan sensor dikoreksi otomatis (magnetik −
-          deklinasi); untuk iPhone, sistem sudah memberi arah sejati.
+          <FaInfoCircle /> Bearing kiblat dihitung dari utara sejati (rumus great-circle ke
+          Ka&apos;bah). Kompas HP membaca utara magnetik; deklinasi di atas adalah selisih
+          keduanya di lokasi ini dan ditampilkan sebagai informasi — jarum kompas mengikuti
+          bacaan sensor HP apa adanya, seperti kompas kiblat daring pada umumnya.
         </Info>
       </Card>
 
