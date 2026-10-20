@@ -37,6 +37,21 @@ const Bar = styled.div`
   background: ${({ theme }) => theme.colors.barKaca};
   backdrop-filter: blur(8px) saturate(1.15);
   -webkit-backdrop-filter: blur(8px) saturate(1.15);
+  /* Sembunyi pintar (OPT-IN lewat prop sembunyi dari SurahPage): geser
+     turun keluar layar sebagai satu unit dengan PlayerBar — jaraknya =
+     offset bawah strip (166px + safe-area) + tinggi strip itu sendiri
+     (100%). Tanpa prop (undefined) perilaku persis seperti sebelumnya.
+     translateX(-50%) penengah dipertahankan di kedua keadaan. Transisi
+     memakai token anim yang sama dengan PlayerBar agar sinkron; aturan
+     global prefers-reduced-motion menonaktifkannya otomatis. */
+  ${({ sembunyi, theme }) =>
+    typeof sembunyi === 'boolean' &&
+    `
+      transition: transform ${theme.anim.med} ${theme.anim.ease};
+      transform: translateX(-50%)
+        translateY(${sembunyi ? 'calc(166px + 100% + env(safe-area-inset-bottom))' : '0'});
+      pointer-events: ${sembunyi ? 'none' : 'auto'};
+    `}
   border-top: 2px solid ${({ theme }) => theme.colors.gold};
   box-shadow: 0 -3px 10px rgba(4, 37, 31, 0.07);
   > * {
@@ -123,10 +138,10 @@ const PilihQari = styled.select`
   flex-shrink: 0;
 `;
 
-export default function ReadingControls({ pref, ubah, tambahArab, kurangArab, qari, daftarQari, ubahQari }) {
+export default function ReadingControls({ pref, ubah, tambahArab, kurangArab, qari, daftarQari, ubahQari, sembunyi }) {
   const { t } = useBahasa();
   return (
-    <Bar role="group" aria-label={t('baca.kontrol')}>
+    <Bar role="group" aria-label={t('baca.kontrol')} sembunyi={sembunyi}>
       <GrupFont>
         <TombolFont onClick={kurangArab} disabled={pref.arabSize <= 26} aria-label={t('baca.perkecilArab')}>
           <FaMinus />

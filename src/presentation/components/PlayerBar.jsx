@@ -31,6 +31,18 @@ const Bar = styled.div`
       opacity: 1;
     }
   }
+  /* Sembunyi pintar (OPT-IN lewat prop sembunyi dari SurahPage): geser
+     turun keluar layar sebagai satu unit dengan strip ReadingControls.
+     Tanpa prop (undefined) perilaku persis seperti sebelumnya. Transisi
+     memakai token anim yang sama dengan strip agar gerakannya sinkron;
+     aturan global prefers-reduced-motion menonaktifkannya otomatis. */
+  ${({ sembunyi, theme }) =>
+    typeof sembunyi === 'boolean' &&
+    `
+      transition: transform ${theme.anim.med} ${theme.anim.ease};
+      transform: translateY(${sembunyi ? '100%' : '0'});
+      pointer-events: ${sembunyi ? 'none' : 'auto'};
+    `}
   /* Garis emas di atas player */
   border-top: 1px solid rgba(231, 198, 90, 0.55);
   &::before {
@@ -228,6 +240,7 @@ export default function PlayerBar({
   totalAyat,
   posisiAyatMs,
   namaSurah,
+  sembunyi,
 }) {
   const { t } = useBahasa();
   const persen = durasiMs > 0 ? Math.min(100, (posisiMs / durasiMs) * 100) : 0;
@@ -275,7 +288,7 @@ export default function PlayerBar({
   };
 
   return (
-    <Bar>
+    <Bar sembunyi={sembunyi}>
       <OrnamentBand height={13} opacity={0.6} />
       <div css={{ position: 'absolute', inset: 0, top: 13, overflow: 'hidden' }} aria-hidden="true">
         <GirihPattern opacity={0.08} />
