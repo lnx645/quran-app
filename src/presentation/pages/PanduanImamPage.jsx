@@ -9,6 +9,7 @@ import {
   TEKS_ADZAN, TEKS_IQAMAH, CATATAN_IQAMAH, TENTANG_MASBUQ, DISCLAIMER_IMAM,
 } from '../../data/sources/panduanImamData.js';
 import { Page, PageHero, Card, GoldCard, SectionTitle } from '../components/common.jsx';
+import PemutarAudio from '../components/PemutarAudio.jsx';
 import NomorMedali from '../components/NomorMedali.jsx';
 
 const KartuTeks = styled(Card)`
@@ -199,6 +200,19 @@ export default function PanduanImamPage() {
           ))}
         </ul>
       </DaftarCek>
+
+      <SectionTitle>
+        <FaVolumeUp /> Dengarkan Adzan
+      </SectionTitle>
+      <div css={{ marginBottom: 18 }}>
+        <PemutarAudio
+          src={`${import.meta.env.BASE_URL}audio/adzan.mp3`}
+          judul="Adzan — rekaman muadzin asli"
+        />
+        <p css={(t) => ({ fontSize: 12, color: t.colors.muted, marginTop: 7 })}>
+          Rekaman: &quot;The Adhan&quot; oleh Aaqib Azeez (Wikimedia Commons, CC BY-SA 4.0).
+        </p>
+      </div>
 
       <SectionTitle>
         <FaVolumeUp /> Teks Adzan
