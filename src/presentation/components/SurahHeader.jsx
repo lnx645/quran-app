@@ -1,15 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import styled from '@emotion/styled';
-import { KhatamStar, RubElHizb, GirihPaper } from './ornaments/index.js';
+import { RubElHizb, GirihPaper } from './ornaments/index.js';
 import { mountUp, reduceMotion } from './motion.js';
 
 /**
- * Panel nama surah ala iluminasi mushaf cetak:
- * - bingkai garis ganda emas (luar tebal, dalam tipis, inset 5px)
- * - medali bintang-8 (khatam, konstruksi matematis) di empat sudut
- * - pita pola girih seamless di tepi atas & bawah panel
- * - medali tengah: Rub el Hizb (aset unduhan Wikimedia, CC BY-SA 4.0)
- * - nama surah besar (Amiri), meta kecil huruf kapital berjarak
+ * Panel nama surah yang MENYATU dengan kertas mushaf (tanpa kotak sendiri):
+ * panel tidak dibingkai lagi — bingkai halaman mushaf sudah membingkainya.
+ * Isinya: pita pola girih di atas & bawah, medali Rub el Hizb di tengah,
+ * nama surah besar (Amiri) + meta kecil huruf kapital berjarak.
  * Basmalah berdiri sebagai blok terpisah DI BAWAH panel (elegan,
  * diapit garis emas berlian) — tidak menempel ke ayat pertama.
  */
@@ -18,35 +16,15 @@ const Panel = styled.section`
   position: relative;
   overflow: hidden;
   text-align: center;
-  background: linear-gradient(180deg, #fffdf4 0%, ${({ theme }) => theme.colors.paper} 100%);
-  border: 2px solid ${({ theme }) => theme.colors.gold};
-  border-radius: 10px;
-  padding: 10px 14px 12px;
-  margin-bottom: ${({ theme }) => theme.spacing.md}px;
-  box-shadow: ${({ theme }) => theme.shadows.card};
+  padding: 8px 2px 2px;
+  margin-bottom: ${({ theme }) => theme.spacing.sm}px;
   ${mountUp}
   ${reduceMotion}
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 5px;
-    border: 1px solid ${({ theme }) => theme.colors.gold};
-    border-radius: 6px;
-    opacity: 0.65;
-    pointer-events: none;
-  }
 `;
-
-const Sudut = [
-  { top: 2, left: 2 },
-  { top: 2, right: 2 },
-  { bottom: 2, left: 2 },
-  { bottom: 2, right: 2 },
-];
 
 const IsiPanel = styled.div`
   position: relative;
-  padding: 14px 6px 12px;
+  padding: 13px 6px 11px;
 `;
 
 const NamaArab = styled.div`
@@ -93,7 +71,7 @@ const BerlianKecil = styled.span`
 
 const BlokBasmalah = styled.div`
   text-align: center;
-  margin: 4px 0 18px;
+  margin: 4px 0 10px;
   ${mountUp}
   ${reduceMotion}
   .basmalah-teks {
@@ -121,17 +99,7 @@ export default function SurahHeader({ surah }) {
   return (
     <>
       <Panel>
-        {Sudut.map((pos, i) => (
-          <span
-            key={i}
-            css={{ position: 'absolute', zIndex: 2, lineHeight: 0, pointerEvents: 'none' }}
-            style={pos}
-            aria-hidden="true"
-          >
-            <KhatamStar size={26} filled={false} strokeWidth={1.3} />
-          </span>
-        ))}
-        <div css={{ position: 'relative', height: 24, overflow: 'hidden', borderRadius: 4 }} aria-hidden="true">
+        <div css={{ position: 'relative', height: 24, overflow: 'hidden' }} aria-hidden="true">
           <GirihPaper opacity={0.16} tile={120} />
         </div>
         <IsiPanel>
@@ -152,7 +120,7 @@ export default function SurahHeader({ surah }) {
             <span>Surah ke-{surah.id}</span>
           </Meta>
         </IsiPanel>
-        <div css={{ position: 'relative', height: 24, overflow: 'hidden', borderRadius: 4 }} aria-hidden="true">
+        <div css={{ position: 'relative', height: 24, overflow: 'hidden' }} aria-hidden="true">
           <GirihPaper opacity={0.16} tile={120} />
         </div>
       </Panel>
