@@ -8,11 +8,12 @@ import { useJadwal, KOTA_OPSI } from '../hooks/useJadwal.js';
 import { CornerOrnament } from '../components/ornaments/index.js';
 import {
   Page, PageTitle, PageSubtitle, Card, GoldCard, SelectInput, TextInput, Field,
-  ErrorBox, SectionTitle, Skeleton, GhostButton,
+  ErrorBox, SectionTitle, Skeleton, GhostButton, PrimaryButton,
 } from '../components/common.jsx';
 import { useToast } from '../components/feedback/toastStore.js';
 import { umumkan } from '../components/feedback/umumkan.js';
 import { useAkses } from '../a11y/pengaturanStore.js';
+import { usePengingat } from '../hooks/usePengingat.js';
 
 // Banner adzan PERSISTEN (untuk pengguna tuli & lingkungan senyap):
 // menetap sampai ditutup manual — bukan toast sesaat yang mudah terlewat.
@@ -185,6 +186,96 @@ const IqamahBox = styled(GoldCard)`
   }
 `;
 
+// Baris + sakelar pengingat: pola yang SAMA dengan Toggle di
+// AksesibilitasPage (BarisSetelan + Saklar role="switch") — bukan gaya baru.
+// Area sentuh sakelar dibuat setinggi 44px; rel visualnya tetap 32px
+// (digambar ::before) agar tampilannya identik dengan sakelar aksesibilitas.
+const BarisSetelan = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 13px 0;
+  border-bottom: 1px dashed ${({ theme }) => theme.colors.border};
+  &:last-child {
+    border-bottom: none;
+  }
+  .teks {
+    flex: 1;
+    min-width: 0;
+  }
+  .judul {
+    font-size: 15px;
+    font-weight: 700;
+    color: ${({ theme }) => theme.colors.text};
+  }
+  .desc {
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: ${({ theme }) => theme.colors.muted};
+    margin-top: 2px;
+  }
+`;
+
+const Saklar = styled.button`
+  flex-shrink: 0;
+  width: 56px;
+  height: 44px;
+  min-width: 56px;
+  min-height: 44px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 32px;
+    border-radius: 999px;
+    border: 2px solid
+      ${({ theme, nyala }) => (nyala ? theme.colors.gold : theme.colors.border)};
+    background: ${({ theme, nyala }) =>
+      nyala ? theme.colors.emeraldPanel : theme.colors.surfaceAlt};
+    transition: background 0.18s ease;
+    box-sizing: border-box;
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: ${({ nyala }) => (nyala ? 'calc(100% - 27px)' : '3px')};
+    transform: translateY(-50%);
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: ${({ theme, nyala }) => (nyala ? theme.colors.goldLight : '#fff')};
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    transition: left 0.18s ease;
+  }
+`;
+
+function BarisPengingat({ judul, desc, nyala, onToggle }) {
+  return (
+    <BarisSetelan>
+      <div className="teks">
+        <div className="judul">{judul}</div>
+        {desc && <div className="desc">{desc}</div>}
+      </div>
+      <Saklar
+        type="button"
+        role="switch"
+        aria-checked={nyala}
+        aria-label={judul}
+        nyala={nyala}
+        onClick={onToggle}
+      />
+    </BarisSetelan>
+  );
+}
+
 const menitDariJam = (jam) => {
   const [h, m] = jam.split(':').map(Number);
   return h * 60 + m;
@@ -333,6 +424,13 @@ export default function JadwalPage() {
   const [sekarang, setSekarang] = useState(new Date());
   const toast = useToast();
   const { pengaturan } = useAkses();
+  const {
+    pref: prefPengingat,
+    ubah: ubahPengingat,
+    izin: izinNotif,
+    didukung: notifDidukung,
+    mintaIzin: mintaIzinNotif,
+  } = usePengingat();
   const [bannerAdzan, setBannerAdzan] = useState(null);
   const teriakTerakhir = useRef('');
   const suaraAdzan = pref.suaraAdzan;
@@ -556,6 +654,52 @@ export default function JadwalPage() {
             </Field>
           ))}
         </div>
+      </Card>
+
+      <SectionTitle>
+        <FaBell /> Pengingat
+      </SectionTitle>
+      <Card>
+        <p css={(t) => ({ fontSize: 13.5, color: t.colors.muted, lineHeight: 1.55, marginBottom: 12 })}>
+          Pengingat tampil selama aplikasi atau peramban terbuka di perangkat ini.
+        </p>
+        {!notifDidukung ? (
+          <p css={(t) => ({ fontSize: 13.5, color: t.colors.muted, lineHeight: 1.55, marginBottom: 12 })}>
+            Peramban ini tidak mendukung notifikasi.
+          </p>
+        ) : izinNotif === 'denied' ? (
+          <p css={(t) => ({ fontSize: 13.5, color: t.colors.muted, lineHeight: 1.55, marginBottom: 12 })}>
+            Izin notifikasi ditolak — aktifkan lewat pengaturan peramban.
+          </p>
+        ) : izinNotif === 'default' ? (
+          <div css={{ marginBottom: 12 }}>
+            <PrimaryButton type="button" onClick={mintaIzinNotif}>
+              <FaBell /> Izinkan Notifikasi
+            </PrimaryButton>
+          </div>
+        ) : (
+          <p css={(t) => ({ fontSize: 13.5, color: t.colors.muted, lineHeight: 1.55, marginBottom: 12 })}>
+            Izin notifikasi sudah diberikan di perangkat ini.
+          </p>
+        )}
+        <BarisPengingat
+          judul="Dzikir Pagi"
+          desc="Setiap hari pukul 05.30 — membuka halaman Dzikir."
+          nyala={prefPengingat.dzikirPagi}
+          onToggle={() => ubahPengingat('dzikirPagi', !prefPengingat.dzikirPagi)}
+        />
+        <BarisPengingat
+          judul="Dzikir Petang"
+          desc="Setiap hari pukul 17.00 — membuka halaman Dzikir."
+          nyala={prefPengingat.dzikirPetang}
+          onToggle={() => ubahPengingat('dzikirPetang', !prefPengingat.dzikirPetang)}
+        />
+        <BarisPengingat
+          judul="Target Baca Harian"
+          desc="Setiap hari pukul 20.00 — membuka halaman Al-Qur'an."
+          nyala={prefPengingat.targetBaca}
+          onToggle={() => ubahPengingat('targetBaca', !prefPengingat.targetBaca)}
+        />
       </Card>
 
       {loading && <JadwalSkeleton />}

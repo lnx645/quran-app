@@ -5,6 +5,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import AppHeader from '../presentation/components/AppHeader.jsx';
 import { useBahasa } from './bahasa.js';
 import LiveRegion from '../presentation/components/feedback/LiveRegion.jsx';
+import PengingatRunner from '../presentation/components/PengingatRunner.jsx';
 
 // App shell: ThemeProvider sudah dipasang di main.jsx.
 // Mobile-first: konten full-width rapat di HP; max 960px center di desktop.
@@ -150,6 +151,7 @@ export default function App() {
       <SkipLink href="#konten">{t('umum.lewatiKonten')}</SkipLink>
       <AppHeader />
       <LiveRegion />
+      <PengingatRunner />
       <Main id="konten" ref={mainRef} tabIndex={-1}>
         <Outlet />
       </Main>
