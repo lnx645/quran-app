@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import {
-  FaClock, FaMapMarkerAlt, FaSun, FaMoon, FaCloudSun,
+  FaClock, FaMapMarkerAlt, FaBell, FaSun, FaMoon, FaCloudSun, FaTimes,
 } from 'react-icons/fa';
 import { useJadwal, KOTA_OPSI } from '../hooks/useJadwal.js';
 import { CornerOrnament } from '../components/ornaments/index.js';
@@ -12,6 +12,64 @@ import {
 } from '../components/common.jsx';
 import { useToast } from '../components/feedback/toastStore.js';
 import { umumkan } from '../components/feedback/umumkan.js';
+import { useAkses } from '../a11y/pengaturanStore.js';
+
+// Banner adzan PERSISTEN (untuk pengguna tuli & lingkungan senyap):
+// menetap sampai ditutup manual — bukan toast sesaat yang mudah terlewat.
+const BannerAdzan = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  border-radius: ${({ theme }) => theme.radii.lg}px;
+  border: 2px solid ${({ theme }) => theme.colors.gold};
+  background: linear-gradient(120deg, ${({ theme }) => theme.colors.primaryDark}, ${({ theme }) => theme.colors.primary});
+  color: #fff;
+  box-shadow: ${({ theme }) => theme.shadows.gold};
+  .ikon {
+    font-size: 26px;
+    color: ${({ theme }) => theme.colors.goldLight};
+    flex-shrink: 0;
+  }
+  .judul {
+    font-family: ${({ theme }) => theme.fonts.display};
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+  .sub {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.88);
+    margin-top: 2px;
+  }
+`;
+
+const TutupBanner = styled.button`
+  margin-left: auto;
+  flex-shrink: 0;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(231, 198, 90, 0.6);
+  background: rgba(255, 255, 255, 0.08);
+  color: ${({ theme }) => theme.colors.goldLight};
+  font-size: 13px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+`;
+
+// Pola getar khas per waktu sholat (membedakan tanpa melihat layar).
+const POLA_GETAR_ADZAN = {
+  Subuh: [300, 100, 300],
+  Dzuhur: [150, 80, 150],
+  Ashar: [150, 80, 150, 80, 150],
+  Maghrib: [450],
+  Isya: [200, 100, 200, 100, 200],
+};
 
 const hijriBulanId = (en) =>
   ({
@@ -162,6 +220,8 @@ export default function JadwalPage() {
   const { loading, error, data } = useJadwal(kota);
   const [sekarang, setSekarang] = useState(new Date());
   const toast = useToast();
+  const { pengaturan } = useAkses();
+  const [bannerAdzan, setBannerAdzan] = useState(null);
   const teriakTerakhir = useRef('');
 
   useEffect(() => {
@@ -196,11 +256,34 @@ export default function JadwalPage() {
       // Pengumuman tegas untuk screen reader: waktu apa yang masuk.
       umumkan(`Sudah masuk waktu sholat ${match.nama}, pukul ${match.jam}.`, 'tegas');
       beepAdzan();
+      // Banner persisten untuk pengguna tuli — menetap sampai ditutup.
+      setBannerAdzan({ nama: match.nama, jam: match.jam });
+      if (pengaturan.getarAdzan) {
+        try {
+          navigator.vibrate?.(POLA_GETAR_ADZAN[match.nama] ?? [200, 100, 200]);
+        } catch {
+          /* getar tidak didukung */
+        }
+      }
     }
-  }, [sekarang, data, kota, toast]);
+  }, [sekarang, data, kota, toast, pengaturan.getarAdzan]);
 
   return (
     <Page>
+      {bannerAdzan && (
+        <BannerAdzan role="alert">
+          <FaBell className="ikon" aria-hidden="true" />
+          <div>
+            <div className="judul">Waktu Sholat {bannerAdzan.nama} Telah Tiba</div>
+            <div className="sub">
+              Pukul {bannerAdzan.jam} — selamat menunaikan sholat {bannerAdzan.nama.toLowerCase()}.
+            </div>
+          </div>
+          <TutupBanner type="button" onClick={() => setBannerAdzan(null)} aria-label="Tutup banner adzan">
+            <FaTimes /> Tutup
+          </TutupBanner>
+        </BannerAdzan>
+      )}
       <PageTitle>
         <FaClock /> Jadwal Sholat
       </PageTitle>

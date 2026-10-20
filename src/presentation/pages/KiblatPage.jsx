@@ -12,6 +12,7 @@ import {
 } from '../../domain/usecases/hitungKiblatAkurat.js';
 import { useKompas } from '../hooks/useKompas.js';
 import { umumkan } from '../components/feedback/umumkan.js';
+import { useAkses } from '../a11y/pengaturanStore.js';
 import {
   Page, PageHero, Card, GoldCard, SectionTitle, Field, TextInput,
   ResultRow, PrimaryButton, GhostButton, ErrorBox,
@@ -74,7 +75,7 @@ const NAMA_SUMBER = {
   relative: 'relatif (TIDAK akurat)',
 };
 
-function KompasDial({ bearing, heading, rotasi }) {
+function KompasDial({ bearing, heading, rotasi, getarAktif = true }) {
   const theme = useTheme();
   const c = 130;
 
@@ -98,17 +99,19 @@ function KompasDial({ bearing, heading, rotasi }) {
       selisih <= 3 ? 'sejajar' : selisih <= 5 ? 'dekat5' : selisih <= 10 ? 'dekat10' : '';
     if (zona && zona !== zonaRef.current) {
       zonaRef.current = zona;
-      const pola = { dekat10: [60, 40, 60], dekat5: [60, 40, 60, 40, 60], sejajar: [250] };
-      try {
-        navigator.vibrate?.(pola[zona]);
-      } catch {
-        /* perangkat tanpa vibrate — abaikan */
+      if (getarAktif) {
+        const pola = { dekat10: [60, 40, 60], dekat5: [60, 40, 60, 40, 60], sejajar: [250] };
+        try {
+          navigator.vibrate?.(pola[zona]);
+        } catch {
+          /* perangkat tanpa vibrate — abaikan */
+        }
       }
       if (zona === 'sejajar') umumkan('Kamu sudah menghadap kiblat.', 'tegas');
     } else if (!zona) {
       zonaRef.current = '';
     }
-  }, [selisih]);
+  }, [selisih, getarAktif]);
 
   const ticks = [];
   for (let d = 0; d < 360; d += 5) {
@@ -277,6 +280,52 @@ export default function KiblatPage() {
     () => jarakKeKabahKm({ lat: lokasi.lat, lng: lokasi.lng }),
     [lokasi.lat, lokasi.lng],
   );
+
+  const { pengaturan, ubah: ubahAkses } = useAkses();
+
+  // --- Sonifikasi kompas: beep WebAudio makin rapat saat mendekati kiblat ---
+  const audioRef = useRef(null);
+  const selisihKompas =
+    heading == null
+      ? null
+      : Math.abs((((bearing - heading + 540) % 360) + 360) % 360 - 180);
+  useEffect(() => {
+    if (!pengaturan.sonifikasi || !sensorAktif || selisihKompas == null) return undefined;
+    const jeda =
+      selisihKompas <= 3 ? 110
+      : selisihKompas <= 5 ? 200
+      : selisihKompas <= 10 ? 320
+      : selisihKompas <= 20 ? 520
+      : selisihKompas <= 35 ? 800
+      : 1200;
+    const bunyi = () => {
+      try {
+        const Ctx = window.AudioContext || window.webkitAudioContext;
+        if (!Ctx) return;
+        if (!audioRef.current) audioRef.current = new Ctx();
+        const ctx = audioRef.current;
+        if (ctx.state === 'suspended') ctx.resume();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.type = 'sine';
+        osc.frequency.value = selisihKompas <= 3 ? 1320 : 880;
+        const t = ctx.currentTime;
+        gain.gain.setValueAtTime(0.0001, t);
+        gain.gain.exponentialRampToValueAtTime(0.18, t + 0.015);
+        gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.09);
+        osc.start(t);
+        osc.stop(t + 0.1);
+      } catch {
+        /* WebAudio tidak tersedia */
+      }
+    };
+    bunyi();
+    const id = setInterval(bunyi, jeda);
+    return () => clearInterval(id);
+  }, [pengaturan.sonifikasi, sensorAktif, selisihKompas]);
+
 
   // --- Kompas non-visual: instruksi arah sebagai teks + ucapan (TTS) ---
   const [teksArah, setTeksArah] = useState('');
@@ -483,7 +532,7 @@ export default function KiblatPage() {
 
       {/* Kompas */}
       <GoldCard css={{ textAlign: 'center' }}>
-        <KompasDial bearing={bearing} heading={heading} rotasi={rotasi} />
+        <KompasDial bearing={bearing} heading={heading} rotasi={rotasi} getarAktif={pengaturan.getar} />
         <div
           css={(t) => ({
             fontFamily: t.fonts.display,
@@ -522,9 +571,17 @@ export default function KiblatPage() {
 
         {/* Panduan non-visual untuk tunanetra/low-vision: ucapan + teks */}
         <div css={{ marginTop: 14 }}>
-          <GhostButton onClick={sebutkanArah} aria-describedby="teks-arah">
-            <FaVolumeUp /> Sebutkan Arah
-          </GhostButton>
+          <Baris css={{ justifyContent: 'center' }}>
+            <GhostButton onClick={sebutkanArah} aria-describedby="teks-arah">
+              <FaVolumeUp /> Sebutkan Arah
+            </GhostButton>
+            <GhostButton
+              onClick={() => ubahAkses({ sonifikasi: !pengaturan.sonifikasi })}
+              aria-pressed={pengaturan.sonifikasi}
+            >
+              <FaVolumeUp /> Panduan Bunyi: {pengaturan.sonifikasi ? 'Nyala' : 'Mati'}
+            </GhostButton>
+          </Baris>
           <p
             id="teks-arah"
             role="status"
