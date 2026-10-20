@@ -94,6 +94,7 @@ const DAFTAR_FITUR = [
   { tujuan: '/ruqyah', judul: "Ruqyah Syar'iyyah", sub: 'Panduan + playlist ayat ruqyah', kata: "ruqyah rukyah syar'iyyah syariyyah ayat gangguan jin sihir playlist audio pengobatan" },
   { tujuan: '/khutbah', judul: 'Teks Khutbah', sub: 'Jumat & hari raya untuk khatib', kata: 'khutbah khotbah jumat hari raya khatib teks naskah' },
   { tujuan: '/panduan-jenazah', judul: 'Panduan Jenazah', sub: 'Memandikan sampai menguburkan', kata: 'jenazah panduan memandikan mengkafani menyolatkan menguburkan mayit mayat' },
+  { tujuan: '/ziarah', judul: 'Ziarah Kubur', sub: 'Adab & doa ziarah kubur', kata: 'ziarah kubur makam adab doa ahli kubur salam mayit peziarah' },
   { tujuan: '/sholat-jenazah', judul: 'Sholat Jenazah', sub: 'Empat takbir & bacaannya', kata: 'sholat jenazah takbir menyolatkan mayit mayat janazah' },
   { tujuan: '/aqiqah-kurban', judul: 'Aqiqah & Kurban', sub: 'Syarat, waktu & kalkulator hewan', kata: 'aqiqah aqiqoh kurban qurban hewan syarat kalkulator kambing sapi kelahiran' },
   { tujuan: '/muslimah', judul: 'Ruang Muslimah', sub: 'Kalkulator haid, doa & fikih wanita', kata: 'muslimah wanita perempuan ruang khusus akhwat' },

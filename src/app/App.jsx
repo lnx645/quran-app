@@ -94,6 +94,7 @@ const JUDUL_RUTE = [
   [/^\/kafarat$/, 'judul.kafarat'],
   [/^\/haji-umrah$/, 'judul.haji'],
   [/^\/panduan-jenazah$/, 'judul.panduanJenazah'],
+  [/^\/ziarah$/, 'judul.ziarah'],
   [/^\/aqiqah-kurban$/, 'judul.aqiqah'],
   [/^\/mutabaah$/, 'judul.mutabaah'],
   [/^\/nama-bayi$/, 'judul.namaBayi'],

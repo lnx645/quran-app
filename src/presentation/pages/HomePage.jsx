@@ -7,7 +7,7 @@ import {
   FaHandPointer, FaCloudSun, FaPrayingHands, FaClipboardCheck, FaCompass,
   FaCalendarAlt, FaListUl, FaBook, FaHeart, FaMoon, FaVenus,
   FaSearch, FaBookmark, FaBrain, FaPalette, FaTint, FaTasks, FaBroadcastTower, FaMicrophone, FaChild,
-  FaBalanceScale, FaKaaba, FaBaby, FaGift, FaHandHoldingHeart, FaMosque,
+  FaBalanceScale, FaKaaba, FaBaby, FaGift, FaHandHoldingHeart, FaMonument, FaMosque,
   FaDownload, FaTimes, FaFire, FaChevronRight,
 } from 'react-icons/fa';
 import { useInstallPrompt } from '../hooks/useInstallPrompt.js';
@@ -168,6 +168,7 @@ const SEKSI = [
       { to: '/kafarat', icon: <FaBookOpen />, kunci: 'menu.kafarat', desc: 'Sumpah, zhihar & lainnya — ringkas' },
       { to: '/haji-umrah', icon: <FaKaaba />, kunci: 'beranda.haji', desc: 'Manasik per tahap + checklist barang' },
       { to: '/panduan-jenazah', icon: <FaBook />, kunci: 'menu.panduanJenazah', desc: 'Memandikan sampai menguburkan' },
+      { to: '/ziarah', icon: <FaMonument />, kunci: 'menu.ziarah', desc: 'Adab & doa ziarah kubur' },
       { to: '/aqiqah-kurban', icon: <FaGift />, kunci: 'menu.aqiqah', desc: 'Syarat, waktu & kalkulator hewan' },
       { to: '/nama-bayi', icon: <FaBaby />, kunci: 'menu.namaBayi', desc: '110 nama + arti, bisa dicari' },
       { to: '/masjid-terdekat', icon: <FaMosque />, kunci: 'menu.masjid', desc: 'Cari masjid di sekitarmu + rute' },

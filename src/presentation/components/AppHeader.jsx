@@ -8,7 +8,7 @@ import {
   FaHandPointer, FaCloudSun, FaPrayingHands, FaClipboardCheck, FaCompass,
   FaCalendarAlt, FaListUl, FaBook, FaGraduationCap, FaUniversalAccess,
   FaSearch, FaBookmark, FaBrain, FaPalette, FaTint, FaMoon, FaBroadcastTower, FaMicrophone, FaChild,
-  FaBalanceScale, FaKaaba, FaBaby, FaGift, FaHandHoldingHeart, FaTasks,
+  FaBalanceScale, FaKaaba, FaBaby, FaGift, FaHandHoldingHeart, FaTasks, FaMonument,
   FaDownload,
 } from 'react-icons/fa';
 import Logo from './Logo.jsx';
@@ -337,6 +337,7 @@ const MENU = [
       { to: '/kafarat', icon: <FaBookOpen />, kunci: 'menu.kafarat' },
       { to: '/haji-umrah', icon: <FaKaaba />, kunci: 'menu.haji' },
       { to: '/panduan-jenazah', icon: <FaBook />, kunci: 'menu.panduanJenazah' },
+      { to: '/ziarah', icon: <FaMonument />, kunci: 'menu.ziarah' },
       { to: '/aqiqah-kurban', icon: <FaGift />, kunci: 'menu.aqiqah' },
       { to: '/nama-bayi', icon: <FaBaby />, kunci: 'menu.namaBayi' },
       { to: '/masjid-terdekat', icon: <FaMosque />, kunci: 'menu.masjid' },
