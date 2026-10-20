@@ -10,10 +10,10 @@ import { LocalHafalanRepository } from '../../data/repositories/LocalHafalanRepo
 import { useChapters } from '../hooks/useChapters.js';
 import { useToast } from '../components/feedback/toastStore.js';
 import {
-  Page, PageHero, Card, GoldCard, SectionTitle, GhostButton,
+  Page, PageHero, Card, GoldCard, SectionTitle, GhostButton, PrimaryButton,
   ErrorBox, Skeleton, TextInput,
 } from '../components/common.jsx';
-import { SegmenWadah, SegmenTab } from '../components/SegmentedControl.jsx';
+import { SegmenWadah, SegmenTab, Segmen } from '../components/SegmentedControl.jsx';
 import NomorMedali from '../components/NomorMedali.jsx';
 
 const PREFS_KUNCI = 'noor.hafalan.prefs.v1';
@@ -107,15 +107,6 @@ const KontrolBar = styled.div`
   input[type='range'] {
     accent-color: ${({ theme }) => theme.colors.primary};
     height: 44px;
-  }
-  select {
-    min-height: 48px;
-    padding: 10px 12px;
-    font-size: 15px;
-    border: 1.5px solid ${({ theme }) => theme.colors.border};
-    border-radius: 14px;
-    background: ${({ theme }) => theme.colors.surface};
-    color: ${({ theme }) => theme.colors.text};
   }
   input[type='number'] {
     width: 90px;
@@ -217,42 +208,18 @@ const BarisAksiAyat = styled.div`
   align-items: center;
 `;
 
-const TombolAudio = styled.button`
+// Chip status kecil NON-interaktif untuk bar aksi ayat (mode uji).
+const ChipStatus = styled.span`
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-width: 48px;
-  min-height: 48px;
-  padding: 12px 16px;
-  border-radius: 14px;
-  border: 1.5px solid ${({ theme }) => theme.colors.primary};
-  background: transparent;
-  color: ${({ theme }) => theme.colors.primary};
-  font-size: 14.5px;
+  gap: 6px;
+  min-height: 32px;
+  padding: 4px 11px;
+  border-radius: 999px;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  color: ${({ theme }) => theme.colors.muted};
+  font-size: 12.5px;
   font-weight: 700;
-  &:active {
-    transform: scale(0.97);
-  }
-`;
-
-const TombolHafal = styled.button`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-height: 48px;
-  padding: 12px 18px;
-  border-radius: 14px;
-  border: none;
-  font-size: 14.5px;
-  font-weight: 800;
-  background: ${({ hafal, theme }) => (hafal ? theme.colors.primarySoft : theme.gradients.gold)};
-  color: ${({ hafal, theme }) => (hafal ? theme.colors.primary : theme.colors.primaryDeep)};
-  box-shadow: ${({ theme, hafal }) => (hafal ? 'none' : theme.shadows.gold)};
-  &:active {
-    transform: scale(0.97);
-  }
 `;
 
 const PetunjukUji = styled.p`
@@ -441,7 +408,7 @@ function AyatHafalan({ ayah, audioUrl, mode, persen, ulang, hafal, onToggleHafal
     >
       <KepalaAyat hafal={hafal}>
         <span className="nomor">Ayat {ayah.number}</span>
-        <span className="status">{hafal ? '✓ Sudah hafal' : 'Belum hafal'}</span>
+        <span className="status">{hafal ? 'Sudah hafal' : 'Belum hafal'}</span>
       </KepalaAyat>
 
       {renderArab()}
@@ -454,27 +421,38 @@ function AyatHafalan({ ayah, audioUrl, mode, persen, ulang, hafal, onToggleHafal
 
       <BarisAksiAyat onClick={(e) => e.stopPropagation()}>
         {audio.adaTiming && (
-          <TombolAudio
+          <GhostButton
             type="button"
             onClick={audio.putar}
             aria-label={`${audio.bermain ? 'Berhenti memutar' : 'Putar'} audio ayat ${ayah.number}`}
           >
             {audio.bermain ? <FaPause /> : <FaPlay />} {audio.bermain ? 'Berhenti' : 'Putar Ayat'}
-          </TombolAudio>
+          </GhostButton>
         )}
-        <TombolHafal
-          type="button"
-          hafal={hafal}
-          onClick={() => onToggleHafal(ayah)}
-          aria-pressed={hafal}
-          aria-label={`${hafal ? 'Batalkan tanda hafal' : 'Tandai sudah hafal'} ayat ${ayah.number}`}
-        >
-          <FaCheck /> {hafal ? 'Sudah Hafal ✓' : 'Sudah Hafal'}
-        </TombolHafal>
+        {hafal ? (
+          <PrimaryButton
+            type="button"
+            onClick={() => onToggleHafal(ayah)}
+            aria-pressed={true}
+            aria-label={`Batalkan tanda hafal ayat ${ayah.number}`}
+          >
+            <FaCheck /> Sudah Hafal
+          </PrimaryButton>
+        ) : (
+          <GhostButton
+            type="button"
+            onClick={() => onToggleHafal(ayah)}
+            aria-pressed={false}
+            aria-label={`Tandai sudah hafal ayat ${ayah.number}`}
+          >
+            <FaCheck /> Sudah Hafal
+          </GhostButton>
+        )}
         {mode === 'uji' && (
-          <span css={(t) => ({ fontSize: 12.5, color: t.colors.faint, display: 'inline-flex', alignItems: 'center', gap: 6 })}>
-            {terbuka ? <FaEye /> : <FaEyeSlash />} {terbuka ? 'Terbuka' : 'Tertutup'}
-          </span>
+          <ChipStatus>
+            {terbuka ? <FaEye aria-hidden="true" /> : <FaEyeSlash aria-hidden="true" />}{' '}
+            {terbuka ? 'Terbuka' : 'Tertutup'}
+          </ChipStatus>
         )}
       </BarisAksiAyat>
     </KartuAyat>
@@ -742,21 +720,33 @@ export default function HafalanPage() {
               </div>
             )}
             <div>
-              <label htmlFor="pilihan-ulang">
-                <FaInfinity aria-hidden="true" /> Ulang audio per ayat
-              </label>
-              <select
-                id="pilihan-ulang"
-                value={ulangStr}
-                onChange={(e) => setUlangStr(e.target.value)}
-                aria-label="Jumlah pengulangan audio per ayat"
+              <span
+                id="label-ulang"
+                css={(t) => ({
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 7,
+                  fontSize: 13.5,
+                  fontWeight: 700,
+                  color: t.colors.text,
+                  marginBottom: 8,
+                })}
               >
+                <FaInfinity aria-hidden="true" /> Ulang audio per ayat
+              </span>
+              <SegmenWadah role="group" aria-labelledby="label-ulang" css={{ marginBottom: 0 }}>
                 {OPSI_ULANG.map((o) => (
-                  <option key={o.nilai} value={o.nilai}>
+                  <Segmen
+                    key={o.nilai}
+                    type="button"
+                    aktif={ulangStr === o.nilai}
+                    aria-pressed={ulangStr === o.nilai}
+                    onClick={() => setUlangStr(o.nilai)}
+                  >
                     {o.label}
-                  </option>
+                  </Segmen>
                 ))}
-              </select>
+              </SegmenWadah>
             </div>
           </KontrolBar>
 
