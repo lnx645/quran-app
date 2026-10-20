@@ -43,16 +43,15 @@ function SurahSkeleton() {
 }
 
 // FAB putar (Mode Baca Tenang): pengganti PlayerBar sebelum audio pernah
-// aktif. Posisinya dihitung dari strip ReadingControls yang selalu tampil:
-// strip itu fixed dengan bottom calc(166px + safe-area) (= tinggi PlayerBar)
-// dan min-height 54px, jadi tepi atasnya berada 220px dari bawah layar.
-// FAB ditaruh 12px di atas tepi itu: bottom = 166 + 54 + 12 = 232px.
+// aktif. FAB hanya tampil saat pemutar TUTUP — saat itu strip
+// ReadingControls merapat ke tepi bawah layar (bottom 0, min-height
+// 54px), jadi FAB ditaruh 12px di atas strip: bottom = 54 + 12 = 66px.
 // z-index 56: tepat di atas ReadingControls (55), jauh di bawah overlay
 // drawer (90), panel drawer (100), dan dialog/modal (300).
 const TombolPutarMelayang = styled.button`
   position: fixed;
   right: 16px;
-  bottom: calc(232px + env(safe-area-inset-bottom));
+  bottom: calc(66px + env(safe-area-inset-bottom));
   z-index: 56;
   width: 52px;
   height: 52px;
@@ -66,13 +65,13 @@ const TombolPutarMelayang = styled.button`
   justify-content: center;
   font-size: 19px;
   /* Saat tumpukan bilah bawah sembunyi (prop turun), FAB ikut turun ke
-     dekat tepi bawah layar (bottom efektif 232px → 16px, jadi geser
-     216px) dengan transisi & token anim yang sama persis dengan bilah —
+     dekat tepi bawah layar (bottom efektif 66px → 16px, jadi geser
+     50px) dengan transisi & token anim yang sama persis dengan bilah —
      satu gerakan sinkron, bukan lompatan. Perilaku FAB tidak berubah. */
-  transform: translateY(${({ turun }) => (turun ? '216px' : '0')});
+  transform: translateY(${({ turun }) => (turun ? '50px' : '0')});
   transition: transform ${({ theme }) => theme.anim.med} ${({ theme }) => theme.anim.ease};
   &:active {
-    transform: translateY(${({ turun }) => (turun ? '216px' : '0')}) scale(0.93);
+    transform: translateY(${({ turun }) => (turun ? '50px' : '0')}) scale(0.93);
   }
   /* Fokus keyboard: pola global :focus-visible di Aplikasi.jsx
      (cincin emas 3px + offset) berlaku untuk tombol ini juga. */
@@ -383,8 +382,17 @@ export default function SurahPage() {
           />
         ))}
         </div>
-        {/* Spacer bawah: konten terakhir tidak tertutup ReadingControls + PlayerBar (fixed) */}
-        <div aria-hidden="true" css={{ height: 'calc(166px + 54px + 28px + env(safe-area-inset-bottom))' }} />
+        {/* Spacer bawah: konten terakhir tidak tertutup bilah fixed —
+            tingginya mengikuti keadaan: pemutar tampil (166px) + strip
+            (54px) + napas 28px; pemutar tutup, jatah pemutar dibuang. */}
+        <div
+          aria-hidden="true"
+          css={{
+            height: playerTampil
+              ? 'calc(166px + 54px + 28px + env(safe-area-inset-bottom))'
+              : 'calc(54px + 28px + env(safe-area-inset-bottom))',
+          }}
+        />
       </MushafFrame>
       <ReadingControls
         pref={pref}
@@ -395,6 +403,7 @@ export default function SurahPage() {
         daftarQari={DAFTAR_QARI}
         ubahQari={ubahQari}
         sembunyi={bilahSembunyi}
+        diAtasPemutar={playerTampil}
       />
       {playerTampil ? (
         // Pembungkus penahan interaksi: event pointer dari PlayerBar

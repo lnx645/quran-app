@@ -5,19 +5,25 @@ import { useBahasa } from '../../app/bahasa.js';
 
 /**
  * Bar kontrol baca: strip ramping selebar area baca yang MENYATU di tepi
- * bawah, tepat menempel di atas PlayerBar (bukan pil melayang):
+ * bawah layar (bukan pil melayang):
  * - A− / A+ : ukuran font Arab
  * - chip "Latin", "Arti" & "Tajwid" : toggle transliterasi, terjemahan,
  *   dan pewarnaan tajwid pada teks Arab
  * Preferensi dikelola useReadingPrefs (localStorage) di SurahPage.
- * Tinggi PlayerBar ≈ 165px + safe-area — bar ini menempel persis di atasnya.
+ * POSISI: merapat ke tepi bawah layar. Bila PlayerBar sedang tampil
+ * (prop diAtasPemutar), strip naik menempel persis di atasnya (geser
+ * 166px — tinggi PlayerBar ≈ 165px); pemutar tutup, strip turun lagi
+ * ke tepi bawah. Tanpa prop, bawaan lama (di atas pemutar) dipertahankan.
  */
 
 const Bar = styled.div`
   position: fixed;
   left: 50%;
   transform: translateX(-50%);
-  bottom: calc(166px + env(safe-area-inset-bottom));
+  bottom: calc(
+    ${({ diAtasPemutar }) => (diAtasPemutar === false ? '0px' : '166px')} +
+      env(safe-area-inset-bottom)
+  );
   z-index: 55;
   width: calc(100vw - 28px);
   @media (min-width: ${({ theme }) => theme.breakpoints.md}px) {
@@ -44,12 +50,17 @@ const Bar = styled.div`
      translateX(-50%) penengah dipertahankan di kedua keadaan. Transisi
      memakai token anim yang sama dengan PlayerBar agar sinkron; aturan
      global prefers-reduced-motion menonaktifkannya otomatis. */
-  ${({ sembunyi, theme }) =>
+  ${({ sembunyi, diAtasPemutar, theme }) =>
     typeof sembunyi === 'boolean' &&
     `
-      transition: transform ${theme.anim.med} ${theme.anim.ease};
+      transition: transform ${theme.anim.med} ${theme.anim.ease},
+        bottom ${theme.anim.med} ${theme.anim.ease};
       transform: translateX(-50%)
-        translateY(${sembunyi ? 'calc(166px + 100% + env(safe-area-inset-bottom))' : '0'});
+        translateY(${
+          sembunyi
+            ? `calc(${diAtasPemutar === false ? '0px' : '166px'} + 100% + env(safe-area-inset-bottom))`
+            : '0'
+        });
       pointer-events: ${sembunyi ? 'none' : 'auto'};
     `}
   border-top: 2px solid ${({ theme }) => theme.colors.gold};
