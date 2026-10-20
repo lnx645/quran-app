@@ -26,3 +26,22 @@ export function fetchGToH(tanggal) {
 export function fetchHToG(hijriDateStr) {
   return getJson(`/hToG/${hijriDateStr}`).then((d) => d.gregorian);
 }
+
+/**
+ * Konversi SATU BULAN Masehi penuh → Hijriah (1 panggilan untuk ±30 hari,
+ * terverifikasi 2026-10-20) — jangan fetch gToH per hari.
+ * @param {number} bulanMasehi 1-12
+ */
+export function fetchGToHCalendar(bulanMasehi, tahunMasehi) {
+  return getJson(`/gToHCalendar/${bulanMasehi}/${tahunMasehi}`);
+}
+
+/**
+ * Kalender jadwal sholat SATU BULAN HIJRIAH penuh per kota (terverifikasi
+ * 2026-10-20: urutan path tahun/bulan Hijriah) — dipakai Imsakiyah Ramadan.
+ */
+export function fetchHijriCalendarByCity(kota, tahunHijriah, bulanHijriah) {
+  return getJson(
+    `/hijriCalendarByCity/${tahunHijriah}/${bulanHijriah}?city=${encodeURIComponent(kota)}&country=Indonesia&method=20`
+  );
+}
