@@ -26,9 +26,9 @@ const Bar = styled.header`
   position: sticky;
   top: 0;
   z-index: 50;
-  background: linear-gradient(120deg, ${({ theme }) => theme.colors.primaryDeep}, ${({ theme }) => theme.colors.primary} 70%);
+  background: ${({ theme }) => theme.gradients.heroGlow}, ${({ theme }) => theme.gradients.header};
   color: #fff;
-  box-shadow: 0 3px 14px rgba(4, 37, 31, 0.3);
+  box-shadow: 0 1px 3px rgba(4, 37, 31, 0.22), 0 6px 18px rgba(4, 37, 31, 0.28);
 `;
 
 const Inner = styled.div`

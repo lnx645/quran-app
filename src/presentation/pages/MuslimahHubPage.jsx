@@ -2,13 +2,16 @@
 import styled from '@emotion/styled';
 import { FaFemale, FaCalculator, FaShower, FaPrayingHands, FaBookOpen, FaInfoCircle } from 'react-icons/fa';
 import { Page, PageHero, Card, MenuCard } from '../components/common.jsx';
+import { stagger, reduceMotion } from '../components/motion.js';
 import { DISCLAIMER } from '../../data/sources/muslimahData.js';
 
 const Grid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-bottom: 16px;
+  gap: ${({ theme }) => theme.spacing.gridGap}px;
+  margin-bottom: ${({ theme }) => theme.spacing.md}px;
+  ${stagger(4, 45)}
+  ${reduceMotion}
   @media (min-width: ${({ theme }) => theme.breakpoints.md}px) {
     grid-template-columns: repeat(4, 1fr);
   }

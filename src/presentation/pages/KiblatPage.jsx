@@ -306,13 +306,13 @@ export default function KiblatPage() {
       <GoldCard css={{ textAlign: 'center' }}>
         <KompasDial bearing={bearing} heading={heading} />
         <div
-          css={{
-            fontFamily: "'Playfair Display', serif",
+          css={(t) => ({
+            fontFamily: t.fonts.display,
             fontSize: 34,
             fontWeight: 700,
             marginTop: 6,
-            color: '#0B5345',
-          }}
+            color: t.colors.primary,
+          })}
         >
           {bearing.toFixed(1)}°
         </div>

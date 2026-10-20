@@ -1,4 +1,4 @@
-// Design system "Noor" v2 — tema premium "emerald & gold" mobile-first.
+// Design system "Noor" v2.1 — tema premium "emerald & gold" mobile-first.
 // Palet rombak total 2026-10-20 (permintaan user: ganti warna lama).
 // SEMUA komponen wajib memakai token dari sini, jangan hardcode hex.
 export const theme = {
@@ -18,13 +18,47 @@ export const theme = {
     bg: '#FAF6EC', // ivory hangat
     surface: '#FFFFFF', // kartu
     surfaceAlt: '#F3EBD6', // kartu alternatif / item lewat
-    text: '#1E2A26',
-    muted: '#6B7A72',
-    faint: '#9BA9A1',
+    text: '#1E2A26', // teks body — kontras AA di atas bg/surface
+    muted: '#5F6E66', // teks sekunder — kontras AA di atas bg
+    faint: '#8B9890', // meta/dekoratif saja (bukan teks penting)
     border: '#E6D9BC', // border hangat
     onPrimary: '#FFFFFF', // teks di atas emerald
     danger: '#B91C1C',
     success: '#15803D',
+  },
+  // Skala tipografi — hierarki display → heading → body → caption.
+  // display: judul halaman; heroTitle: judul PageHero; h2: SectionTitle;
+  // arabDisplay: nama surah Arab / bismillah hero.
+  type: {
+    display: { size: 30, lineHeight: 1.2, weight: 700 },
+    heroTitle: { size: 24, lineHeight: 1.25, weight: 700 },
+    h2: { size: 18, lineHeight: 1.3, weight: 700 },
+    h3: { size: 16, lineHeight: 1.35, weight: 700 },
+    body: { size: 15, lineHeight: 1.6, weight: 400 },
+    bodySm: { size: 13.5, lineHeight: 1.6, weight: 400 },
+    caption: { size: 12.5, lineHeight: 1.5, weight: 500 },
+    overline: { size: 11.5, lineHeight: 1.4, weight: 700 },
+    arabDisplay: { size: 46, lineHeight: 1.6, weight: 700 },
+  },
+  // Ritme spacing konsisten: section antar-blok, pad kartu, gap grid.
+  spacing: {
+    xs: 6,
+    sm: 10,
+    md: 14,
+    lg: 18,
+    xl: 24,
+    xxl: 32,
+    section: 26, // margin atas SectionTitle / antar-seksi halaman
+    cardPad: 18, // padding kartu (mobile)
+    cardPadMd: 22, // padding kartu (desktop)
+    gridGap: 12, // gap grid kartu menu
+  },
+  // Token mikro-animasi: ringan, 150–250ms, ease-out.
+  anim: {
+    fast: '150ms',
+    med: '220ms',
+    slow: '320ms',
+    ease: 'cubic-bezier(0.22, 0.61, 0.36, 1)',
   },
   fonts: {
     arabic: "'Amiri', 'Scheherazade New', serif",
@@ -32,10 +66,23 @@ export const theme = {
     body: "'Inter', system-ui, sans-serif",
   },
   radii: { sm: 10, md: 16, lg: 20, pill: 999 },
+  // Gradasi kaya: emerald dalam → emas hidup. Dipakai hero/header/kartu penting.
+  gradients: {
+    hero: 'linear-gradient(155deg, #04251F 0%, #0B5345 52%, #117A65 100%)',
+    heroGlow:
+      'radial-gradient(120% 90% at 85% -10%, rgba(231, 198, 90, 0.26), transparent 55%)',
+    header:
+      'linear-gradient(120deg, #04251F 0%, #06312A 55%, #0B5345 100%)',
+    gold: 'linear-gradient(135deg, #C9A227 0%, #E7C65A 100%)',
+    goldSoftCard:
+      'linear-gradient(180deg, #F9F1D6 0%, #FFFFFF 58%)',
+  },
   shadows: {
-    card: '0 6px 20px rgba(11, 83, 69, 0.10)',
-    lift: '0 14px 34px rgba(11, 83, 69, 0.20)',
-    player: '0 -10px 30px rgba(4, 37, 31, 0.38)',
+    // Bayangan lembut BERLAPIS (2 lapis): garis kontak + sebaran jauh.
+    card: '0 1px 2px rgba(11, 83, 69, 0.06), 0 8px 24px rgba(11, 83, 69, 0.10)',
+    lift: '0 2px 5px rgba(11, 83, 69, 0.08), 0 16px 38px rgba(11, 83, 69, 0.18)',
+    gold: '0 1px 3px rgba(201, 162, 39, 0.22), 0 10px 26px rgba(201, 162, 39, 0.30)',
+    player: '0 -2px 6px rgba(4, 37, 31, 0.20), 0 -12px 32px rgba(4, 37, 31, 0.32)',
   },
   pattern:
     // Ubin bintang-8 girih (SVG inline). Cocok di atas latar gelap emerald.

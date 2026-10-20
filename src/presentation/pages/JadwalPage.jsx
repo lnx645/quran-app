@@ -8,7 +8,7 @@ import { useJadwal, KOTA_OPSI } from '../hooks/useJadwal.js';
 import { CornerOrnament } from '../components/ornaments/index.js';
 import {
   Page, PageTitle, PageSubtitle, Card, GoldCard, SelectInput, Field,
-  ErrorBox, LoadingBox, Spinner, SectionTitle,
+  ErrorBox, SectionTitle, Skeleton,
 } from '../components/common.jsx';
 
 const hijriBulanId = (en) =>
@@ -128,6 +128,25 @@ const menitDariJam = (jam) => {
   return h * 60 + m;
 };
 
+// Skeleton loading: tiruan kartu jadwal + deretan baris waktu.
+function JadwalSkeleton() {
+  return (
+    <div aria-busy="true">
+      <div css={{ marginBottom: 16 }}>
+        <Skeleton h={168} radius={20} />
+      </div>
+      <div css={{ marginBottom: 12 }}>
+        <Skeleton h={20} w="42%" radius={6} />
+      </div>
+      {Array.from({ length: 6 }).map((_, i) => (
+        <div key={i} css={{ marginBottom: 8 }}>
+          <Skeleton h={64} radius={14} />
+        </div>
+      ))}
+    </div>
+  );
+}
+
 const fmtCountdown = (detik) => {
   const s = Math.max(0, detik);
   const h = Math.floor(s / 3600);
@@ -225,11 +244,7 @@ export default function JadwalPage() {
         </SelectInput>
       </Field>
 
-      {loading && (
-        <LoadingBox>
-          <Spinner /> Memuat jadwal…
-        </LoadingBox>
-      )}
+      {loading && <JadwalSkeleton />}
       {error && <ErrorBox>Gagal memuat jadwal: {error}</ErrorBox>}
 
       {data && status && (

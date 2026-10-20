@@ -1,12 +1,15 @@
 /** @jsxImportSource @emotion/react */
 // Komponen bersama (Emotion) dipakai seluruh halaman — MOBILE-FIRST.
-// Semua warna/radius/bayangan dari theme tokens (palet emerald & gold v2).
+// Semua warna/radius/bayangan/tipografi/spasi dari theme tokens (palet emerald & gold v2.1).
 import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
-import { GirihPattern, CornerOrnament } from './ornaments/index.js';
+import { GirihPattern, CornerOrnament, MoonStar, OrnamentBand } from './ornaments/index.js';
+import { mountPage, mountUp, reduceMotion, shimmer } from './motion.js';
 
 export const Page = styled.div`
   padding-top: 16px;
+  ${mountPage}
+  ${reduceMotion}
 `;
 
 export const Card = styled.div`
@@ -14,22 +17,25 @@ export const Card = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.radii.lg}px;
   box-shadow: ${({ theme }) => theme.shadows.card};
-  padding: 18px 16px;
-  margin-bottom: 16px;
+  padding: ${({ theme }) => theme.spacing.cardPad}px ${({ theme }) => theme.spacing.md}px;
+  margin-bottom: ${({ theme }) => theme.spacing.md}px;
   @media (min-width: ${({ theme }) => theme.breakpoints.md}px) {
-    padding: 22px;
+    padding: ${({ theme }) => theme.spacing.cardPadMd}px;
   }
 `;
 
+// Kartu penting: border emas 1px halus + bayangan emas berlapis.
 export const GoldCard = styled(Card)`
-  border: 1.5px solid ${({ theme }) => theme.colors.gold};
-  background: linear-gradient(180deg, ${({ theme }) => theme.colors.goldSoft}, ${({ theme }) => theme.colors.surface} 58%);
+  border: 1px solid ${({ theme }) => theme.colors.gold};
+  box-shadow: ${({ theme }) => theme.shadows.gold}, ${({ theme }) => theme.shadows.card};
+  background: ${({ theme }) => theme.gradients.goldSoftCard};
 `;
 
 export const PageTitle = styled.h1`
   font-family: ${({ theme }) => theme.fonts.display};
-  font-size: 29px;
-  font-weight: 700;
+  font-size: ${({ theme }) => theme.type.display.size}px;
+  font-weight: ${({ theme }) => theme.type.display.weight};
+  line-height: ${({ theme }) => theme.type.display.lineHeight};
   color: ${({ theme }) => theme.colors.primaryDeep};
   margin-bottom: 4px;
   display: flex;
@@ -42,29 +48,30 @@ export const PageTitle = styled.h1`
 
 export const PageSubtitle = styled.p`
   color: ${({ theme }) => theme.colors.muted};
-  font-size: 14.5px;
-  line-height: 1.55;
-  margin-bottom: 18px;
+  font-size: ${({ theme }) => theme.type.bodySm.size}px;
+  line-height: ${({ theme }) => theme.type.bodySm.lineHeight};
+  margin-bottom: ${({ theme }) => theme.spacing.lg}px;
 `;
 
 export const SectionTitle = styled.h2`
   font-family: ${({ theme }) => theme.fonts.display};
-  font-size: 18px;
+  font-size: ${({ theme }) => theme.type.h2.size}px;
+  font-weight: ${({ theme }) => theme.type.h2.weight};
+  line-height: ${({ theme }) => theme.type.h2.lineHeight};
   color: ${({ theme }) => theme.colors.primary};
-  margin: 26px 0 14px;
+  margin: ${({ theme }) => theme.spacing.section}px 0 ${({ theme }) => theme.spacing.md}px;
   display: flex;
   align-items: center;
   gap: 9px;
   padding-left: 12px;
   border-left: 4px solid ${({ theme }) => theme.colors.gold};
-  line-height: 1.2;
   svg {
     color: ${({ theme }) => theme.colors.gold};
   }
 `;
 
 export const PrimaryButton = styled.button`
-  background: linear-gradient(135deg, ${({ theme }) => theme.colors.gold}, ${({ theme }) => theme.colors.goldLight});
+  background: ${({ theme }) => theme.gradients.gold};
   color: ${({ theme }) => theme.colors.primaryDeep};
   border: none;
   border-radius: 14px;
@@ -76,11 +83,13 @@ export const PrimaryButton = styled.button`
   align-items: center;
   justify-content: center;
   gap: 8px;
-  box-shadow: 0 6px 16px rgba(201, 162, 39, 0.35);
-  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+  box-shadow: ${({ theme }) => theme.shadows.gold};
+  transition: transform ${({ theme }) => theme.anim.fast} ${({ theme }) => theme.anim.ease},
+    box-shadow ${({ theme }) => theme.anim.fast} ${({ theme }) => theme.anim.ease},
+    filter ${({ theme }) => theme.anim.fast} ${({ theme }) => theme.anim.ease};
   &:hover {
-    filter: brightness(1.04);
-    box-shadow: 0 10px 22px rgba(201, 162, 39, 0.42);
+    filter: brightness(1.05);
+    box-shadow: 0 2px 6px rgba(201, 162, 39, 0.25), 0 14px 30px rgba(201, 162, 39, 0.38);
   }
   &:active {
     transform: scale(0.97);
@@ -90,6 +99,7 @@ export const PrimaryButton = styled.button`
     cursor: default;
     box-shadow: none;
   }
+  ${reduceMotion}
 `;
 
 export const GhostButton = styled.button`
@@ -105,20 +115,22 @@ export const GhostButton = styled.button`
   align-items: center;
   justify-content: center;
   gap: 8px;
-  transition: background 0.15s ease, transform 0.15s ease;
+  transition: background ${({ theme }) => theme.anim.fast} ${({ theme }) => theme.anim.ease},
+    transform ${({ theme }) => theme.anim.fast} ${({ theme }) => theme.anim.ease};
   &:hover {
     background: ${({ theme }) => theme.colors.primarySoft};
   }
   &:active {
     transform: scale(0.97);
   }
+  ${reduceMotion}
 `;
 
 export const Field = styled.div`
   margin-bottom: 14px;
   label {
     display: block;
-    font-size: 13px;
+    font-size: ${({ theme }) => theme.type.caption.size}px;
     font-weight: 600;
     color: ${({ theme }) => theme.colors.muted};
     margin-bottom: 6px;
@@ -133,6 +145,7 @@ export const TextInput = styled.input`
   border-radius: 14px;
   background: ${({ theme }) => theme.colors.surface};
   color: ${({ theme }) => theme.colors.text};
+  transition: border-color ${({ theme }) => theme.anim.fast} ease, box-shadow ${({ theme }) => theme.anim.fast} ease;
   &:focus {
     outline: none;
     border-color: ${({ theme }) => theme.colors.primary};
@@ -148,9 +161,11 @@ export const SelectInput = styled.select`
   border-radius: 14px;
   background: ${({ theme }) => theme.colors.surface};
   color: ${({ theme }) => theme.colors.text};
+  transition: border-color ${({ theme }) => theme.anim.fast} ease, box-shadow ${({ theme }) => theme.anim.fast} ease;
   &:focus {
     outline: none;
     border-color: ${({ theme }) => theme.colors.primary};
+    box-shadow: 0 0 0 3px ${({ theme }) => theme.colors.primarySoft};
   }
 `;
 
@@ -199,7 +214,7 @@ export const ResultRow = styled.div`
     border-bottom: none;
   }
   .label {
-    font-size: 14px;
+    font-size: ${({ theme }) => theme.type.caption.size}px;
     color: ${({ theme }) => theme.colors.muted};
   }
   .value {
@@ -210,46 +225,73 @@ export const ResultRow = styled.div`
   }
 `;
 
-// PageHero — header halaman fitur: gradasi emerald + pola girih + bingkai sudut emas.
+// Skeleton loading bersama — blok kilau (shimmer). Dipakai semua halaman loading.
+// <Skeleton h={16} w="60%" radius={8} />
+export const Skeleton = styled.div`
+  border-radius: ${({ radius = 10 }) => radius}px;
+  background: linear-gradient(
+    90deg,
+    ${({ theme }) => theme.colors.surfaceAlt} 25%,
+    #eee1c3 50%,
+    ${({ theme }) => theme.colors.surfaceAlt} 75%
+  );
+  background-size: 200% 100%;
+  animation: ${shimmer} 1.5s ease-in-out infinite;
+  width: ${({ w = '100%' }) => (typeof w === 'number' ? `${w}px` : w)};
+  height: ${({ h = 14 }) => (typeof h === 'number' ? `${h}px` : h)};
+  ${reduceMotion}
+`;
+
+// PageHero — header halaman fitur: gradasi emerald kaya + kilau emas,
+// pola girih, bingkai sudut, aksen bulan sabit & pita ornamen di bawah.
 // Pemakaian: <PageHero><h2>Judul</h2><p>subjudul</p></PageHero>
 const HeroBox = styled.section`
   position: relative;
   overflow: hidden;
   border-radius: ${({ theme }) => theme.radii.lg}px;
-  padding: 22px 18px;
-  margin-bottom: 18px;
-  background: linear-gradient(140deg, ${({ theme }) => theme.colors.primary}, ${({ theme }) => theme.colors.primaryMid} 55%, ${({ theme }) => theme.colors.primaryDark});
+  padding: 24px 18px 0;
+  margin-bottom: ${({ theme }) => theme.spacing.lg}px;
+  background: ${({ theme }) => theme.gradients.heroGlow}, ${({ theme }) => theme.gradients.hero};
   color: #fff;
-  box-shadow: ${({ theme }) => theme.shadows.card};
+  box-shadow: ${({ theme }) => theme.shadows.lift};
+  ${mountUp}
+  ${reduceMotion}
   h2 {
     position: relative;
     font-family: ${({ theme }) => theme.fonts.display};
-    font-size: 24px;
-    font-weight: 700;
+    font-size: ${({ theme }) => theme.type.heroTitle.size}px;
+    font-weight: ${({ theme }) => theme.type.heroTitle.weight};
+    line-height: ${({ theme }) => theme.type.heroTitle.lineHeight};
     display: flex;
     align-items: center;
     gap: 10px;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
     svg {
       color: ${({ theme }) => theme.colors.goldLight};
     }
   }
   p {
     position: relative;
-    font-size: 13.5px;
-    line-height: 1.55;
+    font-size: ${({ theme }) => theme.type.bodySm.size}px;
+    line-height: ${({ theme }) => theme.type.bodySm.lineHeight};
     color: rgba(255, 255, 255, 0.88);
     margin-top: 6px;
-    max-width: 92%;
+    max-width: 88%;
+    padding-bottom: 4px;
   }
 `;
 
-export function PageHero({ children }) {
+export function PageHero({ children, moon = true }) {
   return (
     <HeroBox>
-      <GirihPattern opacity={0.13} />
-      <CornerOrnament corner="tl" size={64} style={{ top: 5, left: 5 }} />
-      <CornerOrnament corner="br" size={64} style={{ bottom: 5, right: 5 }} />
-      {children}
+      <GirihPattern opacity={0.14} />
+      <CornerOrnament corner="tl" size={60} style={{ top: 5, left: 5 }} />
+      <CornerOrnament corner="br" size={60} style={{ bottom: 22, right: 5 }} />
+      {moon && <MoonStar size={84} opacity={0.95} style={{ top: 12, right: 12 }} />}
+      <div css={{ position: 'relative', paddingBottom: 18 }}>{children}</div>
+      <div css={{ position: 'relative', margin: '0 -18px' }}>
+        <OrnamentBand height={15} opacity={0.6} />
+      </div>
     </HeroBox>
   );
 }
@@ -264,7 +306,9 @@ const MenuLink = styled(Link)`
   border-radius: ${({ theme }) => theme.radii.lg}px;
   padding: 16px 14px 14px;
   box-shadow: ${({ theme }) => theme.shadows.card};
-  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  transition: transform ${({ theme }) => theme.anim.med} ${({ theme }) => theme.anim.ease},
+    box-shadow ${({ theme }) => theme.anim.med} ${({ theme }) => theme.anim.ease},
+    border-color ${({ theme }) => theme.anim.med} ${({ theme }) => theme.anim.ease};
   position: relative;
   overflow: hidden;
   min-height: 128px;
@@ -284,7 +328,9 @@ const MenuLink = styled(Link)`
   }
   &:active {
     transform: scale(0.98);
+    box-shadow: ${({ theme }) => theme.shadows.card};
   }
+  ${reduceMotion}
 `;
 
 const MenuIcon = styled.span`
@@ -295,7 +341,7 @@ const MenuIcon = styled.span`
   width: 46px;
   height: 46px;
   border-radius: 14px;
-  background: linear-gradient(135deg, ${({ theme }) => theme.colors.primary}, ${({ theme }) => theme.colors.primaryMid});
+  background: ${({ theme }) => theme.gradients.header};
   color: ${({ theme }) => theme.colors.goldLight};
   font-size: 21px;
   flex-shrink: 0;

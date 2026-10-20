@@ -4,7 +4,8 @@ import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
 import { FaBookOpen, FaSearch, FaExclamationTriangle, FaSearchMinus } from 'react-icons/fa';
 import { useChapters } from '../hooks/useChapters.js';
-import { Page, PageHero, ErrorBox } from '../components/common.jsx';
+import { Page, PageHero, ErrorBox, Skeleton } from '../components/common.jsx';
+import { stagger, reduceMotion } from '../components/motion.js';
 
 /**
  * Daftar seluruh 114 surah: pencarian (latin/arti/arab) + filter
@@ -86,7 +87,9 @@ const CountLine = styled.p`
 const Grid = styled.div`
   display: grid;
   grid-template-columns: 1fr;
-  gap: 10px;
+  gap: ${({ theme }) => theme.spacing.sm}px;
+  ${stagger(8, 30)}
+  ${reduceMotion}
   @media (min-width: ${({ theme }) => theme.breakpoints.md}px) {
     grid-template-columns: 1fr 1fr;
   }
@@ -103,7 +106,9 @@ const SurahLink = styled(Link)`
   box-shadow: ${({ theme }) => theme.shadows.card};
   position: relative;
   overflow: hidden;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  transition: transform ${({ theme }) => theme.anim.med} ${({ theme }) => theme.anim.ease},
+    box-shadow ${({ theme }) => theme.anim.med} ${({ theme }) => theme.anim.ease},
+    border-color ${({ theme }) => theme.anim.med} ${({ theme }) => theme.anim.ease};
   &::after {
     content: '';
     position: absolute;
@@ -120,7 +125,9 @@ const SurahLink = styled(Link)`
   }
   &:active {
     transform: scale(0.98);
+    box-shadow: ${({ theme }) => theme.shadows.card};
   }
+  ${reduceMotion}
 `;
 
 const NumberBadge = styled.span`
@@ -183,6 +190,7 @@ const ArabicName = styled.span`
   flex-shrink: 0;
 `;
 
+// Skeleton daftar surah — memakai komponen Skeleton bersama (shimmer).
 const SkeletonCard = styled.div`
   display: flex;
   align-items: center;
@@ -191,12 +199,6 @@ const SkeletonCard = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.radii.lg}px;
   padding: 13px 14px;
-  .sk {
-    border-radius: 12px;
-    background: linear-gradient(90deg, ${({ theme }) => theme.colors.surfaceAlt} 25%, #ece0c4 50%, ${({ theme }) => theme.colors.surfaceAlt} 75%);
-    background-size: 200% 100%;
-    animation: kilau 1.3s ease-in-out infinite;
-  }
   .num {
     width: 44px;
     height: 44px;
@@ -204,27 +206,14 @@ const SkeletonCard = styled.div`
   }
   .tx {
     flex: 1;
-  }
-  .bar {
-    height: 13px;
-    margin-bottom: 7px;
-  }
-  .bar2 {
-    width: 55%;
-    height: 11px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
   }
   .arab {
     width: 74px;
     height: 26px;
     flex-shrink: 0;
-  }
-  @keyframes kilau {
-    from {
-      background-position: 200% 0;
-    }
-    to {
-      background-position: -200% 0;
-    }
   }
 `;
 
@@ -297,12 +286,12 @@ export default function QuranListPage() {
         <Grid aria-busy="true">
           {Array.from({ length: 8 }).map((_, i) => (
             <SkeletonCard key={i}>
-              <div className="sk num" />
+              <Skeleton className="num" radius={14} />
               <div className="tx">
-                <div className="sk bar" />
-                <div className="sk bar2" />
+                <Skeleton h={13} />
+                <Skeleton h={11} w="55%" />
               </div>
-              <div className="sk arab" />
+              <Skeleton className="arab" radius={8} />
             </SkeletonCard>
           ))}
         </Grid>

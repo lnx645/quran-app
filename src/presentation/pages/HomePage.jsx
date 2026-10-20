@@ -7,17 +7,20 @@ import {
 } from 'react-icons/fa';
 import { Page, SectionTitle, MenuCard } from '../components/common.jsx';
 import OrnamentDivider from '../components/OrnamentDivider.jsx';
-import { GirihPattern, OrnamentBand, CornerOrnament, MosqueSilhouette } from '../components/ornaments/index.js';
+import { GirihPattern, OrnamentBand, CornerOrnament, MosqueSilhouette, MoonStar } from '../components/ornaments/index.js';
+import { mountUp, reduceMotion, stagger } from '../components/motion.js';
 
 const Hero = styled.section`
   position: relative;
   overflow: hidden;
   border-radius: ${({ theme }) => theme.radii.lg}px;
-  background: linear-gradient(160deg, ${({ theme }) => theme.colors.primaryDeep}, ${({ theme }) => theme.colors.primary} 55%, ${({ theme }) => theme.colors.primaryMid});
+  background: ${({ theme }) => theme.gradients.heroGlow}, ${({ theme }) => theme.gradients.hero};
   color: #fff;
   text-align: center;
   margin: 2px -2px 6px;
   box-shadow: ${({ theme }) => theme.shadows.lift};
+  ${mountUp}
+  ${reduceMotion}
 `;
 
 const HeroIsi = styled.div`
@@ -25,21 +28,23 @@ const HeroIsi = styled.div`
   padding: 30px 20px 8px;
   .arab-hero {
     font-family: ${({ theme }) => theme.fonts.arabic};
-    font-size: 33px;
+    font-size: ${({ theme }) => theme.type.arabDisplay.size - 13}px;
     line-height: 1.8;
     color: ${({ theme }) => theme.colors.goldLight};
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
   }
   h1 {
     font-family: ${({ theme }) => theme.fonts.display};
-    font-size: 30px;
-    font-weight: 700;
+    font-size: ${({ theme }) => theme.type.display.size}px;
+    font-weight: ${({ theme }) => theme.type.display.weight};
+    line-height: ${({ theme }) => theme.type.display.lineHeight};
     margin-top: 8px;
     letter-spacing: 0.4px;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
   }
   p {
-    font-size: 13.5px;
-    line-height: 1.6;
+    font-size: ${({ theme }) => theme.type.bodySm.size}px;
+    line-height: ${({ theme }) => theme.type.bodySm.lineHeight};
     color: rgba(255, 255, 255, 0.9);
     margin-top: 7px;
     padding: 0 6px;
@@ -49,10 +54,13 @@ const HeroIsi = styled.div`
 const GridMenu = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 11px;
+  gap: ${({ theme }) => theme.spacing.gridGap}px;
+  margin-bottom: ${({ theme }) => theme.spacing.sm}px;
+  ${stagger(6, 40)}
+  ${reduceMotion}
   @media (min-width: ${({ theme }) => theme.breakpoints.md}px) {
     grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
+    gap: ${({ theme }) => theme.spacing.md}px;
   }
 `;
 
@@ -115,9 +123,9 @@ export default function HomePage() {
   return (
     <Page>
       <Hero>
-        <GirihPattern opacity={0.14} />
+        <GirihPattern opacity={0.15} />
         <CornerOrnament corner="tl" style={{ top: 6, left: 6 }} />
-        <CornerOrnament corner="tr" style={{ top: 6, right: 6 }} />
+        <MoonStar size={66} opacity={0.95} style={{ top: 10, right: 12 }} />
         <HeroIsi>
           <div className="arab-hero" lang="ar">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
           <h1>Ahlan wa Sahlan</h1>

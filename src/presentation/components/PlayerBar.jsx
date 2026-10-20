@@ -9,10 +9,25 @@ const Bar = styled.div`
   right: 0;
   bottom: 0;
   z-index: 60;
-  background: linear-gradient(120deg, ${({ theme }) => theme.colors.primaryDeep}, ${({ theme }) => theme.colors.primary} 70%);
+  /* Efek kaca: latar emerald semi-transparan + blur konten di belakangnya */
+  background: linear-gradient(120deg, rgba(4, 37, 31, 0.9), rgba(11, 83, 69, 0.86));
+  backdrop-filter: blur(16px) saturate(1.3);
+  -webkit-backdrop-filter: blur(16px) saturate(1.3);
   color: #fff;
   box-shadow: ${({ theme }) => theme.shadows.player};
-  border-top: 1px solid rgba(201, 162, 39, 0.35);
+  /* Garis emas di atas player */
+  border-top: 1px solid rgba(231, 198, 90, 0.55);
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, ${({ theme }) => theme.colors.goldLight} 30%, ${({ theme }) => theme.colors.gold} 55%, transparent);
+    opacity: 0.75;
+    pointer-events: none;
+  }
 `;
 
 const Inner = styled.div`
@@ -71,7 +86,7 @@ const Kontrol = styled.div`
 `;
 
 const TombolSamping = styled.button`
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.12);
   border: 1px solid rgba(231, 198, 90, 0.5);
   color: ${({ theme }) => theme.colors.goldLight};
   width: 46px;
@@ -81,9 +96,10 @@ const TombolSamping = styled.button`
   align-items: center;
   justify-content: center;
   font-size: 15px;
-  transition: background 0.15s ease, transform 0.15s ease;
+  transition: background ${({ theme }) => theme.anim.fast} ${({ theme }) => theme.anim.ease},
+    transform ${({ theme }) => theme.anim.fast} ${({ theme }) => theme.anim.ease};
   &:hover {
-    background: rgba(231, 198, 90, 0.22);
+    background: rgba(231, 198, 90, 0.26);
   }
   &:active {
     transform: scale(0.94);
@@ -94,7 +110,7 @@ const TombolSamping = styled.button`
 `;
 
 const TombolUtama = styled.button`
-  background: linear-gradient(135deg, ${({ theme }) => theme.colors.gold}, ${({ theme }) => theme.colors.goldLight});
+  background: ${({ theme }) => theme.gradients.gold};
   border: 1px solid rgba(255, 255, 255, 0.5);
   color: ${({ theme }) => theme.colors.primaryDeep};
   width: 60px;
@@ -104,8 +120,8 @@ const TombolUtama = styled.button`
   align-items: center;
   justify-content: center;
   font-size: 22px;
-  box-shadow: 0 6px 18px rgba(201, 162, 39, 0.45);
-  transition: transform 0.15s ease;
+  box-shadow: 0 2px 6px rgba(201, 162, 39, 0.3), 0 8px 20px rgba(201, 162, 39, 0.5);
+  transition: transform ${({ theme }) => theme.anim.fast} ${({ theme }) => theme.anim.ease};
   &:active {
     transform: scale(0.93);
   }

@@ -11,11 +11,14 @@ import {
   Page, PageTitle, PageSubtitle, Card, GoldCard, SectionTitle, ErrorBox,
   LoadingBox, Spinner, GhostButton, PrimaryButton,
 } from '../components/common.jsx';
+import { stagger, reduceMotion } from '../components/motion.js';
 
 const GridHuruf = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
-  gap: 10px;
+  gap: ${({ theme }) => theme.spacing.sm}px;
+  ${stagger(12, 22)}
+  ${reduceMotion}
 `;
 
 const SelHuruf = styled.button`
@@ -26,9 +29,18 @@ const SelHuruf = styled.button`
   border-radius: 14px;
   padding: 10px 4px 8px;
   text-align: center;
-  transition: border-color 0.15s ease, background 0.15s ease;
+  box-shadow: ${({ theme, aktif }) => (aktif ? theme.shadows.card : 'none')};
+  transition: border-color ${({ theme }) => theme.anim.fast} ${({ theme }) => theme.anim.ease},
+    background ${({ theme }) => theme.anim.fast} ${({ theme }) => theme.anim.ease},
+    transform ${({ theme }) => theme.anim.fast} ${({ theme }) => theme.anim.ease},
+    box-shadow ${({ theme }) => theme.anim.fast} ${({ theme }) => theme.anim.ease};
   &:hover {
     border-color: ${({ theme }) => theme.colors.gold};
+    transform: translateY(-2px);
+    box-shadow: ${({ theme }) => theme.shadows.card};
+  }
+  &:active {
+    transform: scale(0.95);
   }
   .ar {
     font-family: ${({ theme }) => theme.fonts.arabic};

@@ -2,25 +2,28 @@
 import styled from '@emotion/styled';
 import { FaMapMarkerAlt, FaListOl } from 'react-icons/fa';
 import OrnamentDivider from './OrnamentDivider.jsx';
-import { GirihPattern, CornerOrnament, OrnamentBand } from './ornaments/index.js';
+import { GirihPattern, CornerOrnament, OrnamentBand, MoonStar } from './ornaments/index.js';
+import { mountUp, reduceMotion } from './motion.js';
 
 const Box = styled.section`
   position: relative;
   overflow: hidden;
   text-align: center;
-  background: linear-gradient(150deg, ${({ theme }) => theme.colors.primaryDeep}, ${({ theme }) => theme.colors.primary} 55%, ${({ theme }) => theme.colors.primaryMid});
+  background: ${({ theme }) => theme.gradients.heroGlow}, ${({ theme }) => theme.gradients.hero};
   color: #fff;
   border-radius: ${({ theme }) => theme.radii.lg}px;
   padding: 28px 18px 6px;
-  margin-bottom: 20px;
+  margin-bottom: ${({ theme }) => theme.spacing.xl}px;
   box-shadow: ${({ theme }) => theme.shadows.lift};
+  ${mountUp}
+  ${reduceMotion}
 `;
 
 const Arab = styled.div`
   position: relative;
   font-family: ${({ theme }) => theme.fonts.arabic};
-  font-size: 46px;
-  line-height: 1.5;
+  font-size: ${({ theme }) => theme.type.arabDisplay.size}px;
+  line-height: ${({ theme }) => theme.type.arabDisplay.lineHeight};
   color: ${({ theme }) => theme.colors.goldLight};
   text-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
 `;
@@ -28,7 +31,8 @@ const Arab = styled.div`
 const Latin = styled.h1`
   position: relative;
   font-family: ${({ theme }) => theme.fonts.display};
-  font-size: 24px;
+  font-size: ${({ theme }) => theme.type.heroTitle.size}px;
+  line-height: ${({ theme }) => theme.type.heroTitle.lineHeight};
   margin-top: 4px;
 `;
 
@@ -63,7 +67,7 @@ export default function SurahHeader({ surah }) {
     <Box>
       <GirihPattern opacity={0.13} />
       <CornerOrnament corner="tl" style={{ top: 6, left: 6 }} />
-      <CornerOrnament corner="tr" style={{ top: 6, right: 6 }} />
+      <MoonStar size={62} opacity={0.9} style={{ top: 10, right: 12 }} />
       <Arab dir="rtl">{surah.nameArabic}</Arab>
       <Latin>
         Surah {surah.nameLatin} ({surah.translationId})

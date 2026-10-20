@@ -8,10 +8,12 @@ const Kartu = styled.article`
   position: relative;
   background: ${({ theme }) => theme.colors.surface};
   border: ${({ theme, aktif }) =>
-    aktif ? `1.5px solid ${theme.colors.gold}` : `1px solid ${theme.colors.border}`};
+    aktif ? `1px solid ${theme.colors.gold}` : `1px solid ${theme.colors.border}`};
   border-radius: ${({ theme }) => theme.radii.lg}px;
   box-shadow: ${({ theme, aktif }) =>
-    aktif ? theme.shadows.lift : theme.shadows.card};
+    aktif
+      ? `${theme.shadows.gold}, ${theme.shadows.lift}`
+      : theme.shadows.card};
   padding: 18px 16px 14px;
   margin-bottom: 13px;
   cursor: pointer;
@@ -85,9 +87,7 @@ const Kata = styled.span`
   padding: 0 2px;
   transition: background 0.25s ease, color 0.25s ease;
   background: ${({ theme, aktif }) =>
-    aktif
-      ? `linear-gradient(135deg, ${theme.colors.gold}, ${theme.colors.goldLight})`
-      : 'transparent'};
+    aktif ? theme.gradients.gold : 'transparent'};
   color: ${({ theme, aktif }) => (aktif ? theme.colors.primaryDeep : 'inherit')};
 `;
 
@@ -130,7 +130,7 @@ function AyatCard({ ayah, aktif, kataAktif, onSelect }) {
       )}
       <Kepala>
         <Badge>{ayah.number}</Badge>
-        <span css={{ fontSize: 12, color: '#9BA9A1' }}>{ayah.key}</span>
+        <span css={(t) => ({ fontSize: 12, color: t.colors.faint })}>{ayah.key}</span>
         <TombolPutarMini>
           <FaPlay size={11} /> Putar ayat ini
         </TombolPutarMini>

@@ -6,26 +6,36 @@ import { useAudioSync } from '../hooks/useAudioSync.js';
 import SurahHeader from '../components/SurahHeader.jsx';
 import AyatCard from '../components/AyatCard.jsx';
 import PlayerBar from '../components/PlayerBar.jsx';
-import { Page, LoadingBox, Spinner, ErrorBox } from '../components/common.jsx';
+import { Page, ErrorBox, Skeleton } from '../components/common.jsx';
 
 /**
  * Halaman Surah generik (/surah/:id, /yasin → /surah/36).
  * Audio satu file + timestamp (Cara 2): ayat & kata ter-highlight otomatis.
  */
+
+// Skeleton loading: tiruan header surah + beberapa kartu ayat.
+function SurahSkeleton() {
+  return (
+    <Page aria-busy="true">
+      <div css={{ marginBottom: 20 }}>
+        <Skeleton h={190} radius={20} />
+      </div>
+      {Array.from({ length: 3 }).map((_, i) => (
+        <div key={i} css={{ marginBottom: 14 }}>
+          <Skeleton h={130} radius={20} />
+        </div>
+      ))}
+    </Page>
+  );
+}
+
 export default function SurahPage() {
   const { id } = useParams();
   const { loading, error, data } = useSurah(id);
   const sync = useAudioSync(data?.ayahs, data?.audioUrl, data?.audioDurationMs);
 
   if (loading) {
-    return (
-      <Page>
-        <LoadingBox>
-          <Spinner />
-          Memuat surah dan audio…
-        </LoadingBox>
-      </Page>
-    );
+    return <SurahSkeleton />;
   }
 
   if (error || !data) {
