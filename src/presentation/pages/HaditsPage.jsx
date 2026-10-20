@@ -3,6 +3,10 @@ import { useMemo, useState } from 'react';
 import styled from '@emotion/styled';
 import { FaBookOpen, FaChevronDown, FaInfoCircle, FaSearch } from 'react-icons/fa';
 import { HADITS_ARBAIN, SUMBER_HADITS_ARBAIN } from '../../data/sources/haditsArbainData.js';
+import StateKosong from '../components/StateKosong.jsx';
+
+/** Saran pencarian hadits — ketuk untuk langsung memfilter daftar. */
+const SARAN_HADITS = ['niat', 'iman', 'ilmu', 'sabar', 'amal'];
 import {
   Page,
   PageTitle,
@@ -132,13 +136,6 @@ const InfoSumber = styled(Card)`
   }
 `;
 
-const Kosong = styled.p`
-  text-align: center;
-  color: ${({ theme }) => theme.colors.muted};
-  font-size: 14.5px;
-  padding: 32px 16px;
-`;
-
 export default function HaditsPage() {
   const [terbuka, setTerbuka] = useState(null);
   const [kata, setKata] = useState('');
@@ -177,7 +174,16 @@ export default function HaditsPage() {
 
       <SectionTitle>Daftar 42 Hadits</SectionTitle>
 
-      {hasil.length === 0 && <Kosong>Tidak ada hadits yang cocok dengan “{kata}”.</Kosong>}
+      {hasil.length === 0 && (
+        <StateKosong
+          ikon={<FaSearch />}
+          judul={`Tidak ada hadits untuk “${kata}”`}
+          deskripsi="Periksa kembali ejaannya, coba kata yang lebih umum, atau ketuk salah satu saran berikut."
+          saran={SARAN_HADITS}
+          labelSaran="Topik populer"
+          onSaran={(s) => setKata(s)}
+        />
+      )}
 
       {hasil.map((h) => {
         const isOpen = terbuka === h.nomor;

@@ -11,6 +11,7 @@ import { useToast } from '../components/feedback/toastStore.js';
 import {
   Page, PageHero, Card, SectionTitle, PrimaryButton,
 } from '../components/common.jsx';
+import StateKosong from '../components/StateKosong.jsx';
 
 const KartuLink = styled(Link)`
   display: block;
@@ -116,22 +117,6 @@ const TombolHapus = styled.button`
   gap: 8px;
   &:active {
     transform: scale(0.97);
-  }
-`;
-
-const Kosong = styled.div`
-  text-align: center;
-  padding: 40px 20px;
-  color: ${({ theme }) => theme.colors.muted};
-  svg {
-    font-size: 40px;
-    color: ${({ theme }) => theme.colors.faint};
-    margin: 0 auto 12px;
-  }
-  p {
-    font-size: 15px;
-    line-height: 1.6;
-    margin-bottom: 18px;
   }
 `;
 
@@ -249,18 +234,18 @@ export default function BookmarkPage() {
 
       {daftar.length === 0 ? (
         <Card>
-          <Kosong>
-            <FaBookmark />
-            <p>
-              Belum ada bookmark. Ketuk ikon bookmark pada ayat mana pun saat membaca, lalu kembali
-              ke sini untuk menulis catatanmu.
-            </p>
-            <Link to="/quran" css={{ display: 'inline-block', width: 'min(300px, 100%)' }}>
-              <PrimaryButton type="button" css={{ width: '100%' }}>
-                <FaBookOpen /> Lihat Daftar Surah
-              </PrimaryButton>
-            </Link>
-          </Kosong>
+          <StateKosong
+            ikon={<FaBookmark />}
+            judul="Belum Ada Bookmark"
+            deskripsi="Ketuk ikon bookmark pada ayat mana pun saat membaca, lalu kembali ke sini untuk menulis catatanmu."
+            aksi={
+              <Link to="/quran" css={{ display: 'inline-block', width: 'min(300px, 100%)' }}>
+                <PrimaryButton type="button" css={{ width: '100%' }}>
+                  <FaBookOpen /> Lihat Daftar Surah
+                </PrimaryButton>
+              </Link>
+            }
+          />
         </Card>
       ) : (
         <>

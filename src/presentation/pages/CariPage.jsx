@@ -2,8 +2,12 @@
 import { useCallback, useState } from 'react';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
-import { FaSearch, FaExclamationTriangle, FaBookOpen, FaRedo } from 'react-icons/fa';
+import { FaSearch, FaSearchMinus, FaExclamationTriangle, FaBookOpen, FaRedo } from 'react-icons/fa';
 import { QuranRepositoryImpl } from '../../data/repositories/QuranRepositoryImpl.js';
+import StateKosong from '../components/StateKosong.jsx';
+
+/** Chip saran pencarian populer — ketuk untuk langsung mencari. */
+const SARAN_PENCARIAN = ['puasa', 'syukur', 'sabar', 'rezeki', 'ampunan'];
 import {
   Page,
   PageTitle,
@@ -81,19 +85,6 @@ const KartuHasil = styled(Card)`
     color: inherit;
     border-radius: 4px;
     padding: 0 2px;
-  }
-`;
-
-const Kosong = styled.div`
-  text-align: center;
-  padding: 56px 20px;
-  color: ${({ theme }) => theme.colors.muted};
-  font-size: 15px;
-  line-height: 1.7;
-  svg {
-    font-size: 40px;
-    color: ${({ theme }) => theme.colors.gold};
-    margin-bottom: 12px;
   }
 `;
 
@@ -191,11 +182,16 @@ export default function CariPage() {
       )}
 
       {status === 'selesai' && hasil.length === 0 && (
-        <Kosong>
-          <FaSearch aria-hidden="true" />
-          <br />
-          Tidak ditemukan ayat untuk “{kataDitampilkan}”. Coba kata kunci lain.
-        </Kosong>
+        <StateKosong
+          ikon={<FaSearchMinus />}
+          judul={`Tidak ada hasil untuk “${kataDitampilkan}”`}
+          deskripsi="Periksa kembali ejaannya, coba kata yang lebih umum, atau ketuk salah satu saran berikut."
+          saran={SARAN_PENCARIAN}
+          onSaran={(s) => {
+            setKata(s);
+            cari(s);
+          }}
+        />
       )}
 
       {status === 'selesai' && hasil.length > 0 && (
@@ -222,11 +218,16 @@ export default function CariPage() {
       )}
 
       {status === 'idle' && (
-        <Kosong>
-          <FaSearch aria-hidden="true" />
-          <br />
-          Ketik kata kunci lalu tekan Cari. Contoh: “puasa”, “doa”, “syukur”.
-        </Kosong>
+        <StateKosong
+          ikon={<FaSearch />}
+          judul="Cari Ayat Al-Qur’an"
+          deskripsi="Ketik kata kunci di kolom atas lalu tekan Cari — atau ketuk salah satu pencarian populer berikut."
+          saran={SARAN_PENCARIAN}
+          onSaran={(s) => {
+            setKata(s);
+            cari(s);
+          }}
+        />
       )}
     </Page>
   );
