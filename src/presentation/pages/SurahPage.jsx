@@ -155,6 +155,8 @@ export default function SurahPage() {
             tampilTerjemah={pref.terjemah}
           />
         ))}
+        {/* Spacer bawah: konten terakhir tidak tertutup ReadingControls + PlayerBar (fixed) */}
+        <div aria-hidden="true" css={{ height: 'calc(166px + 54px + 28px + env(safe-area-inset-bottom))' }} />
       </MushafFrame>
       <ReadingControls pref={pref} ubah={ubah} tambahArab={tambahArab} kurangArab={kurangArab} />
       <PlayerBar
