@@ -61,6 +61,7 @@ const JUDUL_RUTE = [
   [/^\/sedekah$/, 'judul.sedekah'],
   [/^\/khatam$/, 'judul.khatam'],
   [/^\/tasbih$/, 'judul.tasbih'],
+  [/^\/sholawat$/, 'judul.sholawat'],
   [/^\/dzikir$/, 'judul.dzikir'],
   [/^\/doa$/, 'judul.doa'],
   [/^\/sholat-tracker$/, 'judul.sholatTracker'],

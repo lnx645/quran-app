@@ -118,6 +118,7 @@ const DAFTAR_FITUR = [
   { tujuan: '/bookmark', judul: 'Bookmark Ayat', sub: 'Ayat tersimpan & catatan pribadi', kata: 'bookmark penanda ayat tersimpan simpan catatan favorit markah' },
   { tujuan: '/hafalan', judul: 'Mode Hafalan', sub: 'Tahfidz bertahap, uji & audio ulang', kata: 'hafalan tahfidz tahfiz menghafal hafal ayat uji murojaah murajaah setoran' },
   { tujuan: '/tasbih', judul: 'Tasbih Digital', sub: 'Counter dzikir + target & getar', kata: 'tasbih digital counter dzikir zikir hitung penghitung getar' },
+  { tujuan: '/sholawat', judul: 'Sholawat', sub: 'Ibrahimiyah & Jibril + penghitung', kata: 'sholawat shalawat ibrahimiyah jibril shallallahu ala muhammad berkah nabi' },
   { tujuan: '/ramadhan', judul: 'Mode Ramadhan', sub: 'Hitung mundur, imsakiyah & tarawih', kata: 'ramadhan ramadan puasa hitung mundur imsakiyah imsak tarawih bulan puasa' },
   { tujuan: '/aksesibilitas', judul: 'Pengaturan Aksesibilitas', sub: 'Tema, kontras & ukuran huruf', kata: 'aksesibilitas pengaturan setting tema gelap terang kontras huruf disabilitas tampilan' },
 ];

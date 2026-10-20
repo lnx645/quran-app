@@ -136,6 +136,7 @@ const SEKSI = [
     items: [
       { to: '/jadwal', icon: <FaClock />, kunci: 'menu.jadwal', desc: 'Waktu sholat & countdown adzan harian' },
       { to: '/tasbih', icon: <FaHandPointer />, kunci: 'menu.tasbih', desc: 'Counter dzikir dengan target & getar' },
+      { to: '/sholawat', icon: <FaHeart />, kunci: 'menu.sholawat', desc: 'Ibrahimiyah & Jibril + penghitung' },
       { to: '/dzikir', icon: <FaCloudSun />, kunci: 'menu.dzikir', desc: 'Al-Ma\u2019tsurat ringkas dengan penghitung dzikir' },
       { to: '/doa', icon: <FaPrayingHands />, kunci: 'menu.doa', desc: 'Sepuluh doa: Arab, latin & arti' },
       { to: '/sholat-tracker', icon: <FaClipboardCheck />, kunci: 'menu.sholatTracker', desc: 'Checklist lima waktu & streak harian' },

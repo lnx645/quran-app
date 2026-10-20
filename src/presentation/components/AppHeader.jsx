@@ -306,6 +306,7 @@ const MENU = [
     items: [
       { to: '/jadwal', icon: <FaMosque />, kunci: 'menu.jadwal' },
       { to: '/tasbih', icon: <FaHandPointer />, kunci: 'menu.tasbih' },
+      { to: '/sholawat', icon: <FaHeart />, kunci: 'menu.sholawat' },
       { to: '/dzikir', icon: <FaCloudSun />, kunci: 'menu.dzikir' },
       { to: '/doa', icon: <FaPrayingHands />, kunci: 'menu.doa' },
       { to: '/sholat-tracker', icon: <FaClipboardCheck />, kunci: 'menu.sholatTracker' },

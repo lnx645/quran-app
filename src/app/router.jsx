@@ -4,7 +4,7 @@ import HalamanGalat from '../presentation/pages/HalamanGalat.jsx';
 import HomePage from '../presentation/pages/HomePage.jsx';
 import {
   SurahPage, IqroHubPage, IqroJilidPage, JadwalPage, ZakatPage, SedekahPage, KhatamPage,
-  TasbihPage, DzikirPage, DoaPage, SholatTrackerPage, KiblatPage, KalenderPage,
+  TasbihPage, SholawatPage, DzikirPage, DoaPage, SholatTrackerPage, KiblatPage, KalenderPage,
   AsmaulHusnaPage, KisahPage, KisahDetailPage, QuranListPage, MuslimahHubPage,
   MuslimahKalkulatorPage, MuslimahMandiWajibPage, MuslimahDoaPage, MuslimahFikihPage,
   AksesibilitasPage, CariPage, PanduanTajwidPage, HafalanPage, BookmarkPage,
@@ -90,6 +90,7 @@ const router = createBrowserRouter([
       { path: 'sedekah', element: <SedekahPage /> },
       { path: 'khatam', element: <KhatamPage /> },
       { path: 'tasbih', element: <TasbihPage /> },
+      { path: 'sholawat', element: <SholawatPage /> },
       { path: 'dzikir', element: <DzikirPage /> },
       { path: 'doa', element: <DoaPage /> },
       { path: 'sholat-tracker', element: <SholatTrackerPage /> },
