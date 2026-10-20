@@ -96,6 +96,7 @@ const _DataProgres = lazyDenganPemulihan(() => import('../presentation/pages/Dat
 const _Radio = lazyDenganPemulihan(() => import('../presentation/pages/RadioPage.jsx'));
 const _TesBaca = lazyDenganPemulihan(() => import('../presentation/pages/TesBacaPage.jsx'));
 const _Anak = lazyDenganPemulihan(() => import('../presentation/pages/AnakPage.jsx'));
+const _AnakSholat = lazyDenganPemulihan(() => import('../presentation/pages/AnakSholatPage.jsx'));
 
 export function SurahPage() {
   return (
@@ -532,6 +533,13 @@ export function AnakPage() {
   return (
     <Suspense fallback={<PageFallback />}>
       <_Anak />
+    </Suspense>
+  );
+}
+export function AnakSholatPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_AnakSholat />
     </Suspense>
   );
 }

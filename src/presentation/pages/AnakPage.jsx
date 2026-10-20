@@ -26,6 +26,7 @@ import {
   FaTrophy,
   FaRedo,
   FaArrowRight,
+  FaPray,
   FaPrayingHands,
   FaBookOpen,
   FaGamepad,
@@ -632,6 +633,12 @@ export default function AnakPage() {
         <FaBookOpen /> Jelajahi Juga
       </SectionTitle>
       <GridPintas>
+        <MenuCard
+          to="/anak/sholat"
+          icon={<FaPray />}
+          judul="Belajar Sholat"
+          desc="Panduan gerakan & bacaan sholat untuk anak, langkah demi langkah"
+        />
         <MenuCard
           to="/doa"
           icon={<FaPrayingHands />}

@@ -112,6 +112,7 @@ const JUDUL_RUTE = [
   [/^\/kuis$/, 'judul.kuis'],
   [/^\/radio$/, 'judul.radio'],
   [/^\/tes-baca$/, 'judul.tesBaca'],
+  [/^\/anak\/sholat$/, 'judul.sholatAnak'],
   [/^\/anak(\/|$)/, 'judul.anak'],
   [/^\/panduan-nikah$/, 'judul.nikah'],
   [/^\/fikih-keluarga$/, 'judul.fikihKeluarga'],
