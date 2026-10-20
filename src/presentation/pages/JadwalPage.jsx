@@ -2,13 +2,16 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import {
-  FaClock, FaMapMarkerAlt, FaBell, FaSun, FaMoon, FaCloudSun, FaTimes, FaBan,
+  FaClock, FaMapMarkerAlt, FaBell, FaSun, FaMoon, FaCloudSun, FaTimes, FaBan, FaStar,
 } from 'react-icons/fa';
 import { useJadwal, KOTA_OPSI } from '../hooks/useJadwal.js';
+import {
+  hitungRentangTerlarang, rentangTerlarangAktif, DAFTAR_WAKTU_MUSTAJAB,
+} from '../../domain/usecases/hitungWaktuTerlarang.js';
 import { CornerOrnament } from '../components/ornaments/index.js';
 import {
   Page, PageTitle, PageSubtitle, Card, GoldCard, SelectInput, TextInput, Field,
-  ErrorBox, SectionTitle, Skeleton, GhostButton, PrimaryButton,
+  ErrorBox, SectionTitle, Skeleton, GhostButton, PrimaryButton, ResultRow,
 } from '../components/common.jsx';
 import { useToast } from '../components/feedback/toastStore.js';
 import { umumkan } from '../components/feedback/umumkan.js';
@@ -515,6 +518,14 @@ export default function JadwalPage() {
     return null;
   }, [data, sekarang, offsetIqamah]);
 
+  // Rentang waktu terlarang (makruh) hari ini — dihitung dari jadwal yang
+  // SAMA dengan daftar di atas (domain murni, tanpa API/tabel statis baru).
+  const rentangTerlarang = useMemo(() => hitungRentangTerlarang(data), [data]);
+  const rentangAktif = useMemo(
+    () => rentangTerlarangAktif(rentangTerlarang, sekarang),
+    [rentangTerlarang, sekarang],
+  );
+
   // Notifikasi saat waktu sholat tiba (tab terbuka).
   useEffect(() => {
     if (!data) return;
@@ -770,90 +781,94 @@ export default function JadwalPage() {
           })}
 
           <SectionTitle>
-            <FaBan /> Waktu Terlarang Sholat
+            <FaBan /> Waktu Terlarang &amp; Mustajab
           </SectionTitle>
           <Card>
             <p css={(t) => ({ fontSize: 13.5, color: t.colors.muted, marginBottom: 12, lineHeight: 1.55 })}>
-              Tiga rentang waktu yang dilarang untuk sholat sunnah tanpa sebab, dihitung dari jadwal
-              hari ini:
+              Tiga rentang berikut adalah waktu yang dimakruhkan untuk sholat sunnah mutlak menurut
+              jumhur ulama, dihitung dari jadwal hari ini:
             </p>
-            {(() => {
-              const jamDari = (kunci) => data.waktu.find((w) => w.kunci === kunci)?.jam ?? '';
-              const rentang = [
-                {
-                  kunci: 'subuh-syuruq',
-                  ikon: <FaSun />,
-                  judul: 'Setelah Subuh hingga syuruq',
-                  jam: `${jamDari('Fajr')} – ${tambahMenit(jamDari('Sunrise'), 15)}`,
-                  ket: 'Sejak masuk Subuh sampai matahari terbit sempurna (±15 menit setelah syuruq).',
-                },
-                {
-                  kunci: 'istiwa',
-                  ikon: <FaClock />,
-                  judul: "Saat istiwa' sebelum Zuhur",
-                  jam: `${tambahMenit(jamDari('Dhuhr'), -10)} – ${jamDari('Dhuhr')}`,
-                  ket: 'Saat matahari tepat di tengah langit, sesaat sebelum tergelincir masuk Zuhur.',
-                },
-                {
-                  kunci: 'asar-maghrib',
-                  ikon: <FaMoon />,
-                  judul: 'Setelah Asar hingga terbenam',
-                  jam: `${jamDari('Asr')} – ${jamDari('Maghrib')}`,
-                  ket: 'Sejak masuk Asar sampai matahari terbenam sempurna (masuk waktu Maghrib).',
-                },
-              ];
-              return rentang.map((r) => (
-                <div
+            {rentangTerlarang.map((r) => {
+              const aktif = rentangAktif?.kunci === r.kunci;
+              return (
+                <ResultRow
                   key={r.kunci}
-                  css={(t) => ({
-                    border: `1px solid ${t.colors.border}`,
-                    background: t.colors.surface,
-                    borderRadius: 14,
-                    padding: '13px 14px',
-                    marginBottom: 8,
-                  })}
+                  aria-current={aktif ? 'time' : undefined}
+                  css={(t) =>
+                    aktif
+                      ? {
+                          background: t.colors.goldSoft,
+                          borderRadius: t.radii.md,
+                          paddingLeft: 10,
+                          paddingRight: 10,
+                        }
+                      : undefined
+                  }
                 >
-                  <div css={{ display: 'flex', alignItems: 'center', gap: 11, marginBottom: 7 }}>
-                    <span
-                      css={(t) => ({
-                        flexShrink: 0,
-                        width: 38,
-                        height: 38,
-                        borderRadius: 12,
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: 17,
-                        background: t.colors.primarySoft,
-                        color: t.colors.primary,
-                      })}
-                    >
-                      {r.ikon}
+                  <span className="label" css={{ maxWidth: '62%' }}>
+                    <span css={(t) => ({ display: 'block', fontSize: 14.5, fontWeight: 700, color: t.colors.text })}>
+                      {r.label}
                     </span>
-                    <span css={{ flex: 1, minWidth: 0, fontWeight: 600, fontSize: 15 }}>{r.judul}</span>
-                  </div>
-                  <p css={(t) => ({ fontSize: 12.5, color: t.colors.muted, lineHeight: 1.5, margin: '0 0 9px' })}>
-                    {r.ket}
-                  </p>
-                  <span
-                    css={(t) => ({
-                      display: 'inline-block',
-                      fontWeight: 800,
-                      fontSize: 15,
-                      fontVariantNumeric: 'tabular-nums',
-                      color: t.colors.goldDeep,
-                      background: t.colors.goldSoft,
-                      border: `1px solid ${t.colors.border}`,
-                      borderRadius: 999,
-                      padding: '4px 12px',
-                    })}
-                  >
-                    {r.jam}
+                    <span css={{ display: 'block', marginTop: 2, lineHeight: 1.5 }}>{r.catatan}</span>
+                    {aktif && (
+                      <span
+                        css={(t) => ({
+                          display: 'inline-block',
+                          marginTop: 5,
+                          fontSize: 11,
+                          fontWeight: 800,
+                          letterSpacing: 0.6,
+                          textTransform: 'uppercase',
+                          color: t.colors.goldDeep,
+                        })}
+                      >
+                        ● Sedang berlangsung
+                      </span>
+                    )}
                   </span>
-                </div>
-              ));
-            })()}
+                  <span className="value">
+                    {r.dari} – {r.sampai}
+                  </span>
+                </ResultRow>
+              );
+            })}
+            <p css={(t) => ({ fontSize: 12.5, color: t.colors.muted, lineHeight: 1.55, marginTop: 12 })}>
+              Catatan: kemakruhan di atas berlaku untuk sholat sunnah mutlak, bukan larangan semua
+              sholat. Sholat wajib dan qadha tetap dikerjakan pada waktunya; untuk sholat yang
+              memiliki sebab (misalnya tahiyatul masjid atau sholat jenazah) terdapat perbedaan
+              pendapat di kalangan ulama — ikuti bimbingan guru setempat.
+            </p>
           </Card>
+
+          <GoldCard css={{ marginTop: 16 }}>
+            <div
+              css={(t) => ({
+                fontFamily: t.fonts.display,
+                fontSize: 17,
+                fontWeight: 700,
+                color: t.colors.judul,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 8,
+                marginBottom: 6,
+              })}
+            >
+              <FaStar aria-hidden="true" /> Waktu Mustajab untuk Berdoa
+            </div>
+            <p css={(t) => ({ fontSize: 13, color: t.colors.muted, lineHeight: 1.55, marginBottom: 4 })}>
+              Sebaliknya, waktu-waktu berikut dianjurkan untuk memperbanyak doa:
+            </p>
+            {DAFTAR_WAKTU_MUSTAJAB.map((m) => (
+              <ResultRow key={m.kunci}>
+                <span className="label">
+                  <span css={(t) => ({ display: 'block', fontSize: 14.5, fontWeight: 700, color: t.colors.text })}>
+                    {m.judul}
+                  </span>
+                  <span css={{ display: 'block', marginTop: 2, lineHeight: 1.5 }}>{m.sumber}</span>
+                </span>
+              </ResultRow>
+            ))}
+          </GoldCard>
         </>
       )}
     </Page>
