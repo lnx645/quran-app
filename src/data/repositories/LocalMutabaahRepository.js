@@ -8,7 +8,7 @@ export const LocalMutabaahRepository = {
     try {
       const raw = localStorage.getItem(KUNCI);
       const data = raw ? JSON.parse(raw) : {};
-      return data && typeof data === 'object' ? data : {};
+      return data && typeof data === 'object' && !Array.isArray(data) ? data : {};
     } catch {
       return {};
     }

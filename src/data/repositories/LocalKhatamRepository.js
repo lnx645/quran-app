@@ -8,9 +8,19 @@ export const LocalKhatamRepository = {
       const raw = localStorage.getItem(KUNCI);
       if (!raw) return { ...KOSONG };
       const parsed = JSON.parse(raw);
+      // Defensif: bentuk lama/rusak dinormalisasi ke bentuk baku.
+      if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+        return { ...KOSONG };
+      }
       return {
-        selesai: parsed.selesai ?? {},
-        targetTanggal: parsed.targetTanggal ?? null,
+        selesai:
+          parsed.selesai &&
+          typeof parsed.selesai === 'object' &&
+          !Array.isArray(parsed.selesai)
+            ? parsed.selesai
+            : {},
+        targetTanggal:
+          typeof parsed.targetTanggal === 'string' ? parsed.targetTanggal : null,
       };
     } catch {
       return { ...KOSONG };

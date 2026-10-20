@@ -1,13 +1,18 @@
 /* Noor — Service Worker manual (tanpa plugin/workbox).
  * Strategi:
- * - Navigasi: network-first, fallback cache, terakhir halaman offline inline.
+ * - Navigasi (mode navigate / destination document): SELALU network-first,
+ *   fallback cache, terakhir halaman offline inline — shell tidak pernah
+ *   basi lebih dari satu muatan.
  * - Aset same-origin (script/style/img/font/worker): stale-while-revalidate.
+ *   PENJAGA ANTI-RACUN: respons text/html untuk permintaan script/style
+ *   (jawaban rewrite SPA untuk aset yang sudah tidak ada setelah deploy)
+ *   TIDAK pernah disajikan dari cache maupun disimpan ke cache.
  * - GET api.quran.com & api.aladhan.com: cache-first runtime (maks 200 entri)
  *   agar surah/jadwal yang pernah dibuka bisa dibaca offline.
  * - Selain itu (POST, API lain, audio dari host lain): tidak di-cache,
  *   diteruskan ke jaringan apa adanya.
  */
-const VERSI = 'v1';
+const VERSI = 'v2';
 const CACHE_ASET = `noor-aset-${VERSI}`;
 const CACHE_RUNTIME = `noor-runtime-${VERSI}`;
 const CACHE_NAVIGASI = `noor-navigasi-${VERSI}`;
@@ -102,7 +107,7 @@ self.addEventListener('fetch', (event) => {
   }
 
   // (a) Navigasi: network-first → cache → halaman offline inline.
-  if (request.mode === 'navigate') {
+  if (request.mode === 'navigate' || request.destination === 'document') {
     event.respondWith(
       (async () => {
         try {
@@ -151,10 +156,26 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(
       (async () => {
         const cache = await caches.open(CACHE_ASET);
-        const tersimpan = await cache.match(request, { ignoreSearch: true });
+        let tersimpan = await cache.match(request, { ignoreSearch: true });
+        // Anti-racun: entri cache berisi HTML untuk script/style adalah sisa
+        // jawaban rewrite SPA atas aset yang sudah tiada — buang & abaikan.
+        if (
+          tersimpan &&
+          ['script', 'style'].includes(request.destination) &&
+          (tersimpan.headers.get('content-type') || '').includes('text/html')
+        ) {
+          await cache.delete(request, { ignoreSearch: true }).catch(() => {});
+          tersimpan = undefined;
+        }
         const jaringan = fetch(request)
           .then((segar) => {
-            if (segar && segar.ok) cache.put(request, segar.clone()).catch(() => {});
+            const tipe = segar?.headers.get('content-type') || '';
+            const racun =
+              ['script', 'style'].includes(request.destination) &&
+              tipe.includes('text/html');
+            if (segar && segar.ok && !racun) {
+              cache.put(request, segar.clone()).catch(() => {});
+            }
             return segar;
           })
           .catch(() => null);

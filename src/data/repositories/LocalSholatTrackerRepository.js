@@ -5,7 +5,13 @@ export const LocalSholatTrackerRepository = {
   loadSemua() {
     try {
       const raw = localStorage.getItem(KUNCI);
-      return raw ? JSON.parse(raw) : {};
+      if (!raw) return {};
+      const parsed = JSON.parse(raw);
+      // Defensif: data lama/rusak (null, angka, string, array) → {} agar
+      // konsumen yang mengindeks per tanggal tidak pernah melempar.
+      return parsed && typeof parsed === 'object' && !Array.isArray(parsed)
+        ? parsed
+        : {};
     } catch {
       return {};
     }
