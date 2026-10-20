@@ -297,10 +297,13 @@ export function PageHero({ children, moon = true }) {
 }
 
 // Kartu menu grid (2 kolom di HP) — ikon di atas, judul, deskripsi singkat.
+// Grid seragam: kartu height 100% (baris sama tinggi), judul 1 baris ellipsis,
+// deskripsi clamp tepat 2 baris dengan min-height tetap → semua sejajar.
 const MenuLink = styled(Link)`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  height: 100%;
   background: ${({ theme }) => theme.colors.surface};
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.radii.lg}px;
@@ -350,15 +353,25 @@ const MenuIcon = styled.span`
 
 const MenuText = styled.span`
   position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   .judul {
     display: block;
     font-weight: 700;
     font-size: 15px;
     line-height: 1.25;
     color: ${({ theme }) => theme.colors.text};
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .desc {
-    display: block;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 34.8px; /* tepat 2 baris: 12px × 1.45 × 2 */
     font-size: 12px;
     line-height: 1.45;
     color: ${({ theme }) => theme.colors.muted};

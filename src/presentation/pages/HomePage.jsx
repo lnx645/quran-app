@@ -55,6 +55,7 @@ const HeroIsi = styled.div`
 const GridMenu = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  align-items: stretch;
   gap: ${({ theme }) => theme.spacing.gridGap}px;
   margin-bottom: ${({ theme }) => theme.spacing.sm}px;
   ${stagger(6, 40)}
@@ -70,51 +71,51 @@ const SEKSI = [
     nama: "Al-Qur'an",
     ikon: <FaQuran />,
     items: [
-      { to: '/quran', icon: <FaQuran />, judul: 'Al-Qur\u2019an — 114 Surah', desc: 'Daftar lengkap semua surah + pencarian — baca dengan audio & highlight perkata' },
-      { to: '/surah/36', icon: <FaHeart />, judul: 'Surah Ya-Sin', desc: 'Jantung Al-Qur\u2019an — 83 ayat, audio + highlight perkata' },
-      { to: '/surah/18', icon: <FaBookOpen />, judul: 'Surah Al-Kahf', desc: 'Dianjurkan dibaca hari Jumat — 110 ayat' },
-      { to: '/surah/67', icon: <FaBookOpen />, judul: 'Surah Al-Mulk', desc: 'Dibaca sebelum tidur — 30 ayat' },
-      { to: '/surah/55', icon: <FaBookOpen />, judul: 'Surah Ar-Rahman', desc: 'Arus nikmat Allah — 78 ayat' },
+      { to: '/quran', icon: <FaQuran />, judul: 'Al-Qur\u2019an — 114 Surah', desc: 'Semua surah lengkap dengan pencarian cepat' },
+      { to: '/surah/36', icon: <FaHeart />, judul: 'Surah Ya-Sin', desc: '83 ayat dengan audio & highlight' },
+      { to: '/surah/18', icon: <FaBookOpen />, judul: 'Surah Al-Kahf', desc: '110 ayat, dianjurkan hari Jumat' },
+      { to: '/surah/67', icon: <FaBookOpen />, judul: 'Surah Al-Mulk', desc: '30 ayat dibaca sebelum tidur' },
+      { to: '/surah/55', icon: <FaBookOpen />, judul: 'Surah Ar-Rahman', desc: '78 ayat tentang nikmat Allah' },
     ],
   },
   {
     nama: 'Ibadah Harian',
     ikon: <FaPrayingHands />,
     items: [
-      { to: '/jadwal', icon: <FaClock />, judul: 'Jadwal Sholat', desc: 'Waktu sholat, hijriah, countdown adzan (API Aladhan)' },
+      { to: '/jadwal', icon: <FaClock />, judul: 'Jadwal Sholat', desc: 'Waktu sholat & countdown adzan harian' },
       { to: '/tasbih', icon: <FaHandPointer />, judul: 'Tasbih Digital', desc: 'Counter dzikir dengan target & getar' },
-      { to: '/dzikir', icon: <FaCloudSun />, judul: 'Dzikir Pagi & Petang', desc: 'Al-Ma\u2019tsurat ringkas dengan penghitung per dzikir' },
-      { to: '/doa', icon: <FaPrayingHands />, judul: 'Doa Harian', desc: '10 doa keseharian: Arab, latin, arti' },
-      { to: '/sholat-tracker', icon: <FaClipboardCheck />, judul: 'Sholat Tracker', desc: 'Checklist 5 waktu + rangkaian hari (streak)' },
+      { to: '/dzikir', icon: <FaCloudSun />, judul: 'Dzikir Pagi & Petang', desc: 'Al-Ma\u2019tsurat ringkas dengan penghitung dzikir' },
+      { to: '/doa', icon: <FaPrayingHands />, judul: 'Doa Harian', desc: 'Sepuluh doa: Arab, latin & arti' },
+      { to: '/sholat-tracker', icon: <FaClipboardCheck />, judul: 'Sholat Tracker', desc: 'Checklist lima waktu & streak harian' },
     ],
   },
   {
     nama: 'Belajar & Kisah',
     ikon: <FaGraduationCap />,
     items: [
-      { to: '/iqro', icon: <FaGraduationCap />, judul: 'Belajar Iqro', desc: 'Jilid 1–6: huruf hijaiyah, harakat, tajwid dasar' },
-      { to: '/kisah', icon: <FaBook />, judul: 'Kisah 25 Nabi', desc: 'Ringkasan kisah teladan para nabi & rasul' },
-      { to: '/asmaul-husna', icon: <FaListUl />, judul: 'Asmaul Husna', desc: '99 nama Allah + mode hafalan' },
+      { to: '/iqro', icon: <FaGraduationCap />, judul: 'Belajar Iqro', desc: 'Jilid 1\u20136: huruf, harakat & tajwid' },
+      { to: '/kisah', icon: <FaBook />, judul: 'Kisah 25 Nabi', desc: 'Ringkasan teladan para nabi & rasul' },
+      { to: '/asmaul-husna', icon: <FaListUl />, judul: 'Asmaul Husna', desc: '99 nama Allah & mode hafalan' },
     ],
   },
   {
     nama: 'Muslimah',
     ikon: <FaVenus />,
     items: [
-      { to: '/muslimah', icon: <FaVenus />, judul: 'Ruang Muslimah', desc: 'Kalkulator haid, mandi wajib, doa & fikih wanita (Syafi\u2019i)' },
-      { to: '/muslimah/kalkulator', icon: <FaClipboardCheck />, judul: 'Kalkulator Haid', desc: 'Vonis haid/istihadah + status ibadah — terkunci PIN' },
-      { to: '/muslimah/mandi-wajib', icon: <FaHandPointer />, judul: 'Panduan Mandi Wajib', desc: 'Niat & tata cara setelah haid/nifas' },
-      { to: '/muslimah/doa', icon: <FaPrayingHands />, judul: 'Doa Khusus Wanita', desc: 'Doa hamil, persalinan, menyusui & keturunan' },
-      { to: '/muslimah/fikih', icon: <FaBook />, judul: 'Fikih Wanita', desc: 'Ringkasan haid/nifas/istihadah + mitos vs hukum' },
+      { to: '/muslimah', icon: <FaVenus />, judul: 'Ruang Muslimah', desc: 'Kalkulator haid, doa & fikih wanita' },
+      { to: '/muslimah/kalkulator', icon: <FaClipboardCheck />, judul: 'Kalkulator Haid', desc: 'Vonis haid/istihadah terkunci PIN pribadi' },
+      { to: '/muslimah/mandi-wajib', icon: <FaHandPointer />, judul: 'Panduan Mandi Wajib', desc: 'Niat & tata cara pasca haid/nifas' },
+      { to: '/muslimah/doa', icon: <FaPrayingHands />, judul: 'Doa Khusus Wanita', desc: 'Doa hamil, persalinan & menyusui' },
+      { to: '/muslimah/fikih', icon: <FaBook />, judul: 'Fikih Wanita', desc: 'Haid, nifas, istihadah & mitos' },
     ],
   },
   {
     nama: 'Utilitas',
     ikon: <FaCoins />,
     items: [
-      { to: '/zakat', icon: <FaCoins />, judul: 'Kalkulator Zakat', desc: 'Zakat mal, profesi & fitrah (nisab 85 gr emas)' },
-      { to: '/khatam', icon: <FaBookReader />, judul: 'Khatam Tracker', desc: 'Checklist 30 juz, target tanggal & halaman/hari' },
-      { to: '/kiblat', icon: <FaCompass />, judul: 'Arah Kiblat', desc: 'Kompas kiblat dari Sumedang + sensor perangkat' },
+      { to: '/zakat', icon: <FaCoins />, judul: 'Kalkulator Zakat', desc: 'Mal, profesi & fitrah, otomatis terhitung' },
+      { to: '/khatam', icon: <FaBookReader />, judul: 'Khatam Tracker', desc: 'Checklist 30 juz & target harian' },
+      { to: '/kiblat', icon: <FaCompass />, judul: 'Arah Kiblat', desc: 'Kompas kiblat & sensor arah perangkat' },
       { to: '/kalender', icon: <FaCalendarAlt />, judul: 'Kalender Hijriah', desc: 'Tanggal hijriah & hari besar Islam' },
     ],
   },
