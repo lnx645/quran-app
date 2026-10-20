@@ -17,14 +17,14 @@ const Blok = styled.article`
   position: relative;
   cursor: pointer;
   /* Meluas sampai garis emas dalam bingkai mushaf
-     (padding frame 14 / 22 di desktop, garis dalam inset 5) */
-  margin: 0 -9px;
-  padding: 17px 9px 15px;
+     (padding frame 27 / 35 di desktop, garis dalam inset 5 → selisih 22/30) */
+  margin: 0 -22px;
+  padding: 17px 22px 15px;
   transition: background 0.45s ease;
   background: ${({ theme, aktif }) => (aktif ? theme.colors.paperDeep : 'transparent')};
   @media (min-width: ${({ theme }) => theme.breakpoints.md}px) {
-    margin: 0 -17px;
-    padding: 19px 17px 17px;
+    margin: 0 -30px;
+    padding: 19px 30px 17px;
   }
   /* Pita emas tipis di sisi kiri saat ayat aktif */
   &::before {

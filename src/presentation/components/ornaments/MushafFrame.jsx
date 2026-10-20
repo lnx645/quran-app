@@ -9,10 +9,12 @@ const Frame = styled.div`
   border-radius: 12px;
   background: ${({ theme }) => theme.gradients.paperFrame};
   box-shadow: ${({ theme }) => theme.shadows.card};
-  padding: 20px 14px 16px;
+  /* Margin baca lega ala mushaf cetak: teks berjarak ±22px (HP) / ±30px
+     (desktop) dari garis emas dalam (inset 5px). */
+  padding: 24px 27px 20px;
   overflow: hidden;
   @media (min-width: ${({ theme }) => theme.breakpoints.md}px) {
-    padding: 26px 22px 20px;
+    padding: 30px 35px 26px;
   }
   /* Garis ganda dalam — ciri tepian halaman mushaf */
   &::before {
