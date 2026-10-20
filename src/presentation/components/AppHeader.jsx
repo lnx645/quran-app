@@ -286,7 +286,7 @@ const MENU = [
       { to: '/surah/18', icon: <FaBookOpen />, label: 'Surah Al-Kahf' },
       { to: '/surah/67', icon: <FaBookOpen />, label: 'Surah Al-Mulk' },
       { to: '/surah/55', icon: <FaBookOpen />, label: 'Surah Ar-Rahman' },
-      { to: '/cari', icon: <FaSearch />, label: 'Cari Ayat' },
+      { to: '/cari', icon: <FaSearch />, label: 'Cari' },
       { to: '/hafalan', icon: <FaBrain />, label: 'Mode Hafalan' },
       { to: '/bookmark', icon: <FaBookmark />, label: 'Bookmark Ayat' },
       { to: '/panduan-tajwid', icon: <FaPalette />, label: 'Panduan Tajwid' },

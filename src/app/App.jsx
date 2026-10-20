@@ -72,7 +72,7 @@ const JUDUL_RUTE = [
   [/^\/muslimah\/fikih$/, 'Fikih Wanita'],
   [/^\/muslimah$/, 'Ruang Muslimah'],
   [/^\/aksesibilitas$/, 'Pengaturan Aksesibilitas'],
-  [/^\/cari$/, 'Cari Ayat'],
+  [/^\/cari$/, 'Cari'],
   [/^\/panduan-tajwid$/, 'Panduan Tajwid'],
   [/^\/hafalan$/, 'Mode Hafalan'],
   [/^\/bookmark$/, 'Bookmark Ayat'],
