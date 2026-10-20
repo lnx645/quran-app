@@ -149,10 +149,10 @@ const PilihQari = styled.select`
   flex-shrink: 0;
 `;
 
-export default function ReadingControls({ pref, ubah, tambahArab, kurangArab, qari, daftarQari, ubahQari, sembunyi }) {
+export default function ReadingControls({ pref, ubah, tambahArab, kurangArab, qari, daftarQari, ubahQari, sembunyi, diAtasPemutar }) {
   const { t } = useBahasa();
   return (
-    <Bar role="group" aria-label={t('baca.kontrol')} sembunyi={sembunyi}>
+    <Bar role="group" aria-label={t('baca.kontrol')} sembunyi={sembunyi} diAtasPemutar={diAtasPemutar}>
       <GrupFont>
         <TombolFont onClick={kurangArab} disabled={pref.arabSize <= 26} aria-label={t('baca.perkecilArab')}>
           <FaMinus />
