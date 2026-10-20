@@ -1,0 +1,55 @@
+name: Android APK (debug)
+
+# Build APK debug Noor dari branch native/capacitor.
+# Hasilnya diunggah sebagai artifact "noor-debug-apk" (tab Actions).
+on:
+  workflow_dispatch:
+  push:
+    branches: [native/capacitor]
+    paths:
+      - 'android/**'
+      - 'src/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'capacitor.config.*'
+      - '.github/workflows/android.yml'
+
+jobs:
+  build-apk:
+    name: Build APK debug
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Siapkan Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Siapkan JDK 17 (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Instal dependensi
+        run: npm ci
+
+      - name: Build web
+        run: npm run build
+
+      - name: Sinkronkan Capacitor (Android)
+        run: npx cap sync android
+
+      - name: Rakit APK debug
+        working-directory: android
+        run: ./gradlew assembleDebug --no-daemon -Dorg.gradle.jvmargs=-Xmx2g
+
+      - name: Unggah APK sebagai artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: noor-debug-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
