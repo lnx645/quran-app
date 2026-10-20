@@ -32,36 +32,7 @@ const IKON = {
   salam: <FaPray />,
 };
 
-// Ilustrasi posisi per gerakan — karya orisinal proyek (SVG digambar
-// sendiri, satu karakter konsisten, pandangan samping di atas sajadah;
-// lihat public/ilustrasi/SUMBER.md). Postur yang sama memakai gambar yang
-// sama: doa iftitah & qiroah memakai figur berdiri (qiyam).
-const GAMBAR = {
-  takbir: { src: '/ilustrasi/sholat-takbir.svg', alt: 'Ilustrasi takbiratul ihram: berdiri tegak dengan kedua tangan terangkat ke samping telinga' },
-  doa: { src: '/ilustrasi/sholat-berdiri.svg', alt: 'Ilustrasi posisi berdiri dalam sholat dengan kedua tangan terlipat di dada' },
-  qiroah: { src: '/ilustrasi/sholat-berdiri.svg', alt: 'Ilustrasi posisi berdiri dalam sholat dengan kedua tangan terlipat di dada' },
-  rukuk: { src: '/ilustrasi/sholat-rukuk.svg', alt: 'Ilustrasi posisi rukuk: membungkuk dengan punggung rata dan kedua tangan memegang lutut' },
-  iktidal: { src: '/ilustrasi/sholat-iktidal.svg', alt: 'Ilustrasi posisi iktidal: berdiri tegak setelah rukuk dengan kedua tangan lurus di sisi badan' },
-  sujud: { src: '/ilustrasi/sholat-sujud.svg', alt: 'Ilustrasi posisi sujud: dahi dan hidung menyentuh sajadah, kedua tangan di samping kepala' },
-  duduk: { src: '/ilustrasi/sholat-duduk.svg', alt: 'Ilustrasi posisi duduk di antara dua sujud (iftirasy): kaki kanan tegak, duduk di atas kaki kiri' },
-  tasyahud: { src: '/ilustrasi/sholat-tasyahud.svg', alt: 'Ilustrasi posisi duduk tasyahud dengan jari telunjuk tangan kanan terangkat' },
-  salam: { src: '/ilustrasi/sholat-salam.svg', alt: 'Ilustrasi posisi duduk saat salam dengan kepala menoleh ke kanan' },
-};
 
-const GambarGerakan = styled.figure`
-  margin: 0 0 12px;
-  padding: 14px 10px 10px;
-  border-radius: 14px;
-  background: ${({ theme }) => theme.colors.surfaceAlt};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  text-align: center;
-  img {
-    height: 150px;
-    width: auto;
-    max-width: 100%;
-    margin: 0 auto;
-  }
-`;
 
 const Arab = styled.p`
   font-family: ${({ theme }) => theme.fonts.arabic};
@@ -180,11 +151,6 @@ export default function PanduanSholatPage() {
               {IKON[g.ikon]}
             </span>
           </JudulLangkah>
-          {GAMBAR[g.ikon] && (
-            <GambarGerakan>
-              <img src={GAMBAR[g.ikon].src} alt={GAMBAR[g.ikon].alt} loading="lazy" />
-            </GambarGerakan>
-          )}
           <Desc>{g.desc}</Desc>
           <BadgeKali>Dibaca {g.jumlah}&times;</BadgeKali>
           <Arab lang="ar">{g.bacaan.arab}</Arab>
@@ -200,13 +166,6 @@ export default function PanduanSholatPage() {
             Urutan di atas berlaku untuk satu rakaat penuh; pada rakaat berikutnya gerakan
             diulang sampai rakaat terakhir, lalu ditutup tasyahud akhir dan salam. Bacaan iftitah
             dan surah pendek dibaca pada rakaat pertama dan kedua.
-          </span>
-        </Catatan>
-        <Catatan css={{ marginTop: 8 }}>
-          <FaInfoCircle />{' '}
-          <span>
-            Ilustrasi gerakan pada halaman ini adalah karya orisinal proyek Noor (digambar
-            sendiri sebagai SVG). Rinciannya ada di berkas public/ilustrasi/SUMBER.md.
           </span>
         </Catatan>
       </GoldCard>

@@ -26,47 +26,7 @@ bagian 2) adalah **karya orisinal proyek**.
   "makharij/makhraj/articulation" — hasil lain berupa PDF buku teks atau
   situs web tanpa lisensi bebas yang jelas, ditolak).
 
-## 2. Panduan Sholat — ilustrasi posisi ORISINAL proyek (dipakai)
-
-### `sholat-takbir.svg`, `sholat-berdiri.svg`, `sholat-iktidal.svg`, `sholat-rukuk.svg`, `sholat-sujud.svg`, `sholat-duduk.svg`, `sholat-tasyahud.svg`, `sholat-salam.svg` (dipakai)
-- **Pembuat:** tim proyek Noor (karya orisinal, digambar tangan sebagai
-  SVG, 2026-10-20) — bukan unduhan dan bukan hasil tracing karya orang
-  lain.
-- **Lisensi:** karya proyek sendiri — bebas dipakai di dalam aplikasi ini.
-- **Gaya:** satu karakter konsisten (baju koko emerald dengan garis
-  kerah/kancing/lipatan, celana panjang emerald gelap, peci, kulit emas
-  pucat — satu keluarga dengan ilustrasi wudhu di bagian 4), figur utuh
-  kepala–kaki, pandangan samping, berdiri/duduk di atas sajadah emerald
-  bergaris emas.
-- **Riwayat penggantian (transparan):** sebelumnya halaman ini memakai
-  ekstrak poster CC0 "Salat or Muslim Prayers" (Visions International via
-  Wikimedia Commons) yang diwarnai ulang menjadi siluet satu warna.
-  User menilai hasilnya jelek — sujud menjadi gumpalan tak berbentuk.
-  Pencarian ulang di GitHub (2026-10-20) tidak menemukan set ilustrasi
-  posisi sholat yang lengkap dengan lisensi pakai-ulang yang jelas:
-  ±17 repo "tata cara sholat" (mayoritas tugas kuliah), 26 repo
-  "namaz guide", dan beberapa aplikasi panduan sholat (termasuk
-  path-to-paradise/salah-guide dan Mrizal16/tata_cara_sholat yang memang
-  memuat berkas gambar) semuanya TANPA berkas lisensi, dan gambar di
-  dalamnya tidak jelas asal-usulnya — ditolak. Karena itu posisi sholat
-  digambar manual seperti ilustrasi wudhu. Berkas PNG lama
-  (`sholat-berdiri.png`, `sholat-rukuk.png`, `sholat-duduk.png`,
-  `sholat-sujud.png`) dihapus dari repo.
-- **Pemetaan langkah:** takbiratul ihram (takbir), berdiri/qiyam (doa
-  iftitah & qiroah), rukuk, i'tidal (berdiri dengan tangan lurus di sisi
-  badan — kini figur tersendiri, tidak lagi berbagi dengan qiyam),
-  sujud (dipakai juga untuk sujud kedua), duduk antara dua sujud
-  (iftirasy), tasyahud (telunjuk kanan terangkat), salam (kepala menoleh
-  ke kanan).
-- **Uji kualitas:** setiap figur dirender ke PNG (terang & gelap) dan
-  diperiksa visual; sujud digambar ulang 2× (duri paha & leher melayang
-  pada draf awal), keluarga berdiri & duduk digambar ulang ke profil
-  samping murni mengikuti patokan buku panduan klasik. Catatan jujur:
-  perbedaan duduk biasa vs salam hanya pada kepala yang menoleh —
-  dalam gaya flat ini isyaratnya (sisi wajah terarsir + kepala miring)
-  adalah yang paling halus di antara delapan figur.
-
-## 3. Panduan Wudhu — foto praktik
+## 2. Panduan Wudhu — foto praktik
 
 ### `wudhu-praktik.jpg` (dipakai)
 - **Judul sumber:** Ablution (Wudu) Süleymaniye Mosque, Istanbul
@@ -89,41 +49,9 @@ bagian 2) adalah **karya orisinal proyek**.
 - **Ilustrasi tayammum per langkah:** juga tidak ditemukan sumber bebas;
   tab Tayammum tetap teks bernomor.
 
-## 4. Panduan Wudhu — ilustrasi langkah ORISINAL proyek (dipakai)
+## Catatan penghapusan ilustrasi gambar (2026-10-20)
 
-Karena set ilustrasi langkah wudhu berlisensi bebas tidak ditemukan,
-delapan figur berikut **digambar sendiri oleh tim proyek** (SVG buatan
-tangan, bukan unduhan dan bukan hasil tracing karya orang lain):
-
-### `wudhu-tangan.svg`, `wudhu-kumur.svg`, `wudhu-hidung.svg`, `wudhu-wajah.svg`, `wudhu-lengan.svg`, `wudhu-kepala.svg`, `wudhu-telinga.svg`, `wudhu-kaki.svg` (dipakai)
-- **Pembuat:** tim proyek Noor (karya orisinal, 2026-10-20)
-- **Lisensi:** karya proyek sendiri — bebas dipakai di dalam aplikasi ini
-- **Gaya:** satu keluarga visual dengan ilustrasi sholat di bagian 2 —
-  figur emerald tanpa detail wajah, bagian tubuh yang dibasuh
-  pada langkah tersebut disorot warna emas, air digambarkan sebagai
-  tetes/gelombang biru lembut beraksen emas.
-- **Pemetaan langkah:** telapak tangan di bawah keran (langkah 1),
-  berkumur & istinsyaq/membersihkan hidung (langkah 2, dua figur
-  berdampingan), wajah (3), tangan sampai siku (4), kepala (5),
-  telinga (6), kaki sampai mata kaki (7). Niat, basmalah, dan doa
-  memang teks saja.
-- **Inspirasi pose & batas referensi:** pose figur pada ilustrasi
-  wudhu ini terinspirasi panduan klasik yang diberikan pengguna
-  (PDF dari guru pengguna, "Tata Cara Wudhu Yang Benar Beserta
-  Gambarnya") — PDF itu referensi GAMBAR/POSE saja. Gambarnya tidak
-  disalin; figur tetap digambar ulang secara orisinal oleh proyek.
-  **Teks langkah & doa di aplikasi memakai redaksi standar aplikasi**
-  (bukan teks dari PDF tersebut).
-- **Uji kualitas:** setiap figur dirender ke PNG dan diperiksa visual
-  (proporsi & keterbacaan langkah dalam mode terang dan gelap) sebelum
-  dipasang; figur yang gagal proporsi digambar ulang sampai pantas.
-- Foto praktik Süleymaniye (bagian 3) tetap dipertahankan sebagai
-  gambar konteks di kepala tab Wudhu, bukan di langkah.
-- Foto hitam-putih "A Muslim man performs ablution (wudu) during the holy
-  month of Ramadan" (CC BY-SA 4.0) dievaluasi tetapi TIDAK dipakai —
-  monokrom dan suasana dokumenter, tidak selaras gaya panduan.
-
----
+Ilustrasi langkah wudhu & posisi sholat yang digambar proyek (16 berkas SVG) **dihapus atas keputusan pemilik aplikasi** — panduan kini tampil sebagai kartu langkah bernomor tanpa ilustrasi gambar. Yang tersisa di folder ini hanya diagram makhraj klasik (bagian 1) dan foto praktik wudhu (bagian 3).
 
 ## Ringkasan verifikasi lisensi (API Wikimedia Commons, 2026-10-20)
 
