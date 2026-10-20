@@ -8,33 +8,26 @@ import { khatamPath } from './ornaments/geometry.js';
  * NomorMedali — penanda nomor daftar berbentuk medali bintang-8 (khatam).
  * Bintang digambar MATEMATIS via khatamPath (gabungan dua persegi, 16 titik
  * eksak dari geometry.js) — bukan gambar bebas. Isi gradasi emerald tema,
- * tepi & cakram tengah beraksen emas; angka HTML di tengah (terbaca screen
- * reader — SVG murni dekoratif aria-hidden).
+ * tepi & cakram tengah beraksen emas.
+ *
+ * Angka digambar sebagai <text> SVG tepat di titik pusat (50,50) dengan
+ * text-anchor middle + dominant-baseline central — SELALU pas tengah di
+ * semua ukuran & perangkat (versi lama memakai teks HTML di atas SVG yang
+ * bergeser mengikuti metrik font perangkat). Aksesibilitas: svg berperan
+ * sebagai gambar berlabel "Nomor N".
  *
  * Props: nomor (angka/teks), ukuran (px, default 46).
  */
 const Bungkus = styled.span`
   position: relative;
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
   flex-shrink: 0;
   width: ${({ ukuran }) => ukuran}px;
   height: ${({ ukuran }) => ukuran}px;
   filter: drop-shadow(0 2px 4px rgba(4, 37, 31, 0.28));
   svg {
-    position: absolute;
-    inset: 0;
     width: 100%;
     height: 100%;
-  }
-  .angka {
-    position: relative;
-    font-weight: 800;
-    line-height: 1;
-    letter-spacing: -0.02em;
-    color: ${({ theme }) => theme.colors.goldLight};
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
   }
 `;
 
@@ -42,11 +35,12 @@ export default function NomorMedali({ nomor, ukuran = 46 }) {
   const theme = useTheme();
   const gid = `medali-${useId().replace(/[^a-zA-Z0-9]/g, '')}`;
   const digit = String(nomor).length;
-  const fontSize = Math.round(ukuran * (digit >= 3 ? 0.25 : digit === 2 ? 0.31 : 0.36));
+  // Ukuran huruf dalam koordinat viewBox 100: 1 digit ±37, 2 digit ±31, 3+ ±25.
+  const fontSize = digit >= 3 ? 25 : digit === 2 ? 31 : 37;
 
   return (
     <Bungkus ukuran={ukuran}>
-      <svg viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+      <svg viewBox="0 0 100 100" role="img" aria-label={`Nomor ${nomor}`} focusable="false">
         <defs>
           <linearGradient id={gid} x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%" stopColor={theme.colors.emeraldPanelMid} />
@@ -72,10 +66,20 @@ export default function NomorMedali({ nomor, ukuran = 46 }) {
           strokeOpacity="0.75"
           strokeWidth="1"
         />
+        <text
+          x="50"
+          y="50"
+          textAnchor="middle"
+          dominantBaseline="central"
+          fontSize={fontSize}
+          fontWeight="800"
+          letterSpacing="-1"
+          fill={theme.colors.goldLight}
+          style={{ fontFamily: theme.fonts.body }}
+        >
+          {nomor}
+        </text>
       </svg>
-      <span className="angka" style={{ fontSize }}>
-        {nomor}
-      </span>
     </Bungkus>
   );
 }
