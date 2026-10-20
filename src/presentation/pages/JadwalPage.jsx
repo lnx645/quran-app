@@ -392,16 +392,54 @@ export default function JadwalPage() {
                 },
               ];
               return rentang.map((r) => (
-                <BarisWaktu key={r.kunci} status="">
-                  <span className="ikon">{r.ikon}</span>
-                  <span css={{ display: 'flex', flexDirection: 'column', gap: 2, minWidth: 0 }}>
-                    <span css={{ fontWeight: 600 }}>{r.judul}</span>
-                    <span css={(t) => ({ fontSize: 12.5, color: t.colors.muted, lineHeight: 1.45 })}>
-                      {r.ket}
+                <div
+                  key={r.kunci}
+                  css={(t) => ({
+                    border: `1px solid ${t.colors.border}`,
+                    background: t.colors.surface,
+                    borderRadius: 14,
+                    padding: '13px 14px',
+                    marginBottom: 8,
+                  })}
+                >
+                  <div css={{ display: 'flex', alignItems: 'center', gap: 11, marginBottom: 7 }}>
+                    <span
+                      css={(t) => ({
+                        flexShrink: 0,
+                        width: 38,
+                        height: 38,
+                        borderRadius: 12,
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: 17,
+                        background: t.colors.primarySoft,
+                        color: t.colors.primary,
+                      })}
+                    >
+                      {r.ikon}
                     </span>
+                    <span css={{ flex: 1, minWidth: 0, fontWeight: 600, fontSize: 15 }}>{r.judul}</span>
+                  </div>
+                  <p css={(t) => ({ fontSize: 12.5, color: t.colors.muted, lineHeight: 1.5, margin: '0 0 9px' })}>
+                    {r.ket}
+                  </p>
+                  <span
+                    css={(t) => ({
+                      display: 'inline-block',
+                      fontWeight: 800,
+                      fontSize: 15,
+                      fontVariantNumeric: 'tabular-nums',
+                      color: t.colors.goldDeep,
+                      background: t.colors.goldSoft,
+                      border: `1px solid ${t.colors.border}`,
+                      borderRadius: 999,
+                      padding: '4px 12px',
+                    })}
+                  >
+                    {r.jam}
                   </span>
-                  <span className="jam" css={{ fontSize: 15.5, whiteSpace: 'nowrap' }}>{r.jam}</span>
-                </BarisWaktu>
+                </div>
               ));
             })()}
           </Card>
