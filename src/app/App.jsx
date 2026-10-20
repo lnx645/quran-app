@@ -3,6 +3,7 @@ import { useEffect, useRef } from 'react';
 import styled from '@emotion/styled';
 import { Outlet, useLocation } from 'react-router-dom';
 import AppHeader from '../presentation/components/AppHeader.jsx';
+import LiveRegion from '../presentation/components/feedback/LiveRegion.jsx';
 
 // App shell: ThemeProvider sudah dipasang di main.jsx.
 // Mobile-first: konten full-width rapat di HP; max 960px center di desktop.
@@ -17,10 +18,10 @@ const Main = styled.main`
   width: 100%;
   max-width: 960px;
   margin: 0 auto;
-  padding: 0 14px 120px;
+  padding: 0 14px 176px;
   outline: none;
   @media (min-width: ${({ theme }) => theme.breakpoints.md}px) {
-    padding: 0 20px 110px;
+    padding: 0 20px 168px;
   }
 `;
 
@@ -98,6 +99,7 @@ export default function App() {
     <Shell>
       <SkipLink href="#konten">Lewati ke konten utama</SkipLink>
       <AppHeader />
+      <LiveRegion />
       <Main id="konten" ref={mainRef} tabIndex={-1}>
         <Outlet />
       </Main>

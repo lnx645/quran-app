@@ -11,6 +11,7 @@ import {
   ErrorBox, SectionTitle, Skeleton,
 } from '../components/common.jsx';
 import { useToast } from '../components/feedback/toastStore.js';
+import { umumkan } from '../components/feedback/umumkan.js';
 
 const hijriBulanId = (en) =>
   ({
@@ -192,6 +193,8 @@ export default function JadwalPage() {
     if (match && teriakTerakhir.current !== kunci + match.kunci) {
       teriakTerakhir.current = kunci + match.kunci;
       toast.sukses(`Waktu sholat ${match.nama} telah tiba (${match.jam})`, 9000);
+      // Pengumuman tegas untuk screen reader: waktu apa yang masuk.
+      umumkan(`Sudah masuk waktu sholat ${match.nama}, pukul ${match.jam}.`, 'tegas');
       beepAdzan();
     }
   }, [sekarang, data, kota, toast]);

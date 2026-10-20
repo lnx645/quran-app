@@ -3,6 +3,7 @@ import { useState } from 'react';
 import styled from '@emotion/styled';
 import { FaHandPointer, FaRedoAlt, FaCog } from 'react-icons/fa';
 import { Page, PageHero, Card, SectionTitle, GhostButton } from '../components/common.jsx';
+import { umumkan } from '../components/feedback/umumkan.js';
 
 const DZIKIR_OPSI = [
   { arab: 'سُبْحَانَ اللَّهِ', latin: 'Subhanallah', arti: 'Maha Suci Allah' },
@@ -107,7 +108,11 @@ export default function TasbihPage() {
   const tap = () => {
     const baru = hitung + 1;
     setHitung(baru);
-    if (baru % target === 0 && target > 0) getar();
+    if (baru % target === 0 && target > 0) {
+      getar();
+      // Pengumuman capaian untuk screen reader (angka diam tak terbaca otomatis).
+      umumkan(`Target ${target} tercapai untuk dzikir ${dzikir.latin}. Total hitungan ${baru}.`);
+    }
   };
 
   const reset = () => setHitung(0);
@@ -134,9 +139,9 @@ export default function TasbihPage() {
       ))}
 
       <CounterCard css={{ marginTop: 16 }}>
-        <ArabBesar dir="rtl">{dzikir.arab}</ArabBesar>
+        <ArabBesar dir="rtl" lang="ar">{dzikir.arab}</ArabBesar>
         <Angka>{hitung}</Angka>
-        <div css={{ fontSize: 12.5, color: '#6B7A72', marginBottom: 12 }}>
+        <div css={(t) => ({ fontSize: 12.5, color: t.colors.muted, marginBottom: 12 })}>
           {persen.toFixed(0)}% dari target {target}
         </div>
         <div>

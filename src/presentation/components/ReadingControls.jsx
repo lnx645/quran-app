@@ -8,14 +8,14 @@ import { FaMinus, FaPlus } from 'react-icons/fa';
  * - A− / A+ : ukuran font Arab
  * - chip "Latin" & "Arti" : toggle tampil/sembunyi transliterasi & terjemahan
  * Preferensi dikelola useReadingPrefs (localStorage) di SurahPage.
- * Tinggi PlayerBar ≈ 143px + safe-area — bar ini menempel persis di atasnya.
+ * Tinggi PlayerBar ≈ 165px + safe-area — bar ini menempel persis di atasnya.
  */
 
 const Bar = styled.div`
   position: fixed;
   left: 50%;
   transform: translateX(-50%);
-  bottom: calc(143px + env(safe-area-inset-bottom));
+  bottom: calc(166px + env(safe-area-inset-bottom));
   z-index: 55;
   width: calc(100vw - 28px);
   @media (min-width: ${({ theme }) => theme.breakpoints.md}px) {
@@ -25,8 +25,8 @@ const Bar = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  height: 46px;
-  padding: 0 10px;
+  min-height: 54px;
+  padding: 5px 10px;
   background: rgba(255, 253, 244, 0.97);
   backdrop-filter: blur(8px) saturate(1.15);
   -webkit-backdrop-filter: blur(8px) saturate(1.15);
@@ -41,8 +41,8 @@ const GrupFont = styled.div`
 `;
 
 const TombolFont = styled.button`
-  width: 32px;
-  height: 32px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   border: 1px solid ${({ theme }) => theme.colors.border};
   background: ${({ theme }) => theme.colors.surface};
@@ -50,7 +50,7 @@ const TombolFont = styled.button`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 11px;
+  font-size: 13px;
   flex-shrink: 0;
   &:active {
     transform: scale(0.93);
@@ -75,14 +75,14 @@ const GrupChip = styled.div`
 `;
 
 const Chip = styled.button`
-  height: 32px;
-  padding: 0 13px;
+  min-height: 44px;
+  padding: 0 16px;
   border-radius: 999px;
   border: 1px solid ${({ theme, aktif }) => (aktif ? theme.colors.gold : theme.colors.border)};
   background: ${({ theme, aktif }) =>
     aktif ? theme.gradients.gold : theme.colors.surface};
   color: ${({ theme, aktif }) => (aktif ? theme.colors.primaryDeep : theme.colors.muted)};
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 800;
   letter-spacing: 0.3px;
   white-space: nowrap;

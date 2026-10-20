@@ -22,7 +22,7 @@ const HariBesarBaris = styled.div`
     height: 38px;
     border-radius: 12px;
     background: ${({ theme }) => theme.colors.goldSoft};
-    color: #7A5B00;
+    color: ${({ theme }) => theme.colors.goldDeep};
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -100,7 +100,7 @@ export default function KalenderPage() {
       <PageSubtitle>Tanggal hari ini dan hari-hari besar Islam tahun Hijriah berjalan.</PageSubtitle>
 
       <GoldCard css={{ textAlign: 'center' }}>
-        <div css={{ fontSize: 13, color: '#6B7A72' }}>{tanggalMasehiStr}</div>
+        <div css={(t) => ({ fontSize: 13, color: t.colors.muted })}>{tanggalMasehiStr}</div>
         {hijriahHariIni ? (
           <>
             <div css={{ fontFamily: "'Playfair Display', serif", fontSize: 27, fontWeight: 700, marginTop: 4 }}>

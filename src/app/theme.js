@@ -12,7 +12,7 @@ export const theme = {
     // Emas — aksen
     gold: '#C9A227',
     goldLight: '#E7C65A', // gradasi emas: gold → goldLight
-    goldDeep: '#9A7B1A',
+    goldDeep: '#856A12', // emas gelap — lolos AA sbg teks di ivory (4,78:1) & goldSoft (4,57:1)
     goldSoft: '#F9F1D6', // latar lembut emas (ayat aktif)
     // Netral
     bg: '#FAF6EC', // ivory hangat
@@ -20,7 +20,7 @@ export const theme = {
     surfaceAlt: '#F3EBD6', // kartu alternatif / item lewat
     text: '#1E2A26', // teks body — kontras AA di atas bg/surface
     muted: '#5F6E66', // teks sekunder — kontras AA di atas bg
-    faint: '#8B9890', // meta/dekoratif saja (bukan teks penting)
+    faint: '#5F7268', // meta ringan — lolos AA di ivory (4,75:1) & kertas (4,63:1)
     border: '#E6D9BC', // border hangat
     onPrimary: '#FFFFFF', // teks di atas emerald
     // Kertas mushaf — halaman baca (SurahPage) ala mushaf cetak

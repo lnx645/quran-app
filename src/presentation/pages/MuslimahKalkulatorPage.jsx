@@ -328,7 +328,7 @@ export default function MuslimahKalkulatorPage() {
       </Card>
 
       {hasil && (
-        <Card>
+        <Card role="status" aria-label={`Hasil vonis: ${hasil.vonis}`}>
           <VonisBadge jenis={hasil.vonis}>{hasil.vonis}</VonisBadge>
           <p css={{ fontSize: 14, fontWeight: 600, marginBottom: 6 }}>{hasil.ringkasan}</p>
           {hasil.penjelasan.map((p, i) => (
@@ -374,7 +374,7 @@ export default function MuslimahKalkulatorPage() {
                   {r.vonis} — {r.jenis === 'nifas' ? 'Nifas' : 'Haid'}
                 </strong>
                 <GhostButton
-                  css={{ minHeight: 34, padding: '4px 10px', fontSize: 12 }}
+                  css={{ minHeight: 44, padding: '8px 12px', fontSize: 12.5 }}
                   onClick={() => {
                     LocalMuslimahRepository.hapusRiwayat(r.id);
                     setRiwayat(LocalMuslimahRepository.ambilRiwayat());

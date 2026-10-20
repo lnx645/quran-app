@@ -119,7 +119,7 @@ export default function KhatamPage() {
         <Bar>
           <Isi persen={ringkasan.persen} />
         </Bar>
-        <div css={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#6B7A72' }}>
+        <div css={(t) => ({ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: t.colors.muted })}>
           <span>{ringkasan.halaman} dari {TOTAL_HALAMAN} halaman</span>
           <span>{TOTAL_HALAMAN - ringkasan.halaman} tersisa</span>
         </div>

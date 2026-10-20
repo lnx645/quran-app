@@ -30,7 +30,7 @@ const Baris = styled.button`
     margin-left: auto;
     font-size: 12.5px;
     font-weight: 700;
-    color: ${({ theme, selesai }) => (selesai ? '#7A5B00' : theme.colors.muted)};
+    color: ${({ theme, selesai }) => (selesai ? theme.colors.goldDeep : theme.colors.muted)};
   }
 `;
 
@@ -58,13 +58,13 @@ export default function SholatTrackerPage() {
         <div css={{ display: 'flex', justifyContent: 'center', gap: 26 }}>
           <div>
             <div className="angka">{streak}</div>
-            <div css={{ fontSize: 12.5, color: '#6B7A72' }}>
+            <div css={(t) => ({ fontSize: 12.5, color: t.colors.muted })}>
               <FaFire /> Hari beruntun lengkap
             </div>
           </div>
           <div>
             <div className="angka">{selesaiHariIni}/5</div>
-            <div css={{ fontSize: 12.5, color: '#6B7A72' }}>Hari ini</div>
+            <div css={(t) => ({ fontSize: 12.5, color: t.colors.muted })}>Hari ini</div>
           </div>
         </div>
       </StreakBox>
@@ -78,7 +78,7 @@ export default function SholatTrackerPage() {
             <span className="kanan">{hariIni[w] ? 'SUDAH' : 'BELUM'}</span>
           </Baris>
         ))}
-        <p css={{ fontSize: 13, color: '#6B7A72', marginTop: 6 }}>
+        <p css={(t) => ({ fontSize: 13, color: t.colors.muted, marginTop: 6 })}>
           Streak dihitung dari hari-hari dengan kelima sholat wajib tuntas. Terus jaga — Allah
           mencintai amal yang konsisten walau sedikit.
         </p>

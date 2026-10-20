@@ -35,7 +35,7 @@ const LencanaWajib = styled.span`
   font-size: 12.5px;
   font-weight: 700;
   background: ${({ theme, wajib }) => (wajib ? theme.colors.goldSoft : theme.colors.primarySoft)};
-  color: ${({ theme, wajib }) => (wajib ? '#7A5B00' : theme.colors.primaryDark)};
+  color: ${({ theme, wajib }) => (wajib ? theme.colors.goldDeep : theme.colors.primaryDark)};
   border: 1px solid ${({ theme, wajib }) => (wajib ? theme.colors.gold : theme.colors.primarySoft)};
 `;
 
@@ -126,6 +126,7 @@ export default function ZakatPage() {
               onChange={(e) => setHarta(parseAngka(e.target.value))}
             />
           </Field>
+          <div role="status" aria-label="Hasil hitung zakat mal">
           <ResultRow>
             <span className="label">Nisab (85 gram emas)</span>
             <span className="value">{formatRupiah(hasilMal.nisab)}</span>
@@ -139,6 +140,7 @@ export default function ZakatPage() {
             <span className="label">Zakat Mal (2,5%)</span>
             <span className="value">{formatRupiah(hasilMal.zakat)}</span>
           </ResultRow>
+          </div>
           <Catatan>
             <FaInfoCircle /> Zakat mal dikeluarkan bila harta dimiliki penuh selama 1 tahun
             (haul) dan mencapai nisab.
@@ -158,6 +160,7 @@ export default function ZakatPage() {
               onChange={(e) => setGaji(parseAngka(e.target.value))}
             />
           </Field>
+          <div role="status" aria-label="Hasil hitung zakat profesi">
           <ResultRow>
             <span className="label">Nisab per Bulan (85 gr emas ÷ 12)</span>
             <span className="value">{formatRupiah(hasilProfesi.nisabBulanan)}</span>
@@ -171,6 +174,7 @@ export default function ZakatPage() {
             <span className="label">Zakat Profesi per Bulan (2,5%)</span>
             <span className="value">{formatRupiah(hasilProfesi.zakat)}</span>
           </ResultRow>
+          </div>
         </Card>
       )}
 
@@ -196,6 +200,7 @@ export default function ZakatPage() {
               onChange={(e) => setHargaBeras(parseAngka(e.target.value))}
             />
           </Field>
+          <div role="status" aria-label="Hasil hitung zakat fitrah">
           <ResultRow>
             <span className="label">Zakat Fitrah (beras)</span>
             <span className="value">
@@ -206,6 +211,7 @@ export default function ZakatPage() {
             <span className="label">Atau senilai uang</span>
             <span className="value">{formatRupiah(hasilFitrah.totalUang)}</span>
           </ResultRow>
+          </div>
           <Catatan>
             <FaInfoCircle /> Zakat fitrah 2,5 kg beras per jiwa, dibayarkan sebelum shalat Idul
             Fitri.
@@ -214,7 +220,7 @@ export default function ZakatPage() {
       )}
 
       <SectionTitle>Catatan</SectionTitle>
-      <Card css={{ fontSize: 13.5, color: '#6B7A72' }}>
+      <Card css={(t) => ({ fontSize: 13.5, color: t.colors.muted })}>
         Kalkulator ini alat bantu hitung. Untuk penetapan resmi (termasuk utang/piutang dan haul),
         silakan konsultasikan ke amil zakat / BAZNAS setempat.
       </Card>

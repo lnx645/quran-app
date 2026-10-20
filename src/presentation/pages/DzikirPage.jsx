@@ -117,7 +117,7 @@ export default function DzikirPage() {
             <p className="latin">{d.latin}</p>
             <p className="arti">{d.arti}</p>
             <BarisHitung>
-              <span css={{ fontSize: 13.5, color: '#6B7A72' }}>
+              <span css={(t) => ({ fontSize: 13.5, color: t.colors.muted })}>
                 {n} / {d.hitung} kali
               </span>
               <TombolTap selesai={selesai} onClick={() => tap(i)}>

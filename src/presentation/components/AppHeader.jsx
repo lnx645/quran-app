@@ -77,8 +77,8 @@ const GoldStrip = styled.div`
 
 const IconBtn = styled.button`
   margin-left: auto;
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
@@ -160,8 +160,8 @@ const PanelTitle = styled.div`
 
 const CloseBtn = styled.button`
   margin-left: auto;
-  width: 38px;
-  height: 38px;
+  width: 44px;
+  height: 44px;
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;

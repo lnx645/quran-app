@@ -13,6 +13,7 @@ import ReadingControls from '../components/ReadingControls.jsx';
 import MushafFrame from '../components/ornaments/MushafFrame.jsx';
 import { juzMulaiPada } from '../components/ornaments/index.js';
 import { Page, ErrorBox, Skeleton } from '../components/common.jsx';
+import { umumkan } from '../components/feedback/umumkan.js';
 
 /**
  * Halaman Surah generik (/surah/:id, /yasin → /surah/36).
@@ -87,6 +88,20 @@ export default function SurahPage() {
   const { pref, ubah, tambahArab, kurangArab } = useReadingPrefs();
   const sentinelRef = useRef(null);
   const [miniTampil, setMiniTampil] = useState(false);
+  const ayatUcapRef = useRef(-1);
+
+  // Umumkan ayat aktif ke screen reader saat audio berjalan (sopan, satu per ayat).
+  // Nilai diambil dari data/sync langsung (aman saat loading/error).
+  useEffect(() => {
+    const daftar = data?.ayahs;
+    const nomor =
+      sync.activeIndex >= 0 && daftar ? daftar[sync.activeIndex]?.number ?? 0 : 0;
+    if (sync.playing && nomor > 0 && nomor !== ayatUcapRef.current) {
+      ayatUcapRef.current = nomor;
+      umumkan(`Ayat ${nomor} dari ${daftar.length} sedang diputar.`);
+    }
+    if (!sync.playing) ayatUcapRef.current = -1;
+  });
 
   // Munculkan mini-header begitu panel surah tergulir keluar.
   useEffect(() => {

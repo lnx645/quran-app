@@ -11,7 +11,7 @@ const Wadah = styled.div`
   position: fixed;
   left: 50%;
   transform: translateX(-50%);
-  bottom: calc(158px + env(safe-area-inset-bottom));
+  bottom: calc(236px + env(safe-area-inset-bottom));
   z-index: 200;
   width: min(520px, 94vw);
   display: flex;
