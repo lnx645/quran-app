@@ -114,6 +114,28 @@ export default function PanduanWudhuPage() {
         <>
           <SectionTitle>Langkah-langkah Wudhu</SectionTitle>
           <Card>
+            <figure css={{ margin: 0 }}>
+              <img
+                src="/ilustrasi/wudhu-praktik.jpg"
+                alt="Suasana tempat wudhu di Masjid Süleymaniye, Istanbul: beberapa orang berwudhu di pancuran marmer sebelum sholat"
+                loading="lazy"
+                css={(t) => ({
+                  width: '100%',
+                  height: 'auto',
+                  borderRadius: 12,
+                  border: `1px solid ${t.colors.border}`,
+                  display: 'block',
+                })}
+              />
+              <figcaption
+                css={(t) => ({ fontSize: 13, lineHeight: 1.6, color: t.colors.muted, marginTop: 8 })}
+              >
+                Tempat wudhu di Masjid Süleymaniye, Istanbul — berwudhu adalah gerbang sebelum
+                sholat. Foto: np&amp;djjewell via Wikimedia Commons (CC BY 2.0).
+              </figcaption>
+            </figure>
+          </Card>
+          <Card>
             {WUDHU.langkah.map((s, i) => (
               <Step key={i}>
                 <Nomor>{i + 1}</Nomor>

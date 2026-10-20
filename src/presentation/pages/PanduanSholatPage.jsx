@@ -32,6 +32,37 @@ const IKON = {
   salam: <FaPray />,
 };
 
+// Siluet posisi per gerakan — ekstrak dari poster urutan sholat berlisensi
+// CC0 (Visions International via Wikimedia Commons; lihat
+// public/ilustrasi/SUMBER.md). Postur yang sama memakai siluet yang sama:
+// iftitah, qiroah & i‘tidal = berdiri; tasyahud & salam = duduk.
+const GAMBAR = {
+  takbir: { src: '/ilustrasi/sholat-berdiri.png', alt: 'Siluet posisi berdiri dalam sholat dengan kedua tangan terlipat di dada' },
+  doa: { src: '/ilustrasi/sholat-berdiri.png', alt: 'Siluet posisi berdiri dalam sholat dengan kedua tangan terlipat di dada' },
+  qiroah: { src: '/ilustrasi/sholat-berdiri.png', alt: 'Siluet posisi berdiri dalam sholat dengan kedua tangan terlipat di dada' },
+  rukuk: { src: '/ilustrasi/sholat-rukuk.png', alt: 'Siluet posisi rukuk: membungkuk dengan punggung rata dan tangan di lutut' },
+  iktidal: { src: '/ilustrasi/sholat-berdiri.png', alt: 'Siluet posisi berdiri tegak setelah rukuk (i‘tidal)' },
+  sujud: { src: '/ilustrasi/sholat-sujud.png', alt: 'Siluet posisi sujud: dahi dan hidung menyentuh lantai' },
+  duduk: { src: '/ilustrasi/sholat-duduk.png', alt: 'Siluet posisi duduk di antara dua sujud' },
+  tasyahud: { src: '/ilustrasi/sholat-duduk.png', alt: 'Siluet posisi duduk tasyahud' },
+  salam: { src: '/ilustrasi/sholat-duduk.png', alt: 'Siluet posisi duduk saat salam penutup sholat' },
+};
+
+const GambarGerakan = styled.figure`
+  margin: 0 0 12px;
+  padding: 14px 10px 10px;
+  border-radius: 14px;
+  background: ${({ theme }) => theme.colors.surfaceAlt};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  text-align: center;
+  img {
+    height: 150px;
+    width: auto;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+`;
+
 const Arab = styled.p`
   font-family: ${({ theme }) => theme.fonts.arabic};
   font-size: 24px;
@@ -149,6 +180,11 @@ export default function PanduanSholatPage() {
               {IKON[g.ikon]}
             </span>
           </JudulLangkah>
+          {GAMBAR[g.ikon] && (
+            <GambarGerakan>
+              <img src={GAMBAR[g.ikon].src} alt={GAMBAR[g.ikon].alt} loading="lazy" />
+            </GambarGerakan>
+          )}
           <Desc>{g.desc}</Desc>
           <BadgeKali>Dibaca {g.jumlah}&times;</BadgeKali>
           <Arab lang="ar">{g.bacaan.arab}</Arab>
@@ -164,6 +200,14 @@ export default function PanduanSholatPage() {
             Urutan di atas berlaku untuk satu rakaat penuh; pada rakaat berikutnya gerakan
             diulang sampai rakaat terakhir, lalu ditutup tasyahud akhir dan salam. Bacaan iftitah
             dan surah pendek dibaca pada rakaat pertama dan kedua.
+          </span>
+        </Catatan>
+        <Catatan css={{ marginTop: 8 }}>
+          <FaInfoCircle />{' '}
+          <span>
+            Siluet gerakan diadaptasi dari poster urutan sholat Visions International via
+            Wikimedia Commons (CC0/domain publik). Rincian atribusi ada di berkas
+            public/ilustrasi/SUMBER.md.
           </span>
         </Catatan>
       </GoldCard>
