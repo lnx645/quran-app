@@ -7,41 +7,50 @@ export const DISCLAIMER_PANDUAN =
   'Ringkasan edukasi — bukan fatwa. Untuk kasus khusus, silakan rujuk ulama atau guru setempat.';
 
 // ── Wudhu ───────────────────────────────────────────────────────
-// Langkah mengikuti urutan tertib yang lazim diajarkan: niat menyertai
-// basuhan wajah, lalu anggota wudhu berurutan sampai kaki.
+// Urutan & substansi langkah mengikuti panduan guru pengguna
+// (PDF "Tata Cara Wudhu Yang Benar Beserta Gambarnya"): delapan
+// langkah dari basmalah & basuh tangan sampai membasuh kaki, dengan
+// niat menyertai basuhan wajah. Teks langkah adalah pengetahuan
+// fikih umum; ilustrasinya karya orisinal proyek (bukan pindaian
+// dari buku/PDF mana pun).
 export const WUDHU = {
   langkah: [
     {
-      judul: 'Niat & membaca basmalah',
-      desc: 'Berniat dalam hati untuk berwudhu karena Allah, lalu membaca basmalah dan membasuh kedua telapak tangan tiga kali.',
+      judul: 'Membaca basmalah & mencuci kedua tangan',
+      desc: 'Membaca "bismillaahirrohmaanirrohiim" sambil mencuci kedua belah tangan sampai pergelangan tangan hingga bersih.',
     },
     {
-      judul: 'Berkumur & membersihkan hidung',
-      desc: 'Berkumur tiga kali, lalu menghirup air ke hidung dan mengeluarkannya tiga kali. Bagian ini sunnah yang sangat dianjurkan.',
+      judul: 'Berkumur-kumur',
+      desc: 'Berkumur-kumur sambil membersihkan gigi jika ada sisa-sisa makanan.',
     },
     {
-      judul: 'Membasuh wajah',
-      desc: 'Membasuh seluruh wajah tiga kali — dari tempat tumbuh rambut kepala sampai dagu, dan dari telinga ke telinga. Niat wudhu dibaca ketika air pertama kali menyentuh wajah.',
+      judul: 'Mencuci lubang hidung',
+      desc: 'Mencuci lubang hidung 3 kali dari kotoran yang ada di dalamnya.',
     },
     {
-      judul: 'Membasuh tangan sampai siku',
-      desc: 'Membasuh tangan kanan sampai siku tiga kali, lalu tangan kiri sampai siku tiga kali. Pastikan air merata termasuk sela-sela jari.',
+      judul: 'Mencuci muka',
+      desc: 'Mencuci muka 3 kali, mulai dari tempat tumbuhnya rambut kepala hingga bawah dagu dan dari telinga kanan hingga telinga kiri, sambil niat wudhu dengan lafadz berikut:',
+      niat: {
+        arab: 'نَوَيْتُ الْوُضُوْءَ لِرَفْعِ الْحَدَثِ الْأَصْغَرِ فَرْضًا لِلّٰهِ تَعَالَى',
+        latin: "Nawaitul Wudluu a Liraf'il Hadastil Ashghari Fardlan Lillaahita'ala",
+        arti: 'Aku niat berwudhu untuk menghilangkan hadas kecil, fardhu karena Allah.',
+      },
     },
     {
-      judul: 'Mengusap kepala',
-      desc: 'Mengusap sebagian atau seluruh kepala dengan tangan yang basah, satu kali. Bagi yang berambut, usap dari depan ke belakang lalu kembali ke depan.',
+      judul: 'Mencuci kedua tangan hingga siku',
+      desc: 'Kemudian mencuci kedua belah tangan hingga siku-siku, sebanyak 3 kali.',
     },
     {
-      judul: 'Mengusap telinga',
-      desc: 'Mengusap bagian luar dan dalam kedua telinga dengan air yang baru, satu kali. Langkah ini sunnah yang melengkapi usapan kepala.',
+      judul: 'Membasahi sebagian rambut kepala',
+      desc: 'Kemudian membasahi sebagian rambut kepala, sebanyak 3 kali.',
     },
     {
-      judul: 'Membasuh kaki sampai mata kaki',
-      desc: 'Membasuh kaki kanan sampai mata kaki tiga kali, lalu kaki kiri sampai mata kaki tiga kali, termasuk sela-sela jari kaki.',
+      judul: 'Mencuci kedua telinga',
+      desc: 'Kemudian mencuci kedua telinga.',
     },
     {
-      judul: 'Tertib & doa sesudah wudhu',
-      desc: 'Seluruh langkah dilakukan berurutan tanpa diselingi jeda panjang (tertib dan muwalat). Akhiri dengan doa sesudah wudhu di bawah ini.',
+      judul: 'Mencuci kedua kaki',
+      desc: 'Dan yang terakhir, mencuci kedua kaki hingga di atas mata kaki, sebanyak 3 kali.',
     },
   ],
   pembatal: [
@@ -52,9 +61,11 @@ export const WUDHU = {
     'Bersentuhan kulit dengan lawan jenis yang bukan mahram (menurut mazhab Syafi\u2019i).',
   ],
   doaSesudah: {
-    arab: 'أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ. اللَّهُمَّ اجْعَلْنِي مِنَ التَّوَّابِينَ وَاجْعَلْنِي مِنَ الْمُتَطَهِّرِينَ',
-    latin: "Asyhadu allā ilāha illallāhu wahdahu lā syarīka lah, wa asyhadu anna Muhammadan 'abduhu wa rasūluh. Allāhummaj'alnī minat-tawwābīn waj'alnī minal-mutathahhirīn.",
-    arti: 'Aku bersaksi bahwa tidak ada sesembahan yang berhak disembah selain Allah semata, tiada sekutu bagi-Nya, dan aku bersaksi bahwa Muhammad adalah hamba dan utusan-Nya. Ya Allah, jadikanlah aku termasuk orang-orang yang bertaubat dan jadikanlah aku termasuk orang-orang yang bersuci.',
+    arab: 'أَشْهَدُ أَنْ لَا إِلٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيْكَ لَهُ وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُوْلُهُ. اَللّٰهُمَّ اجْعَلْنِيْ مِنَ التَّوَّابِيْنَ وَاجْعَلْنِيْ مِنَ الْمُتَطَهِّرِيْنَ وَاجْعَلْنِيْ مِنْ عِبَادِكَ الصَّالِحِيْنَ',
+    latin: "Asyhadu Alla Ila Haillallaah Wahdahu Laa Syariika Lahu Wa Asyhadu Anna Muhammadan Abduhu Wa Rasuuluhu, Alloohummaj'alni Minattawwaabiina Waj'alni Minal Mutathahhiriina Waj'alni Min Ibadi Kash Shaalihiin",
+    arti: 'Aku bersaksi tiada Tuhan melainkan Allah dan tidak ada yang menyekutukan bagi-Nya. Dan aku bersaksi bahwa Nabi Muhammad adalah utusan-Nya. Ya Allah jadikanlah aku orang yang ahli taubat, dan jadikanlah aku orang yang suci dan jadikanlah aku dari golongan orang-orang yang shaleh.',
+    keterangan:
+      'Setelah berwudhu, disunnahkan membaca doa ini dan menghadap kiblat sambil mengangkat kedua tangan.',
   },
 };
 
@@ -89,9 +100,9 @@ export const TAYAMMUM = {
   catatan:
     'Tayammum batal karena hal-hal yang membatalkan wudhu, dan juga ketika air sudah ditemukan sebelum sholat dimulai. Satu kali tayammum dipakai untuk satu sholat fardhu.',
   doaSesudah: {
-    arab: 'أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ. اللَّهُمَّ اجْعَلْنِي مِنَ التَّوَّابِينَ وَاجْعَلْنِي مِنَ الْمُتَطَهِّرِينَ',
-    latin: "Asyhadu allā ilāha illallāhu wahdahu lā syarīka lah, wa asyhadu anna Muhammadan 'abduhu wa rasūluh. Allāhummaj'alnī minat-tawwābīn waj'alnī minal-mutathahhirīn.",
-    arti: 'Aku bersaksi bahwa tidak ada sesembahan yang berhak disembah selain Allah semata, tiada sekutu bagi-Nya, dan aku bersaksi bahwa Muhammad adalah hamba dan utusan-Nya. Ya Allah, jadikanlah aku termasuk orang-orang yang bertaubat dan jadikanlah aku termasuk orang-orang yang bersuci.',
+    arab: 'أَشْهَدُ أَنْ لَا إِلٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيْكَ لَهُ وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُوْلُهُ. اَللّٰهُمَّ اجْعَلْنِيْ مِنَ التَّوَّابِيْنَ وَاجْعَلْنِيْ مِنَ الْمُتَطَهِّرِيْنَ وَاجْعَلْنِيْ مِنْ عِبَادِكَ الصَّالِحِيْنَ',
+    latin: "Asyhadu Alla Ila Haillallaah Wahdahu Laa Syariika Lahu Wa Asyhadu Anna Muhammadan Abduhu Wa Rasuuluhu, Alloohummaj'alni Minattawwaabiina Waj'alni Minal Mutathahhiriina Waj'alni Min Ibadi Kash Shaalihiin",
+    arti: 'Aku bersaksi tiada Tuhan melainkan Allah dan tidak ada yang menyekutukan bagi-Nya. Dan aku bersaksi bahwa Nabi Muhammad adalah utusan-Nya. Ya Allah jadikanlah aku orang yang ahli taubat, dan jadikanlah aku orang yang suci dan jadikanlah aku dari golongan orang-orang yang shaleh.',
     keterangan: 'Setelah tayammum, boleh membaca doa yang sama seperti doa sesudah wudhu.',
   },
 };
