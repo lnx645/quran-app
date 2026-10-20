@@ -10,6 +10,12 @@ import {
   hitungStreak,
   daftarLencana,
 } from '../../domain/usecases/streakIbadah.js';
+import { LocalProfilRepository } from '../../data/repositories/LocalProfilRepository.js';
+
+// Namespace profil keluarga: kunci streak diselesaikan per profil aktif
+// lewat LocalProfilRepository.kunciAktif (profil 'utama' = kunci dasar
+// persis; tanda tangan fungsi domain streakIbadah.js TIDAK diubah).
+const kunciStreakAktif = () => LocalProfilRepository.kunciAktif(KUNCI_STREAK);
 
 /**
  * Hook Streak, Target & Lencana Ibadah.
@@ -35,7 +41,7 @@ import {
 
 function muatState() {
   try {
-    const mentah = localStorage.getItem(KUNCI_STREAK);
+    const mentah = localStorage.getItem(kunciStreakAktif());
     if (!mentah) return stateAwal();
     return normalisasiState(JSON.parse(mentah));
   } catch {
@@ -45,7 +51,7 @@ function muatState() {
 
 function simpanState(state) {
   try {
-    localStorage.setItem(KUNCI_STREAK, JSON.stringify(state));
+    localStorage.setItem(kunciStreakAktif(), JSON.stringify(state));
   } catch {
     /* penyimpanan tidak tersedia — streak cukup tidak tersimpan */
   }

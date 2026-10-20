@@ -5,6 +5,7 @@ import {
   FaQuestionCircle, FaPlay, FaCheck, FaTimes, FaRedoAlt, FaTrophy, FaListUl,
 } from 'react-icons/fa';
 import { MODE_KUIS } from '../../data/sources/kuisData.js';
+import { LocalProfilRepository } from '../../data/repositories/LocalProfilRepository.js';
 import {
   Page, PageTitle, PageSubtitle, Card, PrimaryButton, GhostButton, SectionTitle,
 } from '../components/common.jsx';
@@ -12,11 +13,15 @@ import { SegmenWadah, SegmenTab } from '../components/SegmentedControl.jsx';
 import StateKosong from '../components/StateKosong.jsx';
 
 const KUNCI_SKOR = 'noor.kuis.v1';
+
+// Namespace profil keluarga: skor terbaik kuis adalah data per profil
+// (profil 'utama' = kunci dasar persis; profil lain berakhiran #<id>).
+const kunciSkorAktif = () => LocalProfilRepository.kunciAktif(KUNCI_SKOR);
 const JUMLAH_SOAL = 10;
 
 function bacaTerbaik() {
   try {
-    const mentah = localStorage.getItem(KUNCI_SKOR);
+    const mentah = localStorage.getItem(kunciSkorAktif());
     const data = mentah ? JSON.parse(mentah) : {};
     return { sambung: data.sambung ?? null, tebak: data.tebak ?? null, tajwid: data.tajwid ?? null };
   } catch {
@@ -26,7 +31,7 @@ function bacaTerbaik() {
 
 function simpanTerbaik(terbaik) {
   try {
-    localStorage.setItem(KUNCI_SKOR, JSON.stringify(terbaik));
+    localStorage.setItem(kunciSkorAktif(), JSON.stringify(terbaik));
   } catch {
     /* penyimpanan tidak tersedia — kuis tetap jalan */
   }

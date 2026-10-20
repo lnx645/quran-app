@@ -1,7 +1,12 @@
 // Repository tracker qadha puasa tersimpan di localStorage (data layer).
 // Bentuk data: { totalUtang: number, terbayar: number, log: { 'YYYY-MM-DD': n } }
 // — log mencatat jumlah hari yang dibayarkan pada tanggal tersebut.
+import { LocalProfilRepository } from './LocalProfilRepository.js';
+
 const KUNCI = 'noor.qadha-puasa.v1';
+// Namespace profil: SEMUA baca/tulis lewat kunciAktif() — profil 'utama'
+// memakai kunci dasar persis (data lama), profil lain berakhiran #<id>.
+const kunciAktif = () => LocalProfilRepository.kunciAktif(KUNCI);
 const KOSONG = { totalUtang: 0, terbayar: 0, log: {} };
 
 function normalisasi(parsed) {
@@ -23,7 +28,7 @@ function tanggalHariIni(date = new Date()) {
 export const LocalQadhaRepository = {
   loadSemua() {
     try {
-      const raw = localStorage.getItem(KUNCI);
+      const raw = localStorage.getItem(kunciAktif());
       return raw ? normalisasi(JSON.parse(raw)) : { ...KOSONG };
     } catch {
       return { ...KOSONG };
@@ -32,7 +37,7 @@ export const LocalQadhaRepository = {
 
   saveSemua(data) {
     try {
-      localStorage.setItem(KUNCI, JSON.stringify(normalisasi(data)));
+      localStorage.setItem(kunciAktif(), JSON.stringify(normalisasi(data)));
     } catch {
       /* penyimpanan penuh / privat — abaikan */
     }

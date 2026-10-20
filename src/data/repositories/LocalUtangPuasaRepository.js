@@ -12,8 +12,12 @@ import {
   normalisasiTotalHari,
   petaLunas,
 } from '../../domain/usecases/hitungUtangPuasa.js';
+import { LocalProfilRepository } from './LocalProfilRepository.js';
 
 const KUNCI = 'noor.utang-puasa.v1';
+// Namespace profil: SEMUA baca/tulis lewat kunciAktif() — profil 'utama'
+// memakai kunci dasar persis (data lama), profil lain berakhiran #<id>.
+const kunciAktif = () => LocalProfilRepository.kunciAktif(KUNCI);
 const KOSONG = { tahun: [] };
 const POLA_TANGGAL = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -47,7 +51,7 @@ function buatId() {
 export const LocalUtangPuasaRepository = {
   load() {
     try {
-      const raw = localStorage.getItem(KUNCI);
+      const raw = localStorage.getItem(kunciAktif());
       return raw ? normalisasi(JSON.parse(raw)) : { ...KOSONG, tahun: [] };
     } catch {
       return { ...KOSONG, tahun: [] };
@@ -56,7 +60,7 @@ export const LocalUtangPuasaRepository = {
 
   saveSemua(data) {
     try {
-      localStorage.setItem(KUNCI, JSON.stringify(normalisasi(data)));
+      localStorage.setItem(kunciAktif(), JSON.stringify(normalisasi(data)));
     } catch {
       /* penyimpanan penuh / privat — abaikan */
     }

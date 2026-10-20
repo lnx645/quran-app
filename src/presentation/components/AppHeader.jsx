@@ -9,8 +9,9 @@ import {
   FaCalendarAlt, FaListUl, FaBook, FaGraduationCap, FaUniversalAccess,
   FaSearch, FaBookmark, FaBrain, FaPalette, FaTint, FaMoon, FaBroadcastTower, FaMicrophone, FaChild,
   FaBalanceScale, FaKaaba, FaBaby, FaGift, FaHandHoldingHeart, FaTasks, FaMonument, FaPenFancy,
-  FaDownload,
+  FaDownload, FaUserCircle,
 } from 'react-icons/fa';
+import { LocalProfilRepository } from '../../data/repositories/LocalProfilRepository.js';
 import Logo from './Logo.jsx';
 import { PrimaryButton } from './common.jsx';
 import { useInstallPrompt } from '../hooks/useInstallPrompt.js';
@@ -506,6 +507,35 @@ export default function AppHeader() {
               <FaDownload aria-hidden="true" /> {t('umum.install')}
             </PrimaryButton>
           )}
+          {/* Profil keluarga lokal: nama profil aktif dibaca langsung dari
+              LocalProfilRepository saat render (cukup untuk tampilan nama;
+              pergantian profil terjadi di halaman /profil + muat ulang). */}
+          <div>
+            <GroupLabel>{t('umum.profilAktif')}</GroupLabel>
+            <p
+              css={(t) => ({
+                padding: '0 2px 6px',
+                fontSize: 14,
+                fontWeight: 700,
+                color: t.colors.text,
+              })}
+            >
+              {(() => {
+                try {
+                  return LocalProfilRepository.profilAktif()?.nama ?? 'Utama';
+                } catch {
+                  return 'Utama';
+                }
+              })()}
+            </p>
+            <Item to="/profil" onClick={() => setOpen(false)}>
+              <ItemIcon>
+                <FaUserCircle />
+              </ItemIcon>
+              {t('menu.gantiProfil')}
+              <FiChevronRight className="chev" />
+            </Item>
+          </div>
           {MENU.map((grup) => (
             <div key={grup.kunciGrup}>
               <GroupLabel>{t(grup.kunciGrup)}</GroupLabel>

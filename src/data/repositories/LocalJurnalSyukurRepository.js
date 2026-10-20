@@ -6,7 +6,11 @@
 // Semua pembacaan defensif: data rusak / bentuk tak dikenal dinormalisasi
 // menjadi entri kosong, tidak pernah melempar ke pemanggil (pola sama
 // dengan LocalMutabaahRepository & LocalSedekahRepository).
+import { LocalProfilRepository } from './LocalProfilRepository.js';
 const KUNCI = 'noor.jurnal-syukur.v1';
+// Namespace profil: SEMUA baca/tulis lewat kunciAktif() — profil 'utama'
+// memakai kunci dasar persis (data lama), profil lain berakhiran #<id>.
+const kunciAktif = () => LocalProfilRepository.kunciAktif(KUNCI);
 const POLA_TANGGAL = /^\d{4}-\d{2}-\d{2}$/;
 
 function teksAman(v) {
@@ -46,7 +50,7 @@ export const LocalJurnalSyukurRepository = {
   /** Muat seluruh jurnal: { 'YYYY-MM-DD': { syukur, refleksi } }. */
   loadSemua() {
     try {
-      const raw = localStorage.getItem(KUNCI);
+      const raw = localStorage.getItem(kunciAktif());
       return raw ? normalisasi(JSON.parse(raw)) : {};
     } catch {
       return {};
@@ -74,7 +78,7 @@ export const LocalJurnalSyukurRepository = {
       delete semua[kunci];
     }
     try {
-      localStorage.setItem(KUNCI, JSON.stringify(semua));
+      localStorage.setItem(kunciAktif(), JSON.stringify(semua));
     } catch {
       /* penyimpanan penuh / privat — abaikan */
     }
@@ -87,7 +91,7 @@ export const LocalJurnalSyukurRepository = {
     const semua = this.loadSemua();
     delete semua[kunci];
     try {
-      localStorage.setItem(KUNCI, JSON.stringify(semua));
+      localStorage.setItem(kunciAktif(), JSON.stringify(semua));
     } catch {
       /* abaikan */
     }

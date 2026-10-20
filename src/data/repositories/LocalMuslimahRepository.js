@@ -2,6 +2,8 @@
 // - Riwayat kalkulasi haid/nifas (data pribadi — hanya tersimpan di perangkat).
 // - PIN sederhana sebagai kunci buka halaman kalkulator.
 //
+import { LocalProfilRepository } from './LocalProfilRepository.js';
+
 // CATATAN: ini hash sederhana (bukan enkripsi kelas bank) — PIN disimpan dalam
 // bentuk hash FNV-1a agar teks PIN tidak tersimpan mentah. Cukup untuk privasi
 // ringan tingkat perangkat; bukan pengganti kunci kriptografi serius.
@@ -18,6 +20,11 @@ function hashPin(pin) {
 }
 
 const KUNCI_RIWAYAT = 'noor.muslimah.riwayat.v1';
+// Namespace profil: SEMUA baca/tulis lewat kunciAktif() — profil 'utama'
+// memakai kunci dasar persis (data lama), profil lain berakhiran #<id>.
+// Riwayat DAN PIN sama-sama data pribadi per profil → keduanya di-namespace
+// (PIN profil lain tidak membuka data profil ini).
+const kunciAktif = (kunciDasar) => LocalProfilRepository.kunciAktif(kunciDasar);
 const KUNCI_PIN = 'noor.muslimah.pinHash.v1';
 const MAKS_RIWAYAT = 30;
 
@@ -40,7 +47,7 @@ function tulis(kunci, nilai) {
 export const LocalMuslimahRepository = {
   // ── Riwayat kalkulasi ──────────────────────────────────────────
   ambilRiwayat() {
-    const daftar = baca(KUNCI_RIWAYAT, []);
+    const daftar = baca(kunciAktif(KUNCI_RIWAYAT), []);
     return Array.isArray(daftar) ? daftar : [];
   },
   /** entri: { id, tanggalCatat, jenis, tanggalMulai, tanggalBerhenti,
@@ -48,17 +55,17 @@ export const LocalMuslimahRepository = {
   tambahRiwayat(entri) {
     const daftar = this.ambilRiwayat();
     daftar.unshift({ id: Date.now(), ...entri });
-    tulis(KUNCI_RIWAYAT, daftar.slice(0, MAKS_RIWAYAT));
+    tulis(kunciAktif(KUNCI_RIWAYAT), daftar.slice(0, MAKS_RIWAYAT));
   },
   hapusRiwayat(id) {
     tulis(
-      KUNCI_RIWAYAT,
+      kunciAktif(KUNCI_RIWAYAT),
       this.ambilRiwayat().filter((e) => e.id !== id),
     );
   },
   kosongkanRiwayat() {
     try {
-      localStorage.removeItem(KUNCI_RIWAYAT);
+      localStorage.removeItem(kunciAktif(KUNCI_RIWAYAT));
     } catch {
       /* abaikan */
     }
@@ -67,7 +74,7 @@ export const LocalMuslimahRepository = {
   // ── PIN kunci kalkulator ───────────────────────────────────────
   pinSudahAda() {
     try {
-      return Boolean(localStorage.getItem(KUNCI_PIN));
+      return Boolean(localStorage.getItem(kunciAktif(KUNCI_PIN)));
     } catch {
       return false;
     }
@@ -78,12 +85,12 @@ export const LocalMuslimahRepository = {
     if (bersih.length < 4 || bersih.length > 6) {
       throw new Error('PIN harus 4–6 digit angka.');
     }
-    tulis(KUNCI_PIN, hashPin(bersih));
+    tulis(kunciAktif(KUNCI_PIN), hashPin(bersih));
   },
   /** true bila cocok dengan hash tersimpan. */
   cekPin(pin) {
     try {
-      const tersimpan = localStorage.getItem(KUNCI_PIN);
+      const tersimpan = localStorage.getItem(kunciAktif(KUNCI_PIN));
       if (!tersimpan) return false;
       return JSON.parse(tersimpan) === hashPin(String(pin));
     } catch {
@@ -92,7 +99,7 @@ export const LocalMuslimahRepository = {
   },
   hapusPin() {
     try {
-      localStorage.removeItem(KUNCI_PIN);
+      localStorage.removeItem(kunciAktif(KUNCI_PIN));
     } catch {
       /* abaikan */
     }

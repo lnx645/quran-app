@@ -72,6 +72,7 @@ const _Ziarah = lazyDenganPemulihan(() => import('../presentation/pages/ZiarahPa
 const _AqiqahKurban = lazyDenganPemulihan(() => import('../presentation/pages/AqiqahKurbanPage.jsx'));
 const _Mutabaah = lazyDenganPemulihan(() => import('../presentation/pages/MutabaahPage.jsx'));
 const _JurnalSyukur = lazyDenganPemulihan(() => import('../presentation/pages/JurnalSyukurPage.jsx'));
+const _Profil = lazyDenganPemulihan(() => import('../presentation/pages/ProfilPage.jsx'));
 const _NamaBayi = lazyDenganPemulihan(() => import('../presentation/pages/NamaBayiPage.jsx'));
 const _MasjidTerdekat = lazyDenganPemulihan(() => import('../presentation/pages/MasjidTerdekatPage.jsx'));
 const _SholatId = lazyDenganPemulihan(() => import('../presentation/pages/SholatIdPage.jsx'));
@@ -447,6 +448,13 @@ export function JurnalSyukurPage() {
   return (
     <Suspense fallback={<PageFallback />}>
       <_JurnalSyukur />
+    </Suspense>
+  );
+}
+export function ProfilPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_Profil />
     </Suspense>
   );
 }
