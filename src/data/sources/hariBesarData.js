@@ -6,6 +6,7 @@ export const HARI_BESAR = [
   { nama: 'Maulid Nabi Muhammad ﷺ', hari: 12, bulanHijriah: 3, namaBulan: 'Rabiulawal' },
   { nama: "Isra Mi'raj Nabi Muhammad ﷺ", hari: 27, bulanHijriah: 7, namaBulan: 'Rajab' },
   { nama: 'Awal Ramadan (Puasa)', hari: 1, bulanHijriah: 9, namaBulan: 'Ramadan' },
+  { nama: "Nuzulul Qur'an", hari: 17, bulanHijriah: 9, namaBulan: 'Ramadan' },
   { nama: 'Idul Fitri', hari: 1, bulanHijriah: 10, namaBulan: 'Syawal' },
   { nama: 'Hari Arafah', hari: 9, bulanHijriah: 12, namaBulan: 'Dzulhijjah' },
   { nama: 'Idul Adha', hari: 10, bulanHijriah: 12, namaBulan: 'Dzulhijjah' },

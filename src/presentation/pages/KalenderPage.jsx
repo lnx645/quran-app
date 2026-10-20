@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { useEffect, useMemo, useState } from 'react';
 import styled from '@emotion/styled';
-import { FaCalendarAlt, FaStar, FaMoon, FaChevronLeft, FaChevronRight, FaBookOpen } from 'react-icons/fa';
+import { FaCalendarAlt, FaCalendarDay, FaStar, FaMoon, FaChevronLeft, FaChevronRight, FaBookOpen } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { fetchGToH, fetchHToG } from '../../data/aladhanApi.js';
 import { JadwalRepositoryImpl } from '../../data/repositories/JadwalRepositoryImpl.js';
@@ -55,6 +55,7 @@ const SLUG_PERISTIWA = {
   'Tahun Baru Hijriah': 'tahun-baru-hijriah',
   'Maulid Nabi Muhammad ﷺ': 'maulid-nabi',
   "Isra Mi'raj Nabi Muhammad ﷺ": 'isra-miraj',
+  "Nuzulul Qur'an": 'nuzulul-quran',
 };
 
 const TautanPeristiwa = styled(Link)`
@@ -73,12 +74,26 @@ const KepalaBulan = styled.div`
   gap: 10px;
   margin-bottom: 12px;
   .label-bulan {
-    flex: 1;
+    display: block;
     text-align: center;
     font-family: ${({ theme }) => theme.fonts.display};
     font-size: 17px;
     font-weight: 700;
     color: ${({ theme }) => theme.colors.judul};
+  }
+  .label-hijri {
+    display: block;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: ${({ theme }) => theme.colors.goldDeep};
+    margin-top: 1px;
+  }
+  .bungkus-label {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
   }
 `;
 
@@ -126,6 +141,18 @@ const SelTanggal = styled.button`
     font-size: 15px;
     font-weight: ${({ hariIni }) => (hariIni ? 800 : 600)};
     line-height: 1.15;
+    color: ${({ theme, ahad }) => (ahad ? theme.colors.danger : 'inherit')};
+  }
+  .penanda {
+    height: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    svg {
+      font-size: 8px;
+      color: ${({ theme }) => theme.colors.goldDeep};
+    }
   }
   .tgl-hijri {
     font-size: 10.5px;
@@ -191,6 +218,31 @@ const BarisTerdekat = styled.div`
     font-size: 12.5px;
     color: ${({ theme }) => theme.colors.muted};
   }
+`;
+
+
+const PanelDetail = styled.div`
+  margin-top: 16px;
+  background: ${({ theme }) => theme.colors.surfaceAlt};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-left: 3px solid ${({ theme }) => theme.colors.gold};
+  border-radius: ${({ theme }) => theme.radii.md}px;
+  padding: 13px 15px;
+`;
+
+const TombolHariIni = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 36px;
+  padding: 6px 14px;
+  margin: 0 auto 12px;
+  border-radius: 999px;
+  border: 1.5px solid ${({ theme }) => theme.colors.gold};
+  background: ${({ theme }) => theme.colors.goldSoft};
+  color: ${({ theme }) => theme.colors.goldDeep};
+  font-size: 12.5px;
+  font-weight: 800;
 `;
 
 const NAMA_BULAN_HIJRIAH = {
@@ -315,7 +367,11 @@ export default function KalenderPage() {
       (s) => kunciTgl(s.masehi.year, s.masehi.month, s.masehi.day) === kunciTerpilih
     );
     if (!sel) return null;
-    return { ...sel, puasa: puasaSunnahPadaHari({ hijri: sel.hijri, weekday: sel.masehi.weekday }) };
+    return {
+      ...sel,
+      puasa: puasaSunnahPadaHari({ hijri: sel.hijri, weekday: sel.masehi.weekday }),
+      hariBesar: petaHariBesar.get(`${sel.hijri.day}-${sel.hijri.month}`) ?? null,
+    };
   }, [selBulan, kunciTerpilih]);
 
   const labelBulan = new Date(view.tahun, view.bulan - 1, 1).toLocaleDateString('id-ID', {
@@ -323,6 +379,21 @@ export default function KalenderPage() {
   });
   const offsetAwal = selBulan?.length ? (selBulan[0].masehi.weekday + 6) % 7 : 0;
   const kunciHariIni = kunciTgl(sekarang.getFullYear(), sekarang.getMonth() + 1, sekarang.getDate());
+  const petaHariBesar = new Map(HARI_BESAR.map((hb) => [`${hb.hari}-${hb.bulanHijriah}`, hb]));
+  const rentangHijri = (() => {
+    if (!selBulan?.length) return '';
+    const awal = selBulan[0].hijri;
+    const akhir = selBulan[selBulan.length - 1].hijri;
+    if (awal.month === akhir.month && awal.year === akhir.year) {
+      return `${namaBulanHijriah(awal.monthName)} ${awal.year} H`;
+    }
+    return `${namaBulanHijriah(awal.monthName)} – ${namaBulanHijriah(akhir.monthName)} ${akhir.year} H`;
+  })();
+  const sedangBulanLain = view.bulan !== sekarang.getMonth() + 1 || view.tahun !== sekarang.getFullYear();
+  const keHariIni = () => {
+    setView({ bulan: sekarang.getMonth() + 1, tahun: sekarang.getFullYear() });
+    setKunciTerpilih(kunciHariIni);
+  };
 
   const tanggalMasehiStr = new Date().toLocaleDateString('id-ID', {
     weekday: 'long',
@@ -360,11 +431,21 @@ export default function KalenderPage() {
           <TombolBulan type="button" onClick={() => geserBulan(-1)} aria-label="Bulan sebelumnya">
             <FaChevronLeft aria-hidden="true" />
           </TombolBulan>
-          <span className="label-bulan">{labelBulan}</span>
+          <span className="bungkus-label">
+            <span className="label-bulan">{labelBulan}</span>
+            {rentangHijri && <span className="label-hijri">{rentangHijri}</span>}
+          </span>
           <TombolBulan type="button" onClick={() => geserBulan(1)} aria-label="Bulan berikutnya">
             <FaChevronRight aria-hidden="true" />
           </TombolBulan>
         </KepalaBulan>
+        {sedangBulanLain && (
+          <div css={{ textAlign: 'center' }}>
+            <TombolHariIni type="button" onClick={keHariIni}>
+              <FaCalendarDay aria-hidden="true" /> Kembali ke Hari Ini
+            </TombolHariIni>
+          </div>
+        )}
 
         {gagalBulan && <div css={{ fontSize: 14 }}>Kalender bulan ini tidak dapat dimuat. Periksa koneksi lalu coba lagi.</div>}
         {!selBulan && !gagalBulan && (
@@ -376,7 +457,14 @@ export default function KalenderPage() {
           <>
             <GridKalender role="grid" aria-label={`Kalender ${labelBulan}`}>
               {HARI_KEPALA.map((h) => (
-                <span key={h} className="kepala-hari" aria-hidden="true">{h}</span>
+                <span
+                  key={h}
+                  className="kepala-hari"
+                  aria-hidden="true"
+                  css={h === 'Ahd' ? (t) => ({ color: t.colors.danger }) : undefined}
+                >
+                  {h}
+                </span>
               ))}
               {Array.from({ length: offsetAwal }).map((_, i) => (
                 <span key={`kosong-${i}`} aria-hidden="true" />
@@ -384,26 +472,35 @@ export default function KalenderPage() {
               {selBulan.map((sel) => {
                 const kunci = kunciTgl(sel.masehi.year, sel.masehi.month, sel.masehi.day);
                 const puasa = puasaSunnahPadaHari({ hijri: sel.hijri, weekday: sel.masehi.weekday });
+                const hb = petaHariBesar.get(`${sel.hijri.day}-${sel.hijri.month}`);
                 const labelPuasa = puasa.length ? `, puasa sunnah: ${puasa.map((p) => p.nama).join(', ')}` : '';
+                const labelBesar = hb ? `, hari besar: ${hb.nama}` : '';
                 return (
                   <SelTanggal
                     key={kunci}
                     type="button"
                     terpilih={kunci === kunciTerpilih}
                     hariIni={kunci === kunciHariIni}
+                    ahad={sel.masehi.weekday === 0}
                     aria-pressed={kunci === kunciTerpilih}
-                    aria-label={`${sel.masehi.day} ${labelBulan}, ${sel.hijri.day} ${namaBulanHijriah(sel.hijri.monthName)} ${sel.hijri.year} Hijriah${labelPuasa}`}
+                    aria-label={`${sel.masehi.day} ${labelBulan}, ${sel.hijri.day} ${namaBulanHijriah(sel.hijri.monthName)} ${sel.hijri.year} Hijriah${labelPuasa}${labelBesar}`}
                     onClick={() => setKunciTerpilih(kunci)}
                   >
                     <span className="tgl-masehi">{sel.masehi.day}</span>
                     <span className="tgl-hijri">{sel.hijri.day} H</span>
-                    {puasa.length > 0 ? <TitikPuasa aria-hidden="true" /> : <span css={{ height: 8 }} aria-hidden="true" />}
+                    <span className="penanda" aria-hidden="true">
+                      {puasa.length > 0 && <TitikPuasa css={{ width: 6, height: 6 }} />}
+                      {hb && <FaStar />}
+                    </span>
                   </SelTanggal>
                 );
               })}
             </GridKalender>
             <Legenda>
               <span className="item"><TitikPuasa aria-hidden="true" /> Hari puasa sunnah</span>
+              <span className="item">
+                <FaStar aria-hidden="true" css={(t) => ({ color: t.colors.goldDeep, fontSize: 11 })} /> Hari besar Islam
+              </span>
               <span className="item"><span className="kotak-ini" aria-hidden="true" /> Hari ini</span>
               <span className="item">Angka kecil = tanggal Hijriah</span>
             </Legenda>
@@ -411,7 +508,7 @@ export default function KalenderPage() {
         )}
 
         {selTerpilih && (
-          <div css={{ marginTop: 16 }} aria-live="polite">
+          <PanelDetail aria-live="polite">
             <div css={(t) => ({ fontWeight: 700, fontSize: 15, color: t.colors.judul })}>
               {new Date(selTerpilih.masehi.year, selTerpilih.masehi.month - 1, selTerpilih.masehi.day).toLocaleDateString('id-ID', {
                 weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
@@ -420,6 +517,27 @@ export default function KalenderPage() {
             <div css={(t) => ({ fontSize: 13.5, color: t.colors.muted, marginTop: 2 })}>
               {selTerpilih.hijri.day} {namaBulanHijriah(selTerpilih.hijri.monthName)} {selTerpilih.hijri.year} H
             </div>
+            {selTerpilih.hariBesar && (
+              <div css={{ marginTop: 9 }}>
+                <span
+                  css={(t) => ({
+                    display: 'inline-flex', alignItems: 'center', gap: 6, minHeight: 30,
+                    padding: '4px 11px', borderRadius: 999, fontSize: 12.5, fontWeight: 800,
+                    background: t.colors.goldSoft, color: t.colors.goldDeep,
+                    border: `1px solid ${t.colors.gold}`,
+                  })}
+                >
+                  <FaStar aria-hidden="true" /> {selTerpilih.hariBesar.nama}
+                </span>
+                {SLUG_PERISTIWA[selTerpilih.hariBesar.nama] && (
+                  <div>
+                    <TautanPeristiwa to={`/peristiwa#${SLUG_PERISTIWA[selTerpilih.hariBesar.nama]}`}>
+                      <FaBookOpen aria-hidden="true" /> Pelajari peristiwa ini
+                    </TautanPeristiwa>
+                  </div>
+                )}
+              </div>
+            )}
             {selTerpilih.puasa.length > 0 ? (
               <ul css={{ marginTop: 10, paddingLeft: 18 }}>
                 {selTerpilih.puasa.map((p) => (
@@ -432,7 +550,7 @@ export default function KalenderPage() {
               <div css={{ marginTop: 10, fontSize: 14 }}>Tidak ada puasa sunnah khusus pada tanggal ini.</div>
             )}
             <div css={(t) => ({ marginTop: 8, fontSize: 12.5, color: t.colors.muted })}>{INFO_PUASA_DAUD}</div>
-          </div>
+          </PanelDetail>
         )}
       </Card>
 
