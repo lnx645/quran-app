@@ -169,14 +169,31 @@ const BarisLatihan = styled.div`
 
 const NavLatihan = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
+  flex-direction: column;
+  gap: 12px;
   margin-top: 16px;
+`;
+
+// Baris atas navigasi: pil nomor halaman + titik-titik, rata tengah.
+const BarisIndikator = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+`;
+
+// Baris bawah navigasi: dua tombol berbagi lebar sama rata; min-width 0
+// agar tidak pernah luber keluar kartu di layar sempit.
+const BarisTombol = styled.div`
+  display: flex;
+  gap: 10px;
   > button,
   > a {
     flex: 1;
+    min-width: 0;
     justify-content: center;
+    white-space: nowrap;
   }
 `;
 
@@ -201,8 +218,8 @@ const IndikatorHalaman = styled.div`
 const Titik = styled.div`
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 7px;
-  margin-top: 12px;
 `;
 
 const Bulat = styled.button`
@@ -363,36 +380,40 @@ export default function IqroJilidPage() {
           <BarisLatihan key={i}>{b}</BarisLatihan>
         ))}
         <NavLatihan>
-          <GhostButton
-            onClick={() => keHalaman(halamanIdx - 1)}
-            disabled={halamanIdx === 0}
-            css={{ visibility: halamanIdx === 0 ? 'hidden' : 'visible' }}
-          >
-            <FaChevronLeft /> Sebelumnya
-          </GhostButton>
-          <IndikatorHalaman>
-            <span className="nomor">{halamanIdx + 1}</span> / {totalHalaman}
-          </IndikatorHalaman>
-          {halamanIdx < totalHalaman - 1 ? (
-            <PrimaryButton onClick={() => keHalaman(halamanIdx + 1)}>
-              Berikutnya <FaChevronRight />
-            </PrimaryButton>
-          ) : (
-            <GhostButton as="a" href="#evaluasi">
-              Evaluasi <FaChevronRight />
+          <BarisIndikator>
+            <IndikatorHalaman>
+              <span className="nomor">{halamanIdx + 1}</span> / {totalHalaman}
+            </IndikatorHalaman>
+            <Titik>
+              {full.halaman.map((h, i) => (
+                <Bulat
+                  key={h.nomor}
+                  aktif={i === halamanIdx}
+                  onClick={() => keHalaman(i)}
+                  aria-label={`Ke halaman ${h.nomor}`}
+                />
+              ))}
+            </Titik>
+          </BarisIndikator>
+          <BarisTombol>
+            <GhostButton
+              onClick={() => keHalaman(halamanIdx - 1)}
+              disabled={halamanIdx === 0}
+              css={{ visibility: halamanIdx === 0 ? 'hidden' : 'visible' }}
+            >
+              <FaChevronLeft /> Sebelumnya
             </GhostButton>
-          )}
+            {halamanIdx < totalHalaman - 1 ? (
+              <PrimaryButton onClick={() => keHalaman(halamanIdx + 1)}>
+                Berikutnya <FaChevronRight />
+              </PrimaryButton>
+            ) : (
+              <GhostButton as="a" href="#evaluasi">
+                Evaluasi <FaChevronRight />
+              </GhostButton>
+            )}
+          </BarisTombol>
         </NavLatihan>
-        <Titik>
-          {full.halaman.map((h, i) => (
-            <Bulat
-              key={h.nomor}
-              aktif={i === halamanIdx}
-              onClick={() => keHalaman(i)}
-              aria-label={`Ke halaman ${h.nomor}`}
-            />
-          ))}
-        </Titik>
       </Card>
 
       {/* ---- Grid huruf interaktif Jilid 1 (fungsi lama, dipertahankan) ---- */}
