@@ -5,7 +5,8 @@ Gambar unduhan di folder ini berasal dari **Wikimedia Commons** dan dipilih
 HANYA yang lisensinya jelas bebas (domain publik / CC0 / CC-BY). Setiap
 gambar diverifikasi lisensinya di API Wikimedia Commons dan diperiksa
 visualnya sebelum dipakai. Pengecualian: ilustrasi langkah wudhu
-(`wudhu-*.svg`) adalah **karya orisinal proyek** — lihat bagian 4.
+(`wudhu-*.svg`, bagian 4) dan ilustrasi posisi sholat (`sholat-*.svg`,
+bagian 2) adalah **karya orisinal proyek**.
 
 ---
 
@@ -25,26 +26,45 @@ visualnya sebelum dipakai. Pengecualian: ilustrasi langkah wudhu
   "makharij/makhraj/articulation" — hasil lain berupa PDF buku teks atau
   situs web tanpa lisensi bebas yang jelas, ditolak).
 
-## 2. Panduan Sholat — siluet gerakan
+## 2. Panduan Sholat — ilustrasi posisi ORISINAL proyek (dipakai)
 
-Satu set poster urutan sholat berlisensi CC0 diekstrak per posisi dan
-diwarnai ulang menjadi siluet emerald tunggal agar konsisten dengan tema
-aplikasi (modifikasi diizinkan CC0):
-
-### `sholat-berdiri.png`, `sholat-rukuk.png`, `sholat-duduk.png`, `sholat-sujud.png` (dipakai)
-- **Judul sumber:** Salat or Muslim Prayers — Illustration showing the
-  sequence and recitations made in each posture
-- **Pembuat:** Visions International, Orlando, Florida, USA (poster);
-  diunggah ke Wikimedia Commons oleh Ayman.alhasan (2013)
-- **Lisensi:** CC0 1.0 — http://creativecommons.org/publicdomain/zero/1.0/deed.en
-- **URL sumber:** https://commons.wikimedia.org/wiki/File:Salat_or_Muslim_Prayers_-_Illustration_showing_the_sequence_and_recitations_made_in_each_posture.jpg
-- **Catatan pemakaian (transparan):** poster asli memuat 4 postur yang
-  digambar bertumpuk. Yang diekstrak: **berdiri** (dipakai juga untuk doa
-  iftitah, qiroah, dan i'tidal karena posturnya sama-sama berdiri),
-  **rukuk**, **duduk** (dipakai untuk duduk antara dua sujud, tasyahud, dan
-  salam — postur duduknya sama), dan **sujud**. Takbiratul ihram memakai
-  siluet berdiri; posisi mengangkat tangan khas takbir tidak tergambar
-  pada sumber ini.
+### `sholat-takbir.svg`, `sholat-berdiri.svg`, `sholat-iktidal.svg`, `sholat-rukuk.svg`, `sholat-sujud.svg`, `sholat-duduk.svg`, `sholat-tasyahud.svg`, `sholat-salam.svg` (dipakai)
+- **Pembuat:** tim proyek Noor (karya orisinal, digambar tangan sebagai
+  SVG, 2026-10-20) — bukan unduhan dan bukan hasil tracing karya orang
+  lain.
+- **Lisensi:** karya proyek sendiri — bebas dipakai di dalam aplikasi ini.
+- **Gaya:** satu karakter konsisten (baju koko emerald dengan garis
+  kerah/kancing/lipatan, celana panjang emerald gelap, peci, kulit emas
+  pucat — satu keluarga dengan ilustrasi wudhu di bagian 4), figur utuh
+  kepala–kaki, pandangan samping, berdiri/duduk di atas sajadah emerald
+  bergaris emas.
+- **Riwayat penggantian (transparan):** sebelumnya halaman ini memakai
+  ekstrak poster CC0 "Salat or Muslim Prayers" (Visions International via
+  Wikimedia Commons) yang diwarnai ulang menjadi siluet satu warna.
+  User menilai hasilnya jelek — sujud menjadi gumpalan tak berbentuk.
+  Pencarian ulang di GitHub (2026-10-20) tidak menemukan set ilustrasi
+  posisi sholat yang lengkap dengan lisensi pakai-ulang yang jelas:
+  ±17 repo "tata cara sholat" (mayoritas tugas kuliah), 26 repo
+  "namaz guide", dan beberapa aplikasi panduan sholat (termasuk
+  path-to-paradise/salah-guide dan Mrizal16/tata_cara_sholat yang memang
+  memuat berkas gambar) semuanya TANPA berkas lisensi, dan gambar di
+  dalamnya tidak jelas asal-usulnya — ditolak. Karena itu posisi sholat
+  digambar manual seperti ilustrasi wudhu. Berkas PNG lama
+  (`sholat-berdiri.png`, `sholat-rukuk.png`, `sholat-duduk.png`,
+  `sholat-sujud.png`) dihapus dari repo.
+- **Pemetaan langkah:** takbiratul ihram (takbir), berdiri/qiyam (doa
+  iftitah & qiroah), rukuk, i'tidal (berdiri dengan tangan lurus di sisi
+  badan — kini figur tersendiri, tidak lagi berbagi dengan qiyam),
+  sujud (dipakai juga untuk sujud kedua), duduk antara dua sujud
+  (iftirasy), tasyahud (telunjuk kanan terangkat), salam (kepala menoleh
+  ke kanan).
+- **Uji kualitas:** setiap figur dirender ke PNG (terang & gelap) dan
+  diperiksa visual; sujud digambar ulang 2× (duri paha & leher melayang
+  pada draf awal), keluarga berdiri & duduk digambar ulang ke profil
+  samping murni mengikuti patokan buku panduan klasik. Catatan jujur:
+  perbedaan duduk biasa vs salam hanya pada kepala yang menoleh —
+  dalam gaya flat ini isyaratnya (sisi wajah terarsir + kepala miring)
+  adalah yang paling halus di antara delapan figur.
 
 ## 3. Panduan Wudhu — foto praktik
 
@@ -78,8 +98,8 @@ tangan, bukan unduhan dan bukan hasil tracing karya orang lain):
 ### `wudhu-tangan.svg`, `wudhu-kumur.svg`, `wudhu-hidung.svg`, `wudhu-wajah.svg`, `wudhu-lengan.svg`, `wudhu-kepala.svg`, `wudhu-telinga.svg`, `wudhu-kaki.svg` (dipakai)
 - **Pembuat:** tim proyek Noor (karya orisinal, 2026-10-20)
 - **Lisensi:** karya proyek sendiri — bebas dipakai di dalam aplikasi ini
-- **Gaya:** satu bahasa visual dengan siluet sholat di bagian 2 — figur
-  siluet emerald tunggal tanpa detail wajah, bagian tubuh yang dibasuh
+- **Gaya:** satu keluarga visual dengan ilustrasi sholat di bagian 2 —
+  figur emerald tanpa detail wajah, bagian tubuh yang dibasuh
   pada langkah tersebut disorot warna emas, air digambarkan sebagai
   tetes/gelombang biru lembut beraksen emas.
 - **Pemetaan langkah:** telapak tangan di bawah keran (langkah 1),
@@ -103,10 +123,15 @@ tangan, bukan unduhan dan bukan hasil tracing karya orang lain):
 | File lokal | Lisensi sumber | Status |
 |---|---|---|
 | makhraj-sakkaki.png | Public domain | dipakai |
-| sholat-berdiri.png | CC0 (ekstrak dari poster) | dipakai |
-| sholat-rukuk.png | CC0 (ekstrak dari poster) | dipakai |
-| sholat-duduk.png | CC0 (ekstrak dari poster) | dipakai |
-| sholat-sujud.png | CC0 (ekstrak dari poster) | dipakai |
+| sholat-takbir.svg | Karya orisinal proyek | dipakai |
+| sholat-berdiri.svg | Karya orisinal proyek | dipakai |
+| sholat-iktidal.svg | Karya orisinal proyek | dipakai |
+| sholat-rukuk.svg | Karya orisinal proyek | dipakai |
+| sholat-sujud.svg | Karya orisinal proyek | dipakai |
+| sholat-duduk.svg | Karya orisinal proyek | dipakai |
+| sholat-tasyahud.svg | Karya orisinal proyek | dipakai |
+| sholat-salam.svg | Karya orisinal proyek | dipakai |
+| sholat-*.png (lama) | CC0 (ekstrak poster Visions International) | DIGANTI & dihapus — dinilai jelek oleh user |
 | wudhu-praktik.jpg | CC BY 2.0 (np&djjewell) | dipakai + kredit di halaman |
 | wudhu-tangan.svg | Karya orisinal proyek | dipakai |
 | wudhu-kumur.svg | Karya orisinal proyek | dipakai |
