@@ -130,6 +130,7 @@ const JUDUL_RUTE = [
   [/^\/konverter$/, 'judul.konverter'],
   [/^\/statistik$/, 'judul.statistik'],
   [/^\/data-progres$/, 'judul.dataProgres'],
+  [/^\/tentang$/, 'judul.tentang'],
 ];
 
 function judulUntuk(pathname, t) {

@@ -125,6 +125,7 @@ const DAFTAR_FITUR = [
   { tujuan: '/sholawat', judul: 'Sholawat', sub: 'Ibrahimiyah & Jibril + penghitung', kata: 'sholawat shalawat ibrahimiyah jibril shallallahu ala muhammad berkah nabi' },
   { tujuan: '/ramadhan', judul: 'Mode Ramadhan', sub: 'Hitung mundur, imsakiyah & tarawih', kata: 'ramadhan ramadan puasa hitung mundur imsakiyah imsak tarawih bulan puasa' },
   { tujuan: '/aksesibilitas', judul: 'Pengaturan Aksesibilitas', sub: 'Tema, kontras & ukuran huruf', kata: 'aksesibilitas pengaturan setting tema gelap terang kontras huruf disabilitas tampilan' },
+  { tujuan: '/tentang', judul: 'Tentang Aplikasi', sub: 'Sumber data, privasi, batasan & kredit', kata: 'tentang aplikasi about versi sumber data privasi lisensi kredit atribusi penafian disclaimer' },
 ];
 
 /**

@@ -9,7 +9,7 @@ import {
   FaCalendarAlt, FaListUl, FaBook, FaGraduationCap, FaUniversalAccess,
   FaSearch, FaBookmark, FaBrain, FaPalette, FaTint, FaMoon, FaBroadcastTower, FaMicrophone, FaChild,
   FaBalanceScale, FaKaaba, FaBaby, FaGift, FaHandHoldingHeart, FaTasks, FaMonument, FaPenFancy,
-  FaDownload, FaUserCircle,
+  FaDownload, FaUserCircle, FaInfoCircle,
 } from 'react-icons/fa';
 import { LocalProfilRepository } from '../../data/repositories/LocalProfilRepository.js';
 import Logo from './Logo.jsx';
@@ -388,6 +388,7 @@ const MENU = [
       { to: '/statistik', icon: <FaClipboardCheck />, kunci: 'menu.statistik' },
       { to: '/data-progres', icon: <FaTasks />, kunci: 'menu.dataProgres' },
       { to: '/aksesibilitas', icon: <FaUniversalAccess />, kunci: 'menu.aksesibilitas' },
+      { to: '/tentang', icon: <FaInfoCircle />, kunci: 'menu.tentang' },
     ],
   },
 ];

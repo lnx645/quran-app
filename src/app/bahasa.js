@@ -127,6 +127,7 @@ export const KAMUS = {
     'menu.statistik': 'Statistik Ibadah',
     'menu.dataProgres': 'Data Progres (Ekspor/Impor)',
     'menu.aksesibilitas': 'Aksesibilitas',
+    'menu.tentang': 'Tentang Aplikasi',
     // ——— Beranda: judul kartu yang redaksinya berbeda dari drawer ———
     'beranda.quran': 'Al-Qur\u2019an — 114 Surah',
     'beranda.cariAyat': 'Cari Ayat',
@@ -228,6 +229,7 @@ export const KAMUS = {
     'judul.konverter': 'Konverter Hijriah',
     'judul.statistik': 'Statistik Ibadah',
     'judul.dataProgres': 'Data Progres (Ekspor & Impor)',
+    'judul.tentang': 'Tentang Aplikasi',
     // ——— PlayerBar ———
     'player.putar': 'Putar',
     'player.jeda': 'Jeda',
@@ -355,6 +357,7 @@ export const KAMUS = {
     'menu.statistik': 'Worship Statistics',
     'menu.dataProgres': 'Progress Data (Export/Import)',
     'menu.aksesibilitas': 'Accessibility',
+    'menu.tentang': 'About This App',
     // ——— Home: card titles that differ from the drawer ———
     'beranda.quran': "Al-Qur'an — 114 Surahs",
     'beranda.cariAyat': 'Search Verses',
@@ -456,6 +459,7 @@ export const KAMUS = {
     'judul.konverter': 'Hijri Converter',
     'judul.statistik': 'Worship Statistics',
     'judul.dataProgres': 'Progress Data (Export & Import)',
+    'judul.tentang': 'About This App',
     // ——— PlayerBar ———
     'player.putar': 'Play',
     'player.jeda': 'Pause',
