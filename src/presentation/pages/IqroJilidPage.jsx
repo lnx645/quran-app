@@ -173,13 +173,25 @@ const NavLatihan = styled.div`
   justify-content: space-between;
   gap: 10px;
   margin-top: 16px;
+  > button,
+  > a {
+    flex: 1;
+    justify-content: center;
+  }
 `;
 
 const IndikatorHalaman = styled.div`
+  flex-shrink: 0;
+  white-space: nowrap;
   font-size: 13.5px;
   font-weight: 700;
+  font-variant-numeric: tabular-nums;
   color: ${({ theme }) => theme.colors.muted};
   text-align: center;
+  background: ${({ theme }) => theme.colors.surfaceAlt};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: 999px;
+  padding: 7px 13px;
   .nomor {
     color: ${({ theme }) => theme.colors.primary};
     font-size: 15px;
