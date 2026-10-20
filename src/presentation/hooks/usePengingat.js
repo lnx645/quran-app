@@ -6,6 +6,7 @@ import {
   jamKeMenit,
   kunciTanggalLokal,
   normalisasiPrefPengingat,
+  tentukanKonteksPuasaBesok,
   tentukanPengingatJatuhTempo,
 } from '../../domain/usecases/pengingatIbadah.js';
 
@@ -13,8 +14,15 @@ import {
  * usePengingat — pengingat ibadah lokal Noor (Gelombang 6, item 6).
  *
  * Preferensi tersimpan di localStorage `noor.pengingat.v1`:
- *   { dzikirPagi: bool, dzikirPetang: bool, targetBaca: bool, tahajud: bool }
- *   (bawaan semua false; pref lama tanpa `tahajud` dinormalisasi aditif)
+ *   { dzikirPagi: bool, dzikirPetang: bool, targetBaca: bool, tahajud: bool,
+ *     puasaSunnah: bool }
+ *   (bawaan semua false; pref lama tanpa kunci baru dinormalisasi aditif)
+ *
+ * Pengingat Puasa Sunnah (H-1) juga DINAMIS: konteksnya { puasaBesok }
+ * dihitung murni di domain (tentukanKonteksPuasaBesok) dari resolver
+ * Hijriah Intl Umm al-Qura — tanpa jaringan; pengingat hanya jatuh tempo
+ * pukul 17.30 bila besok hari puasa sunnah, dan judul notifikasinya
+ * memuat nama puasanya (mis. "Besok Puasa Ayyamul Bidh").
  *
  * Pengingat Tahajud bersifat DINAMIS: waktunya (awal sepertiga malam
  * terakhir) dihitung dari jadwal sholat TERSIMPAN TERAKHIR di localStorage
@@ -193,19 +201,28 @@ export async function periksaPengingatSekarang(sekarang = new Date()) {
 
   const pref = bacaPrefPengingat();
   const terakhir = bacaTerakhirPengingat();
-  // Konteks dinamis Tahajud dari jadwal tersimpan terakhir; null (tanpa
-  // konteks) berarti jenis itu dilewati diam-diam oleh fungsi domain.
-  let konteks;
+  // Konteks dinamis Tahajud dari jadwal tersimpan terakhir; tanpa konteks
+  // berarti jenis itu dilewati diam-diam oleh fungsi domain.
+  const konteks = {};
   try {
     const infoTahajud = pref.tahajud ? hitungTahajudDariJadwalTerakhir() : null;
     if (infoTahajud) {
-      konteks = {
-        menitTahajud: infoTahajud.menitDariTengahMalam,
-        menitSubuh: infoTahajud.menitSubuh,
-      };
+      konteks.menitTahajud = infoTahajud.menitDariTengahMalam;
+      konteks.menitSubuh = infoTahajud.menitSubuh;
     }
   } catch {
-    konteks = undefined;
+    /* konteks tahajud kosong — jenis itu dilewati diam-diam */
+  }
+  // Konteks dinamis Puasa Sunnah (H-1): puasa besok menurut resolver
+  // Hijriah domain; null berarti besok bukan hari puasa sunnah.
+  let puasaBesok = null;
+  try {
+    if (pref.puasaSunnah) {
+      puasaBesok = tentukanKonteksPuasaBesok(sekarang).puasaBesok;
+      if (puasaBesok) konteks.puasaBesok = puasaBesok;
+    }
+  } catch {
+    /* konteks puasa kosong — jenis itu dilewati diam-diam */
   }
   const jatuhTempo = tentukanPengingatJatuhTempo(pref, sekarang, terakhir, konteks);
   const hariIni = kunciTanggalLokal(sekarang);
@@ -217,8 +234,20 @@ export async function periksaPengingatSekarang(sekarang = new Date()) {
     // Catat SEBELUM menembak: bila dua pemeriksaan berjalan berbarengan,
     // yang kedua sudah melihat tanggal hari ini dan tidak menembak ulang.
     catatTerakhirPengingat(kunci, hariIni);
+    // Judul puasa sunnah memuat NAMA puasa besok (definisi statis hanya
+    // cadangan); isi memakai keterangan puasanya + ajakan menyiapkan sahur.
+    const defTembak =
+      kunci === 'puasaSunnah' && puasaBesok
+        ? {
+            ...def,
+            judul: `Besok ${puasaBesok.nama}`,
+            isi: puasaBesok.keterangan
+              ? `${puasaBesok.keterangan} Siapkan sahur dan niatkan puasa malam ini.`
+              : def.isi,
+          }
+        : def;
     // eslint-disable-next-line no-await-in-loop
-    const ok = await tembakNotifikasiPengingat(def);
+    const ok = await tembakNotifikasiPengingat(defTembak);
     if (ok) ditembak.push(kunci);
   }
   return ditembak;

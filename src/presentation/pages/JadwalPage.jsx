@@ -17,7 +17,10 @@ import { useToast } from '../components/feedback/toastStore.js';
 import { umumkan } from '../components/feedback/umumkan.js';
 import { useAkses } from '../a11y/pengaturanStore.js';
 import { usePengingat, simpanJadwalTerakhirUntukPengingat } from '../hooks/usePengingat.js';
-import { hitungAwalSepertigaMalamTerakhir } from '../../domain/usecases/pengingatIbadah.js';
+import {
+  hitungAwalSepertigaMalamTerakhir, resolverHijriahIntl,
+} from '../../domain/usecases/pengingatIbadah.js';
+import { cariPuasaSunnahBerikutnya } from '../../domain/usecases/hitungPuasaSunnah.js';
 
 // Banner adzan PERSISTEN (untuk pengguna tuli & lingkungan senyap):
 // menetap sampai ditutup manual — bukan toast sesaat yang mudah terlewat.
@@ -449,6 +452,28 @@ export default function JadwalPage() {
     const subuh = data.waktu.find((w) => w.kunci === 'Fajr')?.jam;
     return hitungAwalSepertigaMalamTerakhir(maghrib, subuh);
   }, [data]);
+  // Puasa sunnah terdekat (teks di seksi Pengingat): resolver Hijriah Intl
+  // Umm al-Qura yang SAMA dengan yang dipakai pengingat Puasa Sunnah (H-1),
+  // disuntikkan ke cariPuasaSunnahBerikutnya — sinkron, tanpa jaringan.
+  // Pencarian berhenti di temuan pertama (puasa mingguan Senin/Kamis
+  // membuatnya selalu dekat), jadi aman dihitung dari state `sekarang`.
+  const labelPuasaBerikutnya = useMemo(() => {
+    const NAMA_BULAN_HIJRIAH_ID = [
+      'Muharram', 'Safar', 'Rabiulawal', 'Rabiulakhir', 'Jumadil Ula',
+      'Jumadil Akhir', 'Rajab', "Sya'ban", 'Ramadan', 'Syawal',
+      "Dzulqa'dah", 'Dzulhijjah',
+    ];
+    const [item] = cariPuasaSunnahBerikutnya({
+      dariTanggal: sekarang, jumlah: 1, batasHari: 370, resolver: resolverHijriahIntl,
+    });
+    if (!item) return null;
+    const nama = item.puasa.map((p) => p.nama).join(' & ');
+    const tglMasehi = item.tanggal.toLocaleDateString('id-ID', {
+      weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
+    });
+    const bulanHijriah = NAMA_BULAN_HIJRIAH_ID[item.hijri.month - 1] ?? item.hijri.month;
+    return `${nama} — ${tglMasehi} (${item.hijri.day} ${bulanHijriah} ${item.hijri.year} H)`;
+  }, [sekarang]);
   const [bannerAdzan, setBannerAdzan] = useState(null);
   const teriakTerakhir = useRef('');
   const suaraAdzan = pref.suaraAdzan;
@@ -735,6 +760,21 @@ export default function JadwalPage() {
         {infoTahajud && (
           <p css={(t) => ({ fontSize: 12.5, color: t.colors.muted, lineHeight: 1.55, marginTop: 8 })}>
             Sepertiga malam terakhir mulai ±{infoTahajud.jamLabel} — dari jadwal tersimpan.
+          </p>
+        )}
+        <BarisPengingat
+          judul="Puasa Sunnah (H-1)"
+          desc="Diingatkan pukul 17.30 sehari sebelum hari puasa sunnah — membuka halaman Kalender."
+          nyala={prefPengingat.puasaSunnah}
+          onToggle={() => ubahPengingat('puasaSunnah', !prefPengingat.puasaSunnah)}
+        />
+        {labelPuasaBerikutnya ? (
+          <p css={(t) => ({ fontSize: 12.5, color: t.colors.muted, lineHeight: 1.55, marginTop: 8 })}>
+            Puasa sunnah terdekat: {labelPuasaBerikutnya}.
+          </p>
+        ) : (
+          <p css={(t) => ({ fontSize: 12.5, color: t.colors.muted, lineHeight: 1.55, marginTop: 8 })}>
+            Aktif — kamu akan diingatkan sore sebelum hari puasa sunnah.
           </p>
         )}
       </Card>
