@@ -10,7 +10,7 @@ import { useAkses } from '../presentation/a11y/pengaturanStore.js';
 
 const globalStyles = (t) => css`
   *, *::before, *::after { box-sizing: border-box; }
-  * { margin: 0; padding: 0; }
+  * { margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   html { -webkit-text-size-adjust: 100%; }
   body {
     font-family: ${t.fonts.body};
