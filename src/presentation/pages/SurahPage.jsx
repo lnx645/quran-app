@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { FaExclamationTriangle } from 'react-icons/fa';
 import { useSurah } from '../hooks/useSurah.js';
 import { useAudioSync } from '../hooks/useAudioSync.js';
@@ -83,6 +83,13 @@ const MiniBar = styled.div`
 
 export default function SurahPage() {
   const { id } = useParams();
+  const [searchParams] = useSearchParams();
+  // ?ayat=N (dari pencarian global / lanjutkan baca): ayat tujuan digulir
+  // ke tengah & disorot sesaat oleh AyatCard (prop sorotAwal).
+  const ayatTujuan = (() => {
+    const n = Number(searchParams.get('ayat'));
+    return Number.isInteger(n) && n > 0 ? n : 0;
+  })();
   const { loading, error, data } = useSurah(id);
   const sync = useAudioSync(data?.ayahs, data?.audioUrl, data?.audioDurationMs);
   const { pref, ubah, tambahArab, kurangArab } = useReadingPrefs();
@@ -153,6 +160,8 @@ export default function SurahPage() {
             arabSize={pref.arabSize}
             tampilLatin={pref.latin}
             tampilTerjemah={pref.terjemah}
+            tampilTajwid={pref.tajwid}
+            sorotAwal={ayatTujuan === ayat.number}
           />
         ))}
         {/* Spacer bawah: konten terakhir tidak tertutup ReadingControls + PlayerBar (fixed) */}
