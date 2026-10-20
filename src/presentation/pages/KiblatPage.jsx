@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { useTheme } from '@emotion/react';
 import {
@@ -8,7 +8,7 @@ import {
 } from 'react-icons/fa';
 import {
   hitungBearingKiblat, jarakKeKabahKm, SUMEDANG,
-  getDeclination, sudutJarumRelatif,
+  getDeclination,
 } from '../../domain/usecases/hitungKiblatAkurat.js';
 import { useKompas } from '../hooks/useKompas.js';
 import {
@@ -76,8 +76,50 @@ const NAMA_SUMBER = {
 function KompasDial({ bearing, heading }) {
   const theme = useTheme();
   const c = 130;
-  const jarumKiblat = heading == null ? bearing : sudutJarumRelatif(bearing, heading);
-  const jarumUtara = heading == null ? 0 : ((360 - heading) % 360 + 360) % 360;
+
+  // Rotasi rose: SELURUH rose (ticks, huruf, penanda utara & kiblat) berputar
+  // -heading seperti kompas sungguhan. Nilai diakumulasi lewat jalur terpendek
+  // agar rose tidak berputar penuh saat heading menyeberang 359°→0°.
+  // (Pola "sesuaikan state saat render" dari React docs — tanpa effect.)
+  const [rotState, setRotState] = useState({ heading: null, rotasi: 0 });
+  if (heading !== rotState.heading) {
+    let rotasiBaru = 0;
+    if (heading != null) {
+      const target = -heading;
+      const delta = (((target - rotState.rotasi + 540) % 360) + 360) % 360 - 180;
+      rotasiBaru = rotState.rotasi + delta;
+    }
+    setRotState({ heading, rotasi: rotasiBaru });
+  }
+  const rotasi = rotState.rotasi;
+
+  // Zona sejajar kiblat: |selisih sudut terkecil bearing−heading| ≤ 3°.
+  const selisih =
+    heading == null ? null : Math.abs((((bearing - heading + 540) % 360) + 360) % 360 - 180);
+  const sejajar = selisih != null && selisih <= 3;
+
+  // Getar SEKALI per masuk zona sejajar (flag ref; reset saat keluar zona).
+  const getarRef = useRef(false);
+  useEffect(() => {
+    if (sejajar && !getarRef.current) {
+      getarRef.current = true;
+      try {
+        navigator.vibrate?.(80);
+      } catch {
+        /* perangkat tanpa vibrate — abaikan */
+      }
+    } else if (!sejajar) {
+      getarRef.current = false;
+    }
+  }, [sejajar]);
+
+  const kurangiGerak = useMemo(
+    () =>
+      typeof window !== 'undefined' &&
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+    [],
+  );
 
   const ticks = [];
   for (let d = 0; d < 360; d += 5) {
@@ -100,51 +142,98 @@ function KompasDial({ bearing, heading }) {
   const huruf = ['U', 'T', 'S', 'B'];
 
   return (
-    <svg width="260" height="260" viewBox="0 0 260 260" role="img" aria-label="Kompas kiblat">
-      <circle cx={c} cy={c} r="122" fill={theme.colors.surfaceAlt} stroke={theme.colors.gold} strokeWidth="2.5" />
-      <circle cx={c} cy={c} r="92" fill="none" stroke={theme.colors.border} strokeWidth="1" />
-      {ticks}
-      {huruf.map((h, i) => {
-        const a = (i * 90 * Math.PI) / 180;
-        return (
-          <text
-            key={h}
-            x={c + 84 * Math.sin(a)}
-            y={c - 84 * Math.cos(a) + 6}
-            textAnchor="middle"
-            fontSize="17"
-            fontWeight="800"
-            fill={theme.colors.primary}
+    <div>
+      <svg width="260" height="260" viewBox="0 0 260 260" role="img" aria-label="Kompas kiblat">
+        <circle cx={c} cy={c} r="122" fill={theme.colors.surfaceAlt} stroke={theme.colors.gold} strokeWidth="2.5" />
+        <circle cx={c} cy={c} r="92" fill="none" stroke={theme.colors.border} strokeWidth="1" />
+        {/* ROSE — satu grup berputar mengikuti heading */}
+        <g
+          style={{
+            transform: `rotate(${rotasi}deg)`,
+            transformBox: 'view-box',
+            transformOrigin: 'center',
+            transition: kurangiGerak ? 'none' : 'transform 160ms linear',
+          }}
+        >
+          {ticks}
+          {huruf.map((h, i) => {
+            const a = (i * 90 * Math.PI) / 180;
+            return (
+              <text
+                key={h}
+                x={c + 84 * Math.sin(a)}
+                y={c - 84 * Math.cos(a) + 6}
+                textAnchor="middle"
+                fontSize="17"
+                fontWeight="800"
+                fill={theme.colors.primary}
+              >
+                {h}
+              </text>
+            );
+          })}
+          {/* Penanda utara (emerald) — FIX pada 0° di dalam rose */}
+          <polygon
+            points={`${c},52 ${c + 5},${c} ${c},${c - 6} ${c - 5},${c}`}
+            fill={theme.colors.primaryMid}
+            opacity="0.85"
+          />
+          {/* Penanda kiblat — FIX pada sudut bearing di dalam rose */}
+          <g
+            transform={`rotate(${bearing} ${c} ${c})`}
+            style={sejajar ? { filter: `drop-shadow(0 0 7px ${theme.colors.gold})` } : undefined}
           >
-            {h}
-          </text>
-        );
-      })}
-      {/* Jarum utara (tipis, emerald) — hanya bila sensor aktif */}
-      {heading != null && (
-        <g transform={`rotate(${jarumUtara} ${c} ${c})`}>
-          <polygon points={`${c},52 ${c + 5},${c} ${c},${c - 6} ${c - 5},${c}`} fill={theme.colors.primaryMid} opacity="0.85" />
+            {sejajar && <circle cx={c} cy="26" r="16" fill={theme.colors.gold} opacity="0.35" />}
+            <polygon
+              points={`${c},34 ${c + 9},${c} ${c},${c - 10} ${c - 9},${c}`}
+              fill={theme.colors.gold}
+              stroke={theme.colors.goldDeep}
+              strokeWidth="1"
+            />
+            <rect x={c - 8} y="20" width="16" height="13" rx="2" fill={theme.colors.primaryDeep} />
+            <rect x={c - 8} y="24" width="16" height="3" fill={theme.colors.goldLight} />
+            <polygon
+              points={`${c},226 ${c - 8},${c} ${c},${c + 10} ${c + 8},${c}`}
+              fill={theme.colors.faint}
+              opacity="0.7"
+            />
+          </g>
         </g>
-      )}
-      {/* Jarum kiblat (emas) + penanda Ka'bah */}
-      <g transform={`rotate(${jarumKiblat} ${c} ${c})`}>
+        {/* Indikator hadap FIX — segitiga emas di jam 12 (di luar rose) */}
         <polygon
-          points={`${c},34 ${c + 9},${c} ${c},${c - 10} ${c - 9},${c}`}
+          points={`${c - 8},1 ${c + 8},1 ${c},14`}
           fill={theme.colors.gold}
           stroke={theme.colors.goldDeep}
           strokeWidth="1"
         />
-        <rect x={c - 8} y="20" width="16" height="13" rx="2" fill={theme.colors.primaryDeep} />
-        <rect x={c - 8} y="24" width="16" height="3" fill={theme.colors.goldLight} />
-        <polygon
-          points={`${c},226 ${c - 8},${c} ${c},${c + 10} ${c + 8},${c}`}
-          fill={theme.colors.faint}
-          opacity="0.7"
-        />
-      </g>
-      <circle cx={c} cy={c} r="15" fill={theme.colors.primaryDeep} />
-      <circle cx={c} cy={c} r="6" fill={theme.colors.gold} />
-    </svg>
+        <circle cx={c} cy={c} r="15" fill={theme.colors.primaryDeep} />
+        <circle cx={c} cy={c} r="6" fill={theme.colors.gold} />
+      </svg>
+      {heading != null && (
+        <div
+          css={(t) => ({
+            marginTop: 8,
+            fontSize: 12.5,
+            color: t.colors.muted,
+          })}
+        >
+          ▲ Arah hadapmu yang di atas — penanda Ka&apos;bah emas bergerak mengikuti putaran HP-mu.
+        </div>
+      )}
+      {sejajar && (
+        <div
+          css={(t) => ({
+            marginTop: 6,
+            fontSize: 17,
+            fontWeight: 800,
+            color: t.colors.goldDeep,
+            textShadow: `0 0 12px ${t.colors.goldSoft}`,
+          })}
+        >
+          Menghadap Kiblat ✓
+        </div>
+      )}
+    </div>
   );
 }
 
