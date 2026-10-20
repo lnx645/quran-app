@@ -1,7 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import { useEffect, useMemo, useState } from 'react';
 import styled from '@emotion/styled';
-import { FaCalendarAlt, FaStar, FaMoon, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FaCalendarAlt, FaStar, FaMoon, FaChevronLeft, FaChevronRight, FaBookOpen } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import { fetchGToH, fetchHToG } from '../../data/aladhanApi.js';
 import { JadwalRepositoryImpl } from '../../data/repositories/JadwalRepositoryImpl.js';
 import { HARI_BESAR } from '../../data/sources/hariBesarData.js';
@@ -47,6 +48,23 @@ const HariBesarBaris = styled.div`
     font-weight: 600;
     color: ${({ theme }) => theme.colors.primary};
   }
+`;
+
+// Peta hari besar → slug halaman /peristiwa (hanya yang punya halaman peristiwa).
+const SLUG_PERISTIWA = {
+  'Tahun Baru Hijriah': 'tahun-baru-hijriah',
+  'Maulid Nabi Muhammad ﷺ': 'maulid-nabi',
+  "Isra Mi'raj Nabi Muhammad ﷺ": 'isra-miraj',
+};
+
+const TautanPeristiwa = styled(Link)`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  font-size: 13px;
+  font-weight: 700;
+  color: ${({ theme }) => theme.colors.primary};
 `;
 
 const KepalaBulan = styled.div`
@@ -461,6 +479,11 @@ export default function KalenderPage() {
                   {hb.hari} {hb.namaBulan}
                   {hb.tahunHijriah ? ` ${hb.tahunHijriah} H` : ''}
                 </div>
+                {SLUG_PERISTIWA[hb.nama] && (
+                  <TautanPeristiwa to={`/peristiwa#${SLUG_PERISTIWA[hb.nama]}`}>
+                    <FaBookOpen aria-hidden="true" /> Pelajari peristiwa ini
+                  </TautanPeristiwa>
+                )}
               </span>
               <span className="kanan">{hb.masehi ?? '—'}</span>
             </HariBesarBaris>
