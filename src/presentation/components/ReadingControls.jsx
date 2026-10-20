@@ -131,6 +131,9 @@ export default function ReadingControls({ pref, ubah, tambahArab, kurangArab }) 
         <Chip aktif={pref.tajwid} onClick={() => ubah({ tajwid: !pref.tajwid })} aria-pressed={pref.tajwid} aria-label="Warnai huruf sesuai aturan tajwid">
           Tajwid
         </Chip>
+        <Chip aktif={pref.perKata} onClick={() => ubah({ perKata: !pref.perKata })} aria-pressed={pref.perKata} aria-label="Tampilkan terjemahan per kata (Bahasa Inggris)">
+          Per Kata
+        </Chip>
       </GrupChip>
     </Bar>
   );

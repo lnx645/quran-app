@@ -68,6 +68,29 @@ export function mapSearchResult(result) {
   };
 }
 
+/**
+ * DTO verses (fetchWordTranslations) → Map<verse_key, kata[]> untuk mode
+ * terjemahan per kata. Tiap kata: { position, arabic, latin, arti } —
+ * `arti` adalah terjemahan kata Bahasa Inggris dari API (satu-satunya
+ * bahasa yang disediakan Quran.com untuk terjemahan per kata;
+ * terverifikasi curl 2026-10-20). Kata penanda akhir ayat dibuang.
+ */
+export function mapWordTranslations(verses) {
+  const peta = new Map();
+  for (const v of verses ?? []) {
+    const kata = (v.words ?? [])
+      .filter((w) => w.char_type_name === 'word')
+      .map((w) => ({
+        position: w.position,
+        arabic: w.text_uthmani ?? w.text ?? '',
+        latin: w.transliteration?.text ?? '',
+        arti: w.translation?.text ?? '',
+      }));
+    if (kata.length) peta.set(v.verse_key, kata);
+  }
+  return peta;
+}
+
 /** audio_file.timestamps → Map<verse_key, timingDTO>. */
 export function mapTimings(timestamps = []) {
   return new Map(timestamps.map((t) => [t.verse_key, t]));

@@ -6,9 +6,11 @@ import { useCallback, useEffect, useState } from 'react';
  * - latin: tampilkan transliterasi latin per kata (default: tersembunyi)
  * - terjemah: tampilkan terjemahan (default: tampil)
  * - tajwid: warnai teks Arab per aturan tajwid (default: mati)
+ * - perKata: mode terjemahan per kata (default: mati; data kata dimuat
+ *   malas HANYA saat mode ini dinyalakan — lihat SurahPage)
  */
 const KUNCI = 'noor.prefBaca.v1';
-const BAWAAN = { arabSize: 32, latin: false, terjemah: true, tajwid: false };
+const BAWAAN = { arabSize: 32, latin: false, terjemah: true, tajwid: false, perKata: false };
 
 function muat() {
   try {
@@ -20,6 +22,7 @@ function muat() {
       latin: Boolean(data.latin),
       terjemah: data.terjemah !== false,
       tajwid: Boolean(data.tajwid),
+      perKata: Boolean(data.perKata),
     };
   } catch {
     return BAWAAN;

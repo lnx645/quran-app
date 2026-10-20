@@ -3,7 +3,15 @@
 // Kueri: node/way amenity=place_of_worship + religion=muslim dalam radius meter
 // dari titik (way diambil titik tengahnya via `out center`).
 
-const ENDPOINT = 'https://overpass-api.de/api/interpreter';
+// Beberapa cermin Overpass publik — dicoba bergantian sampai ada yang merespons
+// (server utama kadang lambat/tidak terjangkau dari sebagian jaringan).
+const ENDPOINTS = [
+  'https://overpass-api.de/api/interpreter',
+  'https://overpass.kumi.systems/api/interpreter',
+  'https://overpass.private.coffee/api/interpreter',
+  'https://overpass.nchc.org.tw/api/interpreter',
+];
+const TIMEOUT_MS = 20000;
 export const ATRIBUSI_OSM = '© OpenStreetMap contributors';
 
 const bangunKueri = (lat, lon, radius) => `
@@ -28,24 +36,42 @@ const gabungAlamat = (tags) => {
  * Cari masjid/musholla dalam radius meter dari (lat, lon).
  * @returns Promise<Array<{ id, nama, lat, lon, alamat, jenis }>>
  */
+async function ambilDariCermin(body) {
+  let galatTerakhir = null;
+  for (const endpoint of ENDPOINTS) {
+    const kontrol = new AbortController();
+    const timer = setTimeout(() => kontrol.abort(), TIMEOUT_MS);
+    try {
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+        body: body.toString(),
+        signal: kontrol.signal,
+      });
+      if (res.status === 429 || res.status === 503 || res.status === 504) {
+        galatTerakhir = new Error('sibuk');
+        continue;
+      }
+      if (!res.ok) {
+        galatTerakhir = new Error(`kode ${res.status}`);
+        continue;
+      }
+      return await res.json();
+    } catch (e) {
+      galatTerakhir = e;
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+  if (galatTerakhir?.message === 'sibuk') {
+    throw new Error('Semua server OpenStreetMap sedang sibuk. Coba lagi sebentar.');
+  }
+  throw new Error('Tidak dapat menghubungi OpenStreetMap. Periksa koneksi internet Anda.');
+}
+
 export async function cariMasjidTerdekat(lat, lon, radius = 3000) {
   const body = new URLSearchParams({ data: bangunKueri(lat, lon, radius) });
-  let res;
-  try {
-    res = await fetch(ENDPOINT, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
-      body: body.toString(),
-    });
-  } catch {
-    throw new Error('Tidak dapat menghubungi OpenStreetMap. Periksa koneksi internet Anda.');
-  }
-  if (res.status === 429) throw new Error('Server OpenStreetMap sedang sibuk. Coba lagi sebentar.');
-  if (res.status === 504 || res.status === 503)
-    throw new Error('Server OpenStreetMap lambat merespons. Coba lagi sebentar.');
-  if (!res.ok) throw new Error(`OpenStreetMap merespons dengan kode ${res.status}.`);
-
-  const json = await res.json();
+  const json = await ambilDariCermin(body);
   const elements = Array.isArray(json.elements) ? json.elements : [];
 
   const hasil = [];

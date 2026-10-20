@@ -118,6 +118,46 @@ const Terjemah = styled.p`
   margin-top: 7px;
 `;
 
+/* Mode terjemahan per kata: deretan blok kata (Arab + latin + arti Inggris)
+   membungkus fleksibel di bawah teks ayat. Hanya tampil saat mode aktif. */
+const DeretKata = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed ${({ theme }) => theme.colors.border};
+`;
+
+const BlokKata = styled.span`
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  min-width: 52px;
+  padding: 6px 8px;
+  border-radius: 10px;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  background: ${({ theme }) => theme.colors.paperCard};
+  .ar {
+    font-family: ${({ theme }) => theme.fonts.arabic};
+    font-size: 20px;
+    line-height: 1.9;
+    color: ${({ theme }) => theme.colors.teksArab};
+  }
+  .lat {
+    font-size: 11px;
+    font-style: italic;
+    color: ${({ theme }) => theme.colors.teksLatin};
+  }
+  .arti {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: ${({ theme }) => theme.colors.teksTerjemah};
+    text-align: center;
+  }
+`;
+
 /* Segmen Arab berwarna per aturan tajwid (warna dari token tema). */
 const SegmenTajwid = styled.span`
   color: ${({ theme, aturan }) =>
@@ -192,6 +232,7 @@ function AyatCard({
   tampilTajwid = false,
   sorotAwal = false,
   juzAwal = 0,
+  kataPerKata = null,
 }) {
   const ref = useRef(null);
   const [sorot, setSorot] = useState(false);
@@ -323,6 +364,17 @@ function AyatCard({
         </LatinBaris>
       )}
       {tampilTerjemah && ayah.translation && <Terjemah>{ayah.translation}</Terjemah>}
+      {kataPerKata && kataPerKata.length > 0 && (
+        <DeretKata aria-label={`Terjemahan per kata ayat ${ayah.number} (Bahasa Inggris)`}>
+          {kataPerKata.map((k) => (
+            <BlokKata key={k.position}>
+              <span className="ar" dir="rtl" lang="ar">{k.arabic}</span>
+              {k.latin && <span className="lat">{k.latin}</span>}
+              {k.arti && <span className="arti">{k.arti}</span>}
+            </BlokKata>
+          ))}
+        </DeretKata>
+      )}
       <BarisAksi>
         <TombolTafsir
           type="button"

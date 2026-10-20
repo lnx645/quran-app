@@ -3,10 +3,21 @@ import {
   fetchChapters,
   fetchAllVersesByChapter,
   fetchChapterRecitation,
+  fetchWordTranslations,
   searchVerses,
 } from '../quranApi.js';
 import { fetchTafsirAyat } from '../tafsirApi.js';
-import { mapChapter, mapVerse, mapTimings, mapSearchResult } from '../dto/quranMapper.js';
+import {
+  mapChapter,
+  mapVerse,
+  mapTimings,
+  mapSearchResult,
+  mapWordTranslations,
+} from '../dto/quranMapper.js';
+
+// Cache terjemahan per kata per surah (mode per kata dimuat malas; buka
+// berikutnya dalam sesi yang sama tidak mengulang fetch).
+const cacheKata = new Map();
 
 /**
  * Implementasi QuranRepository memakai Quran.com API v4.
@@ -35,6 +46,19 @@ export const QuranRepositoryImpl = {
       audioUrl: audioFile?.audio_url ?? '',
       audioDurationMs: last?.timestamp_to ?? 0,
     };
+  },
+
+  /**
+   * Terjemahan per kata satu surah → Map<verse_key, kata[]> (lihat
+   * mapWordTranslations). Dipanggil HANYA saat mode per kata dinyalakan.
+   */
+  async getWordTranslations(surahId) {
+    const id = Number(surahId);
+    if (cacheKata.has(id)) return cacheKata.get(id);
+    const verses = await fetchWordTranslations(id);
+    const peta = mapWordTranslations(verses);
+    cacheKata.set(id, peta);
+    return peta;
   },
 
   /** Tafsir Kemenag satu ayat (via API equran.id, dicache di tafsirApi). */

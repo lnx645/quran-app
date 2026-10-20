@@ -81,6 +81,37 @@ export function searchVerses(query, { size = 20, page = 1 } = {}) {
   return getJson(`/search?${q}`).then((d) => d.search);
 }
 
+/**
+ * Terjemahan PER KATA satu surah (dimuat malas hanya saat mode per kata
+ * dinyalakan di SurahPage — tidak ikut fetch normal).
+ * Terverifikasi curl 2026-10-20: word_fields wajib menyertakan
+ * `translation` agar tiap kata membawa translation.text. Parameter
+ * `word_translation_language=id` TIDAK menghasilkan Bahasa Indonesia —
+ * API tetap membalas language_name "english" (terjemahan kata Quran.com
+ * hanya tersedia Bahasa Inggris). Karena itu bahasa diminta eksplisit
+ * 'en' dan UI wajib melabelinya jujur sebagai terjemahan kata (Inggris).
+ * Mengikuti pola pagination fetchAllVersesByChapter (per_page=300 + loop).
+ */
+export async function fetchWordTranslations(id) {
+  const all = [];
+  let page = 1;
+  for (;;) {
+    const q = new URLSearchParams({
+      words: 'true',
+      word_fields: 'text_uthmani,transliteration,translation',
+      word_translation_language: 'en',
+      per_page: String(VERSES_PAGE_SIZE),
+      page: String(page),
+    });
+    const d = await getJson(`/verses/by_chapter/${id}?${q}`);
+    all.push(...(d.verses ?? []));
+    const next = d.pagination?.next_page;
+    if (!next) break;
+    page = next;
+  }
+  return all;
+}
+
 /** Audio satu file utuh per surah + timestamps per ayat & segments per kata (Cara 2). */
 export function fetchChapterRecitation(id) {
   return getJson(`/chapter_recitations/${RECITER_ALAFASY}/${id}?segments=true`).then(

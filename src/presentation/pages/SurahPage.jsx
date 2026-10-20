@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { FaExclamationTriangle } from 'react-icons/fa';
+import { QuranRepositoryImpl } from '../../data/repositories/QuranRepositoryImpl.js';
 import { useSurah } from '../hooks/useSurah.js';
 import { useAudioSync } from '../hooks/useAudioSync.js';
 import { useReadingPrefs } from '../hooks/useReadingPrefs.js';
@@ -97,6 +98,27 @@ export default function SurahPage() {
   const [miniTampil, setMiniTampil] = useState(false);
   const ayatUcapRef = useRef(-1);
 
+  // Mode terjemahan per kata: data kata (Map<verse_key, kata[]>) dimuat
+  // MALAS — fetch hanya terjadi saat pref.perKata pertama kali menyala,
+  // tidak pernah pada tampilan normal. Kegagalan muat tidak merusak
+  // halaman baca: mode per kata cukup tidak tampil + catatan kecil.
+  const [petaKata, setPetaKata] = useState(null);
+  const [kataGagal, setKataGagal] = useState(false);
+  useEffect(() => {
+    if (!pref.perKata || petaKata || kataGagal) return;
+    let batal = false;
+    QuranRepositoryImpl.getWordTranslations(Number(id))
+      .then((peta) => {
+        if (!batal) setPetaKata(peta);
+      })
+      .catch(() => {
+        if (!batal) setKataGagal(true);
+      });
+    return () => {
+      batal = true;
+    };
+  }, [pref.perKata, petaKata, kataGagal, id]);
+
   // Umumkan ayat aktif ke screen reader saat audio berjalan (sopan, satu per ayat).
   // Nilai diambil dari data/sync langsung (aman saat loading/error).
   useEffect(() => {
@@ -149,6 +171,23 @@ export default function SurahPage() {
           </span>
           <span className="ayat">{ayatAktifNomor > 0 ? `Ayat ${ayatAktifNomor}` : `${surah.versesCount} Ayat`}</span>
         </MiniBar>
+        {pref.perKata && (
+          <p
+            role="note"
+            css={{
+              fontSize: 12.5,
+              lineHeight: 1.6,
+              margin: '0 0 12px',
+              color: 'inherit',
+            }}
+          >
+            {kataGagal
+              ? 'Mode per kata: terjemahan kata belum bisa dimuat (periksa koneksi internet). Tampilan ayat tetap normal.'
+              : petaKata
+                ? 'Mode per kata aktif — arti tiap kata ditampilkan dalam Bahasa Inggris (terjemahan kata (Inggris)): API Quran.com belum menyediakan terjemahan per kata Bahasa Indonesia.'
+                : 'Memuat terjemahan per kata…'}
+          </p>
+        )}
         {ayahs.map((ayat, i) => (
           <AyatCard
             key={ayat.key}
@@ -162,6 +201,7 @@ export default function SurahPage() {
             tampilTerjemah={pref.terjemah}
             tampilTajwid={pref.tajwid}
             sorotAwal={ayatTujuan === ayat.number}
+            kataPerKata={pref.perKata && petaKata ? petaKata.get(ayat.key) ?? null : null}
           />
         ))}
         {/* Spacer bawah: konten terakhir tidak tertutup ReadingControls + PlayerBar (fixed) */}
