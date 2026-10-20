@@ -6,7 +6,7 @@ import {
   FaQuran, FaBookOpen, FaClock, FaCoins, FaBookReader, FaGraduationCap,
   FaHandPointer, FaCloudSun, FaPrayingHands, FaClipboardCheck, FaCompass,
   FaCalendarAlt, FaListUl, FaBook, FaHeart, FaMoon, FaVenus,
-  FaSearch, FaBookmark, FaBrain, FaPalette, FaTint, FaTasks, FaBroadcastTower, FaMicrophone,
+  FaSearch, FaBookmark, FaBrain, FaPalette, FaTint, FaTasks, FaBroadcastTower, FaMicrophone, FaChild,
   FaBalanceScale, FaKaaba, FaBaby, FaGift, FaHandHoldingHeart, FaMosque,
   FaDownload, FaTimes,
 } from 'react-icons/fa';
@@ -125,6 +125,7 @@ const SEKSI = [
       { to: '/kuis', icon: <FaBrain />, kunci: 'menu.kuis', desc: 'Sambung ayat, tebak surah & fikih' },
       { to: '/radio', icon: <FaBroadcastTower />, kunci: 'menu.radio', desc: 'Putar murottal terus-menerus + timer tidur' },
       { to: '/tes-baca', icon: <FaMicrophone />, kunci: 'menu.tesBaca', desc: 'Latihan baca dengan mikrofon (eksperimental)' },
+      { to: '/anak', icon: <FaChild />, kunci: 'menu.anak', desc: 'Huruf hijaiyah bersuara & kuis tebak huruf' },
     ],
   },
   {

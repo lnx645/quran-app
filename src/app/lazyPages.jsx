@@ -90,6 +90,7 @@ const _Statistik = lazy(() => import('../presentation/pages/StatistikPage.jsx'))
 const _DataProgres = lazy(() => import('../presentation/pages/DataProgresPage.jsx'));
 const _Radio = lazy(() => import('../presentation/pages/RadioPage.jsx'));
 const _TesBaca = lazy(() => import('../presentation/pages/TesBacaPage.jsx'));
+const _Anak = lazy(() => import('../presentation/pages/AnakPage.jsx'));
 
 export function SurahPage() {
   return (
@@ -490,6 +491,14 @@ export function TesBacaPage() {
   return (
     <Suspense fallback={<PageFallback />}>
       <_TesBaca />
+    </Suspense>
+  );
+}
+
+export function AnakPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_Anak />
     </Suspense>
   );
 }

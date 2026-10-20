@@ -7,7 +7,7 @@ import {
   FaQuran, FaBookOpen, FaHeart, FaMosque, FaVenus, FaCalculator, FaBookReader,
   FaHandPointer, FaCloudSun, FaPrayingHands, FaClipboardCheck, FaCompass,
   FaCalendarAlt, FaListUl, FaBook, FaGraduationCap, FaUniversalAccess,
-  FaSearch, FaBookmark, FaBrain, FaPalette, FaTint, FaMoon, FaBroadcastTower, FaMicrophone,
+  FaSearch, FaBookmark, FaBrain, FaPalette, FaTint, FaMoon, FaBroadcastTower, FaMicrophone, FaChild,
   FaBalanceScale, FaKaaba, FaBaby, FaGift, FaHandHoldingHeart, FaTasks,
   FaDownload,
 } from 'react-icons/fa';
@@ -298,6 +298,7 @@ const MENU = [
       { to: '/kuis', icon: <FaBrain />, kunci: 'menu.kuis' },
       { to: '/radio', icon: <FaBroadcastTower />, kunci: 'menu.radio' },
       { to: '/tes-baca', icon: <FaMicrophone />, kunci: 'menu.tesBaca' },
+      { to: '/anak', icon: <FaChild />, kunci: 'menu.anak' },
     ],
   },
   {

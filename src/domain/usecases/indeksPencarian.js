@@ -90,6 +90,7 @@ const DAFTAR_FITUR = [
   { tujuan: '/kuis', judul: 'Kuis Islami', sub: 'Sambung ayat, tebak surah & fikih', kata: 'kuis islami sambung ayat tebak surah fikih soal latihan ujian tebak' },
   { tujuan: '/radio', judul: 'Radio Murottal', sub: 'Putar murottal terus-menerus + timer tidur', kata: 'radio murottal murotal streaming putar audio qari dengarkan ngaji sleep timer tidur' },
   { tujuan: '/tes-baca', judul: 'Tes Baca', sub: 'Latihan baca dengan mikrofon (eksperimental)', kata: 'tes baca uji bacaan mikrofon mic speech recognition latihan tartil cek bacaan eksperimental' },
+  { tujuan: '/anak', judul: 'Mode Anak', sub: 'Huruf hijaiyah bersuara & kuis tebak huruf', kata: 'anak mode anak hijaiyah huruf anak tebak huruf belajar huruf tpq paud balita' },
   { tujuan: '/ruqyah', judul: "Ruqyah Syar'iyyah", sub: 'Panduan + playlist ayat ruqyah', kata: "ruqyah rukyah syar'iyyah syariyyah ayat gangguan jin sihir playlist audio pengobatan" },
   { tujuan: '/khutbah', judul: 'Teks Khutbah', sub: 'Jumat & hari raya untuk khatib', kata: 'khutbah khotbah jumat hari raya khatib teks naskah' },
   { tujuan: '/panduan-jenazah', judul: 'Panduan Jenazah', sub: 'Memandikan sampai menguburkan', kata: 'jenazah panduan memandikan mengkafani menyolatkan menguburkan mayit mayat' },

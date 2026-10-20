@@ -14,7 +14,7 @@ import {
   PanduanJenazahPage, AqiqahKurbanPage, MutabaahPage, NamaBayiPage, MasjidTerdekatPage,
   SholatIdPage, SholatMusafirPage, SholatSakitPage, DoaQunutPage, PanduanImamPage,
   IndeksTematikPage, SujudPage, KuisPage,
-  PanduanNikahPage, FikihKeluargaPage, MuamalahPage, WakafWasiatPage, HalalPage, ItikafPage, RuqyahPage, KhutbahPage, PeristiwaPage, RiyadhusPage, KonverterPage, StatistikPage, DataProgresPage, RadioPage, TesBacaPage,
+  PanduanNikahPage, FikihKeluargaPage, MuamalahPage, WakafWasiatPage, HalalPage, ItikafPage, RuqyahPage, KhutbahPage, PeristiwaPage, RiyadhusPage, KonverterPage, StatistikPage, DataProgresPage, RadioPage, TesBacaPage, AnakPage,
 } from './lazyPages.jsx';
 
 // HomePage eager (chunk awal); halaman lain lazy lewat lazyPages.jsx.
@@ -60,6 +60,7 @@ const router = createBrowserRouter([
       { path: 'kuis', element: <KuisPage /> },
       { path: 'radio', element: <RadioPage /> },
       { path: 'tes-baca', element: <TesBacaPage /> },
+      { path: 'anak', element: <AnakPage /> },
       { path: 'panduan-nikah', element: <PanduanNikahPage /> },
       { path: 'fikih-keluarga', element: <FikihKeluargaPage /> },
       { path: 'muamalah', element: <MuamalahPage /> },
