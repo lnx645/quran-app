@@ -1,27 +1,20 @@
 /** @jsxImportSource @emotion/react */
+import { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
-import { FaMoon, FaStar } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
-import { GirihPattern, OrnamentBand } from './ornaments/index.js';
+import { Link, NavLink, useLocation } from 'react-router-dom';
+import { FiMenu, FiX, FiHome, FiChevronRight } from 'react-icons/fi';
+import {
+  FaQuran, FaBookOpen, FaHeart, FaMosque, FaVenus, FaCalculator, FaBookReader,
+  FaHandPointer, FaCloudSun, FaPrayingHands, FaClipboardCheck, FaCompass,
+  FaCalendarAlt, FaListUl, FaBook, FaGraduationCap,
+} from 'react-icons/fa';
+import Logo from './Logo.jsx';
+import { GirihPattern } from './ornaments/index.js';
+import { reduceMotion } from './motion.js';
 
-// Logo: bulan sabit + bintang (SVG inline + react-icons).
-const LogoMark = styled.span`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 13px;
-  background: linear-gradient(135deg, rgba(231, 198, 90, 0.28), rgba(231, 198, 90, 0.1));
-  border: 1.5px solid ${({ theme }) => theme.colors.gold};
-  color: ${({ theme }) => theme.colors.goldLight};
-  font-size: 19px;
-  position: relative;
-  svg {
-    position: relative;
-  }
-`;
-
+// ===== Header ramping (~60px) =====
+// Kiri: logo + "Noor" satu baris. Kanan: tombol hamburger saja.
+// Semua navigasi pindah ke drawer geser (kanan).
 const Bar = styled.header`
   position: sticky;
   top: 0;
@@ -35,86 +28,375 @@ const Inner = styled.div`
   position: relative;
   max-width: 960px;
   margin: 0 auto;
-  padding: 11px 16px 13px;
+  padding: 9px 14px;
+  min-height: 58px;
   display: flex;
   align-items: center;
   gap: 10px;
 `;
 
-const Title = styled(Link)`
+const Brand = styled(Link)`
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+`;
+
+const Wordmark = styled.span`
   font-family: ${({ theme }) => theme.fonts.display};
-  font-size: 23px;
+  font-size: 21px;
   font-weight: 700;
   letter-spacing: 0.4px;
   color: #fff;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+  line-height: 1;
+  white-space: nowrap;
+  .tag {
+    display: block;
+    font-family: ${({ theme }) => theme.fonts.body};
+    font-size: 8.5px;
+    font-weight: 600;
+    letter-spacing: 2.2px;
+    text-transform: uppercase;
+    color: ${({ theme }) => theme.colors.goldLight};
+    margin-top: 3px;
+  }
 `;
 
-const Sub = styled.span`
-  font-size: 10.5px;
+// Pita emas SANGAT tipis (garis bawah header).
+const GoldStrip = styled.div`
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    ${({ theme }) => theme.colors.goldDeep},
+    ${({ theme }) => theme.colors.goldLight} 30%,
+    ${({ theme }) => theme.colors.gold} 55%,
+    ${({ theme }) => theme.colors.goldLight} 80%,
+    ${({ theme }) => theme.colors.goldDeep}
+  );
+`;
+
+const IconBtn = styled.button`
+  margin-left: auto;
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  border: 1px solid rgba(231, 198, 90, 0.5);
+  background: rgba(255, 255, 255, 0.07);
   color: ${({ theme }) => theme.colors.goldLight};
+  font-size: 20px;
+  transition: background ${({ theme }) => theme.anim.fast} ease, transform ${({ theme }) => theme.anim.fast} ease;
+  &:hover {
+    background: rgba(231, 198, 90, 0.2);
+  }
+  &:active {
+    transform: scale(0.94);
+  }
+  ${reduceMotion}
+`;
+
+// ===== Drawer navigasi =====
+const Overlay = styled.div`
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  background: rgba(4, 37, 31, 0.55);
+  opacity: ${({ $open }) => ($open ? 1 : 0)};
+  visibility: ${({ $open }) => ($open ? 'visible' : 'hidden')};
+  transition: opacity ${({ theme }) => theme.anim.med} ease,
+    visibility 0s linear ${({ $open, theme }) => ($open ? '0s' : theme.anim.med)};
+  ${reduceMotion}
+`;
+
+const Panel = styled.aside`
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 100;
+  height: 100dvh;
+  width: min(320px, 88vw);
+  background: ${({ theme }) => theme.colors.bg};
+  box-shadow: ${({ theme }) => theme.shadows.lift};
+  transform: translateX(${({ $open }) => ($open ? '0' : '105%')});
+  visibility: ${({ $open }) => ($open ? 'visible' : 'hidden')};
+  transition: transform ${({ theme }) => theme.anim.slow} ${({ theme }) => theme.anim.ease},
+    visibility 0s linear ${({ $open, theme }) => ($open ? '0s' : theme.anim.slow)};
+  display: flex;
+  flex-direction: column;
+  ${reduceMotion}
+`;
+
+const PanelHead = styled.div`
+  position: relative;
+  overflow: hidden;
+  background: ${({ theme }) => theme.gradients.heroGlow}, ${({ theme }) => theme.gradients.header};
+  color: #fff;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  flex-shrink: 0;
+`;
+
+const PanelTitle = styled.div`
+  font-family: ${({ theme }) => theme.fonts.display};
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.1;
+  .sub {
+    display: block;
+    font-family: ${({ theme }) => theme.fonts.body};
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: ${({ theme }) => theme.colors.goldLight};
+    margin-top: 3px;
+  }
+`;
+
+const CloseBtn = styled.button`
+  margin-left: auto;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 11px;
+  border: 1px solid rgba(231, 198, 90, 0.5);
+  background: rgba(255, 255, 255, 0.07);
+  color: ${({ theme }) => theme.colors.goldLight};
+  font-size: 18px;
+  &:active {
+    transform: scale(0.94);
+  }
+  ${reduceMotion}
+`;
+
+const PanelNav = styled.nav`
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 12px 20px;
+  overscroll-behavior: contain;
+`;
+
+const GroupLabel = styled.div`
+  font-size: ${({ theme }) => theme.type.overline.size}px;
+  font-weight: ${({ theme }) => theme.type.overline.weight};
   letter-spacing: 1.6px;
   text-transform: uppercase;
+  color: ${({ theme }) => theme.colors.goldDeep};
+  margin: 18px 6px 8px;
+  padding-left: 9px;
+  border-left: 3px solid ${({ theme }) => theme.colors.gold};
+  &:first-of-type {
+    margin-top: 8px;
+  }
+`;
+
+const ItemIcon = styled.span`
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  flex-shrink: 0;
+  background: ${({ theme }) => theme.gradients.header};
+  color: ${({ theme }) => theme.colors.goldLight};
+  font-size: 15px;
+  box-shadow: inset 0 0 0 1px rgba(231, 198, 90, 0.4);
 `;
 
-const Nav = styled.nav`
-  margin-left: auto;
+const Item = styled(NavLink)`
   display: flex;
-  gap: 2px;
-  overflow-x: auto;
-  max-width: 52%;
-  scrollbar-width: none;
-  &::-webkit-scrollbar {
-    display: none;
+  align-items: center;
+  gap: 11px;
+  padding: 9px 10px;
+  border-radius: 12px;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.text};
+  transition: background ${({ theme }) => theme.anim.fast} ease;
+  .chev {
+    margin-left: auto;
+    color: ${({ theme }) => theme.colors.faint};
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  &:hover {
+    background: ${({ theme }) => theme.colors.surfaceAlt};
+  }
+  &.active {
+    background: ${({ theme }) => theme.colors.primarySoft};
+    color: ${({ theme }) => theme.colors.primary};
+    ${ItemIcon} {
+      background: ${({ theme }) => theme.gradients.gold};
+      color: ${({ theme }) => theme.colors.primaryDeep};
+      box-shadow: none;
+    }
   }
 `;
 
-const NavLink = styled(Link)`
-  padding: 8px 13px;
-  border-radius: 999px;
-  font-size: 13px;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.88);
-  white-space: nowrap;
-  transition: background 0.15s ease, color 0.15s ease;
-  &:hover {
-    background: rgba(231, 198, 90, 0.22);
-    color: #fff;
-  }
+const PanelFoot = styled.div`
+  flex-shrink: 0;
+  padding: 10px 16px calc(12px + env(safe-area-inset-bottom));
+  text-align: center;
+  font-size: 11px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: ${({ theme }) => theme.colors.faint};
+  border-top: 1px solid ${({ theme }) => theme.colors.border};
 `;
+
+// Daftar menu drawer — mengikuti rute router.jsx & seksi Home.
+const MENU = [
+  {
+    nama: "Al-Qur'an",
+    items: [
+      { to: '/quran', icon: <FaQuran />, label: "Al-Qur'an — 114 Surah" },
+      { to: '/surah/36', icon: <FaHeart />, label: 'Surah Ya-Sin' },
+      { to: '/surah/18', icon: <FaBookOpen />, label: 'Surah Al-Kahf' },
+      { to: '/surah/67', icon: <FaBookOpen />, label: 'Surah Al-Mulk' },
+      { to: '/surah/55', icon: <FaBookOpen />, label: 'Surah Ar-Rahman' },
+    ],
+  },
+  {
+    nama: 'Ibadah Harian',
+    items: [
+      { to: '/jadwal', icon: <FaMosque />, label: 'Jadwal Sholat' },
+      { to: '/tasbih', icon: <FaHandPointer />, label: 'Tasbih Digital' },
+      { to: '/dzikir', icon: <FaCloudSun />, label: 'Dzikir Pagi & Petang' },
+      { to: '/doa', icon: <FaPrayingHands />, label: 'Doa Harian' },
+      { to: '/sholat-tracker', icon: <FaClipboardCheck />, label: 'Sholat Tracker' },
+    ],
+  },
+  {
+    nama: 'Belajar & Kisah',
+    items: [
+      { to: '/iqro', icon: <FaGraduationCap />, label: 'Belajar Iqro' },
+      { to: '/kisah', icon: <FaBook />, label: 'Kisah 25 Nabi' },
+      { to: '/asmaul-husna', icon: <FaListUl />, label: 'Asmaul Husna' },
+    ],
+  },
+  {
+    nama: 'Muslimah',
+    items: [
+      { to: '/muslimah', icon: <FaVenus />, label: 'Ruang Muslimah' },
+      { to: '/muslimah/kalkulator', icon: <FaClipboardCheck />, label: 'Kalkulator Haid' },
+      { to: '/muslimah/mandi-wajib', icon: <FaHandPointer />, label: 'Panduan Mandi Wajib' },
+      { to: '/muslimah/doa', icon: <FaPrayingHands />, label: 'Doa Khusus Wanita' },
+      { to: '/muslimah/fikih', icon: <FaBook />, label: 'Fikih Wanita' },
+    ],
+  },
+  {
+    nama: 'Utilitas',
+    items: [
+      { to: '/zakat', icon: <FaCalculator />, label: 'Kalkulator Zakat' },
+      { to: '/khatam', icon: <FaBookReader />, label: 'Khatam Tracker' },
+      { to: '/kiblat', icon: <FaCompass />, label: 'Arah Kiblat' },
+      { to: '/kalender', icon: <FaCalendarAlt />, label: 'Kalender Hijriah' },
+    ],
+  },
+];
 
 export default function AppHeader() {
+  const [open, setOpen] = useState(false);
+  const location = useLocation();
+  const closeRef = useRef(null);
+
+  // Tutup drawer setiap pindah halaman (pola sesuaikan-state-saat-render).
+  const [prevPath, setPrevPath] = useState(location.pathname);
+  if (location.pathname !== prevPath) {
+    setPrevPath(location.pathname);
+    setOpen(false);
+  }
+
+  // Kunci scroll body + tombol Escape + fokus ke tombol tutup saat drawer terbuka.
+  useEffect(() => {
+    if (!open) return undefined;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    closeRef.current?.focus({ preventScroll: true });
+    const onKey = (e) => {
+      if (e.key === 'Escape') setOpen(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [open ]);
+
   return (
-    <Bar>
-      <div css={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
-        <GirihPattern opacity={0.1} />
-      </div>
-      <Inner>
-        <LogoMark>
-          <FaMoon />
-        </LogoMark>
-        <div>
-          <Title to="/">Noor</Title>
-          <div>
-            <Sub>
-              <FaStar size={8} /> Al-Qur&apos;an &amp; Ibadah <FaStar size={8} />
-            </Sub>
-          </div>
+    <>
+      <Bar>
+        <div css={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
+          <GirihPattern opacity={0.1} />
         </div>
-        <Nav>
-          <NavLink to="/surah/36">Yasin</NavLink>
-          <NavLink to="/iqro">Iqro</NavLink>
-          <NavLink to="/jadwal">Jadwal</NavLink>
-          <NavLink to="/zakat">Zakat</NavLink>
-          <NavLink to="/khatam">Khatam</NavLink>
-        </Nav>
-      </Inner>
-      <OrnamentBand height={16} opacity={0.55} />
-    </Bar>
+        <Inner>
+          <Brand to="/" aria-label="Noor — Beranda">
+            <Logo size={38} />
+            <Wordmark>
+              Noor
+              <span className="tag">Al-Qur&apos;an &amp; Ibadah</span>
+            </Wordmark>
+          </Brand>
+          <IconBtn
+            type="button"
+            onClick={() => setOpen(true)}
+            aria-label="Buka menu navigasi"
+            aria-expanded={open}
+          >
+            <FiMenu />
+          </IconBtn>
+        </Inner>
+        <GoldStrip />
+      </Bar>
+
+      <Overlay $open={open} onClick={() => setOpen(false)} aria-hidden="true" />
+      <Panel $open={open} aria-hidden={!open} aria-label="Menu navigasi">
+        <PanelHead>
+          <div css={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
+            <GirihPattern opacity={0.1} />
+          </div>
+          <Logo size={42} />
+          <PanelTitle>
+            Noor
+            <span className="sub">Al-Qur&apos;an &amp; Ibadah</span>
+          </PanelTitle>
+          <CloseBtn ref={closeRef} type="button" onClick={() => setOpen(false)} aria-label="Tutup menu">
+            <FiX />
+          </CloseBtn>
+        </PanelHead>
+        <GoldStrip />
+        <PanelNav>
+          <Item to="/" end onClick={() => setOpen(false)}>
+            <ItemIcon>
+              <FiHome />
+            </ItemIcon>
+            Beranda
+            <FiChevronRight className="chev" />
+          </Item>
+          {MENU.map((grup) => (
+            <div key={grup.nama}>
+              <GroupLabel>{grup.nama}</GroupLabel>
+              {grup.items.map((item) => (
+                <Item key={item.to} to={item.to} onClick={() => setOpen(false)}>
+                  <ItemIcon>{item.icon}</ItemIcon>
+                  {item.label}
+                  <FiChevronRight className="chev" />
+                </Item>
+              ))}
+            </div>
+          ))}
+        </PanelNav>
+        <PanelFoot>Noor — menemani ibadah harian</PanelFoot>
+      </Panel>
+    </>
   );
 }
