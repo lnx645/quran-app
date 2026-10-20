@@ -10,6 +10,7 @@ import { DISCLAIMER } from '../../data/sources/muslimahData.js';
 import {
   Page, PageHero, Card, SectionTitle, Field, TextInput, SelectInput, PrimaryButton, GhostButton, ErrorBox,
 } from '../components/common.jsx';
+import KotakCentang from '../components/KotakCentang.jsx';
 import { useToast } from '../components/feedback/toastStore.js';
 
 const VonisBadge = styled.div`
@@ -54,20 +55,6 @@ const StatusRow = styled.div`
   }
 `;
 
-const CheckboxRow = styled.label`
-  display: flex;
-  gap: 9px;
-  align-items: flex-start;
-  font-size: 13.5px;
-  line-height: 1.5;
-  margin-bottom: 12px;
-  input {
-    margin-top: 3px;
-    width: 18px;
-    height: 18px;
-    accent-color: ${({ theme }) => theme.colors.primary};
-  }
-`;
 
 const Catatan = styled.p`
   display: flex;
@@ -304,13 +291,10 @@ export default function MuslimahKalkulatorPage() {
                 onChange={(e) => setAdahHari(e.target.value)}
               />
             </Field>
-            <CheckboxRow>
-              <input type="checkbox" checked={tamyiz} onChange={(e) => setTamyiz(e.target.checked)} />
-              <span>
-                Saya bisa membedakan sifat darah (tamyiz): darah haid kuat = hitam/pekat, kental,
-                berbau khas; darah istihadah lemah = merah segar, encer.
-              </span>
-            </CheckboxRow>
+            <KotakCentang checked={tamyiz} onChange={(e) => setTamyiz(e.target.checked)} css={{ marginBottom: 12 }}>
+              Saya bisa membedakan sifat darah (tamyiz): darah haid kuat = hitam/pekat, kental,
+              berbau khas; darah istihadah lemah = merah segar, encer.
+            </KotakCentang>
           </>
         )}
         {error && (

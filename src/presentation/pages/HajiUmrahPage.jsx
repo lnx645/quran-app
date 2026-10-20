@@ -2,13 +2,14 @@
 import { useMemo, useState } from 'react';
 import styled from '@emotion/styled';
 import {
-  FaKaaba, FaMoon, FaClipboardCheck, FaClipboardList, FaCheckCircle,
+  FaKaaba, FaMoon, FaClipboardCheck, FaClipboardList, FaCheckCircle, FaCheck,
   FaInfoCircle, FaListOl, FaCalendarAlt, FaRedoAlt, FaIdCard, FaTshirt,
   FaBriefcaseMedical, FaPrayingHands, FaSuitcase,
 } from 'react-icons/fa';
 import {
   Page, PageHero, Card, GoldCard, SectionTitle, GhostButton,
 } from '../components/common.jsx';
+import { KotakVisual, inputTersembunyiCss } from '../components/KotakCentang.jsx';
 import { SegmenWadah, SegmenTab } from '../components/SegmentedControl.jsx';
 import NomorMedali from '../components/NomorMedali.jsx';
 import {
@@ -106,13 +107,11 @@ const ItemCentang = styled.label`
   border-bottom: 1px dashed ${({ theme }) => theme.colors.border};
   cursor: pointer;
   &:last-child { border-bottom: none; }
-  input {
-    width: 22px;
-    height: 22px;
-    flex-shrink: 0;
-    accent-color: ${({ theme }) => theme.colors.primary};
+  input:focus-visible ~ .kotak-visual {
+    outline: 3px solid ${({ theme }) => theme.colors.goldDeep};
+    outline-offset: 2px;
   }
-  span {
+  span.label-centang {
     font-size: 14px;
     line-height: 1.5;
     color: ${({ theme, selesai }) => (selesai ? theme.colors.muted : theme.colors.text)};
@@ -351,8 +350,12 @@ export default function HajiUmrahPage() {
                         type="checkbox"
                         checked={!!centang[it.id]}
                         onChange={(e) => ubahCentang(it.id, e.target.checked)}
+                        css={inputTersembunyiCss}
                       />
-                      <span>{it.label}</span>
+                      <KotakVisual className="kotak-visual" cek={!!centang[it.id]} aria-hidden="true">
+                        {!!centang[it.id] && <FaCheck />}
+                      </KotakVisual>
+                      <span className="label-centang">{it.label}</span>
                     </ItemCentang>
                   ))}
                 </Card>

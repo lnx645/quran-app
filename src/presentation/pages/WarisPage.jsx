@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react';
 import {
   FaBalanceScale, FaInfoCircle, FaExclamationTriangle, FaBan, FaUsers,
 } from 'react-icons/fa';
+import KotakCentang from '../components/KotakCentang.jsx';
 import { hitungWaris, teksPecahan } from '../../domain/usecases/hitungWaris.js';
 import { formatRupiah } from '../../domain/usecases/hitungZakat.js';
 import {
@@ -125,32 +126,12 @@ export default function WarisPage() {
 
         <Field>
           <label>Orang Tua Pewaris (yang masih hidup)</label>
-          <label
-            htmlFor="ayah"
-            css={{ display: 'flex', alignItems: 'center', gap: 9, minHeight: 44, cursor: 'pointer' }}
-          >
-            <input
-              id="ayah"
-              type="checkbox"
-              checked={ayah}
-              onChange={(e) => setAyah(e.target.checked)}
-              css={(t) => ({ width: 20, height: 20, accentColor: t.colors.primary })}
-            />
-            <span css={{ fontSize: 14.5, fontWeight: 500 }}>Ayah masih hidup</span>
-          </label>
-          <label
-            htmlFor="ibu"
-            css={{ display: 'flex', alignItems: 'center', gap: 9, minHeight: 44, cursor: 'pointer' }}
-          >
-            <input
-              id="ibu"
-              type="checkbox"
-              checked={ibu}
-              onChange={(e) => setIbu(e.target.checked)}
-              css={(t) => ({ width: 20, height: 20, accentColor: t.colors.primary })}
-            />
-            <span css={{ fontSize: 14.5, fontWeight: 500 }}>Ibu masih hidup</span>
-          </label>
+          <KotakCentang id="ayah" checked={ayah} onChange={(e) => setAyah(e.target.checked)}>
+            Ayah masih hidup
+          </KotakCentang>
+          <KotakCentang id="ibu" checked={ibu} onChange={(e) => setIbu(e.target.checked)}>
+            Ibu masih hidup
+          </KotakCentang>
         </Field>
 
         <Field>

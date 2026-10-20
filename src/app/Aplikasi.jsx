@@ -21,6 +21,9 @@ const globalStyles = (t) => css`
   }
   a { color: inherit; text-decoration: none; }
   button { font-family: inherit; cursor: pointer; }
+  /* Jaring pengaman: checkbox/radio bawaan yang belum memakai komponen
+     KotakCentang minimal terwarnai emas tema, bukan abu bawaan browser. */
+  input[type='checkbox'], input[type='radio'] { accent-color: ${t.colors.gold}; }
   img, svg { display: block; max-width: 100%; }
   .arabic { font-family: ${t.fonts.arabic}; direction: rtl; }
   /* Fokus keyboard yang selalu terlihat jelas (WCAG 2.4.7):
