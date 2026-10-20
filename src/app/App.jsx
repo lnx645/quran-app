@@ -101,6 +101,7 @@ const JUDUL_RUTE = [
   [/^\/ziarah$/, 'judul.ziarah'],
   [/^\/aqiqah-kurban$/, 'judul.aqiqah'],
   [/^\/mutabaah$/, 'judul.mutabaah'],
+  [/^\/jurnal-syukur$/, 'judul.jurnalSyukur'],
   [/^\/nama-bayi$/, 'judul.namaBayi'],
   [/^\/masjid-terdekat$/, 'judul.masjid'],
   [/^\/sholat-id$/, 'judul.sholatId'],

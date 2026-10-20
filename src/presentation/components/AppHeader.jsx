@@ -8,7 +8,7 @@ import {
   FaHandPointer, FaCloudSun, FaPrayingHands, FaClipboardCheck, FaCompass,
   FaCalendarAlt, FaListUl, FaBook, FaGraduationCap, FaUniversalAccess,
   FaSearch, FaBookmark, FaBrain, FaPalette, FaTint, FaMoon, FaBroadcastTower, FaMicrophone, FaChild,
-  FaBalanceScale, FaKaaba, FaBaby, FaGift, FaHandHoldingHeart, FaTasks, FaMonument,
+  FaBalanceScale, FaKaaba, FaBaby, FaGift, FaHandHoldingHeart, FaTasks, FaMonument, FaPenFancy,
   FaDownload,
 } from 'react-icons/fa';
 import Logo from './Logo.jsx';
@@ -330,6 +330,7 @@ const MENU = [
       { to: '/itikaf', icon: <FaMoon />, kunci: 'menu.itikaf' },
       { to: '/ruqyah', icon: <FaBookOpen />, kunci: 'menu.ruqyah' },
       { to: '/mutabaah', icon: <FaTasks />, kunci: 'menu.mutabaah' },
+      { to: '/jurnal-syukur', icon: <FaPenFancy />, kunci: 'menu.jurnalSyukur' },
     ],
   },
   {

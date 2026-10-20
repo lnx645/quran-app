@@ -72,6 +72,7 @@ const DAFTAR_FITUR = [
   { tujuan: '/sholat-tracker', judul: 'Sholat Tracker', sub: 'Checklist lima waktu & streak', kata: 'tracker sholat shalat checklist lima waktu streak catatan harian' },
   { tujuan: '/utang-puasa', judul: 'Catatan Utang Puasa', sub: 'Buku utang puasa per tahun', kata: 'utang puasa qadha catatan tahun lunas hutang puasa ramadhan' },
   { tujuan: '/qadha-puasa', judul: 'Tracker Qadha Puasa', sub: 'Catat utang & pembayaran puasa', kata: 'qadha qada puasa utang puasa bayar tracker ganti puasa hutang' },
+  { tujuan: '/jurnal-syukur', judul: 'Jurnal Syukur', sub: 'Tiga syukur & refleksi harian', kata: 'jurnal syukur refleksi muhasabah terima kasih harian catatan syukur gratitude' },
   { tujuan: '/mutabaah', judul: "Mutaba'ah Yaumiyah", sub: 'Checklist amal harian', kata: "mutabaah mutaba'ah yaumiyah checklist amal harian evaluasi diri muhasabah" },
   { tujuan: '/iqro', judul: 'Belajar Iqro', sub: 'Jilid 1–6 untuk anak & pemula', kata: 'iqro belajar huruf hijaiyah anak jilid membaca quran pemula' },
   { tujuan: '/yasin', judul: 'Surah Ya-Sin', sub: '83 ayat dengan audio & sorotan', kata: 'yasin ya sin surah 36 jantung quran yasinan' },

@@ -7,7 +7,7 @@ import {
   FaHandPointer, FaCloudSun, FaPrayingHands, FaClipboardCheck, FaCompass,
   FaCalendarAlt, FaListUl, FaBook, FaHeart, FaMoon, FaVenus,
   FaSearch, FaBookmark, FaBrain, FaPalette, FaTint, FaTasks, FaBroadcastTower, FaMicrophone, FaChild,
-  FaBalanceScale, FaKaaba, FaBaby, FaGift, FaHandHoldingHeart, FaMonument, FaMosque,
+  FaBalanceScale, FaKaaba, FaBaby, FaGift, FaHandHoldingHeart, FaMonument, FaPenFancy, FaMosque,
   FaDownload, FaTimes, FaFire, FaChevronRight,
 } from 'react-icons/fa';
 import { useInstallPrompt } from '../hooks/useInstallPrompt.js';
@@ -160,6 +160,7 @@ const SEKSI = [
       { to: '/itikaf', icon: <FaMoon />, kunci: 'beranda.itikaf', desc: 'Panduan 10 malam terakhir Ramadhan' },
       { to: '/ruqyah', icon: <FaBookOpen />, kunci: 'beranda.ruqyah', desc: "Syar'iyyah + playlist ayat ruqyah" },
       { to: '/mutabaah', icon: <FaTasks />, kunci: 'menu.mutabaah', desc: 'Checklist amal harian & ringkasan 7 hari' },
+      { to: '/jurnal-syukur', icon: <FaPenFancy />, kunci: 'menu.jurnalSyukur', desc: 'Tiga syukur & refleksi tiap hari' },
     ],
   },
   {
