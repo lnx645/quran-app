@@ -308,6 +308,8 @@ export default function AppHeader() {
   const [open, setOpen] = useState(false);
   const location = useLocation();
   const closeRef = useRef(null);
+  const menuBtnRef = useRef(null);
+  const panelRef = useRef(null);
 
   // Tutup drawer setiap pindah halaman (pola sesuaikan-state-saat-render).
   const [prevPath, setPrevPath] = useState(location.pathname);
@@ -316,7 +318,8 @@ export default function AppHeader() {
     setOpen(false);
   }
 
-  // Kunci scroll body + tombol Escape + fokus ke tombol tutup saat drawer terbuka.
+  // Kunci scroll body + Escape + jebakan fokus sederhana + fokus kembali ke
+  // tombol menu saat drawer tertutup.
   useEffect(() => {
     if (!open) return undefined;
     const prev = document.body.style.overflow;
@@ -324,11 +327,27 @@ export default function AppHeader() {
     closeRef.current?.focus({ preventScroll: true });
     const onKey = (e) => {
       if (e.key === 'Escape') setOpen(false);
+      if (e.key === 'Tab' && panelRef.current) {
+        const fokusable = panelRef.current.querySelectorAll(
+          'a[href], button:not([disabled])',
+        );
+        if (!fokusable.length) return;
+        const pertama = fokusable[0];
+        const terakhir = fokusable[fokusable.length - 1];
+        if (e.shiftKey && document.activeElement === pertama) {
+          e.preventDefault();
+          terakhir.focus();
+        } else if (!e.shiftKey && document.activeElement === terakhir) {
+          e.preventDefault();
+          pertama.focus();
+        }
+      }
     };
     window.addEventListener('keydown', onKey);
     return () => {
       document.body.style.overflow = prev;
       window.removeEventListener('keydown', onKey);
+      menuBtnRef.current?.focus({ preventScroll: true });
     };
   }, [open ]);
 
@@ -348,9 +367,11 @@ export default function AppHeader() {
           </Brand>
           <IconBtn
             type="button"
+            ref={menuBtnRef}
             onClick={() => setOpen(true)}
             aria-label="Buka menu navigasi"
             aria-expanded={open}
+            aria-controls="panel-navigasi"
           >
             <FiMenu />
           </IconBtn>
@@ -359,7 +380,7 @@ export default function AppHeader() {
       </Bar>
 
       <Overlay $open={open} onClick={() => setOpen(false)} aria-hidden="true" />
-      <Panel $open={open} aria-hidden={!open} aria-label="Menu navigasi">
+      <Panel $open={open} aria-hidden={!open} aria-label="Menu navigasi" id="panel-navigasi" ref={panelRef}>
         <PanelHead>
           <div css={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
             <GirihPattern opacity={0.1} />
@@ -374,7 +395,7 @@ export default function AppHeader() {
           </CloseBtn>
         </PanelHead>
         <GoldStrip />
-        <PanelNav>
+        <PanelNav aria-label="Menu utama">
           <Item to="/" end onClick={() => setOpen(false)}>
             <ItemIcon>
               <FiHome />

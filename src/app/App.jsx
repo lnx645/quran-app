@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
+import { useEffect, useRef } from 'react';
 import styled from '@emotion/styled';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import AppHeader from '../presentation/components/AppHeader.jsx';
 
 // App shell: ThemeProvider sudah dipasang di main.jsx.
@@ -17,16 +18,87 @@ const Main = styled.main`
   max-width: 960px;
   margin: 0 auto;
   padding: 0 14px 120px;
+  outline: none;
   @media (min-width: ${({ theme }) => theme.breakpoints.md}px) {
     padding: 0 20px 110px;
   }
 `;
 
+// Skip-link: tautan pertama di halaman — melompat langsung ke konten utama.
+// Tersembunyi sampai mendapat fokus keyboard (WCAG 2.4.1).
+const SkipLink = styled.a`
+  position: fixed;
+  top: -60px;
+  left: 12px;
+  z-index: 400;
+  padding: 12px 18px;
+  min-height: 44px;
+  border-radius: 12px;
+  background: ${({ theme }) => theme.colors.primaryDeep};
+  color: ${({ theme }) => theme.colors.goldLight};
+  font-size: 14px;
+  font-weight: 700;
+  border: 2px solid ${({ theme }) => theme.colors.gold};
+  transition: top 0.15s ease;
+  &:focus-visible {
+    top: 10px;
+  }
+`;
+
+// Peta judul per rute → document.title (screen reader mengumumkan perpindahan
+// halaman SPA lewat judul dokumen + fokus yang dipindah ke <main>).
+const JUDUL_RUTE = [
+  [/^\/$/, 'Beranda'],
+  [/^\/quran$/, "Al-Qur'an — 114 Surah"],
+  [/^\/surah\/\d+$/, 'Baca Surah'],
+  [/^\/iqro$/, 'Belajar Iqro'],
+  [/^\/iqro\/\d+$/, 'Belajar Iqro'],
+  [/^\/jadwal$/, 'Jadwal Sholat'],
+  [/^\/zakat$/, 'Kalkulator Zakat'],
+  [/^\/khatam$/, 'Khatam Tracker'],
+  [/^\/tasbih$/, 'Tasbih Digital'],
+  [/^\/dzikir$/, 'Dzikir Pagi & Petang'],
+  [/^\/doa$/, 'Doa Harian'],
+  [/^\/sholat-tracker$/, 'Sholat Tracker'],
+  [/^\/kiblat$/, 'Arah Kiblat'],
+  [/^\/kalender$/, 'Kalender Hijriah'],
+  [/^\/asmaul-husna$/, 'Asmaul Husna'],
+  [/^\/kisah$/, 'Kisah 25 Nabi'],
+  [/^\/kisah\//, 'Kisah Nabi'],
+  [/^\/muslimah\/kalkulator$/, 'Kalkulator Haid & Nifas'],
+  [/^\/muslimah\/mandi-wajib$/, 'Panduan Mandi Wajib'],
+  [/^\/muslimah\/doa$/, 'Doa Khusus Wanita'],
+  [/^\/muslimah\/fikih$/, 'Fikih Wanita'],
+  [/^\/muslimah$/, 'Ruang Muslimah'],
+  [/^\/aksesibilitas$/, 'Pengaturan Aksesibilitas'],
+];
+
+function judulUntuk(pathname) {
+  const cocok = JUDUL_RUTE.find(([pola]) => pola.test(pathname));
+  return cocok ? cocok[1] : 'Noor';
+}
+
 export default function App() {
+  const location = useLocation();
+  const mainRef = useRef(null);
+  const pertamaRef = useRef(true);
+
+  // Setiap ganti rute: perbarui judul dokumen & pindahkan fokus ke konten
+  // utama, supaya pengguna keyboard/screen reader mulai dari awal halaman baru.
+  useEffect(() => {
+    document.title = `${judulUntuk(location.pathname)} — Noor`;
+    window.scrollTo(0, 0);
+    if (!pertamaRef.current) {
+      mainRef.current?.focus({ preventScroll: true });
+    }
+    pertamaRef.current = false;
+  }, [location.pathname]);
+
   return (
     <Shell>
+      <SkipLink href="#konten">Lewati ke konten utama</SkipLink>
       <AppHeader />
-      <Main>
+      <Main id="konten" ref={mainRef} tabIndex={-1}>
         <Outlet />
       </Main>
     </Shell>

@@ -130,9 +130,25 @@ function AyatCard({
   }, [aktif]);
 
   const tampilRef = tampilLatin || tampilTerjemah || aktif;
+  const pilih = () => onSelect?.(ayah);
+  const tekan = (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      pilih();
+    }
+  };
 
   return (
-    <Blok ref={ref} aktif={aktif} onClick={() => onSelect?.(ayah)} aria-label={`Ayat ${ayah.number}`}>
+    <Blok
+      ref={ref}
+      aktif={aktif}
+      onClick={pilih}
+      onKeyDown={tekan}
+      role="button"
+      tabIndex={0}
+      aria-current={aktif ? 'true' : undefined}
+      aria-label={`Ayat ${ayah.number} — ketuk atau tekan Enter untuk memutar dari sini`}
+    >
       {juzAwal > 0 && (
         <PitaJuz aria-label={`Awal Juz ${juzAwal}`}>
           <RubElHizb size={17} />

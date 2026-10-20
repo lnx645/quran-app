@@ -47,13 +47,23 @@ const InfoBaris = styled.div`
   font-weight: 600;
 `;
 
+// Area sentuh slider 32px (bar visual 10px di tengah) — ramah motorik.
+// Slider bisa dioperasikan keyboard: panah ←/→ ∓5 detik, Home/End, PageUp/Down ∓30 detik.
 const Track = styled.div`
   position: relative;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  touch-action: none;
+`;
+
+const BarVisual = styled.div`
+  position: relative;
+  width: 100%;
   height: 10px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.2);
-  cursor: pointer;
-  touch-action: none;
 `;
 
 const Fill = styled.div`
@@ -67,8 +77,8 @@ const Fill = styled.div`
 const PenandaAyat = styled.span`
   position: absolute;
   top: 50%;
-  width: 12px;
-  height: 12px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
   background: #fff;
   border: 2px solid ${({ theme }) => theme.colors.gold};
@@ -156,8 +166,42 @@ export default function PlayerBar({
 
   const klikTrack = (e) => {
     const r = e.currentTarget.getBoundingClientRect();
-    const rasio = (e.clientX - r.left) / r.width;
+    const rasio = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width));
     onSeek(rasio * durasiMs);
+  };
+
+  // Operasi keyboard penuh untuk slider (WCAG 2.1.1 & pola ARIA slider).
+  const tekanTrack = (e) => {
+    if (durasiMs <= 0) return;
+    const langkahKecil = 5000;
+    const langkahBesar = 30000;
+    let target = null;
+    switch (e.key) {
+      case 'ArrowLeft':
+      case 'ArrowDown':
+        target = posisiMs - langkahKecil;
+        break;
+      case 'ArrowRight':
+      case 'ArrowUp':
+        target = posisiMs + langkahKecil;
+        break;
+      case 'PageDown':
+        target = posisiMs - langkahBesar;
+        break;
+      case 'PageUp':
+        target = posisiMs + langkahBesar;
+        break;
+      case 'Home':
+        target = 0;
+        break;
+      case 'End':
+        target = durasiMs;
+        break;
+      default:
+        return;
+    }
+    e.preventDefault();
+    onSeek(Math.min(durasiMs, Math.max(0, target)));
   };
 
   return (
@@ -175,9 +219,22 @@ export default function PlayerBar({
             {fmt(posisiMs)} / {fmt(durasiMs)}
           </span>
         </InfoBaris>
-        <Track onClick={klikTrack} role="slider" aria-label="Posisi audio">
-          <Fill persen={persen} />
-          {persenAyat != null && <PenandaAyat persen={persenAyat} />}
+        <Track
+          onClick={klikTrack}
+          onKeyDown={tekanTrack}
+          tabIndex={0}
+          role="slider"
+          aria-label="Posisi audio"
+          aria-valuemin={0}
+          aria-valuemax={Math.round(durasiMs / 1000)}
+          aria-valuenow={Math.round(posisiMs / 1000)}
+          aria-valuetext={`${fmt(posisiMs)} dari ${fmt(durasiMs)}`}
+          aria-orientation="horizontal"
+        >
+          <BarVisual>
+            <Fill persen={persen} />
+            {persenAyat != null && <PenandaAyat persen={persenAyat} />}
+          </BarVisual>
         </Track>
         <Kontrol>
           <TombolSamping onClick={onPrev} aria-label="Ayat sebelumnya">
