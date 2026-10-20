@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { useParams, useSearchParams } from 'react-router-dom';
-import { FaExclamationTriangle } from 'react-icons/fa';
+import { FaExclamationTriangle, FaPlay } from 'react-icons/fa';
 import { QuranRepositoryImpl } from '../../data/repositories/QuranRepositoryImpl.js';
 import { DAFTAR_QARI, RECITER_ALAFASY } from '../../data/quranApi.js';
 import { useQari } from '../hooks/useQari.js';
@@ -41,6 +41,37 @@ function SurahSkeleton() {
     </Page>
   );
 }
+
+// FAB putar (Mode Baca Tenang): pengganti PlayerBar sebelum audio pernah
+// aktif. Posisinya dihitung dari strip ReadingControls yang selalu tampil:
+// strip itu fixed dengan bottom calc(166px + safe-area) (= tinggi PlayerBar)
+// dan min-height 54px, jadi tepi atasnya berada 220px dari bawah layar.
+// FAB ditaruh 12px di atas tepi itu: bottom = 166 + 54 + 12 = 232px.
+// z-index 56: tepat di atas ReadingControls (55), jauh di bawah overlay
+// drawer (90), panel drawer (100), dan dialog/modal (300).
+const TombolPutarMelayang = styled.button`
+  position: fixed;
+  right: 16px;
+  bottom: calc(232px + env(safe-area-inset-bottom));
+  z-index: 56;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: ${({ theme }) => theme.gradients.gold};
+  color: ${({ theme }) => theme.colors.primaryDeep};
+  box-shadow: ${({ theme }) => theme.shadows.gold};
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 19px;
+  transition: transform ${({ theme }) => theme.anim.fast} ${({ theme }) => theme.anim.ease};
+  &:active {
+    transform: scale(0.93);
+  }
+  /* Fokus keyboard: pola global :focus-visible di Aplikasi.jsx
+     (cincin emas 3px + offset) berlaku untuk tombol ini juga. */
+`;
 
 // Bar mini yang menempel saat panel surah tergulir keluar layar (mobile-first).
 const MiniBar = styled.div`
@@ -108,6 +139,43 @@ export default function SurahPage() {
   const wadahAyatRef = useRef(null);
   const [miniTampil, setMiniTampil] = useState(false);
   const ayatUcapRef = useRef(-1);
+
+  // Mode Baca Tenang: SATU boolean niat-buka tambahan — sumber kebenaran
+  // audio tetap useAudioSync (sync), bukan mesin state kedua. Visibilitas
+  // PlayerBar DITURUNKAN saat render (bukan efek), dari boolean ini + sync:
+  // - belum dibuka & audio belum berjalan → hanya FAB (PlayerBar tak dirender);
+  // - dibuka (FAB / klik ayat) ATAU audio sedang berjalan → PlayerBar penuh,
+  //   termasuk saat paused di tengah (posisi < durasi);
+  // - audio selesai: di useAudioSync, event 'ended' men-set playing=false
+  //   dengan posisi terkunci di durasi penuh → kondisi audioSelesai membuat
+  //   bar menyusut otomatis kembali ke FAB.
+  const [playerDibuka, setPlayerDibuka] = useState(false);
+  // Ganti surah → niat-buka direset (pola React: sesuaikan state saat
+  // "prop" berubah, di render — bukan di efek).
+  const [idPlayer, setIdPlayer] = useState(id);
+  if (idPlayer !== id) {
+    setIdPlayer(id);
+    setPlayerDibuka(false);
+  }
+  const audioSelesai =
+    !sync.playing && sync.durationMs > 0 && sync.positionMs >= sync.durationMs;
+  const playerTampil = (playerDibuka || sync.playing) && !audioSelesai;
+
+  // Ketuk FAB: tampilkan PlayerBar + putar bab — perilaku yang sama persis
+  // dengan tombol putar PlayerBar (sync.toggle).
+  const mulaiPutarDariFab = () => {
+    setPlayerDibuka(true);
+    sync.toggle();
+  };
+
+  // Tombol tutup PlayerBar: berhenti total — pause() + seekMs(0, false)
+  // mengembalikan sync persis ke keadaan awal (posisi 0, playing false) —
+  // lalu niat-buka dicabut → kembali ke FAB.
+  const tutupPlayer = () => {
+    sync.pause();
+    sync.seekMs(0, false);
+    setPlayerDibuka(false);
+  };
 
   // Mode terjemahan per kata: data kata (Map<verse_key, kata[]>) dimuat
   // MALAS — fetch hanya terjadi saat pref.perKata pertama kali menyala,
@@ -237,7 +305,12 @@ export default function SurahPage() {
             namaSurah={surah.nameLatin}
             aktif={sync.activeIndex === i}
             kataAktif={sync.activeIndex === i && sorotKataAktif ? sync.activeWord : -1}
-            onSelect={() => sync.seekToAyah(i)}
+            onSelect={() => {
+              // Klik ayat untuk seek tetap berperilaku sama (seek + putar);
+              // PlayerBar ikut tampil karena audio menjadi aktif.
+              setPlayerDibuka(true);
+              sync.seekToAyah(i);
+            }}
             juzAwal={juzMulaiPada(ayat.key)}
             arabSize={pref.arabSize}
             tampilLatin={pref.latin}
@@ -260,19 +333,30 @@ export default function SurahPage() {
         daftarQari={DAFTAR_QARI}
         ubahQari={ubahQari}
       />
-      <PlayerBar
-        playing={sync.playing}
-        onToggle={sync.toggle}
-        onPrev={() => sync.seekToAyah(Math.max(0, sync.activeIndex - 1))}
-        onNext={() => sync.seekToAyah(Math.min(ayahs.length - 1, (sync.activeIndex < 0 ? -1 : sync.activeIndex) + 1))}
-        posisiMs={sync.positionMs}
-        durasiMs={sync.durationMs}
-        onSeek={(ms) => sync.seekMs(ms)}
-        ayatAktif={ayatAktifNomor}
-        totalAyat={ayahs.length}
-        posisiAyatMs={sync.activeIndex >= 0 ? ayahs[sync.activeIndex].timing?.fromMs : null}
-        namaSurah={`Surah ${surah.nameLatin}`}
-      />
+      {playerTampil ? (
+        <PlayerBar
+          playing={sync.playing}
+          onToggle={sync.toggle}
+          onClose={tutupPlayer}
+          onPrev={() => sync.seekToAyah(Math.max(0, sync.activeIndex - 1))}
+          onNext={() => sync.seekToAyah(Math.min(ayahs.length - 1, (sync.activeIndex < 0 ? -1 : sync.activeIndex) + 1))}
+          posisiMs={sync.positionMs}
+          durasiMs={sync.durationMs}
+          onSeek={(ms) => sync.seekMs(ms)}
+          ayatAktif={ayatAktifNomor}
+          totalAyat={ayahs.length}
+          posisiAyatMs={sync.activeIndex >= 0 ? ayahs[sync.activeIndex].timing?.fromMs : null}
+          namaSurah={`Surah ${surah.nameLatin}`}
+        />
+      ) : (
+        <TombolPutarMelayang
+          type="button"
+          onClick={mulaiPutarDariFab}
+          aria-label="Putar audio surah"
+        >
+          <FaPlay style={{ marginLeft: 3 }} aria-hidden="true" />
+        </TombolPutarMelayang>
+      )}
     </Page>
   );
 }
