@@ -10,7 +10,46 @@ async function getJson(path) {
 }
 
 export function fetchChapter(id) {
-  return getJson(`/chapters/${id}`).then((d) => d.chapter);
+  return getJson(`/chapters/${id}?language=id`).then((d) => d.chapter);
+}
+
+/** Daftar 114 surah. language=id → nama terjemahan Bahasa Indonesia. */
+export function fetchChapters() {
+  return getJson('/chapters?language=id').then((d) => d.chapters);
+}
+
+/** Ukuran halaman aman untuk surah terpanjang (Al-Baqarah: 286 ayat). */
+export const VERSES_PAGE_SIZE = 300;
+
+function fetchVersesPage(id, page, perPage) {
+  const q = new URLSearchParams({
+    words: 'true',
+    translations: String(TRANSLATION_KEMENAG),
+    audio: String(RECITER_ALAFASY),
+    per_page: String(perPage),
+    page: String(page),
+    fields: 'text_uthmani',
+    word_fields: 'text_uthmani,transliteration',
+  });
+  return getJson(`/verses/by_chapter/${id}?${q}`);
+}
+
+/**
+ * Ambil SELURUH ayat sebuah surah: per_page=300 + loop halaman mengikuti
+ * pagination.next_page. Tahan untuk surah panjang (Al-Baqarah 286 ayat)
+ * dan perubahan batas per_page API.
+ */
+export async function fetchAllVersesByChapter(id) {
+  const all = [];
+  let page = 1;
+  for (;;) {
+    const d = await fetchVersesPage(id, page, VERSES_PAGE_SIZE);
+    all.push(...(d.verses ?? []));
+    const next = d.pagination?.next_page;
+    if (!next) break;
+    page = next;
+  }
+  return all;
 }
 
 export function fetchVersesByChapter(id, perPage) {

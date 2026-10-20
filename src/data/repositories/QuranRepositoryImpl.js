@@ -1,4 +1,4 @@
-import { fetchChapter, fetchVersesByChapter, fetchChapterRecitation } from '../quranApi.js';
+import { fetchChapter, fetchChapters, fetchAllVersesByChapter, fetchChapterRecitation } from '../quranApi.js';
 import { mapChapter, mapVerse, mapTimings } from '../dto/quranMapper.js';
 
 /**
@@ -7,10 +7,16 @@ import { mapChapter, mapVerse, mapTimings } from '../dto/quranMapper.js';
  * utuh dengan timestamps per ayat & segments per kata (Cara 2).
  */
 export const QuranRepositoryImpl = {
+  /** Daftar seluruh 114 surah → entity Surah[]. */
+  async getChapters() {
+    const chapters = await fetchChapters();
+    return chapters.map(mapChapter);
+  },
+
   async getSurahDetail(surahId) {
     const chapter = await fetchChapter(surahId);
     const [verses, audioFile] = await Promise.all([
-      fetchVersesByChapter(surahId, chapter.verses_count),
+      fetchAllVersesByChapter(surahId),
       fetchChapterRecitation(surahId),
     ]);
     const timingByKey = mapTimings(audioFile?.timestamps ?? []);
