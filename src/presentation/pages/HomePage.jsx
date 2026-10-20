@@ -156,7 +156,7 @@ const SEKSI = [
       { to: '/qadha-puasa', icon: <FaClipboardCheck />, kunci: 'beranda.qadha', desc: 'Catat utang & pembayaran puasa' },
       { to: '/utang-puasa', icon: <FaBookOpen />, kunci: 'menu.utangPuasa', desc: 'Buku utang puasa per tahun, centang lunas' },
       { to: '/ramadhan', icon: <FaMoon />, kunci: 'menu.ramadhan', desc: 'Hitung mundur, imsakiyah & tarawih' },
-      { to: '/hisnul-muslim', icon: <FaPrayingHands />, kunci: 'menu.hisnul', desc: '37 doa per aktivitas & situasi' },
+      { to: '/hisnul-muslim', icon: <FaPrayingHands />, kunci: 'menu.hisnul', desc: '101 doa per aktivitas & situasi' },
       { to: '/itikaf', icon: <FaMoon />, kunci: 'beranda.itikaf', desc: 'Panduan 10 malam terakhir Ramadhan' },
       { to: '/ruqyah', icon: <FaBookOpen />, kunci: 'beranda.ruqyah', desc: "Syar'iyyah + playlist ayat ruqyah" },
       { to: '/mutabaah', icon: <FaTasks />, kunci: 'menu.mutabaah', desc: 'Checklist amal harian & ringkasan 7 hari' },
