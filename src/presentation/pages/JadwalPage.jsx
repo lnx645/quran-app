@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import {
-  FaClock, FaMapMarkerAlt, FaBell, FaSun, FaMoon, FaCloudSun, FaTimes,
+  FaClock, FaMapMarkerAlt, FaBell, FaSun, FaMoon, FaCloudSun, FaTimes, FaBan,
 } from 'react-icons/fa';
 import { useJadwal, KOTA_OPSI } from '../hooks/useJadwal.js';
 import { CornerOrnament } from '../components/ornaments/index.js';
@@ -162,6 +162,13 @@ const CountdownBox = styled.div`
 const menitDariJam = (jam) => {
   const [h, m] = jam.split(':').map(Number);
   return h * 60 + m;
+};
+
+// Geser jam "HH:MM" sejumlah menit (untuk rentang waktu terlarang: syuruq
+// +15 menit & istiwa' −10 menit sebelum Zuhur) → tetap format "HH:MM".
+const tambahMenit = (jam, delta) => {
+  const total = ((menitDariJam(jam) + delta) % 1440 + 1440) % 1440;
+  return `${String(Math.floor(total / 60)).padStart(2, '0')}:${String(total % 60).padStart(2, '0')}`;
 };
 
 // Skeleton loading: tiruan kartu jadwal + deretan baris waktu.
@@ -335,12 +342,69 @@ export default function JadwalPage() {
             return (
               <BarisWaktu key={w.kunci} status={s}>
                 <span className="ikon">{ikonWaktu[w.nama] ?? <FaClock />}</span>
-                <span css={{ fontWeight: 600 }}>{w.nama}</span>
+                {w.kunci === 'Sunrise' ? (
+                  // Baris Syuruq: jam yang sama dengan Sunrise (timings.Sunrise
+                  // dari Aladhan) — penanda akhir waktu Subuh & awal waktu Dhuha.
+                  <span css={{ display: 'flex', flexDirection: 'column' }}>
+                    <span css={{ fontWeight: 600 }}>Syuruq</span>
+                    <span css={{ fontSize: 11.5, opacity: 0.75 }}>Matahari terbit</span>
+                  </span>
+                ) : (
+                  <span css={{ fontWeight: 600 }}>{w.nama}</span>
+                )}
                 {s === 'berikutnya' && <span className="lencana">Berikutnya</span>}
                 <span className="jam">{w.jam}</span>
               </BarisWaktu>
             );
           })}
+
+          <SectionTitle>
+            <FaBan /> Waktu Terlarang Sholat
+          </SectionTitle>
+          <Card>
+            <p css={(t) => ({ fontSize: 13.5, color: t.colors.muted, marginBottom: 12, lineHeight: 1.55 })}>
+              Tiga rentang waktu yang dilarang untuk sholat sunnah tanpa sebab, dihitung dari jadwal
+              hari ini:
+            </p>
+            {(() => {
+              const jamDari = (kunci) => data.waktu.find((w) => w.kunci === kunci)?.jam ?? '';
+              const rentang = [
+                {
+                  kunci: 'subuh-syuruq',
+                  ikon: <FaSun />,
+                  judul: 'Setelah Subuh hingga syuruq',
+                  jam: `${jamDari('Fajr')} – ${tambahMenit(jamDari('Sunrise'), 15)}`,
+                  ket: 'Sejak masuk Subuh sampai matahari terbit sempurna (±15 menit setelah syuruq).',
+                },
+                {
+                  kunci: 'istiwa',
+                  ikon: <FaClock />,
+                  judul: "Saat istiwa' sebelum Zuhur",
+                  jam: `${tambahMenit(jamDari('Dhuhr'), -10)} – ${jamDari('Dhuhr')}`,
+                  ket: 'Saat matahari tepat di tengah langit, sesaat sebelum tergelincir masuk Zuhur.',
+                },
+                {
+                  kunci: 'asar-maghrib',
+                  ikon: <FaMoon />,
+                  judul: 'Setelah Asar hingga terbenam',
+                  jam: `${jamDari('Asr')} – ${jamDari('Maghrib')}`,
+                  ket: 'Sejak masuk Asar sampai matahari terbenam sempurna (masuk waktu Maghrib).',
+                },
+              ];
+              return rentang.map((r) => (
+                <BarisWaktu key={r.kunci} status="">
+                  <span className="ikon">{r.ikon}</span>
+                  <span css={{ display: 'flex', flexDirection: 'column', gap: 2, minWidth: 0 }}>
+                    <span css={{ fontWeight: 600 }}>{r.judul}</span>
+                    <span css={(t) => ({ fontSize: 12.5, color: t.colors.muted, lineHeight: 1.45 })}>
+                      {r.ket}
+                    </span>
+                  </span>
+                  <span className="jam" css={{ fontSize: 15.5, whiteSpace: 'nowrap' }}>{r.jam}</span>
+                </BarisWaktu>
+              ));
+            })()}
+          </Card>
         </>
       )}
     </Page>
