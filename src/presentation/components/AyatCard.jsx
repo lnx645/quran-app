@@ -164,6 +164,24 @@ const SegmenTajwid = styled.span`
     aturan ? (theme.colors.tajwid?.[aturan] ?? 'inherit') : 'inherit'};
 `;
 
+/* Penanda ayat sajdah: simbol ۩ + label kecil di bawah teks ayat. */
+const PenandaSajdah = styled.p`
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 10px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: ${({ theme }) => theme.colors.goldDeep};
+  .simbol {
+    font-size: 19px;
+    line-height: 1;
+    color: ${({ theme }) => theme.colors.gold};
+  }
+`;
+
 /* Baris aksi di bawah ayat: tombol Tafsir (target sentuh ≥44px). */
 const BarisAksi = styled.div`
   display: flex;
@@ -353,6 +371,12 @@ function AyatCard({
           <AyatRosette nomor={ayah.number} aktif={aktif} size={40} />
         </span>
       </Arab>
+      {ayah.sajdah && (
+        <PenandaSajdah aria-label={`Ayat ${ayah.number} adalah ayat sajdah — disunnahkan sujud tilawah`}>
+          <span className="simbol" aria-hidden="true">۩</span>
+          <span>Ayat Sajdah · Sujud Tilawah</span>
+        </PenandaSajdah>
+      )}
       {tampilRef && (
         <RefBaris>
           Ayat {ayah.number} · {ayah.key}

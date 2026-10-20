@@ -1,5 +1,6 @@
 import { createSurah } from '../../domain/entities/Surah.js';
 import { createAyah } from '../../domain/entities/Ayah.js';
+import { adalahAyatSajdah } from '../sources/ayatSajdahData.js';
 
 /** DTO chapter Quran.com → entity Surah. */
 export function mapChapter(chapter) {
@@ -37,6 +38,10 @@ export function mapVerse(verse, timingByKey) {
     teksTajwid: verse.text_uthmani_tajweed ?? '',
     latin: words.map((w) => w.latin).filter(Boolean).join(' '),
     translation: verse.translations?.[0]?.text?.replace(/<[^>]+>/g, '') ?? '',
+    // Penanda ayat sajdah: sumber utama field `sajdah_number` API
+    // (terverifikasi curl 2026-10-20, mis. 7:206 → 1); daftar statis
+    // 14 ayat jumhur menambal bila API tidak mengirim field itu.
+    sajdah: verse.sajdah_number != null || adalahAyatSajdah(verse.verse_key),
     words,
     timing: t
       ? { fromMs: t.timestamp_from, toMs: t.timestamp_to, segments: t.segments ?? [] }

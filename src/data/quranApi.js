@@ -142,3 +142,20 @@ export function fetchChapterRecitation(id, reciterId = RECITER_ALAFASY) {
     (d) => d.audio_file
   );
 }
+
+/** Basis URL berkas audio per-ayat (field audio.url dari API bersifat relatif). */
+export const VERSES_AUDIO_BASE = 'https://verses.quran.com/';
+
+/**
+ * Audio PER-AYAT: GET /verses/by_key/{surah}:{ayat}?audio=7 → verse.audio.url
+ * (relatif, mis. "Alafasy/mp3/002255.mp3"). Terverifikasi curl 2026-10-20:
+ * endpoint membalas field audio untuk 2:255 dan berkasnya di
+ * verses.quran.com berstatus HTTP 200 (audio/mpeg). Dipakai pemutar
+ * berurutan dzikir untuk bacaan berupa ayat. Mengembalikan URL relatif
+ * apa adanya; repository yang melengkapinya menjadi URL utuh.
+ */
+export function fetchVerseAudio(surah, ayat) {
+  return getJson(`/verses/by_key/${surah}:${ayat}?audio=${RECITER_ALAFASY}`).then(
+    (d) => d.verse?.audio?.url ?? ''
+  );
+}

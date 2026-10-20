@@ -4,6 +4,8 @@ import {
   fetchAllVersesByChapter,
   fetchChapterRecitation,
   fetchWordTranslations,
+  fetchVerseAudio,
+  VERSES_AUDIO_BASE,
   searchVerses,
 } from '../quranApi.js';
 import { fetchTafsirAyat } from '../tafsirApi.js';
@@ -65,6 +67,16 @@ export const QuranRepositoryImpl = {
     const peta = mapWordTranslations(verses);
     cacheKata.set(id, peta);
     return peta;
+  },
+
+  /**
+   * URL audio per-ayat utuh (Quran.com verses/by_key, qari Al-Afasy) untuk
+   * pemutar berurutan dzikir. '' bila API tidak menyediakan audio ayat itu.
+   */
+  async getAudioAyatUrl(surah, ayat) {
+    const relatif = await fetchVerseAudio(Number(surah), Number(ayat));
+    if (!relatif) return '';
+    return /^https?:\/\//.test(relatif) ? relatif : `${VERSES_AUDIO_BASE}${relatif}`;
   },
 
   /** Tafsir Kemenag satu ayat (via API equran.id, dicache di tafsirApi). */

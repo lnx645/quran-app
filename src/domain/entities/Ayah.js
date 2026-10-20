@@ -21,6 +21,8 @@
  * @property {string} teksTajwid   Teks Arab bertanda tajwid mentah dari API
  *   (`text_uthmani_tajweed`, tag `<tajweed class=…>`); '' bila API tidak
  *   mengirimnya — render jatuh ke teks biasa. Diparse tajweedParser.
+ * @property {boolean} sajdah     Ayat sajdah (sujud tilawah): dari field
+ *   `sajdah_number` API, ditambal daftar statis 14 ayat jumhur
  * @property {AyahWord[]} words
  * @property {AyahTiming|null} timing
  */
@@ -33,6 +35,7 @@ export function createAyah(data) {
     latin: data.latin ?? '',
     translation: data.translation ?? '',
     teksTajwid: data.teksTajwid ?? '',
+    sajdah: Boolean(data.sajdah),
     words: Object.freeze(data.words ?? []),
     timing: data.timing ?? null,
   });
