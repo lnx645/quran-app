@@ -13,6 +13,7 @@ import {
   PanduanJenazahPage, AqiqahKurbanPage, MutabaahPage, NamaBayiPage, MasjidTerdekatPage,
   SholatIdPage, SholatMusafirPage, SholatSakitPage, DoaQunutPage, PanduanImamPage,
   IndeksTematikPage, SujudPage, KuisPage,
+  PanduanNikahPage, FikihKeluargaPage, MuamalahPage, WakafWasiatPage, HalalPage, ItikafPage, RuqyahPage, KhutbahPage, PeristiwaPage, RiyadhusPage, KonverterPage, StatistikPage, DataProgresPage,
 } from './lazyPages.jsx';
 
 // HomePage eager (chunk awal); halaman lain lazy lewat lazyPages.jsx.
@@ -55,6 +56,19 @@ const router = createBrowserRouter([
       { path: 'indeks-tematik', element: <IndeksTematikPage /> },
       { path: 'sujud', element: <SujudPage /> },
       { path: 'kuis', element: <KuisPage /> },
+      { path: 'panduan-nikah', element: <PanduanNikahPage /> },
+      { path: 'fikih-keluarga', element: <FikihKeluargaPage /> },
+      { path: 'muamalah', element: <MuamalahPage /> },
+      { path: 'wakaf-wasiat', element: <WakafWasiatPage /> },
+      { path: 'halal', element: <HalalPage /> },
+      { path: 'itikaf', element: <ItikafPage /> },
+      { path: 'ruqyah', element: <RuqyahPage /> },
+      { path: 'khutbah', element: <KhutbahPage /> },
+      { path: 'peristiwa', element: <PeristiwaPage /> },
+      { path: 'riyadhus', element: <RiyadhusPage /> },
+      { path: 'konverter', element: <KonverterPage /> },
+      { path: 'statistik', element: <StatistikPage /> },
+      { path: 'data-progres', element: <DataProgresPage /> },
       { path: 'muslimah', element: <MuslimahHubPage /> },
       { path: 'muslimah/kalkulator', element: <MuslimahKalkulatorPage /> },
       { path: 'muslimah/mandi-wajib', element: <MuslimahMandiWajibPage /> },

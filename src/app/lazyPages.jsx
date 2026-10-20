@@ -75,6 +75,19 @@ const _PanduanImam = lazy(() => import('../presentation/pages/PanduanImamPage.js
 const _IndeksTematik = lazy(() => import('../presentation/pages/IndeksTematikPage.jsx'));
 const _Sujud = lazy(() => import('../presentation/pages/SujudPage.jsx'));
 const _Kuis = lazy(() => import('../presentation/pages/KuisPage.jsx'));
+const _PanduanNikah = lazy(() => import('../presentation/pages/PanduanNikahPage.jsx'));
+const _FikihKeluarga = lazy(() => import('../presentation/pages/FikihKeluargaPage.jsx'));
+const _Muamalah = lazy(() => import('../presentation/pages/MuamalahPage.jsx'));
+const _WakafWasiat = lazy(() => import('../presentation/pages/WakafWasiatPage.jsx'));
+const _Halal = lazy(() => import('../presentation/pages/HalalPage.jsx'));
+const _Itikaf = lazy(() => import('../presentation/pages/ItikafPage.jsx'));
+const _Ruqyah = lazy(() => import('../presentation/pages/RuqyahPage.jsx'));
+const _Khutbah = lazy(() => import('../presentation/pages/KhutbahPage.jsx'));
+const _Peristiwa = lazy(() => import('../presentation/pages/PeristiwaPage.jsx'));
+const _Riyadhus = lazy(() => import('../presentation/pages/RiyadhusPage.jsx'));
+const _Konverter = lazy(() => import('../presentation/pages/KonverterPage.jsx'));
+const _Statistik = lazy(() => import('../presentation/pages/StatistikPage.jsx'));
+const _DataProgres = lazy(() => import('../presentation/pages/DataProgresPage.jsx'));
 
 export function SurahPage() {
   return (
@@ -459,6 +472,110 @@ export function KuisPage() {
   return (
     <Suspense fallback={<PageFallback />}>
       <_Kuis />
+    </Suspense>
+  );
+}
+
+export function PanduanNikahPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_PanduanNikah />
+    </Suspense>
+  );
+}
+
+export function FikihKeluargaPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_FikihKeluarga />
+    </Suspense>
+  );
+}
+
+export function MuamalahPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_Muamalah />
+    </Suspense>
+  );
+}
+
+export function WakafWasiatPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_WakafWasiat />
+    </Suspense>
+  );
+}
+
+export function HalalPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_Halal />
+    </Suspense>
+  );
+}
+
+export function ItikafPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_Itikaf />
+    </Suspense>
+  );
+}
+
+export function RuqyahPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_Ruqyah />
+    </Suspense>
+  );
+}
+
+export function KhutbahPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_Khutbah />
+    </Suspense>
+  );
+}
+
+export function PeristiwaPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_Peristiwa />
+    </Suspense>
+  );
+}
+
+export function RiyadhusPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_Riyadhus />
+    </Suspense>
+  );
+}
+
+export function KonverterPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_Konverter />
+    </Suspense>
+  );
+}
+
+export function StatistikPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_Statistik />
+    </Suspense>
+  );
+}
+
+export function DataProgresPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_DataProgres />
     </Suspense>
   );
 }

@@ -104,6 +104,19 @@ const JUDUL_RUTE = [
   [/^\/indeks-tematik$/, 'Indeks Tematik Al-Qur\'an'],
   [/^\/sujud$/, 'Panduan Sujud Sahwi, Syukur & Tilawah'],
   [/^\/kuis$/, 'Kuis Islami'],
+  [/^\/panduan-nikah$/, 'Panduan Nikah'],
+  [/^\/fikih-keluarga$/, 'Fikih Keluarga'],
+  [/^\/muamalah$/, 'Fikih Muamalah'],
+  [/^\/wakaf-wasiat$/, 'Wakaf & Wasiat'],
+  [/^\/halal$/, 'Makanan Halal & Adab Makan'],
+  [/^\/itikaf$/, "Panduan I'tikaf"],
+  [/^\/ruqyah$/, "Ruqyah Syar'iyyah"],
+  [/^\/khutbah$/, 'Teks Khutbah'],
+  [/^\/peristiwa$/, 'Peristiwa Islam'],
+  [/^\/riyadhus$/, 'Riyadhus Shalihin'],
+  [/^\/konverter$/, 'Konverter Hijriah'],
+  [/^\/statistik$/, 'Statistik Ibadah'],
+  [/^\/data-progres$/, 'Data Progres (Ekspor & Impor)'],
 ];
 
 function judulUntuk(pathname) {
