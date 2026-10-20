@@ -1,5 +1,12 @@
-import { fetchChapter, fetchChapters, fetchAllVersesByChapter, fetchChapterRecitation } from '../quranApi.js';
-import { mapChapter, mapVerse, mapTimings } from '../dto/quranMapper.js';
+import {
+  fetchChapter,
+  fetchChapters,
+  fetchAllVersesByChapter,
+  fetchChapterRecitation,
+  searchVerses,
+} from '../quranApi.js';
+import { fetchTafsirAyat } from '../tafsirApi.js';
+import { mapChapter, mapVerse, mapTimings, mapSearchResult } from '../dto/quranMapper.js';
 
 /**
  * Implementasi QuranRepository memakai Quran.com API v4.
@@ -27,6 +34,22 @@ export const QuranRepositoryImpl = {
       ayahs,
       audioUrl: audioFile?.audio_url ?? '',
       audioDurationMs: last?.timestamp_to ?? 0,
+    };
+  },
+
+  /** Tafsir Kemenag satu ayat (via API equran.id, dicache di tafsirApi). */
+  async getTafsirAyat(surahId, nomorAyat) {
+    return fetchTafsirAyat(Number(surahId), Number(nomorAyat));
+  },
+
+  /** Pencarian global → hasil ternormalisasi (lihat mapSearchResult). */
+  async searchQuran(query) {
+    const kata = String(query ?? '').trim();
+    if (!kata) return { total: 0, hasil: [] };
+    const search = await searchVerses(kata, { size: 20, page: 1 });
+    return {
+      total: Number(search?.total_results ?? 0),
+      hasil: (search?.results ?? []).map(mapSearchResult).filter((h) => h.surahId > 0),
     };
   },
 };
