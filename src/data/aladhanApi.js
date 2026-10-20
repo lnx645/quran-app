@@ -28,6 +28,24 @@ export function fetchHToG(hijriDateStr) {
 }
 
 /**
+ * Konversi Masehi → Hijriah LENGKAP (string DD-MM-YYYY Masehi):
+ * mengembalikan data utuh { hijri, gregorian } apa adanya dari API
+ * (terverifikasi curl 2026-10-20: hijri.day/month{number,en,ar}/year/
+ * weekday{en,ar}, gregorian.day/month{number,en}/year/weekday.en).
+ */
+export function fetchGToHLengkap(masehiDateStr) {
+  return getJson(`/gToH/${masehiDateStr}`);
+}
+
+/**
+ * Konversi Hijriah → Masehi LENGKAP (string DD-MM-YYYY Hijriah):
+ * data utuh { hijri, gregorian } — pasangan fetchGToHLengkap.
+ */
+export function fetchHToGLengkap(hijriDateStr) {
+  return getJson(`/hToG/${hijriDateStr}`);
+}
+
+/**
  * Konversi SATU BULAN Masehi penuh → Hijriah (1 panggilan untuk ±30 hari,
  * terverifikasi 2026-10-20) — jangan fetch gToH per hari.
  * @param {number} bulanMasehi 1-12
