@@ -35,7 +35,16 @@ export function useAudioSync(ayahs, audioUrl, totalMs) {
         setDurationMs(audio.duration * 1000);
       }
     };
-    const onEnd = () => setPlaying(false);
+    // Audio selesai: kunci posisi di durasi penuh agar bar progres tuntas 100%
+    // (currentTime sesaat sebelum 'ended' bisa berhenti sebelum durasi total).
+    const onEnd = () => {
+      setPlaying(false);
+      const penuh = Number.isFinite(audio.duration) && audio.duration > 0
+        ? audio.duration * 1000
+        : audio.currentTime * 1000;
+      setPositionMs(penuh);
+      setDurationMs((d) => (d > 0 ? d : penuh));
+    };
     audio.addEventListener('loadedmetadata', onMeta);
     audio.addEventListener('ended', onEnd);
     return () => {
@@ -88,11 +97,16 @@ export function useAudioSync(ayahs, audioUrl, totalMs) {
   );
 
   // Ayat aktif: timestamp_from <= posisi < timestamp_to.
+  // Posisi mencapai/melampaui akhir ayat terakhir (audio selesai) → ayat terakhir
+  // tetap aktif, bukan hilang (idx -1).
   const activeIndex = useMemo(() => {
     if (!ayahs?.length || positionMs <= 0) return positionMs > 0 ? 0 : -1;
     const idx = ayahs.findIndex(
       (a) => a.timing && positionMs >= a.timing.fromMs && positionMs < a.timing.toMs
     );
+    if (idx >= 0) return idx;
+    const terakhir = ayahs[ayahs.length - 1];
+    if (terakhir?.timing && positionMs >= terakhir.timing.toMs) return ayahs.length - 1;
     return idx;
   }, [ayahs, positionMs]);
 
