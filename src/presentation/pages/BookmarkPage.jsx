@@ -68,7 +68,7 @@ const Terjemahan = styled.p`
 `;
 
 const AreaCatatan = styled.div`
-  label {
+  label:not(.noor-kotak-label) {
     display: block;
     font-size: 12.5px;
     font-weight: 600;

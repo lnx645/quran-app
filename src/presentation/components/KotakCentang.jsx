@@ -60,7 +60,10 @@ const Label = styled.label`
 
 export default function KotakCentang({ id, checked, onChange, children, ...rest }) {
   return (
-    <Label htmlFor={id} {...rest}>
+    // className penanda WAJIB: aturan `label {}` generik di wadah formulir
+    // (Field dkk.) dikecualikan untuk kelas ini — tanpa penanda, aturan itu
+    // menimpa display:flex label ini dan tampilannya rusak (terbukti di Waris).
+    <Label htmlFor={id} {...rest} className="noor-kotak-label">
       <input
         id={id}
         type="checkbox"

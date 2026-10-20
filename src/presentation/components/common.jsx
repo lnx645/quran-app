@@ -128,7 +128,7 @@ export const GhostButton = styled.button`
 
 export const Field = styled.div`
   margin-bottom: 14px;
-  label {
+  label:not(.noor-kotak-label) {
     display: block;
     font-size: ${({ theme }) => theme.type.caption.size}px;
     font-weight: 600;

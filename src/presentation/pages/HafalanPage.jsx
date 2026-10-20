@@ -97,7 +97,7 @@ const KontrolBar = styled.div`
   gap: 14px;
   align-items: flex-end;
   margin-bottom: 14px;
-  label {
+  label:not(.noor-kotak-label) {
     display: block;
     font-size: 12.5px;
     font-weight: 600;
