@@ -304,6 +304,10 @@ const MENU = [
       { to: '/sholat-sunnah', icon: <FaMoon />, label: 'Sholat Sunnah' },
       { to: '/dzikir-bada-sholat', icon: <FaCloudSun />, label: "Dzikir Ba'da Sholat" },
       { to: '/sholat-jenazah', icon: <FaBook />, label: 'Sholat Jenazah' },
+      { to: '/panduan-puasa', icon: <FaBookOpen />, label: 'Panduan Puasa' },
+      { to: '/qadha-puasa', icon: <FaClipboardCheck />, label: 'Tracker Qadha Puasa' },
+      { to: '/ramadhan', icon: <FaMoon />, label: 'Mode Ramadhan' },
+      { to: '/hisnul-muslim', icon: <FaPrayingHands />, label: 'Hisnul Muslim' },
     ],
   },
   {
@@ -312,6 +316,8 @@ const MENU = [
       { to: '/iqro', icon: <FaGraduationCap />, label: 'Belajar Iqro' },
       { to: '/kisah', icon: <FaBook />, label: 'Kisah 25 Nabi' },
       { to: '/asmaul-husna', icon: <FaListUl />, label: 'Asmaul Husna' },
+      { to: '/hadits', icon: <FaBook />, label: 'Hadits Arbain Nawawi' },
+      { to: '/sirah', icon: <FaBookOpen />, label: 'Sirah Nabawiyah' },
     ],
   },
   {

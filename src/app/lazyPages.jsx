@@ -52,6 +52,12 @@ const _PanduanSholat = lazy(() => import('../presentation/pages/PanduanSholatPag
 const _SholatSunnah = lazy(() => import('../presentation/pages/SholatSunnahPage.jsx'));
 const _DzikirBadaSholat = lazy(() => import('../presentation/pages/DzikirBadaSholatPage.jsx'));
 const _SholatJenazah = lazy(() => import('../presentation/pages/SholatJenazahPage.jsx'));
+const _PanduanPuasa = lazy(() => import('../presentation/pages/PanduanPuasaPage.jsx'));
+const _QadhaPuasa = lazy(() => import('../presentation/pages/QadhaPuasaPage.jsx'));
+const _Ramadhan = lazy(() => import('../presentation/pages/RamadhanPage.jsx'));
+const _Hadits = lazy(() => import('../presentation/pages/HaditsPage.jsx'));
+const _HisnulMuslim = lazy(() => import('../presentation/pages/HisnulMuslimPage.jsx'));
+const _Sirah = lazy(() => import('../presentation/pages/SirahPage.jsx'));
 
 export function SurahPage() {
   return (
@@ -267,6 +273,48 @@ export function SholatJenazahPage() {
   return (
     <Suspense fallback={<PageFallback />}>
       <_SholatJenazah />
+    </Suspense>
+  );
+}
+export function PanduanPuasaPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_PanduanPuasa />
+    </Suspense>
+  );
+}
+export function QadhaPuasaPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_QadhaPuasa />
+    </Suspense>
+  );
+}
+export function RamadhanPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_Ramadhan />
+    </Suspense>
+  );
+}
+export function HaditsPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_Hadits />
+    </Suspense>
+  );
+}
+export function HisnulMuslimPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_HisnulMuslim />
+    </Suspense>
+  );
+}
+export function SirahPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_Sirah />
     </Suspense>
   );
 }

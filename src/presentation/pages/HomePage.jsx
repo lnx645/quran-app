@@ -8,6 +8,8 @@ import {
 } from 'react-icons/fa';
 import { Page, SectionTitle, MenuCard } from '../components/common.jsx';
 import LanjutkanMembaca from '../components/LanjutkanMembaca.jsx';
+import HaditsHariIni from '../components/HaditsHariIni.jsx';
+import AyatHariIni from '../components/AyatHariIni.jsx';
 import Logo from '../components/Logo.jsx';
 import OrnamentDivider from '../components/OrnamentDivider.jsx';
 import { GirihPattern, OrnamentBand, CornerOrnament, MosqueSilhouette, MoonStar } from '../components/ornaments/index.js';
@@ -98,6 +100,10 @@ const SEKSI = [
       { to: '/sholat-sunnah', icon: <FaMoon />, judul: 'Sholat Sunnah', desc: 'Dhuha, tahajud, witir & lainnya' },
       { to: '/dzikir-bada-sholat', icon: <FaCloudSun />, judul: "Dzikir Ba'da Sholat", desc: 'Wirid sesudah sholat dengan penghitung' },
       { to: '/sholat-jenazah', icon: <FaBook />, judul: 'Sholat Jenazah', desc: 'Empat takbir & bacaan tiap takbir' },
+      { to: '/panduan-puasa', icon: <FaBookOpen />, judul: 'Panduan Puasa', desc: 'Rukun, pembatal, niat & doa berbuka' },
+      { to: '/qadha-puasa', icon: <FaClipboardCheck />, judul: 'Tracker Qadha', desc: 'Catat utang & pembayaran puasa' },
+      { to: '/ramadhan', icon: <FaMoon />, judul: 'Mode Ramadhan', desc: 'Hitung mundur, imsakiyah & tarawih' },
+      { to: '/hisnul-muslim', icon: <FaPrayingHands />, judul: 'Hisnul Muslim', desc: '37 doa per aktivitas & situasi' },
     ],
   },
   {
@@ -107,6 +113,8 @@ const SEKSI = [
       { to: '/iqro', icon: <FaGraduationCap />, judul: 'Belajar Iqro', desc: 'Jilid 1\u20136: huruf, harakat & tajwid' },
       { to: '/kisah', icon: <FaBook />, judul: 'Kisah 25 Nabi', desc: 'Ringkasan teladan para nabi & rasul' },
       { to: '/asmaul-husna', icon: <FaListUl />, judul: 'Asmaul Husna', desc: '99 nama Allah & mode hafalan' },
+      { to: '/hadits', icon: <FaBook />, judul: 'Hadits Arbain', desc: '42 hadits: Arab, arti & perawi' },
+      { to: '/sirah', icon: <FaBookOpen />, judul: 'Sirah Nabawiyah', desc: 'Garis waktu kehidupan Rasulullah' },
     ],
   },
   {
@@ -159,6 +167,8 @@ export default function HomePage() {
       </Hero>
       <OrnamentDivider />
       <LanjutkanMembaca />
+      <HaditsHariIni />
+      <AyatHariIni />
       {SEKSI.map((seksi) => (
         <div key={seksi.nama}>
           <SectionTitle>
