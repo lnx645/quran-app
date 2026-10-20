@@ -12,7 +12,7 @@ import {
   PERAK_NISAB_GRAM, PERTANIAN_NISAB_GABAH_KG, PERTANIAN_NISAB_BERAS_KG, NISAB_TERNAK,
 } from '../../domain/usecases/hitungZakat.js';
 import {
-  Page, PageHero, Card, SectionTitle, Field, TextInput, ResultRow,
+  Page, PageHero, Card, SectionTitle, Field, TextInput, ResultRow, GoldCard,
 } from '../components/common.jsx';
 import { SegmenWadah, SegmenTab } from '../components/SegmentedControl.jsx';
 
@@ -92,7 +92,7 @@ export default function ZakatPage() {
   const [hargaLogam, setHargaLogam] = useState(HARGA_EMAS_DEFAULT);
   // Pertanian
   const [satuanTani, setSatuanTani] = useState('gabah');
-  const [hasilTani, setHasilTani] = useState(0);
+  const [panenKg, setPanenKg] = useState(0);
   const [pengairan, setPengairan] = useState('hujan');
   const [hargaTani, setHargaTani] = useState(0);
   // Peternakan
@@ -112,8 +112,8 @@ export default function ZakatPage() {
     [logam, beratLogam, hargaLogam],
   );
   const hasilTani = useMemo(
-    () => hitungZakatPertanian(hasilTani, satuanTani, pengairan, hargaTani),
-    [hasilTani, satuanTani, pengairan, hargaTani],
+    () => hitungZakatPertanian(panenKg, satuanTani, pengairan, hargaTani),
+    [panenKg, satuanTani, pengairan, hargaTani],
   );
   const hasilTernak = useMemo(
     () => hitungZakatPeternakan(hewan, ekor),
@@ -253,7 +253,7 @@ export default function ZakatPage() {
       )}
 
       {tab === 'fitrah' && (
-        <Card css={(t) => ({ border: `1px solid ${t.colors.gold}` })}>
+        <GoldCard>
           <Field>
             <label htmlFor="jiwa">Jumlah Jiwa</label>
             <TextInput
@@ -290,7 +290,7 @@ export default function ZakatPage() {
             <FaInfoCircle /> Zakat fitrah 2,5 kg beras per jiwa, dibayarkan sebelum shalat Idul
             Fitri.
           </Catatan>
-        </Card>
+        </GoldCard>
       )}
 
       {tab === 'emasPerak' && (
@@ -375,8 +375,8 @@ export default function ZakatPage() {
               id="hasil"
               inputMode="numeric"
               placeholder="cth: 1.000"
-              value={formatInput(hasilTani)}
-              onChange={(e) => setHasilTani(parseAngka(e.target.value))}
+              value={formatInput(panenKg)}
+              onChange={(e) => setPanenKg(parseAngka(e.target.value))}
             />
           </Field>
           <GrupLabel>Jenis pengairan</GrupLabel>
