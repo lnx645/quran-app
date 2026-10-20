@@ -140,6 +140,15 @@ export const Field = styled.div`
     font-weight: 600;
     color: ${({ theme }) => theme.colors.muted};
     margin-bottom: 6px;
+    /* Ikon di dalam label harus SEBARIS dengan teksnya. Reset global
+       aplikasi membuat semua svg display:block, jadi tanpa aturan ini
+       ikon label patah ke baris sendiri di atas teks (temuan user di
+       Jurnal Syukur & Khatam). */
+    svg {
+      display: inline-block;
+      vertical-align: -2px;
+      margin-right: 6px;
+    }
   }
 `;
 
