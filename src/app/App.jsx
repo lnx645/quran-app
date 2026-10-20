@@ -58,6 +58,7 @@ const JUDUL_RUTE = [
   [/^\/iqro\/\d+$/, 'judul.iqro'],
   [/^\/jadwal$/, 'judul.jadwal'],
   [/^\/zakat$/, 'judul.zakat'],
+  [/^\/sedekah$/, 'judul.sedekah'],
   [/^\/khatam$/, 'judul.khatam'],
   [/^\/tasbih$/, 'judul.tasbih'],
   [/^\/dzikir$/, 'judul.dzikir'],

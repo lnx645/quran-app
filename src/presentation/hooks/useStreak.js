@@ -63,7 +63,7 @@ export function catatAyatGlobal(kunciAyat) {
   terapkanGlobal((s) => catatAyatDomain(s, kunciAyat));
 }
 
-/** Catat aktivitas ('dzikir'|'sholat'|'mutabaah') hari ini dari halaman mana pun. */
+/** Catat aktivitas ('dzikir'|'sholat'|'mutabaah'|'sedekah') hari ini dari halaman mana pun. */
 export function catatAktivitasGlobal(jenis) {
   terapkanGlobal((s) => catatAktivitasDomain(s, jenis));
 }

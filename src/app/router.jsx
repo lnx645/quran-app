@@ -3,7 +3,7 @@ import App from './App.jsx';
 import HalamanGalat from '../presentation/pages/HalamanGalat.jsx';
 import HomePage from '../presentation/pages/HomePage.jsx';
 import {
-  SurahPage, IqroHubPage, IqroJilidPage, JadwalPage, ZakatPage, KhatamPage,
+  SurahPage, IqroHubPage, IqroJilidPage, JadwalPage, ZakatPage, SedekahPage, KhatamPage,
   TasbihPage, DzikirPage, DoaPage, SholatTrackerPage, KiblatPage, KalenderPage,
   AsmaulHusnaPage, KisahPage, KisahDetailPage, QuranListPage, MuslimahHubPage,
   MuslimahKalkulatorPage, MuslimahMandiWajibPage, MuslimahDoaPage, MuslimahFikihPage,
@@ -86,6 +86,7 @@ const router = createBrowserRouter([
       { path: 'iqro/:jilid', element: <IqroJilidPage /> },
       { path: 'jadwal', element: <JadwalPage /> },
       { path: 'zakat', element: <ZakatPage /> },
+      { path: 'sedekah', element: <SedekahPage /> },
       { path: 'khatam', element: <KhatamPage /> },
       { path: 'tasbih', element: <TasbihPage /> },
       { path: 'dzikir', element: <DzikirPage /> },

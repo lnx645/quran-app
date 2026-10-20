@@ -59,6 +59,7 @@ const DAFTAR_FITUR = [
   { tujuan: '/jadwal', judul: 'Jadwal Sholat', sub: 'Waktu sholat & hitung mundur adzan', kata: 'jadwal sholat shalat waktu adzan imsak subuh dzuhur zuhur ashar maghrib isya' },
   { tujuan: '/kiblat', judul: 'Arah Kiblat', sub: 'Kompas kiblat & sensor arah', kata: "arah kiblat qiblat kompas ka'bah kaabah makkah" },
   { tujuan: '/zakat', judul: 'Kalkulator Zakat', sub: 'Mal, profesi & fitrah', kata: 'zakat kalkulator hitung mal profesi fitrah emas perak beras penghasilan' },
+  { tujuan: '/sedekah', judul: 'Sedekah & Infaq', sub: 'Panduan & pencatat sedekah', kata: 'sedekah infaq shadaqah catat sedekah subuh jumat berbagi donasi' },
   { tujuan: '/waris', judul: 'Kalkulator Waris', sub: 'Hitung faraid dasar + penjelasan', kata: 'faraid faraidh warisan pembagian harta kalkulator waris ahli waris warisan' },
   { tujuan: '/fidyah', judul: 'Kalkulator Fidyah', sub: 'Fidyah puasa per hari', kata: 'fidyah kalkulator bayar utang puasa fidya tebusan' },
   { tujuan: '/kafarat', judul: 'Kafarat', sub: 'Sumpah, zhihar & lainnya', kata: 'kafarat kaffarat sumpah zhihar tebusan pelanggaran sumpah' },

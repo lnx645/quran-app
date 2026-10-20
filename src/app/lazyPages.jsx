@@ -27,6 +27,7 @@ const _IqroHub = lazyDenganPemulihan(() => import('../presentation/pages/IqroHub
 const _IqroJilid = lazyDenganPemulihan(() => import('../presentation/pages/IqroJilidPage.jsx'));
 const _Jadwal = lazyDenganPemulihan(() => import('../presentation/pages/JadwalPage.jsx'));
 const _Zakat = lazyDenganPemulihan(() => import('../presentation/pages/ZakatPage.jsx'));
+const _Sedekah = lazyDenganPemulihan(() => import('../presentation/pages/SedekahPage.jsx'));
 const _Khatam = lazyDenganPemulihan(() => import('../presentation/pages/KhatamPage.jsx'));
 const _Tasbih = lazyDenganPemulihan(() => import('../presentation/pages/TasbihPage.jsx'));
 const _Dzikir = lazyDenganPemulihan(() => import('../presentation/pages/DzikirPage.jsx'));
@@ -126,6 +127,13 @@ export function ZakatPage() {
   return (
     <Suspense fallback={<PageFallback />}>
       <_Zakat />
+    </Suspense>
+  );
+}
+export function SedekahPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_Sedekah />
     </Suspense>
   );
 }

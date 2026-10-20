@@ -209,6 +209,7 @@ const SEKSI = [
     ikon: <FaCoins />,
     items: [
       { to: '/zakat', icon: <FaCoins />, kunci: 'menu.zakat', desc: 'Mal, profesi & fitrah, otomatis terhitung' },
+      { to: '/sedekah', icon: <FaHandHoldingHeart />, kunci: 'menu.sedekah', desc: 'Panduan & pencatat sedekah harian' },
       { to: '/khatam', icon: <FaBookReader />, kunci: 'menu.khatam', desc: 'Checklist 30 juz & target harian' },
       { to: '/kiblat', icon: <FaCompass />, kunci: 'menu.kiblat', desc: 'Kompas kiblat & sensor arah perangkat' },
       { to: '/kalender', icon: <FaCalendarAlt />, kunci: 'menu.kalender', desc: 'Tanggal hijriah & hari besar Islam' },

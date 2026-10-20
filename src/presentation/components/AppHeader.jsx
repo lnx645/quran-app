@@ -375,6 +375,7 @@ const MENU = [
     kunciGrup: 'grup.utilitas',
     items: [
       { to: '/zakat', icon: <FaCalculator />, kunci: 'menu.zakat' },
+      { to: '/sedekah', icon: <FaHandHoldingHeart />, kunci: 'menu.sedekah' },
       { to: '/khatam', icon: <FaBookReader />, kunci: 'menu.khatam' },
       { to: '/kiblat', icon: <FaCompass />, kunci: 'menu.kiblat' },
       { to: '/kalender', icon: <FaCalendarAlt />, kunci: 'menu.kalender' },
