@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import { FaListUl, FaEyeSlash } from 'react-icons/fa';
 import { ASMAUL_HUSNA } from '../../data/sources/asmaulHusnaData.js';
 import { Page, PageTitle, PageSubtitle, Card, SectionTitle, GhostButton } from '../components/common.jsx';
+import NomorMedali from '../components/NomorMedali.jsx';
 
 const Grid = styled.div`
   display: grid;
@@ -15,17 +16,9 @@ const Kartu = styled(Card)`
   margin-bottom: 0;
   text-align: center;
   padding: 14px 8px;
-  .no {
-    display: inline-flex;
-    align-items: center;
+  .medali {
+    display: flex;
     justify-content: center;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: ${({ theme }) => theme.colors.primarySoft};
-    color: ${({ theme }) => theme.colors.judul};
-    font-size: 12px;
-    font-weight: 700;
     margin-bottom: 8px;
   }
   .ar {
@@ -63,7 +56,9 @@ export default function AsmaulHusnaPage() {
       <Grid>
         {ASMAUL_HUSNA.map((a) => (
           <Kartu key={a.nomor}>
-            <div className="no">{a.nomor}</div>
+            <div className="medali">
+              <NomorMedali nomor={a.nomor} ukuran={34} />
+            </div>
             <div className="ar" lang="ar">{a.arab}</div>
             <div className="lat">{a.latin}</div>
             <div className="arti">{sembunyiArti ? '…' : a.arti}</div>

@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { FaBookOpen, FaSearch, FaExclamationTriangle, FaSearchMinus } from 'react-icons/fa';
 import { useChapters } from '../hooks/useChapters.js';
 import { Page, PageHero, ErrorBox, Skeleton } from '../components/common.jsx';
+import NomorMedali from '../components/NomorMedali.jsx';
 import { stagger, reduceMotion } from '../components/motion.js';
 
 /**
@@ -128,23 +129,6 @@ const SurahLink = styled(Link)`
     box-shadow: ${({ theme }) => theme.shadows.card};
   }
   ${reduceMotion}
-`;
-
-const NumberBadge = styled.span`
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 44px;
-  height: 44px;
-  padding: 0 8px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, ${({ theme }) => theme.colors.primary}, ${({ theme }) => theme.colors.primaryMid});
-  color: ${({ theme }) => theme.colors.goldLight};
-  font-weight: 800;
-  font-size: 15px;
-  flex-shrink: 0;
-  box-shadow: inset 0 0 0 1px rgba(231, 198, 90, 0.45);
 `;
 
 const SurahInfo = styled.span`
@@ -319,7 +303,7 @@ export default function QuranListPage() {
             <Grid>
               {filtered.map((s) => (
                 <SurahLink key={s.id} to={`/surah/${s.id}`}>
-                  <NumberBadge>{s.id}</NumberBadge>
+                  <NomorMedali nomor={s.id} ukuran={46} />
                   <SurahInfo>
                     <span className="latin">{s.nameLatin}</span>
                     <span className="arti">{s.translationId}</span>
