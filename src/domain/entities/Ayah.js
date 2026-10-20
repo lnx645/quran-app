@@ -18,6 +18,9 @@
  * @property {string} arabic       Teks Arab lengkap (Uthmani)
  * @property {string} latin        Transliterasi latin gabungan per kata
  * @property {string} translation  Terjemahan Bahasa Indonesia (Kemenag, id 33)
+ * @property {string} teksTajwid   Teks Arab bertanda tajwid mentah dari API
+ *   (`text_uthmani_tajweed`, tag `<tajweed class=…>`); '' bila API tidak
+ *   mengirimnya — render jatuh ke teks biasa. Diparse tajweedParser.
  * @property {AyahWord[]} words
  * @property {AyahTiming|null} timing
  */
@@ -29,6 +32,7 @@ export function createAyah(data) {
     arabic: data.arabic ?? '',
     latin: data.latin ?? '',
     translation: data.translation ?? '',
+    teksTajwid: data.teksTajwid ?? '',
     words: Object.freeze(data.words ?? []),
     timing: data.timing ?? null,
   });

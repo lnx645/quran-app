@@ -6,7 +6,8 @@ import { FaMinus, FaPlus } from 'react-icons/fa';
  * Bar kontrol baca: strip ramping selebar area baca yang MENYATU di tepi
  * bawah, tepat menempel di atas PlayerBar (bukan pil melayang):
  * - A− / A+ : ukuran font Arab
- * - chip "Latin" & "Arti" : toggle tampil/sembunyi transliterasi & terjemahan
+ * - chip "Latin", "Arti" & "Tajwid" : toggle transliterasi, terjemahan,
+ *   dan pewarnaan tajwid pada teks Arab
  * Preferensi dikelola useReadingPrefs (localStorage) di SurahPage.
  * Tinggi PlayerBar ≈ 165px + safe-area — bar ini menempel persis di atasnya.
  */
@@ -76,7 +77,7 @@ const GrupChip = styled.div`
 
 const Chip = styled.button`
   min-height: 44px;
-  padding: 0 16px;
+  padding: 0 13px;
   border-radius: 999px;
   border: 1px solid ${({ theme, aktif }) => (aktif ? theme.colors.gold : theme.colors.border)};
   background: ${({ theme, aktif }) =>
@@ -109,6 +110,9 @@ export default function ReadingControls({ pref, ubah, tambahArab, kurangArab }) 
         </Chip>
         <Chip aktif={pref.terjemah} onClick={() => ubah({ terjemah: !pref.terjemah })} aria-pressed={pref.terjemah}>
           Arti
+        </Chip>
+        <Chip aktif={pref.tajwid} onClick={() => ubah({ tajwid: !pref.tajwid })} aria-pressed={pref.tajwid} aria-label="Warnai huruf sesuai aturan tajwid">
+          Tajwid
         </Chip>
       </GrupChip>
     </Bar>

@@ -28,7 +28,7 @@ function fetchVersesPage(id, page, perPage) {
     audio: String(RECITER_ALAFASY),
     per_page: String(perPage),
     page: String(page),
-    fields: 'text_uthmani',
+    fields: 'text_uthmani,text_uthmani_tajweed',
     word_fields: 'text_uthmani,transliteration',
   });
   return getJson(`/verses/by_chapter/${id}?${q}`);
@@ -58,10 +58,27 @@ export function fetchVersesByChapter(id, perPage) {
     translations: String(TRANSLATION_KEMENAG),
     audio: String(RECITER_ALAFASY),
     per_page: String(perPage),
-    fields: 'text_uthmani',
+    fields: 'text_uthmani,text_uthmani_tajweed',
     word_fields: 'text_uthmani,transliteration',
   });
   return getJson(`/verses/by_chapter/${id}?${q}`).then((d) => d.verses);
+}
+
+/**
+ * Pencarian global Quran.com v4: GET /search?q=..&language=id.
+ * Terverifikasi 2026-10-20: language=id mengembalikan terjemahan Indonesia
+ * (resource_id 33 = Kemenag termasuk di dalamnya) dan kata yang cocok
+ * dibungkus tag <em> di dalam teks terjemahan.
+ * Melempar d.search apa adanya; normalisasi dilakukan repository/mapper.
+ */
+export function searchVerses(query, { size = 20, page = 1 } = {}) {
+  const q = new URLSearchParams({
+    q: String(query),
+    language: 'id',
+    size: String(size),
+    page: String(page),
+  });
+  return getJson(`/search?${q}`).then((d) => d.search);
 }
 
 /** Audio satu file utuh per surah + timestamps per ayat & segments per kata (Cara 2). */

@@ -34,6 +34,7 @@ export function mapVerse(verse, timingByKey) {
     number: verse.verse_number,
     key: verse.verse_key,
     arabic: verse.text_uthmani ?? words.map((w) => w.arabic).join(' '),
+    teksTajwid: verse.text_uthmani_tajweed ?? '',
     latin: words.map((w) => w.latin).filter(Boolean).join(' '),
     translation: verse.translations?.[0]?.text?.replace(/<[^>]+>/g, '') ?? '',
     words,
@@ -41,6 +42,30 @@ export function mapVerse(verse, timingByKey) {
       ? { fromMs: t.timestamp_from, toMs: t.timestamp_to, segments: t.segments ?? [] }
       : null,
   });
+}
+
+/**
+ * DTO hasil pencarian Quran.com → bentuk ternormalisasi untuk halaman Cari.
+ * Terjemahan dipilih: resource 33 (Kemenag) bila ada, selain itu terjemahan
+ * Indonesia pertama, selain itu terjemahan pertama. Tag <em> (penanda kata
+ * cocok dari API) dibersihkan dari teksTerjemahan, tetapi dipertahankan di
+ * terjemahanSorot agar UI bisa menyorot kata yang cocok.
+ */
+export function mapSearchResult(result) {
+  const [surahIdStr, nomorAyatStr] = String(result.verse_key ?? '').split(':');
+  const terjemahanDipilih =
+    result.translations?.find((t) => t.resource_id === 33) ??
+    result.translations?.find((t) => t.language_name === 'indonesian') ??
+    result.translations?.[0];
+  const mentah = terjemahanDipilih?.text ?? '';
+  return {
+    verseKey: result.verse_key ?? '',
+    surahId: Number(surahIdStr) || 0,
+    nomorAyat: Number(nomorAyatStr) || 0,
+    teksArab: result.text ?? '',
+    teksTerjemahan: mentah.replace(/<[^>]+>/g, ''),
+    terjemahanSorot: mentah,
+  };
 }
 
 /** audio_file.timestamps → Map<verse_key, timingDTO>. */

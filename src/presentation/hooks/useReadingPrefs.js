@@ -5,9 +5,10 @@ import { useCallback, useEffect, useState } from 'react';
  * - arabSize: ukuran font Arab (px) 26–46
  * - latin: tampilkan transliterasi latin per kata (default: tersembunyi)
  * - terjemah: tampilkan terjemahan (default: tampil)
+ * - tajwid: warnai teks Arab per aturan tajwid (default: mati)
  */
 const KUNCI = 'noor.prefBaca.v1';
-const BAWAAN = { arabSize: 32, latin: false, terjemah: true };
+const BAWAAN = { arabSize: 32, latin: false, terjemah: true, tajwid: false };
 
 function muat() {
   try {
@@ -18,6 +19,7 @@ function muat() {
       arabSize: Math.min(46, Math.max(26, Number(data.arabSize) || BAWAAN.arabSize)),
       latin: Boolean(data.latin),
       terjemah: data.terjemah !== false,
+      tajwid: Boolean(data.tajwid),
     };
   } catch {
     return BAWAAN;

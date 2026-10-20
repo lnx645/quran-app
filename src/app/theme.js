@@ -40,6 +40,22 @@ export const theme = {
     paperDeep: '#F3E7C3', // kertas lebih gelap: highlight ayat aktif (halus)
     danger: '#B91C1C',
     success: '#15803D',
+    // Warna tajwid (item 6) — kunci = kelompok aturan dari tajweedParser.
+    // Dipakai HANYA pada teks Arab besar (±32px, teks besar WCAG ≥3:1) di
+    // atas kertas mushaf terang/gelap. Nilai dipilih jenuh-pekat agar tetap
+    // terbaca di kertas ivory (#FBF3DC) maupun kertas gelap (#21271F);
+    // varian kontras menimpa peta ini dengan warna yang lebih pekat lagi.
+    tajwid: {
+      mad: '#1D4ED8', // biru — mad (panjang bacaan)
+      ghunnah: '#C2410C', // oranye bakar — dengung
+      qalqalah: '#B91C1C', // merah — pantulan qalqalah
+      ikhfa: '#7E22CE', // ungu — samar (ikhfa)
+      idgham: '#15803D', // hijau — lebur (idgham)
+      iqlab: '#BE185D', // magenta — tukar bunyi (iqlab)
+      hamzahWasal: '#6D28D9', // ungu muda-pekat — hamzah wasal (dibaca bila awal)
+      lamSyamsiyah: '#0F766E', // teal — lam syamsiyah (lebur ke huruf berikutnya)
+      slnt: '#78716C', // abu hangat — huruf yang tidak dibaca (slnt/silent)
+    },
   },
   // Skala tipografi — hierarki display → heading → body → caption.
   // display: judul halaman; heroTitle: judul PageHero; h2: SectionTitle;
@@ -144,6 +160,19 @@ const varianGelap = {
     kilau: '#2C3A30',
     danger: '#F87171',
     success: '#4ADE80',
+    // Tajwid versi gelap: versi cerah dari warna dasar agar terbaca di
+    // atas kertas arang kehijauan (#21271F) pada teks Arab besar.
+    tajwid: {
+      mad: '#7FB0FF',
+      ghunnah: '#FF9E5E',
+      qalqalah: '#FF8A80',
+      ikhfa: '#D8A6FF',
+      idgham: '#7ED491',
+      iqlab: '#FF9EC4',
+      hamzahWasal: '#B79CFF',
+      lamSyamsiyah: '#5ED6C8',
+      slnt: '#B8B0A6',
+    },
   },
   gradients: {
     goldSoftCard: 'linear-gradient(180deg, #22301F 0%, #18211C 58%)',
@@ -186,6 +215,18 @@ const varianKontras = {
     kilau: '#E4E4E4',
     danger: '#B00020',
     success: '#00691F',
+    // Tajwid versi kontras tinggi: semua ≥4,5:1 di atas putih/kertas kontras.
+    tajwid: {
+      mad: '#003FA3',
+      ghunnah: '#9A3400',
+      qalqalah: '#B00020',
+      ikhfa: '#5B00A6',
+      idgham: '#00691F',
+      iqlab: '#A10046',
+      hamzahWasal: '#4A00A8',
+      lamSyamsiyah: '#00584F',
+      slnt: '#444444',
+    },
   },
   gradients: {
     goldSoftCard: 'linear-gradient(180deg, #FFF3C4 0%, #FFFFFF 58%)',
