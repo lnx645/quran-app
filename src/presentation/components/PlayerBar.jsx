@@ -41,10 +41,21 @@ const InfoBaris = styled.div`
   display: flex;
   align-items: baseline;
   justify-content: space-between;
+  gap: 12px;
   font-size: 12.5px;
   color: ${({ theme }) => theme.colors.goldLight};
   margin-bottom: 7px;
   font-weight: 600;
+  > span:first-of-type {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  > span:last-of-type {
+    flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
+  }
 `;
 
 // Area sentuh slider 32px (bar visual 10px di tengah) — ramah motorik.

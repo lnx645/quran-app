@@ -221,12 +221,14 @@ function KompasDial({ bearing, heading, rotasi, getarAktif = true }) {
             background: sejajar ? t.gradients.gold : t.colors.goldSoft,
             border: sejajar ? 'none' : `1px solid ${t.colors.gold}`,
             color: t.colors.primaryDeep,
-            fontSize: sejajar ? 16 : 13.5,
+            fontSize: sejajar ? 16 : 13,
             fontWeight: 800,
             boxShadow: sejajar ? t.shadows.gold : 'none',
             display: 'inline-flex',
             alignItems: 'center',
             gap: 7,
+            whiteSpace: 'nowrap',
+            maxWidth: '100%',
           })}
         >
           {sejajar ? (
@@ -235,7 +237,7 @@ function KompasDial({ bearing, heading, rotasi, getarAktif = true }) {
             </>
           ) : (
             <>
-              <FaCompass /> Arah kiblat ditemukan — putar sedikit lagi
+              <FaCompass /> Hampir sampai — arah kiblat ditemukan
             </>
           )}
         </div>

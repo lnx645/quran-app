@@ -25,20 +25,35 @@ const Bar = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: 10px;
   min-height: 54px;
-  padding: 5px 10px;
+  padding: 5px 12px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
   background: ${({ theme }) => theme.colors.barKaca};
   backdrop-filter: blur(8px) saturate(1.15);
   -webkit-backdrop-filter: blur(8px) saturate(1.15);
   border-top: 2px solid ${({ theme }) => theme.colors.gold};
   box-shadow: 0 -3px 10px rgba(4, 37, 31, 0.07);
+  > * {
+    flex-shrink: 0;
+  }
 `;
 
 const GrupFont = styled.div`
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
+`;
+
+const Pembatas = styled.span`
+  width: 1px;
+  height: 28px;
+  background: ${({ theme }) => theme.colors.border};
+  flex-shrink: 0;
 `;
 
 const TombolFont = styled.button`
@@ -62,22 +77,23 @@ const TombolFont = styled.button`
 `;
 
 const LabelUkuran = styled.span`
-  min-width: 30px;
+  min-width: 32px;
   text-align: center;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 800;
+  font-variant-numeric: tabular-nums;
   color: ${({ theme }) => theme.colors.goldDeep};
 `;
 
 const GrupChip = styled.div`
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
 `;
 
 const Chip = styled.button`
   min-height: 44px;
-  padding: 0 13px;
+  padding: 0 12px;
   border-radius: 999px;
   border: 1px solid ${({ theme, aktif }) => (aktif ? theme.colors.gold : theme.colors.border)};
   background: ${({ theme, aktif }) =>
@@ -104,6 +120,7 @@ export default function ReadingControls({ pref, ubah, tambahArab, kurangArab }) 
           <FaPlus />
         </TombolFont>
       </GrupFont>
+      <Pembatas aria-hidden="true" />
       <GrupChip>
         <Chip aktif={pref.latin} onClick={() => ubah({ latin: !pref.latin })} aria-pressed={pref.latin}>
           Latin

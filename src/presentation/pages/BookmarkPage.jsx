@@ -255,8 +255,8 @@ export default function BookmarkPage() {
               Belum ada bookmark. Ketuk ikon bookmark pada ayat mana pun saat membaca, lalu kembali
               ke sini untuk menulis catatanmu.
             </p>
-            <Link to="/quran">
-              <PrimaryButton type="button">
+            <Link to="/quran" css={{ display: 'inline-block', width: 'min(300px, 100%)' }}>
+              <PrimaryButton type="button" css={{ width: '100%' }}>
                 <FaBookOpen /> Lihat Daftar Surah
               </PrimaryButton>
             </Link>
