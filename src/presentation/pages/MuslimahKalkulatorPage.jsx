@@ -24,7 +24,7 @@ const VonisBadge = styled.div`
   background: ${({ theme, jenis }) =>
     jenis === 'ISTIHADAH' ? theme.colors.primarySoft : theme.colors.goldSoft};
   color: ${({ theme, jenis }) =>
-    jenis === 'ISTIHADAH' ? theme.colors.primaryDark : theme.colors.goldDeep};
+    jenis === 'ISTIHADAH' ? theme.colors.judul : theme.colors.goldDeep};
   border: 1.5px solid
     ${({ theme, jenis }) => (jenis === 'ISTIHADAH' ? theme.colors.primary : theme.colors.gold)};
 `;
@@ -341,9 +341,9 @@ export default function MuslimahKalkulatorPage() {
             Object.entries(hasil.ibadah).map(([kunci, s]) => (
               <StatusRow key={kunci}>
                 {s.boleh ? (
-                  <FaCheckCircle css={{ color: '#15803D' }} />
+                  <FaCheckCircle css={(t) => ({ color: t.colors.success })} />
                 ) : (
-                  <FaTimesCircle css={{ color: '#B91C1C' }} />
+                  <FaTimesCircle css={(t) => ({ color: t.colors.danger })} />
                 )}
                 <div>
                   <div className="t">

@@ -40,7 +40,7 @@ const StreakBox = styled(GoldCard)`
     font-family: ${({ theme }) => theme.fonts.display};
     font-size: 44px;
     font-weight: 700;
-    color: ${({ theme }) => theme.colors.primaryDeep};
+    color: ${({ theme }) => theme.colors.judul};
   }
 `;
 

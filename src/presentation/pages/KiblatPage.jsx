@@ -36,7 +36,7 @@ const Lencana = styled.span`
   font-size: 11.5px;
   font-weight: 800;
   background: ${({ theme, noaa }) => (noaa ? theme.colors.primarySoft : theme.colors.goldSoft)};
-  color: ${({ theme, noaa }) => (noaa ? theme.colors.primaryDark : theme.colors.goldDeep)};
+  color: ${({ theme, noaa }) => (noaa ? theme.colors.judul : theme.colors.goldDeep)};
   border: 1px solid ${({ theme, noaa }) => (noaa ? theme.colors.primary : theme.colors.gold)};
 `;
 

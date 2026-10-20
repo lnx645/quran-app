@@ -23,6 +23,17 @@ export const theme = {
     faint: '#5F7268', // meta ringan — lolos AA di ivory (4,75:1) & kertas (4,63:1)
     border: '#E6D9BC', // border hangat
     onPrimary: '#FFFFFF', // teks di atas emerald
+    // Token semantik teks khusus — nilainya di mode terang SAMA PERSIS
+    // dengan token lama agar tampilan terang tidak berubah; varian gelap
+    // memberi nilai terang yang terbaca di atas permukaan gelap.
+    judul: '#04251F', // teks judul/penekanan (== primaryDeep di terang)
+    teksArab: '#1E2A26', // teks Arab bacaan (== text di terang)
+    teksLatin: '#5F6E66', // transliterasi latin (== muted di terang)
+    teksTerjemah: '#0B5345', // terjemahan (== primary di terang)
+    barKaca: 'rgba(255, 253, 244, 0.97)', // latar bar kontrol baca (kaca ivory)
+    dangerSoft: '#FEF2F2', // latar ErrorBox
+    dangerBorder: '#FECACA', // border ErrorBox
+    kilau: '#EEE1C3', // kilau tengah Skeleton (shimmer)
     // Kertas mushaf — halaman baca (SurahPage) ala mushaf cetak
     paper: '#FBF3DC', // kertas hangat area baca
     paperCard: '#FFFDF4', // kartu ayat di atas kertas (sedikit lebih terang)
@@ -80,6 +91,8 @@ export const theme = {
     gold: 'linear-gradient(135deg, #C9A227 0%, #E7C65A 100%)',
     goldSoftCard:
       'linear-gradient(180deg, #F9F1D6 0%, #FFFFFF 58%)',
+    // Kertas mushaf MushafFrame: puncak kertas → latar halaman (130%).
+    paperFrame: 'linear-gradient(180deg, #FDF9EC 0%, #FAF6EC 130%)',
   },
   shadows: {
     // Bayangan lembut BERLAPIS (2 lapis): garis kontak + sebaran jauh.
@@ -100,13 +113,17 @@ export default theme;
 // Mode GELAP: latar gelap redup-silau, teks terang berkontras tinggi.
 // Mode KONTRASTINGGI: putih/hijau pekat — semua teks ≥ 7:1 sebisa mungkin.
 // Token lain (tipografi, spasi, animasi) diwarisi dari tema dasar.
+// Palet gelap dirancang khusus (bukan invert): kertas mushaf = arang
+// kehijauan hangat, blok ayat aktif sedikit lebih terang dengan nuansa
+// zaitun-emas lembut (saturasi rendah — bukan coklat lumpur), teks Arab
+// ivory hangat, terjemahan sage terang, latin emas pucat.
 const varianGelap = {
   colors: {
     primary: '#35B48F',
     primaryMid: '#2E9E7D',
     primarySoft: '#14352B',
     goldDeep: '#D9AE3F', // 5,1:1 di latar gelap; 5,7:1 di goldSoft gelap
-    goldSoft: '#3A2F0E',
+    goldSoft: '#2E2A15', // emas lembut gelap, desaturasi (dulu #3A2F0E coklat)
     bg: '#0E1512',
     surface: '#18211C',
     surfaceAlt: '#1F2B24',
@@ -114,14 +131,27 @@ const varianGelap = {
     muted: '#A9B8AF', // 9,0:1
     faint: '#8FA398', // ≈6,5:1 — tetap lolos AA
     border: '#2E4638',
-    paper: '#171D18',
-    paperCard: '#1C241E',
-    paperDeep: '#26200F',
+    paper: '#21271F', // kertas arang kehijauan hangat
+    paperCard: '#262E25', // kartu di atas kertas gelap
+    paperDeep: '#2F382A', // ayat aktif: lebih terang dari kertas, zaitun lembut
+    judul: '#F0EAD6', // judul/penekanan: ivory hangat terang
+    teksArab: '#F3ECDB', // Arab: ivory hangat terang
+    teksLatin: '#D9C48D', // latin: emas pucat
+    teksTerjemah: '#ABCBA2', // terjemahan: sage terang
+    barKaca: 'rgba(33, 39, 31, 0.97)', // bar kontrol baca menyatu kertas gelap
+    dangerSoft: '#2B1512',
+    dangerBorder: '#7A352A',
+    kilau: '#2C3A30',
     danger: '#F87171',
     success: '#4ADE80',
   },
   gradients: {
     goldSoftCard: 'linear-gradient(180deg, #22301F 0%, #18211C 58%)',
+    paperFrame: 'linear-gradient(180deg, #252C24 0%, #1D231D 130%)',
+  },
+  shadows: {
+    card: '0 1px 2px rgba(0, 0, 0, 0.45), 0 8px 24px rgba(0, 0, 0, 0.5)',
+    lift: '0 2px 5px rgba(0, 0, 0, 0.5), 0 16px 38px rgba(0, 0, 0, 0.55)',
   },
 };
 
@@ -146,11 +176,20 @@ const varianKontras = {
     paper: '#FFFFFF',
     paperCard: '#FFFFFF',
     paperDeep: '#FFEFA8',
+    judul: '#002A22', // == primaryDeep kontras
+    teksArab: '#000000', // == text kontras
+    teksLatin: '#333333', // == muted kontras
+    teksTerjemah: '#00473A', // == primary kontras
+    barKaca: 'rgba(255, 255, 255, 0.97)',
+    dangerSoft: '#FEF2F2',
+    dangerBorder: '#FECACA',
+    kilau: '#E4E4E4',
     danger: '#B00020',
     success: '#00691F',
   },
   gradients: {
     goldSoftCard: 'linear-gradient(180deg, #FFF3C4 0%, #FFFFFF 58%)',
+    paperFrame: 'linear-gradient(180deg, #FDF9EC 0%, #FFFFFF 130%)',
   },
 };
 
@@ -166,6 +205,7 @@ export function buatTema(modeEfektif, opsi = {}) {
     ...theme,
     colors: { ...theme.colors, ...(varian?.colors ?? {}) },
     gradients: { ...theme.gradients, ...(varian?.gradients ?? {}) },
+    shadows: { ...theme.shadows, ...(varian?.shadows ?? {}) },
     fonts: { ...theme.fonts },
     mode: modeEfektif,
   };

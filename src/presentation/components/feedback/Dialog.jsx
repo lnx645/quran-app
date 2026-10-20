@@ -36,7 +36,7 @@ const Judul = styled.h2`
   font-family: ${({ theme }) => theme.fonts.display};
   font-size: 19px;
   font-weight: 700;
-  color: ${({ theme }) => theme.colors.primaryDeep};
+  color: ${({ theme }) => theme.colors.judul};
   svg {
     flex-shrink: 0;
     color: ${({ bahaya, theme }) => (bahaya ? theme.colors.danger : theme.colors.goldDeep)};

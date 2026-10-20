@@ -56,7 +56,7 @@ export default function AyatRosette({ nomor, aktif = false, size = 42, style }) 
         dominantBaseline="central"
         fontSize={teksSize}
         fontWeight="800"
-        fill={aktif ? '#fff' : theme.colors.primaryDeep}
+        fill={aktif ? '#fff' : theme.colors.judul}
         fontFamily="Inter, system-ui, sans-serif"
       >
         {nomor}

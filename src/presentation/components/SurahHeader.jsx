@@ -35,7 +35,7 @@ const NamaArab = styled.div`
   font-family: ${({ theme }) => theme.fonts.arabic};
   font-size: 44px;
   line-height: 1.5;
-  color: ${({ theme }) => theme.colors.primaryDeep};
+  color: ${({ theme }) => theme.colors.judul};
   text-shadow: 0 1px 0 rgba(201, 162, 39, 0.25);
   @media (min-width: ${({ theme }) => theme.breakpoints.md}px) {
     font-size: 50px;
@@ -85,7 +85,7 @@ const BlokBasmalah = styled.div`
     /* clamp: mengecil halus di HP sempit agar basmalah utuh SATU baris */
     font-size: clamp(20px, 6.9vw, 30px);
     line-height: 1.9;
-    color: ${({ theme }) => theme.colors.text};
+    color: ${({ theme }) => theme.colors.teksArab};
     display: flex;
     align-items: center;
     justify-content: center;

@@ -23,7 +23,7 @@ const Kartu = styled(Card)`
     height: 28px;
     border-radius: 50%;
     background: ${({ theme }) => theme.colors.primarySoft};
-    color: ${({ theme }) => theme.colors.primaryDeep};
+    color: ${({ theme }) => theme.colors.judul};
     font-size: 12px;
     font-weight: 700;
     margin-bottom: 8px;
@@ -32,7 +32,7 @@ const Kartu = styled(Card)`
     font-family: ${({ theme }) => theme.fonts.arabic};
     font-size: 30px;
     line-height: 1.6;
-    color: ${({ theme }) => theme.colors.primaryDeep};
+    color: ${({ theme }) => theme.colors.judul};
   }
   .lat {
     font-weight: 600;

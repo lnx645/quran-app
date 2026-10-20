@@ -50,7 +50,7 @@ const MiniBar = styled.div`
   margin: 0 -2px 10px;
   padding: 8px 12px;
   border-radius: 10px;
-  background: linear-gradient(180deg, #fffdf4, ${({ theme }) => theme.colors.paper});
+  background: linear-gradient(180deg, ${({ theme }) => theme.colors.paperCard}, ${({ theme }) => theme.colors.paper});
   border: 1px solid ${({ theme }) => theme.colors.gold};
   box-shadow: ${({ theme }) => theme.shadows.card};
   opacity: ${({ tampil }) => (tampil ? 1 : 0)};
@@ -64,7 +64,7 @@ const MiniBar = styled.div`
     font-family: ${({ theme }) => theme.fonts.arabic};
     font-size: 17px;
     line-height: 1.5;
-    color: ${({ theme }) => theme.colors.primaryDeep};
+    color: ${({ theme }) => theme.colors.judul};
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

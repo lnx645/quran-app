@@ -23,7 +23,7 @@ const CounterCard = styled(Card)`
 const ArabBesar = styled.div`
   font-family: ${({ theme }) => theme.fonts.arabic};
   font-size: 38px;
-  color: ${({ theme }) => theme.colors.primaryDeep};
+  color: ${({ theme }) => theme.colors.judul};
   line-height: 1.6;
 `;
 
@@ -31,7 +31,7 @@ const Angka = styled.div`
   font-size: 76px;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
-  color: ${({ theme }) => theme.colors.primaryDeep};
+  color: ${({ theme }) => theme.colors.judul};
   line-height: 1.1;
 `;
 
@@ -69,7 +69,7 @@ const Opsi = styled.button`
   .ar {
     font-family: ${({ theme }) => theme.fonts.arabic};
     font-size: 24px;
-    color: ${({ theme }) => theme.colors.primaryDeep};
+    color: ${({ theme }) => theme.colors.judul};
   }
   .lat {
     font-size: 14px;
@@ -89,7 +89,7 @@ const TargetBtn = styled.button`
   background: ${({ theme, aktif }) =>
     aktif ? theme.colors.goldSoft : theme.colors.surface};
   font-weight: 700;
-  color: ${({ theme }) => theme.colors.primaryDeep};
+  color: ${({ theme }) => theme.colors.judul};
 `;
 
 const getar = () => {

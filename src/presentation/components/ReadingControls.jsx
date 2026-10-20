@@ -27,7 +27,7 @@ const Bar = styled.div`
   gap: 8px;
   min-height: 54px;
   padding: 5px 10px;
-  background: rgba(255, 253, 244, 0.97);
+  background: ${({ theme }) => theme.colors.barKaca};
   backdrop-filter: blur(8px) saturate(1.15);
   -webkit-backdrop-filter: blur(8px) saturate(1.15);
   border-top: 2px solid ${({ theme }) => theme.colors.gold};

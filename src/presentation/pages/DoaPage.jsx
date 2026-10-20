@@ -8,7 +8,7 @@ const KartuDoa = styled(Card)`
   .judul {
     font-family: ${({ theme }) => theme.fonts.display};
     font-size: 17px;
-    color: ${({ theme }) => theme.colors.primaryDark};
+    color: ${({ theme }) => theme.colors.judul};
     margin-bottom: 8px;
     display: flex;
     align-items: center;

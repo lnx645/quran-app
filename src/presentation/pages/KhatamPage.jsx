@@ -47,7 +47,7 @@ const JuzBtn = styled.button`
   .n {
     font-weight: 700;
     font-size: 15px;
-    color: ${({ theme }) => theme.colors.primaryDeep};
+    color: ${({ theme }) => theme.colors.judul};
   }
   .hal {
     font-size: 10.5px;
@@ -58,7 +58,7 @@ const JuzBtn = styled.button`
     top: -7px;
     right: -5px;
     color: ${({ theme }) => theme.colors.gold};
-    background: #fff;
+    background: ${({ theme }) => theme.colors.surface};
     border-radius: 50%;
     font-size: 17px;
     display: ${({ selesai }) => (selesai ? 'block' : 'none')};
@@ -71,7 +71,7 @@ const Stat = styled.div`
     font-family: ${({ theme }) => theme.fonts.display};
     font-size: 40px;
     font-weight: 700;
-    color: ${({ theme }) => theme.colors.primaryDeep};
+    color: ${({ theme }) => theme.colors.judul};
   }
   .label {
     font-size: 12px;

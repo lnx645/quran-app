@@ -10,7 +10,7 @@ const ArabBesar = styled.div`
   font-family: ${({ theme }) => theme.fonts.arabic};
   font-size: 54px;
   text-align: center;
-  color: ${({ theme }) => theme.colors.primaryDeep};
+  color: ${({ theme }) => theme.colors.judul};
   line-height: 1.5;
 `;
 

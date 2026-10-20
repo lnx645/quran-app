@@ -1,12 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import styled from '@emotion/styled';
+import { useTheme } from '@emotion/react';
 import { GirihPaper, KhatamStar } from './KhatamStar.jsx';
 
 const Frame = styled.div`
   position: relative;
   border: 1.5px solid ${({ theme }) => theme.colors.gold};
   border-radius: 12px;
-  background: linear-gradient(180deg, #fdf9ec 0%, ${({ theme }) => theme.colors.bg} 130%);
+  background: ${({ theme }) => theme.gradients.paperFrame};
   box-shadow: ${({ theme }) => theme.shadows.card};
   padding: 20px 14px 16px;
   overflow: hidden;
@@ -38,9 +39,13 @@ const SudutPos = [
  * girih sangat halus di permukaan kertas.
  */
 export default function MushafFrame({ children }) {
+  const theme = useTheme();
+  // Di kertas gelap pola diberi sedikit lebih banyak kehadiran agar tetap
+  // terasa, tapi tetap halus (tidak norak): 0,07 vs 0,05 di terang.
+  const opasitasGirih = theme.mode === 'gelap' ? 0.07 : 0.05;
   return (
     <Frame>
-      <GirihPaper opacity={0.05} />
+      <GirihPaper opacity={opasitasGirih} />
       {SudutPos.map((pos, i) => (
         <span
           key={i}

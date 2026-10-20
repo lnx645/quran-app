@@ -35,7 +35,7 @@ const LencanaWajib = styled.span`
   font-size: 12.5px;
   font-weight: 700;
   background: ${({ theme, wajib }) => (wajib ? theme.colors.goldSoft : theme.colors.primarySoft)};
-  color: ${({ theme, wajib }) => (wajib ? theme.colors.goldDeep : theme.colors.primaryDark)};
+  color: ${({ theme, wajib }) => (wajib ? theme.colors.goldDeep : theme.colors.judul)};
   border: 1px solid ${({ theme, wajib }) => (wajib ? theme.colors.gold : theme.colors.primarySoft)};
 `;
 

@@ -67,7 +67,7 @@ const Arab = styled.p`
   font-size: ${({ ukuran }) => ukuran}px;
   line-height: 2.4;
   text-align: right;
-  color: ${({ theme }) => theme.colors.text};
+  color: ${({ theme }) => theme.colors.teksArab};
   position: relative;
 `;
 
@@ -78,7 +78,7 @@ const Kata = styled.span`
   background: ${({ theme, aktif }) => (aktif ? theme.colors.goldSoft : 'transparent')};
   box-shadow: ${({ theme, aktif }) =>
     aktif ? `inset 0 -3px 0 ${theme.colors.gold}` : 'none'};
-  color: ${({ theme, aktif }) => (aktif ? theme.colors.primaryDeep : 'inherit')};
+  color: ${({ theme, aktif }) => (aktif ? theme.colors.judul : 'inherit')};
 `;
 
 /* Referensi kecil samar di atas baris terjemahan: muncul bila latin/arti
@@ -98,7 +98,7 @@ const LatinBaris = styled.p`
   text-align: right;
   font-size: 13px;
   line-height: 1.75;
-  color: ${({ theme }) => theme.colors.muted};
+  color: ${({ theme }) => theme.colors.teksLatin};
   font-variant: small-caps;
   letter-spacing: 0.45px;
 `;
@@ -107,7 +107,7 @@ const Terjemah = styled.p`
   font-family: ${({ theme }) => theme.fonts.display};
   font-size: 14.5px;
   line-height: 1.65;
-  color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.teksTerjemah};
   margin-top: 7px;
 `;
 

@@ -101,7 +101,7 @@ const HijriBesar = styled.div`
   font-family: ${({ theme }) => theme.fonts.display};
   font-size: 24px;
   font-weight: 700;
-  color: ${({ theme }) => theme.colors.primaryDeep};
+  color: ${({ theme }) => theme.colors.judul};
 `;
 
 const BarisWaktu = styled.div`
@@ -118,7 +118,12 @@ const BarisWaktu = styled.div`
       : status === 'lewat'
       ? theme.colors.surfaceAlt
       : theme.colors.surface};
-  color: ${({ theme, status }) => (status === 'berikutnya' ? '#fff' : theme.colors.text)};
+  color: ${({ theme, status }) =>
+    status === 'berikutnya'
+      ? theme.mode === 'gelap'
+        ? theme.colors.primaryDeep
+        : '#fff'
+      : theme.colors.text};
   opacity: ${({ status }) => (status === 'lewat' ? 0.55 : 1)};
   transition: opacity 0.3s ease;
   .ikon {
@@ -154,7 +159,7 @@ const CountdownBox = styled.div`
   font-size: 34px;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
-  color: ${({ theme }) => theme.colors.primaryDeep};
+  color: ${({ theme }) => theme.colors.judul};
   letter-spacing: 2px;
 `;
 

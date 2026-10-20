@@ -46,7 +46,7 @@ const SelHuruf = styled.button`
     font-family: ${({ theme }) => theme.fonts.arabic};
     font-size: 32px;
     line-height: 1.4;
-    color: ${({ theme }) => theme.colors.primaryDeep};
+    color: ${({ theme }) => theme.colors.judul};
   }
   .lat {
     font-size: 11px;
@@ -78,7 +78,7 @@ const Bentuk = styled.div`
     font-family: ${({ theme }) => theme.fonts.arabic};
     font-size: 52px;
     line-height: 1.5;
-    color: ${({ theme }) => theme.colors.primaryDeep};
+    color: ${({ theme }) => theme.colors.judul};
   }
   .lbl {
     font-size: 12.5px;
@@ -126,7 +126,7 @@ const LencanaTopik = styled.span`
   font-weight: 800;
   letter-spacing: 0.4px;
   background: ${({ theme }) => theme.colors.primarySoft};
-  color: ${({ theme }) => theme.colors.primaryDark};
+  color: ${({ theme }) => theme.colors.judul};
   border: 1px solid ${({ theme }) => theme.colors.primary};
   margin-bottom: 10px;
 `;
@@ -155,7 +155,7 @@ const BarisLatihan = styled.div`
   font-family: ${({ theme }) => theme.fonts.arabic};
   font-size: 38px;
   line-height: 2.1;
-  color: ${({ theme }) => theme.colors.primaryDeep};
+  color: ${({ theme }) => theme.colors.judul};
   padding: 6px 4px;
   border-bottom: 1px dashed ${({ theme }) => theme.colors.border};
   &:last-child {
@@ -226,7 +226,7 @@ const SoalBacaan = styled.div`
   font-family: ${({ theme }) => theme.fonts.arabic};
   font-size: 34px;
   line-height: 1.9;
-  color: ${({ theme }) => theme.colors.primaryDeep};
+  color: ${({ theme }) => theme.colors.judul};
 `;
 
 const KunciBox = styled.div`
@@ -243,7 +243,7 @@ const KunciBox = styled.div`
     margin-top: 6px;
     font-size: 12px;
     font-weight: 800;
-    color: ${({ theme }) => theme.colors.primaryDark};
+    color: ${({ theme }) => theme.colors.judul};
     background: ${({ theme }) => theme.colors.primarySoft};
     border-radius: 999px;
     padding: 3px 10px;

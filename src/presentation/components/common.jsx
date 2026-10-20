@@ -36,7 +36,7 @@ export const PageTitle = styled.h1`
   font-size: ${({ theme }) => theme.type.display.size}px;
   font-weight: ${({ theme }) => theme.type.display.weight};
   line-height: ${({ theme }) => theme.type.display.lineHeight};
-  color: ${({ theme }) => theme.colors.primaryDeep};
+  color: ${({ theme }) => theme.colors.judul};
   margin-bottom: 4px;
   display: flex;
   align-items: center;
@@ -170,8 +170,8 @@ export const SelectInput = styled.select`
 `;
 
 export const ErrorBox = styled.div`
-  background: #fef2f2;
-  border: 1px solid #fecaca;
+  background: ${({ theme }) => theme.colors.dangerSoft};
+  border: 1px solid ${({ theme }) => theme.colors.dangerBorder};
   color: ${({ theme }) => theme.colors.danger};
   border-radius: 14px;
   padding: 14px 16px;
@@ -232,7 +232,7 @@ export const Skeleton = styled.div`
   background: linear-gradient(
     90deg,
     ${({ theme }) => theme.colors.surfaceAlt} 25%,
-    #eee1c3 50%,
+    ${({ theme }) => theme.colors.kilau} 50%,
     ${({ theme }) => theme.colors.surfaceAlt} 75%
   );
   background-size: 200% 100%;

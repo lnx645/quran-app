@@ -20,7 +20,7 @@ const Tab = styled.button`
   border-radius: 14px;
   border: 1.5px solid ${({ theme, aktif }) => (aktif ? theme.colors.gold : theme.colors.border)};
   background: ${({ theme, aktif }) => (aktif ? theme.colors.goldSoft : theme.colors.surface)};
-  color: ${({ theme }) => theme.colors.primaryDeep};
+  color: ${({ theme }) => theme.colors.judul};
   font-weight: 700;
   display: inline-flex;
   align-items: center;
@@ -63,7 +63,8 @@ const TombolTap = styled.button`
   gap: 8px;
   background: ${({ theme, selesai }) =>
     selesai ? theme.colors.primary : theme.colors.primarySoft};
-  color: ${({ theme, selesai }) => (selesai ? '#fff' : theme.colors.primaryDeep)};
+  color: ${({ theme, selesai }) =>
+    selesai ? (theme.mode === 'gelap' ? theme.colors.primaryDeep : '#fff') : theme.colors.judul};
   border: none;
   border-radius: 999px;
   padding: 10px 18px;
@@ -112,7 +113,7 @@ export default function DzikirPage() {
         const n = hitung[i] ?? 0;
         const selesai = n >= d.hitung;
         return (
-          <KartuDzikir key={i} css={{ borderColor: selesai ? '#C9A227' : undefined }}>
+          <KartuDzikir key={i} css={(t) => ({ borderColor: selesai ? t.colors.gold : undefined })}>
             <p className="arab" lang="ar">{d.arab}</p>
             <p className="latin">{d.latin}</p>
             <p className="arti">{d.arti}</p>
