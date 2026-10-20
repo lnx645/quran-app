@@ -5,9 +5,11 @@ import { useParams } from 'react-router-dom';
 import { FaExclamationTriangle } from 'react-icons/fa';
 import { useSurah } from '../hooks/useSurah.js';
 import { useAudioSync } from '../hooks/useAudioSync.js';
+import { useReadingPrefs } from '../hooks/useReadingPrefs.js';
 import SurahHeader from '../components/SurahHeader.jsx';
 import AyatCard from '../components/AyatCard.jsx';
 import PlayerBar from '../components/PlayerBar.jsx';
+import ReadingControls from '../components/ReadingControls.jsx';
 import MushafFrame from '../components/ornaments/MushafFrame.jsx';
 import { juzMulaiPada } from '../components/ornaments/index.js';
 import { Page, ErrorBox, Skeleton } from '../components/common.jsx';
@@ -76,6 +78,7 @@ export default function SurahPage() {
   const { id } = useParams();
   const { loading, error, data } = useSurah(id);
   const sync = useAudioSync(data?.ayahs, data?.audioUrl, data?.audioDurationMs);
+  const { pref, ubah, tambahArab, kurangArab } = useReadingPrefs();
   const sentinelRef = useRef(null);
   const [miniTampil, setMiniTampil] = useState(false);
 
@@ -126,9 +129,13 @@ export default function SurahPage() {
             kataAktif={sync.activeIndex === i ? sync.activeWord : -1}
             onSelect={() => sync.seekToAyah(i)}
             juzAwal={juzMulaiPada(ayat.key)}
+            arabSize={pref.arabSize}
+            tampilLatin={pref.latin}
+            tampilTerjemah={pref.terjemah}
           />
         ))}
       </MushafFrame>
+      <ReadingControls pref={pref} ubah={ubah} tambahArab={tambahArab} kurangArab={kurangArab} />
       <PlayerBar
         playing={sync.playing}
         onToggle={sync.toggle}
