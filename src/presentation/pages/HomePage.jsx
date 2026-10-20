@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import styled from '@emotion/styled';
+import { useNavigate } from 'react-router-dom';
 import {
   FaQuran, FaBookOpen, FaClock, FaCoins, FaBookReader, FaGraduationCap,
   FaHandPointer, FaCloudSun, FaPrayingHands, FaClipboardCheck, FaCompass,
@@ -55,6 +56,37 @@ const HeroIsi = styled.div`
     margin-top: 7px;
     padding: 0 6px;
   }
+`;
+
+// Bar pencarian global: pil selebar layar tepat di bawah hero — ketuk untuk
+// membuka /cari. Sengaja berbentuk kolom cari (ikon + placeholder) agar
+// langsung dikenali sebagai pintu pencarian apa pun.
+const BarCari = styled.button`
+  width: 100%;
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 0 18px;
+  margin: 8px 0 2px;
+  border-radius: ${({ theme }) => theme.radii.pill}px;
+  border: 1.5px solid ${({ theme }) => theme.colors.border};
+  background: ${({ theme }) => theme.colors.surface};
+  box-shadow: ${({ theme }) => theme.shadows.card};
+  color: ${({ theme }) => theme.colors.muted};
+  font-size: 15px;
+  text-align: left;
+  cursor: pointer;
+  transition: transform ${({ theme }) => theme.anim.fast} ${({ theme }) => theme.anim.ease};
+  svg {
+    color: ${({ theme }) => theme.colors.goldDeep};
+    font-size: 17px;
+    flex-shrink: 0;
+  }
+  &:active {
+    transform: scale(0.99);
+  }
+  ${reduceMotion}
 `;
 
 const GridMenu = styled.div`
@@ -178,6 +210,7 @@ const SEKSI = [
 ];
 
 export default function HomePage() {
+  const navigate = useNavigate();
   return (
     <Page>
       <Hero>
@@ -202,6 +235,10 @@ export default function HomePage() {
           </div>
         </div>
       </Hero>
+      <BarCari type="button" onClick={() => navigate('/cari')} aria-label="Buka pencarian">
+        <FaSearch aria-hidden="true" />
+        <span>Cari surah, doa, fitur, topik…</span>
+      </BarCari>
       <OrnamentDivider />
       <LanjutkanMembaca />
       <HaditsHariIni />
