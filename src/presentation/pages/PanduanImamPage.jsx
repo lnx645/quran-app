@@ -9,6 +9,7 @@ import {
   TEKS_ADZAN, TEKS_IQAMAH, CATATAN_IQAMAH, TENTANG_MASBUQ, DISCLAIMER_IMAM,
 } from '../../data/sources/panduanImamData.js';
 import { Page, PageHero, Card, GoldCard, SectionTitle } from '../components/common.jsx';
+import NomorMedali from '../components/NomorMedali.jsx';
 
 const KartuTeks = styled(Card)`
   .nama {

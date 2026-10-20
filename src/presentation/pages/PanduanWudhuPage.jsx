@@ -9,6 +9,7 @@ import {
   FaHandSparkles,
 } from 'react-icons/fa';
 import { Page, PageHero, Card, GoldCard, SectionTitle } from '../components/common.jsx';
+import NomorMedali from '../components/NomorMedali.jsx';
 import { SegmenWadah, SegmenTab } from '../components/SegmentedControl.jsx';
 import { WUDHU, TAYAMMUM, DISCLAIMER_PANDUAN } from '../../data/sources/panduanBersuciData.js';
 

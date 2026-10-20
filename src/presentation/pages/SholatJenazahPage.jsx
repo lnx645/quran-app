@@ -2,6 +2,7 @@
 import styled from '@emotion/styled';
 import { FaPrayingHands, FaCheckCircle, FaMapMarkerAlt, FaInfoCircle } from 'react-icons/fa';
 import { Page, PageHero, Card, SectionTitle } from '../components/common.jsx';
+import NomorMedali from '../components/NomorMedali.jsx';
 import {
   SHOLAT_JENAZAH,
   DISCLAIMER_PANDUAN,

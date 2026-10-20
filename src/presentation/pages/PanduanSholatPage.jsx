@@ -13,6 +13,7 @@ import {
   FaInfoCircle,
 } from 'react-icons/fa';
 import { Page, PageHero, Card, GoldCard, SectionTitle } from '../components/common.jsx';
+import NomorMedali from '../components/NomorMedali.jsx';
 import {
   NIAT_SHOLAT,
   CATATAN_NIAT,

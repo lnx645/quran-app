@@ -8,6 +8,7 @@ import {
   FaListOl,
 } from 'react-icons/fa';
 import { Page, PageHero, Card, GoldCard, SectionTitle } from '../components/common.jsx';
+import NomorMedali from '../components/NomorMedali.jsx';
 import {
   POSISI_SAKIT,
   BERSUCI_SAKIT,

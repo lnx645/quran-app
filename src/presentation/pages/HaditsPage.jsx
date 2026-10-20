@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import { FaBookOpen, FaChevronDown, FaInfoCircle, FaSearch } from 'react-icons/fa';
 import { HADITS_ARBAIN, SUMBER_HADITS_ARBAIN } from '../../data/sources/haditsArbainData.js';
 import StateKosong from '../components/StateKosong.jsx';
+import NomorMedali from '../components/NomorMedali.jsx';
 
 /** Saran pencarian hadits — ketuk untuk langsung memfilter daftar. */
 const SARAN_HADITS = ['niat', 'iman', 'ilmu', 'sabar', 'amal'];

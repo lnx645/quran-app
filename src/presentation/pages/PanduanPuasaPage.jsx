@@ -12,6 +12,7 @@ import {
   FaListOl,
 } from 'react-icons/fa';
 import { Page, PageHero, Card, GoldCard, SectionTitle } from '../components/common.jsx';
+import NomorMedali from '../components/NomorMedali.jsx';
 import { PANDUAN_PUASA, NIAT_DOA, DISCLAIMER_PUASA } from '../../data/sources/puasaData.js';
 
 const Arab = styled.p`

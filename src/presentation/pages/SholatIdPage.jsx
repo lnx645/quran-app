@@ -10,6 +10,7 @@ import {
   FaBookOpen,
 } from 'react-icons/fa';
 import { Page, PageHero, Card, GoldCard, SectionTitle } from '../components/common.jsx';
+import NomorMedali from '../components/NomorMedali.jsx';
 import {
   PERBANDINGAN_ID,
   KETENTUAN_ID,
