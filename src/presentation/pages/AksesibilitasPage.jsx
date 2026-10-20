@@ -48,7 +48,7 @@ const Saklar = styled.button`
   border-radius: 999px;
   border: 2px solid
     ${({ theme, nyala }) => (nyala ? theme.colors.gold : theme.colors.border)};
-  background: ${({ theme, nyala }) => (nyala ? theme.colors.primary : theme.colors.surfaceAlt)};
+  background: ${({ theme, nyala }) => (nyala ? theme.colors.emeraldPanel : theme.colors.surfaceAlt)};
   position: relative;
   transition: background 0.18s ease;
   &::after {

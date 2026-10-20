@@ -24,7 +24,7 @@ const BannerAdzan = styled.div`
   margin-bottom: 16px;
   border-radius: ${({ theme }) => theme.radii.lg}px;
   border: 2px solid ${({ theme }) => theme.colors.gold};
-  background: linear-gradient(120deg, ${({ theme }) => theme.colors.primaryDark}, ${({ theme }) => theme.colors.primary});
+  background: linear-gradient(120deg, ${({ theme }) => theme.colors.emeraldPanelGelap}, ${({ theme }) => theme.colors.emeraldPanel});
   color: #fff;
   box-shadow: ${({ theme }) => theme.shadows.gold};
   .ikon {
@@ -114,16 +114,12 @@ const BarisWaktu = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.border};
   background: ${({ theme, status }) =>
     status === 'berikutnya'
-      ? `linear-gradient(120deg, ${theme.colors.primaryDark}, ${theme.colors.primary})`
+      ? `linear-gradient(120deg, ${theme.colors.emeraldPanelGelap}, ${theme.colors.emeraldPanel})`
       : status === 'lewat'
       ? theme.colors.surfaceAlt
       : theme.colors.surface};
   color: ${({ theme, status }) =>
-    status === 'berikutnya'
-      ? theme.mode === 'gelap'
-        ? theme.colors.primaryDeep
-        : '#fff'
-      : theme.colors.text};
+    status === 'berikutnya' ? '#fff' : theme.colors.text};
   opacity: ${({ status }) => (status === 'lewat' ? 0.55 : 1)};
   transition: opacity 0.3s ease;
   .ikon {

@@ -176,7 +176,12 @@ export default function CariPage() {
           <FaExclamationTriangle /> Gagal mencari: {pesanGalat}. Periksa koneksi internet.
           <button
             type="button"
-            css={{ marginInlineStart: 6, textDecoration: 'underline', fontWeight: 800 }}
+            css={(t) => ({
+              marginInlineStart: 6,
+              textDecoration: 'underline',
+              fontWeight: 800,
+              color: t.colors.text,
+            })}
             onClick={() => cari(kataDitampilkan)}
             aria-label="Coba cari lagi"
           >

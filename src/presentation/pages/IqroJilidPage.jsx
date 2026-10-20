@@ -29,6 +29,7 @@ const SelHuruf = styled.button`
   border-radius: 14px;
   padding: 10px 4px 8px;
   text-align: center;
+  color: ${({ theme }) => theme.colors.text};
   box-shadow: ${({ theme, aktif }) => (aktif ? theme.shadows.card : 'none')};
   transition: border-color ${({ theme }) => theme.anim.fast} ${({ theme }) => theme.anim.ease},
     background ${({ theme }) => theme.anim.fast} ${({ theme }) => theme.anim.ease},

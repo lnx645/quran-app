@@ -40,6 +40,7 @@ const JuzBtn = styled.button`
     ${({ theme, selesai }) => (selesai ? theme.colors.gold : theme.colors.border)};
   background: ${({ theme, selesai }) =>
     selesai ? theme.colors.goldSoft : theme.colors.surface};
+  color: ${({ theme }) => theme.colors.text};
   transition: transform 0.12s ease, border-color 0.15s ease;
   &:active {
     transform: scale(0.95);

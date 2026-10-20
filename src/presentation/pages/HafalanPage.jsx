@@ -141,6 +141,7 @@ const TombolSurah = styled.button`
   padding: 13px 14px;
   min-height: 64px;
   text-align: left;
+  color: ${({ theme }) => theme.colors.text};
   box-shadow: ${({ theme }) => theme.shadows.card};
   &:hover {
     border-color: ${({ theme }) => theme.colors.gold};

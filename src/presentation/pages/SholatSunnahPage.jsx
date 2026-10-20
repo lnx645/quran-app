@@ -57,6 +57,7 @@ const KepalaKartu = styled.button`
   padding: 0;
   min-height: 44px;
   text-align: left;
+  color: ${({ theme }) => theme.colors.text};
   cursor: pointer;
   .judul {
     flex: 1;

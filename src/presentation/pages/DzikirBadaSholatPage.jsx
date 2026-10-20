@@ -60,9 +60,9 @@ const TombolTap = styled.button`
   align-items: center;
   gap: 8px;
   background: ${({ theme, selesai }) =>
-    selesai ? theme.colors.primary : theme.colors.primarySoft};
+    selesai ? theme.colors.emeraldPanel : theme.colors.primarySoft};
   color: ${({ theme, selesai }) =>
-    selesai ? (theme.mode === 'gelap' ? theme.colors.primaryDeep : '#fff') : theme.colors.judul};
+    selesai ? '#fff' : theme.colors.judul};
   border: none;
   border-radius: 999px;
   padding: 10px 18px;

@@ -220,7 +220,7 @@ function KompasDial({ bearing, heading, rotasi, getarAktif = true }) {
             borderRadius: 999,
             background: sejajar ? t.gradients.gold : t.colors.goldSoft,
             border: sejajar ? 'none' : `1px solid ${t.colors.gold}`,
-            color: t.colors.primaryDeep,
+            color: sejajar ? t.colors.primaryDeep : t.colors.judul,
             fontSize: sejajar ? 16 : 13,
             fontWeight: 800,
             boxShadow: sejajar ? t.shadows.gold : 'none',

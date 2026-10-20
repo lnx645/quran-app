@@ -82,7 +82,7 @@ const TombolUtama = styled.button`
   border-radius: 14px;
   border: none;
   background: ${({ bahaya, theme }) =>
-    bahaya ? theme.colors.danger : theme.gradients.gold};
+    bahaya ? (theme.mode === 'gelap' ? '#B91C1C' : theme.colors.danger) : theme.gradients.gold};
   color: ${({ bahaya, theme }) => (bahaya ? '#fff' : theme.colors.primaryDeep)};
   font-size: 15px;
   font-weight: 800;

@@ -49,8 +49,8 @@ export default function NomorMedali({ nomor, ukuran = 46 }) {
       <svg viewBox="0 0 100 100" aria-hidden="true" focusable="false">
         <defs>
           <linearGradient id={gid} x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor={theme.colors.primaryMid} />
-            <stop offset="100%" stopColor={theme.colors.primary} />
+            <stop offset="0%" stopColor={theme.colors.emeraldPanelMid} />
+            <stop offset="100%" stopColor={theme.colors.emeraldPanel} />
           </linearGradient>
         </defs>
         {/* bintang khatam-8: dua persegi (axis + rotasi 45°) digabung */}

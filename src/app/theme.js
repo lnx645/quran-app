@@ -9,6 +9,14 @@ export const theme = {
     primaryDark: '#06312A', // header / player / latar gelap
     primaryDeep: '#04251F', // emerald paling gelap
     primarySoft: '#DFF0E8', // latar lembut emerald (badge, highlight)
+    // Panel emerald TETAP GELAP — dipakai untuk permukaan panel/tombol yang
+    // isinya terang (teks putih, ikon goldLight, angka emas) sehingga terbaca
+    // di SEMUA mode. Nilai terang & kontras SAMA PERSIS dengan primary*,
+    // di mode gelap sengaja tidak ikut "membalik" menjadi hijau muda
+    // (seperti primary) agar teks terang di atasnya tetap lolos AA.
+    emeraldPanel: '#0B5345', // == primary (terang), tetap #0B5345 di gelap
+    emeraldPanelMid: '#117A65', // == primaryMid (terang), tetap di gelap
+    emeraldPanelGelap: '#06312A', // == primaryDark (terang), tetap di gelap
     // Emas — aksen
     gold: '#C9A227',
     goldLight: '#E7C65A', // gradasi emas: gold → goldLight
@@ -191,6 +199,9 @@ const varianKontras = {
     primaryDark: '#00382D',
     primaryDeep: '#002A22',
     primarySoft: '#D9EDE5',
+    emeraldPanel: '#00473A', // == primary kontras
+    emeraldPanelMid: '#005C4B', // == primaryMid kontras
+    emeraldPanelGelap: '#00382D', // == primaryDark kontras
     gold: '#7A6200',
     goldLight: '#FFE27A',
     goldDeep: '#6E570B', // 6,9:1 di putih

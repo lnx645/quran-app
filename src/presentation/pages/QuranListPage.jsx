@@ -63,7 +63,7 @@ const Chips = styled.div`
 
 const Chip = styled.button`
   border: 1.5px solid ${({ active, theme }) => (active ? theme.colors.primary : theme.colors.border)};
-  background: ${({ active, theme }) => (active ? theme.colors.primary : theme.colors.surface)};
+  background: ${({ active, theme }) => (active ? theme.colors.emeraldPanel : theme.colors.surface)};
   color: ${({ active, theme }) => (active ? theme.colors.onPrimary : theme.colors.muted)};
   border-radius: ${({ theme }) => theme.radii.pill}px;
   padding: 9px 16px;

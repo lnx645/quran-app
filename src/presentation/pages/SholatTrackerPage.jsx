@@ -18,6 +18,7 @@ const Baris = styled.button`
     ${({ theme, selesai }) => (selesai ? theme.colors.gold : theme.colors.border)};
   background: ${({ theme, selesai }) =>
     selesai ? theme.colors.goldSoft : theme.colors.surface};
+  color: ${({ theme }) => theme.colors.text};
   font-size: 16px;
   font-weight: 600;
   text-align: left;

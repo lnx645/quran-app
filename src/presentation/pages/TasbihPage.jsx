@@ -40,7 +40,7 @@ const TombolHitung = styled.button`
   height: 150px;
   border-radius: 50%;
   border: none;
-  background: linear-gradient(135deg, ${({ theme }) => theme.colors.primary}, ${({ theme }) => theme.colors.primaryDark});
+  background: linear-gradient(135deg, ${({ theme }) => theme.colors.emeraldPanel}, ${({ theme }) => theme.colors.emeraldPanelGelap});
   color: ${({ theme }) => theme.colors.goldLight};
   font-size: 44px;
   display: inline-flex;
@@ -65,6 +65,7 @@ const Opsi = styled.button`
     ${({ theme, aktif }) => (aktif ? theme.colors.primary : theme.colors.border)};
   background: ${({ theme, aktif }) =>
     aktif ? theme.colors.primarySoft : theme.colors.surface};
+  color: ${({ theme }) => theme.colors.text};
   margin-bottom: 8px;
   .ar {
     font-family: ${({ theme }) => theme.fonts.arabic};
