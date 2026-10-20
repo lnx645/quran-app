@@ -2,12 +2,15 @@
 // AnakPage — Mode Anak (Gelombang 6, item 5): belajar huruf hijaiyah
 // dengan target sentuh BESAR untuk anak. Dua bagian:
 //  (a) Huruf Hijaiyah — grid huruf besar; ketuk huruf → panel detail +
-//      nama huruf diucapkan SpeechSynthesis (lang ar-SA, teks namaArab).
+//      nama huruf dibunyikan dari BERKAS AUDIO BAWAAN aplikasi
+//      (public/audio/hijaiyah/*.mp3, satu berkas per huruf — tidak
+//      bergantung paket suara perangkat). SpeechSynthesis (lang ar-SA)
+//      hanya CADANGAN bila berkas gagal diputar.
 //  (b) Kuis Tebak Huruf — 10 soal/sesi tanpa pengulangan, 4 pilihan nama,
 //      umpan balik langsung, skor bintang FaStar.
-// Suara JUJUR: ucapan hanya dijalankan bila speechSynthesis tersedia DAN
-// ada suara Arab (getVoices). Bila tidak, panel detail tetap tampil dan
-// catatan kecil ditampilkan — tidak pernah berpura-pura bersuara.
+// Suara JUJUR: bila berkas gagal diputar DAN perangkat tak punya suara
+// Arab, panel detail tetap tampil dan catatan kecil ditampilkan —
+// tidak pernah berpura-pura bersuara.
 // Data: HURUF_ANAK (anakData.js) — melengkapi HURUF_HIJAIYAH iqroData.js
 // yang belum punya contoh kata & nama Arab berharakat.
 import { useEffect, useState } from 'react';
@@ -23,6 +26,7 @@ import {
   FaTrophy,
   FaRedo,
   FaArrowRight,
+  FaPray,
   FaPrayingHands,
   FaBookOpen,
   FaGamepad,
@@ -43,7 +47,7 @@ import StateKosong from '../components/StateKosong.jsx';
 
 const JUMLAH_SOAL = 10;
 const CATATAN_TANPA_SUARA =
-  'Suara Arab tidak tersedia di perangkat ini — minta bimbingan orang tua/guru untuk bunyi yang tepat';
+  'Audio huruf belum bisa diputar di perangkat ini — minta bimbingan orang tua/guru untuk bunyi yang tepat';
 
 /* ---------- util acak & sesi kuis ---------- */
 
@@ -74,7 +78,29 @@ function buatSesi() {
     });
 }
 
-/* ---------- suara (SpeechSynthesis) ---------- */
+/* ---------- suara: berkas audio bawaan (utama) + SpeechSynthesis (cadangan) ---------- */
+
+// Satu elemen Audio bersama untuk semua bunyi huruf; ketukan baru
+// menghentikan bunyi sebelumnya agar tidak bertumpuk.
+let pemutarHuruf = null;
+function putarBerkasHuruf(berkas) {
+  return new Promise((resolve) => {
+    try {
+      if (typeof Audio === 'undefined' || !berkas) return resolve(false);
+      if (!pemutarHuruf) pemutarHuruf = new Audio();
+      pemutarHuruf.pause();
+      pemutarHuruf.src = `/audio/hijaiyah/${berkas}.mp3`;
+      const janji = pemutarHuruf.play();
+      if (janji && typeof janji.then === 'function') {
+        janji.then(() => resolve(true)).catch(() => resolve(false));
+      } else {
+        resolve(true);
+      }
+    } catch {
+      resolve(false);
+    }
+  });
+}
 
 // Ada suara Arab? null = daftar suara belum selesai dimuat peramban.
 function cekSuaraArab() {
@@ -334,6 +360,10 @@ export default function AnakPage() {
   const [terpilih, setTerpilih] = useState(null); // huruf aktif di grid
   // null = belum pasti (suara masih dimuat), true/false = hasil periksa.
   const [suaraArab, setSuaraArab] = useState(() => cekSuaraArab());
+  // Bunyi huruf: berkas bawaan membuat bunyi TERSEDIA sejak awal; status
+  // hanya berubah false bila berkas gagal diputar DAN tak ada suara Arab
+  // cadangan di perangkat — saat itulah catatan jujur ditampilkan.
+  const [bunyiTersedia, setBunyiTersedia] = useState(true);
 
   // Sesi kuis
   const [sesi, setSesi] = useState(() => buatSesi());
@@ -358,10 +388,9 @@ export default function AnakPage() {
     };
   }, []);
 
-  // Ucapkan teks Arab. Mengembalikan true hanya bila benar-benar diucapkan
-  // (ada speechSynthesis + suara Arab); selain itu diam — panel & catatan
-  // yang berbicara, bukan pura-pura bersuara.
-  const ucapkan = (teksArab) => {
+  // Ucapkan lewat TTS perangkat (CADANGAN — hanya bila berkas bawaan
+  // gagal diputar dan perangkat punya suara Arab).
+  const ucapkanTTS = (teksArab) => {
     if (suaraArab !== true || !teksArab) return false;
     try {
       const synth = window.speechSynthesis;
@@ -377,9 +406,22 @@ export default function AnakPage() {
     }
   };
 
+  // Bunyikan nama huruf: berkas audio bawaan lebih dulu; gagal → TTS;
+  // keduanya gagal → tandai bunyi tak tersedia (catatan jujur tampil).
+  const ucapkan = (huruf) => {
+    if (!huruf) return;
+    putarBerkasHuruf(huruf.audio).then((ok) => {
+      if (ok) {
+        setBunyiTersedia(true);
+        return;
+      }
+      if (!ucapkanTTS(huruf.namaArab)) setBunyiTersedia(false);
+    });
+  };
+
   const ketukHuruf = (huruf) => {
     setTerpilih(huruf);
-    ucapkan(huruf.namaArab);
+    ucapkan(huruf);
   };
 
   const soal = sesi[idxSoal] ?? null;
@@ -476,15 +518,15 @@ export default function AnakPage() {
                   </span>
                 </ContohKata>
               </div>
-              {suaraArab === true ? (
+              {bunyiTersedia ? (
                 <GhostButton
                   type="button"
-                  onClick={() => ucapkan(terpilih.namaArab)}
+                  onClick={() => ucapkan(terpilih)}
                   aria-label={`Dengarkan bunyi huruf ${terpilih.nama}`}
                 >
                   <FaVolumeUp aria-hidden="true" /> Dengarkan Bunyinya
                 </GhostButton>
-              ) : suaraArab === false ? (
+              ) : bunyiTersedia === false ? (
                 <CatatanSuara>{CATATAN_TANPA_SUARA}</CatatanSuara>
               ) : null}
             </PanelHuruf>
@@ -529,15 +571,15 @@ export default function AnakPage() {
                 {soal.huruf.arab}
               </HurufSoal>
               <BarisDengar>
-                {suaraArab === true ? (
+                {bunyiTersedia ? (
                   <GhostButton
                     type="button"
-                    onClick={() => ucapkan(soal.huruf.namaArab)}
+                    onClick={() => ucapkan(soal.huruf)}
                     aria-label="Dengarkan bunyi huruf ini"
                   >
                     <FaVolumeUp aria-hidden="true" /> Dengarkan
                   </GhostButton>
-                ) : suaraArab === false ? (
+                ) : bunyiTersedia === false ? (
                   <CatatanSuara>{CATATAN_TANPA_SUARA}</CatatanSuara>
                 ) : null}
               </BarisDengar>
@@ -591,6 +633,12 @@ export default function AnakPage() {
         <FaBookOpen /> Jelajahi Juga
       </SectionTitle>
       <GridPintas>
+        <MenuCard
+          to="/anak/sholat"
+          icon={<FaPray />}
+          judul="Belajar Sholat"
+          desc="Panduan gerakan & bacaan sholat untuk anak, langkah demi langkah"
+        />
         <MenuCard
           to="/doa"
           icon={<FaPrayingHands />}

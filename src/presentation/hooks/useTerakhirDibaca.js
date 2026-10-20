@@ -1,14 +1,19 @@
 import { useCallback, useEffect, useState } from 'react';
+import { LocalProfilRepository } from '../../data/repositories/LocalProfilRepository.js';
 
 // Posisi baca terakhir tersimpan di localStorage (data layer sederhana).
 // Dipakai SurahPage/AyatCard untuk mencatat dan HomePage untuk "Lanjutkan Membaca".
 // Bentuk: { surahId, nomorAyat, namaSurah, pada (timestamp ms) }
 const KUNCI = 'noor.terakhir-baca.v1';
 
+// Namespace profil keluarga: posisi baca terakhir adalah data per profil
+// (profil 'utama' = kunci dasar persis; profil lain berakhiran #<id>).
+const kunciAktif = () => LocalProfilRepository.kunciAktif(KUNCI);
+
 export function catatAyatTerakhirBaca({ surahId, nomorAyat, namaSurah }) {
   try {
     localStorage.setItem(
-      KUNCI,
+      kunciAktif(),
       JSON.stringify({ surahId, nomorAyat, namaSurah, pada: Date.now() }),
     );
   } catch {
@@ -18,7 +23,7 @@ export function catatAyatTerakhirBaca({ surahId, nomorAyat, namaSurah }) {
 
 export function bacaAyatTerakhir() {
   try {
-    const raw = localStorage.getItem(KUNCI);
+    const raw = localStorage.getItem(kunciAktif());
     return raw ? JSON.parse(raw) : null;
   } catch {
     return null;

@@ -70,14 +70,20 @@ export const SectionTitle = styled.h2`
   }
 `;
 
+// KONTRAK UKURAN TOMBOL: PrimaryButton & GhostButton WAJIB berbagi metrik
+// kotak yang sama persis (border 1.5px — Primary transparan, padding,
+// min-height, font-size). Banyak halaman menukar keduanya menurut status
+// (mis. baris checklist: belum = Ghost, sudah = Primary); bila ukurannya
+// beda, barisnya tumbuh/menyusut dan seluruh isi di bawahnya bergeser
+// (layout shift). Jangan ubah metrik salah satunya tanpa yang lain.
 export const PrimaryButton = styled.button`
   background: ${({ theme }) => theme.gradients.gold};
   color: ${({ theme }) => theme.colors.primaryDeep};
-  border: none;
+  border: 1.5px solid transparent;
   border-radius: 14px;
-  padding: 14px 20px;
+  padding: 13px 18px;
   min-height: 52px;
-  font-size: 15.5px;
+  font-size: 15px;
   font-weight: 800;
   display: inline-flex;
   align-items: center;
@@ -107,9 +113,9 @@ export const GhostButton = styled.button`
   color: ${({ theme }) => theme.colors.primary};
   border: 1.5px solid ${({ theme }) => theme.colors.primary};
   border-radius: 14px;
-  padding: 12px 16px;
-  min-height: 48px;
-  font-size: 14.5px;
+  padding: 13px 18px;
+  min-height: 52px;
+  font-size: 15px;
   font-weight: 700;
   display: inline-flex;
   align-items: center;
@@ -134,6 +140,15 @@ export const Field = styled.div`
     font-weight: 600;
     color: ${({ theme }) => theme.colors.muted};
     margin-bottom: 6px;
+    /* Ikon di dalam label harus SEBARIS dengan teksnya. Reset global
+       aplikasi membuat semua svg display:block, jadi tanpa aturan ini
+       ikon label patah ke baris sendiri di atas teks (temuan user di
+       Jurnal Syukur & Khatam). */
+    svg {
+      display: inline-block;
+      vertical-align: -2px;
+      margin-right: 6px;
+    }
   }
 `;
 

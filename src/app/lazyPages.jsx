@@ -1,4 +1,5 @@
-import { lazy, Suspense } from 'react';
+import { Suspense } from 'react';
+import { lazyDenganPemulihan } from './pemulihanChunk.js';
 import { Page, Skeleton } from '../presentation/components/common.jsx';
 
 // Wrapper lazy per rute (code-splitting): tiap halaman dimuat sebagai chunk
@@ -21,76 +22,85 @@ export function PageFallback() {
   );
 }
 
-const _Surah = lazy(() => import('../presentation/pages/SurahPage.jsx'));
-const _IqroHub = lazy(() => import('../presentation/pages/IqroHubPage.jsx'));
-const _IqroJilid = lazy(() => import('../presentation/pages/IqroJilidPage.jsx'));
-const _Jadwal = lazy(() => import('../presentation/pages/JadwalPage.jsx'));
-const _Zakat = lazy(() => import('../presentation/pages/ZakatPage.jsx'));
-const _Khatam = lazy(() => import('../presentation/pages/KhatamPage.jsx'));
-const _Tasbih = lazy(() => import('../presentation/pages/TasbihPage.jsx'));
-const _Dzikir = lazy(() => import('../presentation/pages/DzikirPage.jsx'));
-const _Doa = lazy(() => import('../presentation/pages/DoaPage.jsx'));
-const _SholatTracker = lazy(() => import('../presentation/pages/SholatTrackerPage.jsx'));
-const _Kiblat = lazy(() => import('../presentation/pages/KiblatPage.jsx'));
-const _Kalender = lazy(() => import('../presentation/pages/KalenderPage.jsx'));
-const _AsmaulHusna = lazy(() => import('../presentation/pages/AsmaulHusnaPage.jsx'));
-const _Kisah = lazy(() => import('../presentation/pages/KisahPage.jsx'));
-const _KisahDetail = lazy(() => import('../presentation/pages/KisahDetailPage.jsx'));
-const _QuranList = lazy(() => import('../presentation/pages/QuranListPage.jsx'));
-const _MuslimahHub = lazy(() => import('../presentation/pages/MuslimahHubPage.jsx'));
-const _MuslimahKalkulator = lazy(() => import('../presentation/pages/MuslimahKalkulatorPage.jsx'));
-const _MuslimahMandiWajib = lazy(() => import('../presentation/pages/MuslimahMandiWajibPage.jsx'));
-const _MuslimahDoa = lazy(() => import('../presentation/pages/MuslimahDoaPage.jsx'));
-const _MuslimahFikih = lazy(() => import('../presentation/pages/MuslimahFikihPage.jsx'));
-const _Aksesibilitas = lazy(() => import('../presentation/pages/AksesibilitasPage.jsx'));
-const _Cari = lazy(() => import('../presentation/pages/CariPage.jsx'));
-const _PanduanTajwid = lazy(() => import('../presentation/pages/PanduanTajwidPage.jsx'));
-const _Hafalan = lazy(() => import('../presentation/pages/HafalanPage.jsx'));
-const _Bookmark = lazy(() => import('../presentation/pages/BookmarkPage.jsx'));
-const _PanduanWudhu = lazy(() => import('../presentation/pages/PanduanWudhuPage.jsx'));
-const _PanduanSholat = lazy(() => import('../presentation/pages/PanduanSholatPage.jsx'));
-const _SholatSunnah = lazy(() => import('../presentation/pages/SholatSunnahPage.jsx'));
-const _DzikirBadaSholat = lazy(() => import('../presentation/pages/DzikirBadaSholatPage.jsx'));
-const _SholatJenazah = lazy(() => import('../presentation/pages/SholatJenazahPage.jsx'));
-const _PanduanPuasa = lazy(() => import('../presentation/pages/PanduanPuasaPage.jsx'));
-const _QadhaPuasa = lazy(() => import('../presentation/pages/QadhaPuasaPage.jsx'));
-const _Ramadhan = lazy(() => import('../presentation/pages/RamadhanPage.jsx'));
-const _Hadits = lazy(() => import('../presentation/pages/HaditsPage.jsx'));
-const _HisnulMuslim = lazy(() => import('../presentation/pages/HisnulMuslimPage.jsx'));
-const _Sirah = lazy(() => import('../presentation/pages/SirahPage.jsx'));
-const _Waris = lazy(() => import('../presentation/pages/WarisPage.jsx'));
-const _Fidyah = lazy(() => import('../presentation/pages/FidyahPage.jsx'));
-const _Kafarat = lazy(() => import('../presentation/pages/KafaratPage.jsx'));
-const _HajiUmrah = lazy(() => import('../presentation/pages/HajiUmrahPage.jsx'));
-const _PanduanJenazah = lazy(() => import('../presentation/pages/PanduanJenazahPage.jsx'));
-const _AqiqahKurban = lazy(() => import('../presentation/pages/AqiqahKurbanPage.jsx'));
-const _Mutabaah = lazy(() => import('../presentation/pages/MutabaahPage.jsx'));
-const _NamaBayi = lazy(() => import('../presentation/pages/NamaBayiPage.jsx'));
-const _MasjidTerdekat = lazy(() => import('../presentation/pages/MasjidTerdekatPage.jsx'));
-const _SholatId = lazy(() => import('../presentation/pages/SholatIdPage.jsx'));
-const _SholatMusafir = lazy(() => import('../presentation/pages/SholatMusafirPage.jsx'));
-const _SholatSakit = lazy(() => import('../presentation/pages/SholatSakitPage.jsx'));
-const _DoaQunut = lazy(() => import('../presentation/pages/DoaQunutPage.jsx'));
-const _PanduanImam = lazy(() => import('../presentation/pages/PanduanImamPage.jsx'));
-const _IndeksTematik = lazy(() => import('../presentation/pages/IndeksTematikPage.jsx'));
-const _Sujud = lazy(() => import('../presentation/pages/SujudPage.jsx'));
-const _Kuis = lazy(() => import('../presentation/pages/KuisPage.jsx'));
-const _PanduanNikah = lazy(() => import('../presentation/pages/PanduanNikahPage.jsx'));
-const _FikihKeluarga = lazy(() => import('../presentation/pages/FikihKeluargaPage.jsx'));
-const _Muamalah = lazy(() => import('../presentation/pages/MuamalahPage.jsx'));
-const _WakafWasiat = lazy(() => import('../presentation/pages/WakafWasiatPage.jsx'));
-const _Halal = lazy(() => import('../presentation/pages/HalalPage.jsx'));
-const _Itikaf = lazy(() => import('../presentation/pages/ItikafPage.jsx'));
-const _Ruqyah = lazy(() => import('../presentation/pages/RuqyahPage.jsx'));
-const _Khutbah = lazy(() => import('../presentation/pages/KhutbahPage.jsx'));
-const _Peristiwa = lazy(() => import('../presentation/pages/PeristiwaPage.jsx'));
-const _Riyadhus = lazy(() => import('../presentation/pages/RiyadhusPage.jsx'));
-const _Konverter = lazy(() => import('../presentation/pages/KonverterPage.jsx'));
-const _Statistik = lazy(() => import('../presentation/pages/StatistikPage.jsx'));
-const _DataProgres = lazy(() => import('../presentation/pages/DataProgresPage.jsx'));
-const _Radio = lazy(() => import('../presentation/pages/RadioPage.jsx'));
-const _TesBaca = lazy(() => import('../presentation/pages/TesBacaPage.jsx'));
-const _Anak = lazy(() => import('../presentation/pages/AnakPage.jsx'));
+const _Surah = lazyDenganPemulihan(() => import('../presentation/pages/SurahPage.jsx'));
+const _IqroHub = lazyDenganPemulihan(() => import('../presentation/pages/IqroHubPage.jsx'));
+const _IqroJilid = lazyDenganPemulihan(() => import('../presentation/pages/IqroJilidPage.jsx'));
+const _Jadwal = lazyDenganPemulihan(() => import('../presentation/pages/JadwalPage.jsx'));
+const _Zakat = lazyDenganPemulihan(() => import('../presentation/pages/ZakatPage.jsx'));
+const _Sedekah = lazyDenganPemulihan(() => import('../presentation/pages/SedekahPage.jsx'));
+const _Khatam = lazyDenganPemulihan(() => import('../presentation/pages/KhatamPage.jsx'));
+const _Tasbih = lazyDenganPemulihan(() => import('../presentation/pages/TasbihPage.jsx'));
+const _Sholawat = lazyDenganPemulihan(() => import('../presentation/pages/SholawatPage.jsx'));
+const _Dzikir = lazyDenganPemulihan(() => import('../presentation/pages/DzikirPage.jsx'));
+const _Doa = lazyDenganPemulihan(() => import('../presentation/pages/DoaPage.jsx'));
+const _SholatTracker = lazyDenganPemulihan(() => import('../presentation/pages/SholatTrackerPage.jsx'));
+const _Kiblat = lazyDenganPemulihan(() => import('../presentation/pages/KiblatPage.jsx'));
+const _Kalender = lazyDenganPemulihan(() => import('../presentation/pages/KalenderPage.jsx'));
+const _AsmaulHusna = lazyDenganPemulihan(() => import('../presentation/pages/AsmaulHusnaPage.jsx'));
+const _Kisah = lazyDenganPemulihan(() => import('../presentation/pages/KisahPage.jsx'));
+const _KisahDetail = lazyDenganPemulihan(() => import('../presentation/pages/KisahDetailPage.jsx'));
+const _QuranList = lazyDenganPemulihan(() => import('../presentation/pages/QuranListPage.jsx'));
+const _MuslimahHub = lazyDenganPemulihan(() => import('../presentation/pages/MuslimahHubPage.jsx'));
+const _MuslimahKalkulator = lazyDenganPemulihan(() => import('../presentation/pages/MuslimahKalkulatorPage.jsx'));
+const _MuslimahMandiWajib = lazyDenganPemulihan(() => import('../presentation/pages/MuslimahMandiWajibPage.jsx'));
+const _MuslimahDoa = lazyDenganPemulihan(() => import('../presentation/pages/MuslimahDoaPage.jsx'));
+const _MuslimahFikih = lazyDenganPemulihan(() => import('../presentation/pages/MuslimahFikihPage.jsx'));
+const _Aksesibilitas = lazyDenganPemulihan(() => import('../presentation/pages/AksesibilitasPage.jsx'));
+const _Cari = lazyDenganPemulihan(() => import('../presentation/pages/CariPage.jsx'));
+const _PanduanTajwid = lazyDenganPemulihan(() => import('../presentation/pages/PanduanTajwidPage.jsx'));
+const _Hafalan = lazyDenganPemulihan(() => import('../presentation/pages/HafalanPage.jsx'));
+const _Bookmark = lazyDenganPemulihan(() => import('../presentation/pages/BookmarkPage.jsx'));
+const _PanduanWudhu = lazyDenganPemulihan(() => import('../presentation/pages/PanduanWudhuPage.jsx'));
+const _PanduanSholat = lazyDenganPemulihan(() => import('../presentation/pages/PanduanSholatPage.jsx'));
+const _SholatSunnah = lazyDenganPemulihan(() => import('../presentation/pages/SholatSunnahPage.jsx'));
+const _DzikirBadaSholat = lazyDenganPemulihan(() => import('../presentation/pages/DzikirBadaSholatPage.jsx'));
+const _SholatJenazah = lazyDenganPemulihan(() => import('../presentation/pages/SholatJenazahPage.jsx'));
+const _Tahlil = lazyDenganPemulihan(() => import('../presentation/pages/TahlilPage.jsx'));
+const _PanduanPuasa = lazyDenganPemulihan(() => import('../presentation/pages/PanduanPuasaPage.jsx'));
+const _QadhaPuasa = lazyDenganPemulihan(() => import('../presentation/pages/QadhaPuasaPage.jsx'));
+const _UtangPuasa = lazyDenganPemulihan(() => import('../presentation/pages/UtangPuasaPage.jsx'));
+const _Ramadhan = lazyDenganPemulihan(() => import('../presentation/pages/RamadhanPage.jsx'));
+const _Hadits = lazyDenganPemulihan(() => import('../presentation/pages/HaditsPage.jsx'));
+const _HisnulMuslim = lazyDenganPemulihan(() => import('../presentation/pages/HisnulMuslimPage.jsx'));
+const _Sirah = lazyDenganPemulihan(() => import('../presentation/pages/SirahPage.jsx'));
+const _Waris = lazyDenganPemulihan(() => import('../presentation/pages/WarisPage.jsx'));
+const _Fidyah = lazyDenganPemulihan(() => import('../presentation/pages/FidyahPage.jsx'));
+const _Kafarat = lazyDenganPemulihan(() => import('../presentation/pages/KafaratPage.jsx'));
+const _HajiUmrah = lazyDenganPemulihan(() => import('../presentation/pages/HajiUmrahPage.jsx'));
+const _PanduanJenazah = lazyDenganPemulihan(() => import('../presentation/pages/PanduanJenazahPage.jsx'));
+const _Ziarah = lazyDenganPemulihan(() => import('../presentation/pages/ZiarahPage.jsx'));
+const _AqiqahKurban = lazyDenganPemulihan(() => import('../presentation/pages/AqiqahKurbanPage.jsx'));
+const _Mutabaah = lazyDenganPemulihan(() => import('../presentation/pages/MutabaahPage.jsx'));
+const _JurnalSyukur = lazyDenganPemulihan(() => import('../presentation/pages/JurnalSyukurPage.jsx'));
+const _Profil = lazyDenganPemulihan(() => import('../presentation/pages/ProfilPage.jsx'));
+const _NamaBayi = lazyDenganPemulihan(() => import('../presentation/pages/NamaBayiPage.jsx'));
+const _MasjidTerdekat = lazyDenganPemulihan(() => import('../presentation/pages/MasjidTerdekatPage.jsx'));
+const _SholatId = lazyDenganPemulihan(() => import('../presentation/pages/SholatIdPage.jsx'));
+const _SholatMusafir = lazyDenganPemulihan(() => import('../presentation/pages/SholatMusafirPage.jsx'));
+const _SholatSakit = lazyDenganPemulihan(() => import('../presentation/pages/SholatSakitPage.jsx'));
+const _DoaQunut = lazyDenganPemulihan(() => import('../presentation/pages/DoaQunutPage.jsx'));
+const _PanduanImam = lazyDenganPemulihan(() => import('../presentation/pages/PanduanImamPage.jsx'));
+const _IndeksTematik = lazyDenganPemulihan(() => import('../presentation/pages/IndeksTematikPage.jsx'));
+const _Sujud = lazyDenganPemulihan(() => import('../presentation/pages/SujudPage.jsx'));
+const _Kuis = lazyDenganPemulihan(() => import('../presentation/pages/KuisPage.jsx'));
+const _PanduanNikah = lazyDenganPemulihan(() => import('../presentation/pages/PanduanNikahPage.jsx'));
+const _FikihKeluarga = lazyDenganPemulihan(() => import('../presentation/pages/FikihKeluargaPage.jsx'));
+const _Muamalah = lazyDenganPemulihan(() => import('../presentation/pages/MuamalahPage.jsx'));
+const _WakafWasiat = lazyDenganPemulihan(() => import('../presentation/pages/WakafWasiatPage.jsx'));
+const _Halal = lazyDenganPemulihan(() => import('../presentation/pages/HalalPage.jsx'));
+const _Itikaf = lazyDenganPemulihan(() => import('../presentation/pages/ItikafPage.jsx'));
+const _Ruqyah = lazyDenganPemulihan(() => import('../presentation/pages/RuqyahPage.jsx'));
+const _Khutbah = lazyDenganPemulihan(() => import('../presentation/pages/KhutbahPage.jsx'));
+const _Peristiwa = lazyDenganPemulihan(() => import('../presentation/pages/PeristiwaPage.jsx'));
+const _Riyadhus = lazyDenganPemulihan(() => import('../presentation/pages/RiyadhusPage.jsx'));
+const _Konverter = lazyDenganPemulihan(() => import('../presentation/pages/KonverterPage.jsx'));
+const _Statistik = lazyDenganPemulihan(() => import('../presentation/pages/StatistikPage.jsx'));
+const _DataProgres = lazyDenganPemulihan(() => import('../presentation/pages/DataProgresPage.jsx'));
+const _Tentang = lazyDenganPemulihan(() => import('../presentation/pages/TentangPage.jsx'));
+const _Radio = lazyDenganPemulihan(() => import('../presentation/pages/RadioPage.jsx'));
+const _TesBaca = lazyDenganPemulihan(() => import('../presentation/pages/TesBacaPage.jsx'));
+const _Anak = lazyDenganPemulihan(() => import('../presentation/pages/AnakPage.jsx'));
+const _AnakSholat = lazyDenganPemulihan(() => import('../presentation/pages/AnakSholatPage.jsx'));
 
 export function SurahPage() {
   return (
@@ -127,6 +137,13 @@ export function ZakatPage() {
     </Suspense>
   );
 }
+export function SedekahPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_Sedekah />
+    </Suspense>
+  );
+}
 export function KhatamPage() {
   return (
     <Suspense fallback={<PageFallback />}>
@@ -138,6 +155,13 @@ export function TasbihPage() {
   return (
     <Suspense fallback={<PageFallback />}>
       <_Tasbih />
+    </Suspense>
+  );
+}
+export function SholawatPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_Sholawat />
     </Suspense>
   );
 }
@@ -309,6 +333,13 @@ export function SholatJenazahPage() {
     </Suspense>
   );
 }
+export function TahlilPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_Tahlil />
+    </Suspense>
+  );
+}
 export function PanduanPuasaPage() {
   return (
     <Suspense fallback={<PageFallback />}>
@@ -320,6 +351,13 @@ export function QadhaPuasaPage() {
   return (
     <Suspense fallback={<PageFallback />}>
       <_QadhaPuasa />
+    </Suspense>
+  );
+}
+export function UtangPuasaPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_UtangPuasa />
     </Suspense>
   );
 }
@@ -386,6 +424,13 @@ export function PanduanJenazahPage() {
     </Suspense>
   );
 }
+export function ZiarahPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_Ziarah />
+    </Suspense>
+  );
+}
 export function AqiqahKurbanPage() {
   return (
     <Suspense fallback={<PageFallback />}>
@@ -397,6 +442,20 @@ export function MutabaahPage() {
   return (
     <Suspense fallback={<PageFallback />}>
       <_Mutabaah />
+    </Suspense>
+  );
+}
+export function JurnalSyukurPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_JurnalSyukur />
+    </Suspense>
+  );
+}
+export function ProfilPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_Profil />
     </Suspense>
   );
 }
@@ -502,6 +561,13 @@ export function AnakPage() {
     </Suspense>
   );
 }
+export function AnakSholatPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_AnakSholat />
+    </Suspense>
+  );
+}
 
 export function PanduanNikahPage() {
   return (
@@ -603,6 +669,14 @@ export function DataProgresPage() {
   return (
     <Suspense fallback={<PageFallback />}>
       <_DataProgres />
+    </Suspense>
+  );
+}
+
+export function TentangPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_Tentang />
     </Suspense>
   );
 }

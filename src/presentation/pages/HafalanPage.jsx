@@ -7,20 +7,25 @@ import {
 } from 'react-icons/fa';
 import { QuranRepositoryImpl } from '../../data/repositories/QuranRepositoryImpl.js';
 import { LocalHafalanRepository } from '../../data/repositories/LocalHafalanRepository.js';
+import { LocalProfilRepository } from '../../data/repositories/LocalProfilRepository.js';
 import { useChapters } from '../hooks/useChapters.js';
 import { useToast } from '../components/feedback/toastStore.js';
 import {
   Page, PageHero, Card, GoldCard, SectionTitle, GhostButton, PrimaryButton,
   ErrorBox, Skeleton, TextInput,
 } from '../components/common.jsx';
-import { SegmenWadah, SegmenTab, Segmen } from '../components/SegmentedControl.jsx';
+import { SegmenWadah, SegmenTab, SegmenKompakWadah, SegmenKompak } from '../components/SegmentedControl.jsx';
 import NomorMedali from '../components/NomorMedali.jsx';
 
 const PREFS_KUNCI = 'noor.hafalan.prefs.v1';
 
+// Namespace profil keluarga: preferensi hafalan mengikuti profil aktif,
+// sama seperti data hafalannya (profil 'utama' = kunci dasar persis).
+const kunciPrefsAktif = () => LocalProfilRepository.kunciAktif(PREFS_KUNCI);
+
 function bacaPrefs() {
   try {
-    const raw = localStorage.getItem(PREFS_KUNCI);
+    const raw = localStorage.getItem(kunciPrefsAktif());
     return raw ? JSON.parse(raw) : {};
   } catch {
     return {};
@@ -29,7 +34,7 @@ function bacaPrefs() {
 
 function simpanPrefs(p) {
   try {
-    localStorage.setItem(PREFS_KUNCI, JSON.stringify(p));
+    localStorage.setItem(kunciPrefsAktif(), JSON.stringify(p));
   } catch {
     /* abaikan */
   }
@@ -734,9 +739,9 @@ export default function HafalanPage() {
               >
                 <FaInfinity aria-hidden="true" /> Ulang audio per ayat
               </span>
-              <SegmenWadah role="group" aria-labelledby="label-ulang" css={{ marginBottom: 0 }}>
+              <SegmenKompakWadah role="group" aria-labelledby="label-ulang">
                 {OPSI_ULANG.map((o) => (
-                  <Segmen
+                  <SegmenKompak
                     key={o.nilai}
                     type="button"
                     aktif={ulangStr === o.nilai}
@@ -744,9 +749,9 @@ export default function HafalanPage() {
                     onClick={() => setUlangStr(o.nilai)}
                   >
                     {o.label}
-                  </Segmen>
+                  </SegmenKompak>
                 ))}
-              </SegmenWadah>
+              </SegmenKompakWadah>
             </div>
           </KontrolBar>
 

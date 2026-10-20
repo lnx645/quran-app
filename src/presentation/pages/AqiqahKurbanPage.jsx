@@ -9,6 +9,7 @@ import {
   Page, PageHero, Card, GoldCard, SectionTitle, Field, TextInput, ResultRow,
 } from '../components/common.jsx';
 import { SegmenWadah, SegmenTab } from '../components/SegmentedControl.jsx';
+import PerencanaTabunganQurban from '../components/PerencanaTabunganQurban.jsx';
 import {
   AQIQAH, KURBAN, DISCLAIMER_AQIQAH_KURBAN,
 } from '../../data/sources/aqiqahKurbanData.js';
@@ -211,6 +212,7 @@ export default function AqiqahKurbanPage() {
             ))}
           </Card>
           <Disclaimer />
+          <PerencanaTabunganQurban />
         </>
       )}
     </Page>

@@ -10,13 +10,14 @@
  *         dzikir: boolean,                // dzikir pagi/petang tuntas hari itu
  *         sholat: boolean,                // ada sholat ditandai di Sholat Tracker
  *         mutabaah: boolean,              // ada amal dicentang di Mutaba'ah
+ *         sedekah: boolean,               // ada catatan ditambah di Sedekah & Infaq
  *       },
  *     },
  *   }
  *
  * Definisi STREAK: jumlah hari berurutan yang AKTIF, dihitung mundur dari
  * hari ini. Hari disebut aktif bila ada minimal satu aktivitas tercatat
- * (≥1 ayat terbaca, atau dzikir/sholat/mutabaah tercentang). Bila hari ini
+ * (≥1 ayat terbaca, atau dzikir/sholat/mutabaah/sedekah tercatat). Bila hari ini
  * BELUM ada aktivitas, streak belum putus: hitungan dimulai dari kemarin
  * (hari ini masih punya kesempatan). Bila kemarin pun kosong, streak = 0.
  * Satu hari kosong di tengah rangkaian memutus streak — rangkaian yang
@@ -29,7 +30,7 @@
 
 export const KUNCI_STREAK = 'noor.streak.v1';
 export const TARGET_AYAT_DEFAULT = 10;
-export const JENIS_AKTIVITAS = ['dzikir', 'sholat', 'mutabaah'];
+export const JENIS_AKTIVITAS = ['dzikir', 'sholat', 'mutabaah', 'sedekah'];
 
 /** 'YYYY-MM-DD' dari tanggal LOKAL (bukan UTC) — konsisten dengan tracker lain. */
 export function kunciHari(date = new Date()) {
@@ -48,7 +49,7 @@ function geserKunci(kunci, n) {
 }
 
 function recordKosong() {
-  return { ayat: [], dzikir: false, sholat: false, mutabaah: false };
+  return { ayat: [], dzikir: false, sholat: false, mutabaah: false, sedekah: false };
 }
 
 /** Normalisasi record hari apa pun menjadi bentuk baku (defensif thd. data lama/rusak). */
@@ -59,6 +60,7 @@ function recordAman(record) {
     dzikir: record.dzikir === true,
     sholat: record.sholat === true,
     mutabaah: record.mutabaah === true,
+    sedekah: record.sedekah === true,
   };
 }
 
@@ -84,7 +86,7 @@ export function stateAwal() {
 /** Hari aktif = ada ≥1 aktivitas apa pun tercatat pada hari itu. */
 export function hariAktif(record) {
   const r = recordAman(record);
-  return r.ayat.length > 0 || r.dzikir || r.sholat || r.mutabaah;
+  return r.ayat.length > 0 || r.dzikir || r.sholat || r.mutabaah || r.sedekah;
 }
 
 /**
@@ -105,7 +107,7 @@ export function catatAyat(state, kunciAyat, date = new Date()) {
 }
 
 /**
- * Catat aktivitas non-ayat ('dzikir' | 'sholat' | 'mutabaah') pada `date`.
+ * Catat aktivitas non-ayat ('dzikir' | 'sholat' | 'mutabaah' | 'sedekah') pada `date`.
  * Jenis tak dikenal diabaikan (state dikembalikan apa adanya).
  */
 export function catatAktivitas(state, jenis, date = new Date()) {

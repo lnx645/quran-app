@@ -1,7 +1,12 @@
 // Repository progres hafalan (tahfidz) tersimpan di localStorage (data layer).
 // Bentuk: { targetPerHari: number, hafal: { [surahId]: number[] }, log: { 'YYYY-MM-DD': string[] } }
 // log menyimpan kunci 'surahId:nomorAyat' yang ditandai pada tanggal tersebut.
+import { LocalProfilRepository } from './LocalProfilRepository.js';
+
 const KUNCI = 'noor.hafalan.v1';
+// Namespace profil: SEMUA baca/tulis lewat kunciAktif() — profil 'utama'
+// memakai kunci dasar persis (data lama), profil lain berakhiran #<id>.
+const kunciAktif = () => LocalProfilRepository.kunciAktif(KUNCI);
 const TARGET_DEFAULT = 5;
 
 function tanggalHariIni() {
@@ -33,7 +38,7 @@ export const LocalHafalanRepository = {
   /** Muat seluruh state hafalan (selalu ternormalisasi). */
   muat() {
     try {
-      const raw = localStorage.getItem(KUNCI);
+      const raw = localStorage.getItem(kunciAktif());
       if (!raw) return bentukAwal();
       return normalisasi(JSON.parse(raw));
     } catch {
@@ -44,7 +49,7 @@ export const LocalHafalanRepository = {
   /** Simpan state penuh (dipakai internal setelah mutasi). */
   simpan(state) {
     try {
-      localStorage.setItem(KUNCI, JSON.stringify(normalisasi(state)));
+      localStorage.setItem(kunciAktif(), JSON.stringify(normalisasi(state)));
     } catch {
       /* abaikan */
     }

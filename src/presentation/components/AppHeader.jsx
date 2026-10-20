@@ -8,9 +8,10 @@ import {
   FaHandPointer, FaCloudSun, FaPrayingHands, FaClipboardCheck, FaCompass,
   FaCalendarAlt, FaListUl, FaBook, FaGraduationCap, FaUniversalAccess,
   FaSearch, FaBookmark, FaBrain, FaPalette, FaTint, FaMoon, FaBroadcastTower, FaMicrophone, FaChild,
-  FaBalanceScale, FaKaaba, FaBaby, FaGift, FaHandHoldingHeart, FaTasks,
-  FaDownload,
+  FaBalanceScale, FaKaaba, FaBaby, FaGift, FaHandHoldingHeart, FaTasks, FaMonument, FaPenFancy,
+  FaDownload, FaUserCircle, FaInfoCircle,
 } from 'react-icons/fa';
+import { LocalProfilRepository } from '../../data/repositories/LocalProfilRepository.js';
 import Logo from './Logo.jsx';
 import { PrimaryButton } from './common.jsx';
 import { useInstallPrompt } from '../hooks/useInstallPrompt.js';
@@ -306,6 +307,7 @@ const MENU = [
     items: [
       { to: '/jadwal', icon: <FaMosque />, kunci: 'menu.jadwal' },
       { to: '/tasbih', icon: <FaHandPointer />, kunci: 'menu.tasbih' },
+      { to: '/sholawat', icon: <FaHeart />, kunci: 'menu.sholawat' },
       { to: '/dzikir', icon: <FaCloudSun />, kunci: 'menu.dzikir' },
       { to: '/doa', icon: <FaPrayingHands />, kunci: 'menu.doa' },
       { to: '/sholat-tracker', icon: <FaClipboardCheck />, kunci: 'menu.sholatTracker' },
@@ -314,6 +316,7 @@ const MENU = [
       { to: '/sholat-sunnah', icon: <FaMoon />, kunci: 'menu.sholatSunnah' },
       { to: '/dzikir-bada-sholat', icon: <FaCloudSun />, kunci: 'menu.dzikirBada' },
       { to: '/sholat-jenazah', icon: <FaBook />, kunci: 'menu.sholatJenazah' },
+      { to: '/tahlil', icon: <FaPrayingHands />, kunci: 'menu.tahlil' },
       { to: '/sholat-id', icon: <FaMoon />, kunci: 'menu.sholatId' },
       { to: '/sholat-musafir', icon: <FaBookOpen />, kunci: 'menu.sholatMusafir' },
       { to: '/sholat-sakit', icon: <FaBook />, kunci: 'menu.sholatSakit' },
@@ -322,11 +325,13 @@ const MENU = [
       { to: '/sujud', icon: <FaBookOpen />, kunci: 'menu.sujud' },
       { to: '/panduan-puasa', icon: <FaBookOpen />, kunci: 'menu.puasa' },
       { to: '/qadha-puasa', icon: <FaClipboardCheck />, kunci: 'menu.qadha' },
+      { to: '/utang-puasa', icon: <FaBookOpen />, kunci: 'menu.utangPuasa' },
       { to: '/ramadhan', icon: <FaMoon />, kunci: 'menu.ramadhan' },
       { to: '/hisnul-muslim', icon: <FaPrayingHands />, kunci: 'menu.hisnul' },
       { to: '/itikaf', icon: <FaMoon />, kunci: 'menu.itikaf' },
       { to: '/ruqyah', icon: <FaBookOpen />, kunci: 'menu.ruqyah' },
       { to: '/mutabaah', icon: <FaTasks />, kunci: 'menu.mutabaah' },
+      { to: '/jurnal-syukur', icon: <FaPenFancy />, kunci: 'menu.jurnalSyukur' },
     ],
   },
   {
@@ -337,6 +342,7 @@ const MENU = [
       { to: '/kafarat', icon: <FaBookOpen />, kunci: 'menu.kafarat' },
       { to: '/haji-umrah', icon: <FaKaaba />, kunci: 'menu.haji' },
       { to: '/panduan-jenazah', icon: <FaBook />, kunci: 'menu.panduanJenazah' },
+      { to: '/ziarah', icon: <FaMonument />, kunci: 'menu.ziarah' },
       { to: '/aqiqah-kurban', icon: <FaGift />, kunci: 'menu.aqiqah' },
       { to: '/nama-bayi', icon: <FaBaby />, kunci: 'menu.namaBayi' },
       { to: '/masjid-terdekat', icon: <FaMosque />, kunci: 'menu.masjid' },
@@ -374,6 +380,7 @@ const MENU = [
     kunciGrup: 'grup.utilitas',
     items: [
       { to: '/zakat', icon: <FaCalculator />, kunci: 'menu.zakat' },
+      { to: '/sedekah', icon: <FaHandHoldingHeart />, kunci: 'menu.sedekah' },
       { to: '/khatam', icon: <FaBookReader />, kunci: 'menu.khatam' },
       { to: '/kiblat', icon: <FaCompass />, kunci: 'menu.kiblat' },
       { to: '/kalender', icon: <FaCalendarAlt />, kunci: 'menu.kalender' },
@@ -381,6 +388,7 @@ const MENU = [
       { to: '/statistik', icon: <FaClipboardCheck />, kunci: 'menu.statistik' },
       { to: '/data-progres', icon: <FaTasks />, kunci: 'menu.dataProgres' },
       { to: '/aksesibilitas', icon: <FaUniversalAccess />, kunci: 'menu.aksesibilitas' },
+      { to: '/tentang', icon: <FaInfoCircle />, kunci: 'menu.tentang' },
     ],
   },
 ];
@@ -500,6 +508,35 @@ export default function AppHeader() {
               <FaDownload aria-hidden="true" /> {t('umum.install')}
             </PrimaryButton>
           )}
+          {/* Profil keluarga lokal: nama profil aktif dibaca langsung dari
+              LocalProfilRepository saat render (cukup untuk tampilan nama;
+              pergantian profil terjadi di halaman /profil + muat ulang). */}
+          <div>
+            <GroupLabel>{t('umum.profilAktif')}</GroupLabel>
+            <p
+              css={(t) => ({
+                padding: '0 2px 6px',
+                fontSize: 14,
+                fontWeight: 700,
+                color: t.colors.text,
+              })}
+            >
+              {(() => {
+                try {
+                  return LocalProfilRepository.profilAktif()?.nama ?? 'Utama';
+                } catch {
+                  return 'Utama';
+                }
+              })()}
+            </p>
+            <Item to="/profil" onClick={() => setOpen(false)}>
+              <ItemIcon>
+                <FaUserCircle />
+              </ItemIcon>
+              {t('menu.gantiProfil')}
+              <FiChevronRight className="chev" />
+            </Item>
+          </div>
           {MENU.map((grup) => (
             <div key={grup.kunciGrup}>
               <GroupLabel>{t(grup.kunciGrup)}</GroupLabel>

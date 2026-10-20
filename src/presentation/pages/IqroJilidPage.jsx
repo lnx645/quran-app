@@ -1,10 +1,10 @@
 /** @jsxImportSource @emotion/react */
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import {
   FaArrowLeft, FaCheckCircle, FaBookOpen, FaChevronLeft, FaChevronRight,
-  FaClipboardCheck, FaEye, FaEyeSlash, FaInfoCircle,
+  FaClipboardCheck, FaEye, FaEyeSlash, FaInfoCircle, FaVolumeUp,
 } from 'react-icons/fa';
 import { IqroRepositoryImpl } from '../../data/repositories/IqroRepositoryImpl.js';
 import {
@@ -159,12 +159,35 @@ const BarisLatihan = styled.div`
   color: ${({ theme }) => theme.colors.judul};
   padding: 6px 4px;
   border-bottom: 1px dashed ${({ theme }) => theme.colors.border};
+  background: ${({ theme, diputar }) =>
+    diputar ? theme.colors.primarySoft : 'transparent'};
+  border-radius: ${({ diputar }) => (diputar ? '12px' : '0')};
   &:last-child {
     border-bottom: none;
   }
   @media (min-width: ${({ theme }) => theme.breakpoints.md}px) {
     font-size: 44px;
   }
+`;
+
+/* ---- Audio baris latihan (Jilid 1 saja) ---- */
+
+// Pembungkus baris + tombol dengar; garis putus-putus pindah ke sini agar
+// tombol ikut di dalam baris yang sama.
+const BarisAudio = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  border-bottom: 1px dashed ${({ theme }) => theme.colors.border};
+`;
+
+const CatatanAudio = styled.p`
+  flex-basis: 100%;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: ${({ theme }) => theme.colors.muted};
+  padding: 0 4px 8px;
 `;
 
 const NavLatihan = styled.div`
@@ -305,6 +328,11 @@ export default function IqroJilidPage() {
   const [pilihan, setPilihan] = useState(1); // index huruf terpilih (Ba)
   const [halamanIdx, setHalamanIdx] = useState(0);
   const [kunciTerbuka, setKunciTerbuka] = useState({});
+  // Audio baris latihan Jilid 1: indeks baris global yang sedang diputar /
+  // gagal diputar (null = tidak ada). Satu elemen Audio bersama.
+  const [barisDiputar, setBarisDiputar] = useState(null);
+  const [barisGagal, setBarisGagal] = useState(null);
+  const pemutarRef = useRef(null);
 
   useEffect(() => {
     setData(null);
@@ -312,6 +340,9 @@ export default function IqroJilidPage() {
     setError(null);
     setHalamanIdx(0);
     setKunciTerbuka({});
+    setBarisDiputar(null);
+    setBarisGagal(null);
+    if (pemutarRef.current) pemutarRef.current.pause();
     Promise.all([
       IqroRepositoryImpl.getJilid(jilid),
       IqroRepositoryImpl.getJilidFull(jilid),
@@ -322,6 +353,14 @@ export default function IqroJilidPage() {
       })
       .catch((e) => setError(e.message));
   }, [jilid]);
+
+  // Hentikan bunyi saat halaman ditinggalkan.
+  useEffect(
+    () => () => {
+      if (pemutarRef.current) pemutarRef.current.pause();
+    },
+    [],
+  );
 
   if (error) {
     return (
@@ -345,11 +384,57 @@ export default function IqroJilidPage() {
   const totalHalaman = full.halaman.length;
 
   const keHalaman = (i) => {
-    if (i >= 0 && i < totalHalaman) setHalamanIdx(i);
+    if (i >= 0 && i < totalHalaman) {
+      if (pemutarRef.current) pemutarRef.current.pause();
+      setBarisDiputar(null);
+      setBarisGagal(null);
+      setHalamanIdx(i);
+    }
   };
 
   const toggleKunci = (nomor) =>
     setKunciTerbuka((s) => ({ ...s, [nomor]: !s[nomor] }));
+
+  // Putar bunyi satu baris latihan Jilid 1. idxGlobal = indeks baris stabil
+  // dari data (jumlah baris halaman-halaman sebelumnya + indeks dalam
+  // halaman), BUKAN indeks render — nama berkas j1-<idxGlobal+1 dua digit>
+  // mengikuti urutan yang sama (lihat public/audio/iqro/SUMBER.md).
+  // Ketukan pada baris yang sedang berbunyi menghentikannya.
+  const putarBaris = (idxGlobal) => {
+    try {
+      if (typeof Audio === 'undefined') {
+        setBarisGagal(idxGlobal);
+        return;
+      }
+      if (!pemutarRef.current) pemutarRef.current = new Audio();
+      const pemutar = pemutarRef.current;
+      if (barisDiputar === idxGlobal) {
+        pemutar.pause();
+        setBarisDiputar(null);
+        return;
+      }
+      pemutar.pause();
+      pemutar.src = `/audio/iqro/j1-${String(idxGlobal + 1).padStart(2, '0')}.mp3`;
+      pemutar.onended = () =>
+        setBarisDiputar((cur) => (cur === idxGlobal ? null : cur));
+      pemutar.onerror = () => {
+        setBarisDiputar(null);
+        setBarisGagal(idxGlobal);
+      };
+      setBarisGagal(null);
+      setBarisDiputar(idxGlobal);
+      const janji = pemutar.play();
+      if (janji && typeof janji.catch === 'function') {
+        janji.catch(() => {
+          setBarisDiputar(null);
+          setBarisGagal(idxGlobal);
+        });
+      }
+    } catch {
+      setBarisDiputar(null);
+      setBarisGagal(idxGlobal);
+    }
+  };
 
   return (
     <Page>
@@ -376,9 +461,42 @@ export default function IqroJilidPage() {
         <Petunjuk>
           <FaInfoCircle /> <span>{halaman.petunjuk}</span>
         </Petunjuk>
-        {halaman.baris.map((b, i) => (
-          <BarisLatihan key={i}>{b}</BarisLatihan>
-        ))}
+        {halaman.baris.map((b, i) => {
+          // Jilid 2–6: tanpa tombol audio sama sekali.
+          if (full.jilid !== 1) return <BarisLatihan key={i}>{b}</BarisLatihan>;
+          // Indeks global stabil dari data: total baris halaman sebelumnya
+          // (sesuai urutan di iqroFull) + indeks baris dalam halaman ini.
+          const idxGlobal =
+            full.halaman
+              .slice(0, halamanIdx)
+              .reduce((s, h) => s + h.baris.length, 0) + i;
+          const sedangDiputar = barisDiputar === idxGlobal;
+          return (
+            <BarisAudio key={i}>
+              <BarisLatihan
+                diputar={sedangDiputar}
+                css={{ flex: 1, borderBottom: 'none' }}
+              >
+                {b}
+              </BarisLatihan>
+              <GhostButton
+                onClick={() => putarBaris(idxGlobal)}
+                aria-label={`Dengarkan baris ${idxGlobal + 1}`}
+                aria-pressed={sedangDiputar}
+                css={
+                  sedangDiputar
+                    ? (theme) => ({ background: theme.colors.primarySoft })
+                    : undefined
+                }
+              >
+                <FaVolumeUp />
+              </GhostButton>
+              {barisGagal === idxGlobal && (
+                <CatatanAudio>Audio baris ini belum tersedia</CatatanAudio>
+              )}
+            </BarisAudio>
+          );
+        })}
         <NavLatihan>
           <BarisIndikator>
             <IndikatorHalaman>

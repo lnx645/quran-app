@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import styled from '@emotion/styled';
-import { FaPlay, FaPause, FaStepBackward, FaStepForward } from 'react-icons/fa';
+import { FaPlay, FaPause, FaStepBackward, FaStepForward, FaTimes } from 'react-icons/fa';
 import { GirihPattern, OrnamentBand } from './ornaments/index.js';
 import { useBahasa } from '../../app/bahasa.js';
 
@@ -16,6 +16,21 @@ const Bar = styled.div`
   -webkit-backdrop-filter: blur(16px) saturate(1.3);
   color: #fff;
   box-shadow: ${({ theme }) => theme.shadows.player};
+  /* Masuk dengan geser halus dari bawah saat bar dirender (Mode Baca Tenang:
+     FAB → PlayerBar). Komponen fixed sehingga tidak menggeser layout;
+     durasi/easing memakai token theme.anim dan dimatikan otomatis oleh
+     aturan prefers-reduced-motion global. */
+  animation: player-masuk ${({ theme }) => theme.anim.slow} ${({ theme }) => theme.anim.ease};
+  @keyframes player-masuk {
+    from {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
   /* Garis emas di atas player */
   border-top: 1px solid rgba(231, 198, 90, 0.55);
   &::before {
@@ -48,6 +63,7 @@ const InfoBaris = styled.div`
   margin-bottom: 7px;
   font-weight: 600;
   > span:first-of-type {
+    flex: 1;
     min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -146,6 +162,31 @@ const TombolSamping = styled.button`
   }
 `;
 
+// Tombol tutup kecil di ujung baris judul (Mode Baca Tenang): menutup bar
+// berarti berhenti total & kembali ke FAB — logikanya di pemilik (onClose).
+const TombolTutup = styled.button`
+  flex-shrink: 0;
+  align-self: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(231, 198, 90, 0.5);
+  color: ${({ theme }) => theme.colors.goldLight};
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  transition: background ${({ theme }) => theme.anim.fast} ${({ theme }) => theme.anim.ease},
+    transform ${({ theme }) => theme.anim.fast} ${({ theme }) => theme.anim.ease};
+  &:hover {
+    background: rgba(231, 198, 90, 0.26);
+  }
+  &:active {
+    transform: scale(0.94);
+  }
+`;
+
 const TombolUtama = styled.button`
   background: ${({ theme }) => theme.gradients.gold};
   border: 1px solid rgba(255, 255, 255, 0.5);
@@ -177,6 +218,7 @@ const fmt = (ms) => {
 export default function PlayerBar({
   playing,
   onToggle,
+  onClose,
   onPrev,
   onNext,
   posisiMs,
@@ -246,6 +288,11 @@ export default function PlayerBar({
           <span>
             {fmt(posisiMs)} / {fmt(durasiMs)}
           </span>
+          {onClose && (
+            <TombolTutup type="button" onClick={onClose} aria-label="Tutup pemutar audio">
+              <FaTimes aria-hidden="true" />
+            </TombolTutup>
+          )}
         </InfoBaris>
         <Track
           onClick={klikTrack}

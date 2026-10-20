@@ -18,7 +18,7 @@ import { TOTAL_HALAMAN } from '../../data/sources/khatamData.js';
 import {
   Page, PageTitle, PageSubtitle, Card, GoldCard, SectionTitle, ResultRow,
 } from '../components/common.jsx';
-import { SegmenWadah, SegmenTab } from '../components/SegmentedControl.jsx';
+import { SegmenKompakWadah, SegmenKompak } from '../components/SegmentedControl.jsx';
 import StateKosong from '../components/StateKosong.jsx';
 
 // Bobot poin mutaba'ah — SAMA dengan MutabaahPage: 5 wajib × 10 poin,
@@ -293,14 +293,14 @@ export default function StatistikPage() {
         </Card>
       ) : (
         <>
-          <SegmenWadah role="tablist" aria-label="Periode statistik">
-            <SegmenTab css={{ minHeight: 44 }} aktif={periode === 7} onClick={() => setPeriode(7)}>
+          <SegmenKompakWadah role="tablist" aria-label="Periode statistik" css={{ marginBottom: 16 }}>
+            <SegmenKompak role="tab" aria-selected={periode === 7} aktif={periode === 7} onClick={() => setPeriode(7)}>
               7 Hari
-            </SegmenTab>
-            <SegmenTab css={{ minHeight: 44 }} aktif={periode === 30} onClick={() => setPeriode(30)}>
+            </SegmenKompak>
+            <SegmenKompak role="tab" aria-selected={periode === 30} aktif={periode === 30} onClick={() => setPeriode(30)}>
               30 Hari
-            </SegmenTab>
-          </SegmenWadah>
+            </SegmenKompak>
+          </SegmenKompakWadah>
 
           <GridAngka>
             <AngkaBesar>
@@ -399,17 +399,19 @@ export default function StatistikPage() {
         </ResultRow>
 
         <LabelTarget id="label-target-ayat">Target ayat per hari</LabelTarget>
-        <SegmenWadah role="tablist" aria-labelledby="label-target-ayat" css={{ marginBottom: 6 }}>
+        <SegmenKompakWadah role="tablist" aria-labelledby="label-target-ayat" css={{ marginBottom: 6 }}>
           {[5, 10, 20, 50].map((n) => (
-            <SegmenTab
+            <SegmenKompak
               key={n}
+              role="tab"
+              aria-selected={stateStreak.targetAyat === n}
               aktif={stateStreak.targetAyat === n}
               onClick={() => ubahTarget(n)}
             >
               {n} ayat
-            </SegmenTab>
+            </SegmenKompak>
           ))}
-        </SegmenWadah>
+        </SegmenKompakWadah>
 
         <div>
           {lencana.map((l) => (

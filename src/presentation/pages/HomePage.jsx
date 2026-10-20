@@ -7,7 +7,7 @@ import {
   FaHandPointer, FaCloudSun, FaPrayingHands, FaClipboardCheck, FaCompass,
   FaCalendarAlt, FaListUl, FaBook, FaHeart, FaMoon, FaVenus,
   FaSearch, FaBookmark, FaBrain, FaPalette, FaTint, FaTasks, FaBroadcastTower, FaMicrophone, FaChild,
-  FaBalanceScale, FaKaaba, FaBaby, FaGift, FaHandHoldingHeart, FaMosque,
+  FaBalanceScale, FaKaaba, FaBaby, FaGift, FaHandHoldingHeart, FaMonument, FaPenFancy, FaMosque,
   FaDownload, FaTimes, FaFire, FaChevronRight,
 } from 'react-icons/fa';
 import { useInstallPrompt } from '../hooks/useInstallPrompt.js';
@@ -16,8 +16,7 @@ import { kunciHari, hariAktif } from '../../domain/usecases/streakIbadah.js';
 import { useBahasa } from '../../app/bahasa.js';
 import { Page, SectionTitle, MenuCard, Card } from '../components/common.jsx';
 import LanjutkanMembaca from '../components/LanjutkanMembaca.jsx';
-import HaditsHariIni from '../components/HaditsHariIni.jsx';
-import AyatHariIni from '../components/AyatHariIni.jsx';
+import KartuHarian from '../components/KartuHarian.jsx';
 import Logo from '../components/Logo.jsx';
 import OrnamentDivider from '../components/OrnamentDivider.jsx';
 import { GirihPattern, OrnamentBand, CornerOrnament, MosqueSilhouette, MoonStar } from '../components/ornaments/index.js';
@@ -136,6 +135,7 @@ const SEKSI = [
     items: [
       { to: '/jadwal', icon: <FaClock />, kunci: 'menu.jadwal', desc: 'Waktu sholat & countdown adzan harian' },
       { to: '/tasbih', icon: <FaHandPointer />, kunci: 'menu.tasbih', desc: 'Counter dzikir dengan target & getar' },
+      { to: '/sholawat', icon: <FaHeart />, kunci: 'menu.sholawat', desc: 'Ibrahimiyah & Jibril + penghitung' },
       { to: '/dzikir', icon: <FaCloudSun />, kunci: 'menu.dzikir', desc: 'Al-Ma\u2019tsurat ringkas dengan penghitung dzikir' },
       { to: '/doa', icon: <FaPrayingHands />, kunci: 'menu.doa', desc: 'Sepuluh doa: Arab, latin & arti' },
       { to: '/sholat-tracker', icon: <FaClipboardCheck />, kunci: 'menu.sholatTracker', desc: 'Checklist lima waktu & streak harian' },
@@ -144,6 +144,7 @@ const SEKSI = [
       { to: '/sholat-sunnah', icon: <FaMoon />, kunci: 'menu.sholatSunnah', desc: 'Dhuha, tahajud, witir & lainnya' },
       { to: '/dzikir-bada-sholat', icon: <FaCloudSun />, kunci: 'menu.dzikirBada', desc: 'Wirid sesudah sholat dengan penghitung' },
       { to: '/sholat-jenazah', icon: <FaBook />, kunci: 'menu.sholatJenazah', desc: 'Empat takbir & bacaan tiap takbir' },
+      { to: '/tahlil', icon: <FaPrayingHands />, kunci: 'menu.tahlil', desc: 'Rangkaian tahlil terpandu & doa arwah' },
       { to: '/sholat-id', icon: <FaMoon />, kunci: 'beranda.sholatId', desc: 'Idul Fitri & Adha plus teks takbiran' },
       { to: '/sholat-musafir', icon: <FaBookOpen />, kunci: 'beranda.sholatMusafir', desc: "Jama' & qashar plus hitung jarak safar" },
       { to: '/sholat-sakit', icon: <FaBook />, kunci: 'menu.sholatSakit', desc: 'Duduk, berbaring, isyarat & kendaraan' },
@@ -152,11 +153,13 @@ const SEKSI = [
       { to: '/sujud', icon: <FaBookOpen />, kunci: 'beranda.sujud', desc: 'Sahwi, syukur & tilawah plus bacaannya' },
       { to: '/panduan-puasa', icon: <FaBookOpen />, kunci: 'menu.puasa', desc: 'Rukun, pembatal, niat & doa berbuka' },
       { to: '/qadha-puasa', icon: <FaClipboardCheck />, kunci: 'beranda.qadha', desc: 'Catat utang & pembayaran puasa' },
+      { to: '/utang-puasa', icon: <FaBookOpen />, kunci: 'menu.utangPuasa', desc: 'Buku utang puasa per tahun, centang lunas' },
       { to: '/ramadhan', icon: <FaMoon />, kunci: 'menu.ramadhan', desc: 'Hitung mundur, imsakiyah & tarawih' },
-      { to: '/hisnul-muslim', icon: <FaPrayingHands />, kunci: 'menu.hisnul', desc: '37 doa per aktivitas & situasi' },
+      { to: '/hisnul-muslim', icon: <FaPrayingHands />, kunci: 'menu.hisnul', desc: '101 doa per aktivitas & situasi' },
       { to: '/itikaf', icon: <FaMoon />, kunci: 'beranda.itikaf', desc: 'Panduan 10 malam terakhir Ramadhan' },
       { to: '/ruqyah', icon: <FaBookOpen />, kunci: 'beranda.ruqyah', desc: "Syar'iyyah + playlist ayat ruqyah" },
       { to: '/mutabaah', icon: <FaTasks />, kunci: 'menu.mutabaah', desc: 'Checklist amal harian & ringkasan 7 hari' },
+      { to: '/jurnal-syukur', icon: <FaPenFancy />, kunci: 'menu.jurnalSyukur', desc: 'Tiga syukur & refleksi tiap hari' },
     ],
   },
   {
@@ -168,6 +171,7 @@ const SEKSI = [
       { to: '/kafarat', icon: <FaBookOpen />, kunci: 'menu.kafarat', desc: 'Sumpah, zhihar & lainnya — ringkas' },
       { to: '/haji-umrah', icon: <FaKaaba />, kunci: 'beranda.haji', desc: 'Manasik per tahap + checklist barang' },
       { to: '/panduan-jenazah', icon: <FaBook />, kunci: 'menu.panduanJenazah', desc: 'Memandikan sampai menguburkan' },
+      { to: '/ziarah', icon: <FaMonument />, kunci: 'menu.ziarah', desc: 'Adab & doa ziarah kubur' },
       { to: '/aqiqah-kurban', icon: <FaGift />, kunci: 'menu.aqiqah', desc: 'Syarat, waktu & kalkulator hewan' },
       { to: '/nama-bayi', icon: <FaBaby />, kunci: 'menu.namaBayi', desc: '110 nama + arti, bisa dicari' },
       { to: '/masjid-terdekat', icon: <FaMosque />, kunci: 'menu.masjid', desc: 'Cari masjid di sekitarmu + rute' },
@@ -208,6 +212,7 @@ const SEKSI = [
     ikon: <FaCoins />,
     items: [
       { to: '/zakat', icon: <FaCoins />, kunci: 'menu.zakat', desc: 'Mal, profesi & fitrah, otomatis terhitung' },
+      { to: '/sedekah', icon: <FaHandHoldingHeart />, kunci: 'menu.sedekah', desc: 'Panduan & pencatat sedekah harian' },
       { to: '/khatam', icon: <FaBookReader />, kunci: 'menu.khatam', desc: 'Checklist 30 juz & target harian' },
       { to: '/kiblat', icon: <FaCompass />, kunci: 'menu.kiblat', desc: 'Kompas kiblat & sensor arah perangkat' },
       { to: '/kalender', icon: <FaCalendarAlt />, kunci: 'menu.kalender', desc: 'Tanggal hijriah & hari besar Islam' },
@@ -463,8 +468,7 @@ export default function HomePage() {
         )}
       </KartuStreak>
       <LanjutkanMembaca />
-      <HaditsHariIni />
-      <AyatHariIni />
+      <KartuHarian />
       {SEKSI.map((seksi) => (
         <div key={seksi.kunciNama}>
           <SectionTitle>

@@ -2,11 +2,16 @@
 // Kontrak ini dipakai AyatCard (tombol bookmark) dan BookmarkPage (daftar).
 // Item: { key: 'surahId:nomorAyat', surahId, nomorAyat, namaSurah,
 //         teksArab, terjemahan, catatan, dibuatPada (ISO string) }
+import { LocalProfilRepository } from './LocalProfilRepository.js';
+
 const KUNCI = 'noor.bookmark.v1';
+// Namespace profil: SEMUA baca/tulis lewat kunciAktif() — profil 'utama'
+// memakai kunci dasar persis (data lama), profil lain berakhiran #<id>.
+const kunciAktif = () => LocalProfilRepository.kunciAktif(KUNCI);
 
 function loadSemua() {
   try {
-    const raw = localStorage.getItem(KUNCI);
+    const raw = localStorage.getItem(kunciAktif());
     const data = raw ? JSON.parse(raw) : [];
     return Array.isArray(data) ? data : [];
   } catch {
@@ -16,7 +21,7 @@ function loadSemua() {
 
 function saveSemua(data) {
   try {
-    localStorage.setItem(KUNCI, JSON.stringify(data));
+    localStorage.setItem(kunciAktif(), JSON.stringify(data));
   } catch {
     /* abaikan */
   }
