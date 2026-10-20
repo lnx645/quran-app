@@ -102,16 +102,18 @@ tangan, bukan unduhan dan bukan hasil tracing karya orang lain):
   figur emerald tanpa detail wajah, bagian tubuh yang dibasuh
   pada langkah tersebut disorot warna emas, air digambarkan sebagai
   tetes/gelombang biru lembut beraksen emas.
-- **Pemetaan langkah:** tangan sampai pergelangan (langkah 1),
-  berkumur (2), lubang hidung (3), wajah (4), tangan sampai siku (5),
-  kepala (6), telinga (7), kaki sampai mata kaki (8) — satu figur per
-  langkah.
-- **Catatan teks langkah:** urutan dan substansi teks langkah wudhu di
-  aplikasi mengikuti panduan guru pengguna (PDF "Tata Cara Wudhu Yang
-  Benar Beserta Gambarnya") — teks fikih umum, termasuk lafadz niat
-  pada langkah mencuci muka dan redaksi doa sesudah wudhu. Gambar
-  dari PDF/buku tersebut TIDAK disalin; ilustrasi tetap karya orisinal
-  proyek di atas.
+- **Pemetaan langkah:** telapak tangan di bawah keran (langkah 1),
+  berkumur & istinsyaq/membersihkan hidung (langkah 2, dua figur
+  berdampingan), wajah (3), tangan sampai siku (4), kepala (5),
+  telinga (6), kaki sampai mata kaki (7). Niat, basmalah, dan doa
+  memang teks saja.
+- **Inspirasi pose & batas referensi:** pose figur pada ilustrasi
+  wudhu ini terinspirasi panduan klasik yang diberikan pengguna
+  (PDF dari guru pengguna, "Tata Cara Wudhu Yang Benar Beserta
+  Gambarnya") — PDF itu referensi GAMBAR/POSE saja. Gambarnya tidak
+  disalin; figur tetap digambar ulang secara orisinal oleh proyek.
+  **Teks langkah & doa di aplikasi memakai redaksi standar aplikasi**
+  (bukan teks dari PDF tersebut).
 - **Uji kualitas:** setiap figur dirender ke PNG dan diperiksa visual
   (proporsi & keterbacaan langkah dalam mode terang dan gelap) sebelum
   dipasang; figur yang gagal proporsi digambar ulang sampai pantas.

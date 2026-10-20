@@ -88,66 +88,64 @@ const Nomor = styled.span`
 
 // Ilustrasi orisinal proyek (SVG buatan tangan, gaya siluet emerald yang
 // sama dengan ilustrasi sholat; bagian yang dibasuh disorot emas).
-// Pemetaan per indeks langkah WUDHU.langkah (8 langkah sesuai panduan
-// guru): 1 tangan, 2 kumur, 3 hidung, 4 wajah, 5 lengan, 6 kepala,
-// 7 telinga, 8 kaki. Lihat public/ilustrasi/SUMBER.md.
+// Pemetaan per indeks langkah WUDHU.langkah — langkah terakhir
+// (tertib & doa) teks saja. Lihat public/ilustrasi/SUMBER.md.
 const ILUSTRASI_WUDHU = [
   [
     {
       src: '/ilustrasi/wudhu-tangan.svg',
-      alt: 'Ilustrasi mencuci kedua belah tangan sampai pergelangan di bawah aliran air keran',
-      ket: 'Kedua tangan',
+      alt: 'Ilustrasi membasuh kedua telapak tangan di bawah aliran air keran',
+      ket: 'Telapak tangan',
     },
   ],
   [
     {
       src: '/ilustrasi/wudhu-kumur.svg',
-      alt: 'Ilustrasi berkumur-kumur: memasukkan air ke dalam mulut',
+      alt: 'Ilustrasi berkumur: memasukkan air ke dalam mulut',
       ket: 'Berkumur',
     },
-  ],
-  [
     {
       src: '/ilustrasi/wudhu-hidung.svg',
-      alt: 'Ilustrasi mencuci lubang hidung dari telapak tangan yang menampung air',
-      ket: 'Lubang hidung',
+      alt: 'Ilustrasi istinsyaq: menghirup air ke hidung dari telapak tangan yang menampung air',
+      ket: 'Membersihkan hidung',
     },
   ],
   [
     {
       src: '/ilustrasi/wudhu-wajah.svg',
-      alt: 'Ilustrasi mencuci seluruh muka dengan kedua tangan',
-      ket: 'Muka',
+      alt: 'Ilustrasi membasuh seluruh wajah dengan kedua tangan',
+      ket: 'Wajah',
     },
   ],
   [
     {
       src: '/ilustrasi/wudhu-lengan.svg',
-      alt: 'Ilustrasi mencuci lengan sampai siku sambil digosok dengan tangan sebelahnya',
+      alt: 'Ilustrasi membasuh lengan sampai siku sambil digosok dengan tangan sebelahnya',
       ket: 'Tangan sampai siku',
     },
   ],
   [
     {
       src: '/ilustrasi/wudhu-kepala.svg',
-      alt: 'Ilustrasi membasahi sebagian rambut kepala dengan tangan yang basah',
+      alt: 'Ilustrasi mengusap kepala dengan kedua tangan yang basah',
       ket: 'Kepala',
     },
   ],
   [
     {
       src: '/ilustrasi/wudhu-telinga.svg',
-      alt: 'Ilustrasi mencuci bagian luar dan dalam kedua telinga',
+      alt: 'Ilustrasi mengusap bagian luar dan dalam kedua telinga',
       ket: 'Telinga',
     },
   ],
   [
     {
       src: '/ilustrasi/wudhu-kaki.svg',
-      alt: 'Ilustrasi mencuci kedua kaki hingga di atas mata kaki',
+      alt: 'Ilustrasi membasuh kedua kaki sampai mata kaki',
       ket: 'Kaki sampai mata kaki',
     },
   ],
+  null,
 ];
 
 const GambarLangkah = styled.div`
@@ -257,25 +255,8 @@ export default function PanduanWudhuPage() {
                 <span>{s.judul}</span>
               </JudulLangkah>
               <DescLangkah>{s.desc}</DescLangkah>
-              {s.niat && (
-                <div css={{ marginTop: 14 }}>
-                  <Arab>{s.niat.arab}</Arab>
-                  <Latin>{s.niat.latin}</Latin>
-                  <Arti>&ldquo;{s.niat.arti}&rdquo;</Arti>
-                </div>
-              )}
             </Card>
           ))}
-          <Card>
-            <Catatan>
-              <FaInfoCircle />{' '}
-              <span>
-                Urutan langkah di atas mengikuti panduan guru (PDF &ldquo;Tata Cara Wudhu Yang
-                Benar Beserta Gambarnya&rdquo;). Ilustrasi tiap langkah adalah karya orisinal
-                aplikasi ini — bukan pindaian dari buku atau PDF mana pun.
-              </span>
-            </Catatan>
-          </Card>
 
           <SectionTitle>Hal yang Membatalkan Wudhu</SectionTitle>
           <Card>
@@ -294,9 +275,6 @@ export default function PanduanWudhuPage() {
             <Arab>{WUDHU.doaSesudah.arab}</Arab>
             <Latin>{WUDHU.doaSesudah.latin}</Latin>
             <Arti>&ldquo;{WUDHU.doaSesudah.arti}&rdquo;</Arti>
-            <Catatan css={{ marginTop: 12 }}>
-              <FaInfoCircle /> <span>{WUDHU.doaSesudah.keterangan}</span>
-            </Catatan>
           </GoldCard>
         </>
       ) : (
