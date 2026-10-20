@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import { useTheme } from '@emotion/react';
 import {
   FaCompass, FaMapMarkerAlt, FaCrosshairs, FaInfoCircle, FaExclamationTriangle,
-  FaMagnet, FaMobileAlt, FaSyncAlt, FaRedo, FaSatellite, FaVolumeUp,
+  FaMagnet, FaMobileAlt, FaSyncAlt, FaRedo, FaSatellite, FaVolumeUp, FaCheckCircle,
 } from 'react-icons/fa';
 import {
   hitungBearingKiblat, jarakKeKabahKm, SUMEDANG,
@@ -211,35 +211,33 @@ function KompasDial({ bearing, heading, rotasi, getarAktif = true }) {
           ▲ Arah hadapmu yang di atas — penanda Ka&apos;bah emas bergerak mengikuti putaran HP-mu.
         </div>
       )}
-      {dekat && (
+      {(dekat || sejajar) && (
         <div
+          role={sejajar ? 'status' : undefined}
           css={(t) => ({
             marginTop: 10,
-            padding: '10px 14px',
+            padding: sejajar ? '10px 18px' : '7px 14px',
             borderRadius: 999,
-            background: t.gradients.gold,
+            background: sejajar ? t.gradients.gold : t.colors.goldSoft,
+            border: sejajar ? 'none' : `1px solid ${t.colors.gold}`,
             color: t.colors.primaryDeep,
-            fontSize: 16,
+            fontSize: sejajar ? 16 : 13.5,
             fontWeight: 800,
-            boxShadow: t.shadows.gold,
-            display: 'inline-block',
+            boxShadow: sejajar ? t.shadows.gold : 'none',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 7,
           })}
         >
-          <FaCompass css={{ verticalAlign: -2, marginRight: 6 }} /> Arah Kiblat Ditemukan
-        </div>
-      )}
-      {sejajar && (
-        <div
-          role="status"
-          css={(t) => ({
-            marginTop: 6,
-            fontSize: 17,
-            fontWeight: 800,
-            color: t.colors.goldDeep,
-            textShadow: `0 0 12px ${t.colors.goldSoft}`,
-          })}
-        >
-          Menghadap Kiblat ✓
+          {sejajar ? (
+            <>
+              <FaCheckCircle /> Menghadap Kiblat
+            </>
+          ) : (
+            <>
+              <FaCompass /> Arah kiblat ditemukan — putar sedikit lagi
+            </>
+          )}
         </div>
       )}
     </div>
