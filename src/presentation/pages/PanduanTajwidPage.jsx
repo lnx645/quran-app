@@ -1,13 +1,23 @@
 /** @jsxImportSource @emotion/react */
 import styled from '@emotion/styled';
 import { useTheme } from '@emotion/react';
-import { FaPalette, FaBookReader, FaMicrophone, FaListUl, FaRulerHorizontal } from 'react-icons/fa';
+import {
+  FaPalette,
+  FaBookReader,
+  FaMicrophone,
+  FaListUl,
+  FaRulerHorizontal,
+  FaPauseCircle,
+  FaPlayCircle,
+  FaStopCircle,
+} from 'react-icons/fa';
 import {
   ATURAN_TAJWID,
   MAKHRAJ_HURUF,
   HUKUM_NUN_SUKUN,
   HUKUM_MAD,
 } from '../../data/sources/tajwidData.js';
+import { TANDA_WAQAF, PANDUAN_IBTIDA, WAQAF_AKHIR_AYAT } from '../../data/sources/waqafData.js';
 import { Page, PageTitle, PageSubtitle, Card, SectionTitle } from '../components/common.jsx';
 
 /**
@@ -76,6 +86,33 @@ const KartuAturan = styled(Card)`
     line-height: 1.6;
     color: ${({ theme }) => theme.colors.muted};
     margin-top: 4px;
+  }
+`;
+
+const KartuWaqaf = styled(KartuAturan)`
+  .sampel {
+    min-width: 56px;
+    width: auto;
+    height: 56px;
+    padding: 0 10px;
+    font-size: 30px;
+  }
+  .hukum {
+    display: inline-block;
+    margin-top: 6px;
+    padding: 4px 10px;
+    border-radius: ${({ theme }) => theme.radii.pill}px;
+    background: ${({ theme }) => theme.colors.primarySoft};
+    color: ${({ theme }) => theme.colors.primary};
+    font-size: 12.5px;
+    font-weight: 700;
+    line-height: 1.5;
+  }
+  .ref {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: ${({ theme }) => theme.colors.primary};
+    margin-bottom: 4px;
   }
 `;
 
@@ -181,6 +218,62 @@ export default function PanduanTajwidPage() {
         <KartuTeks key={m.tempat}>
           <div className="nama">{m.tempat}</div>
           <p className="isi">{m.isi}</p>
+        </KartuTeks>
+      ))}
+
+      <SectionTitle>
+        <FaPauseCircle /> Tanda Waqaf &amp; Ibtida’
+      </SectionTitle>
+      <KartuTeks>
+        <div className="nama">Membaca tanda di mushaf Madinah</div>
+        <p className="isi">
+          Tanda-tanda berikut tercetak kecil di atas baris ayat mushaf Madinah; di panduan ini
+          glifnya diperbesar agar mudah dikenali. Waqaf adalah berhenti mengambil napas untuk
+          melanjutkan bacaan, sedangkan ibtida’ adalah cara memulai lagi sesudahnya — keduanya
+          menentukan utuh tidaknya makna ayat.
+        </p>
+      </KartuTeks>
+      {TANDA_WAQAF.map((w) => (
+        <KartuWaqaf key={`${w.glif}-${w.nama}`}>
+          <div className="kepala">
+            <span className="sampel" dir="rtl" lang="ar" aria-label={`Tanda ${w.nama}`}>
+              {w.glif}
+            </span>
+            <span>
+              <span className="nama">{w.nama}</span>
+              <span className="hukum">{w.hukum}</span>
+            </span>
+          </div>
+          <p className="isi">{w.isi}</p>
+          {w.contohArab ? (
+            <div className="contoh">
+              <p className="ref">{w.contohRef}</p>
+              <p className="arab" dir="rtl" lang="ar">
+                {w.contohArab}
+              </p>
+              <p className="cara">{w.contohKeterangan}</p>
+            </div>
+          ) : null}
+        </KartuWaqaf>
+      ))}
+
+      <SectionTitle>
+        <FaPlayCircle /> Ibtida’: Memulai Lagi Setelah Berhenti
+      </SectionTitle>
+      {PANDUAN_IBTIDA.map((p) => (
+        <KartuTeks key={p.nama}>
+          <div className="nama">{p.nama}</div>
+          <p className="isi">{p.isi}</p>
+        </KartuTeks>
+      ))}
+
+      <SectionTitle>
+        <FaStopCircle /> Waqaf pada Akhir Ayat
+      </SectionTitle>
+      {WAQAF_AKHIR_AYAT.map((w) => (
+        <KartuTeks key={w.nama}>
+          <div className="nama">{w.nama}</div>
+          <p className="isi">{w.isi}</p>
         </KartuTeks>
       ))}
 
