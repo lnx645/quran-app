@@ -83,10 +83,10 @@ export default function MuslimahMandiWajibPage() {
 
       <SegmenWadah role="tablist" aria-label="Niat mandi wajib">
         <SegmenTab aktif={tab === 'haid'} onClick={() => setTab('haid')}>
-          Niat setelah Haid
+          Setelah Haid
         </SegmenTab>
         <SegmenTab aktif={tab === 'nifas'} onClick={() => setTab('nifas')}>
-          Niat setelah Nifas
+          Setelah Nifas
         </SegmenTab>
       </SegmenWadah>
 

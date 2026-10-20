@@ -29,7 +29,7 @@ export const Segmen = styled.button`
   flex: 1;
   min-width: 0;
   min-height: 40px;
-  padding: 0 6px;
+  padding: 6px 8px;
   border: none;
   border-radius: 999px;
   background: ${({ theme, aktif }) => (aktif ? theme.gradients.gold : 'transparent')};
@@ -38,8 +38,11 @@ export const Segmen = styled.button`
   font-size: 13.5px;
   font-weight: 800;
   letter-spacing: 0.2px;
-  white-space: nowrap;
-  overflow: hidden;
+  /* Label panjang MELIPAT rapi ke baris kedua — tidak boleh terpotong di
+     tengah kata (temuan user di Konverter: "Hijriah → Mase…"). */
+  white-space: normal;
+  text-align: center;
+  line-height: 1.3;
   display: inline-flex;
   align-items: center;
   justify-content: center;
