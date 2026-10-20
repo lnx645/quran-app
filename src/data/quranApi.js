@@ -1,6 +1,23 @@
 // Fetch client Quran.com API v4 (data layer — presentation tidak boleh menyentuh file ini).
 const BASE = 'https://api.quran.com/api/v4';
 export const RECITER_ALAFASY = 7;
+
+/**
+ * Daftar qari murottal yang ditawarkan aplikasi — subset populer dari
+ * GET /resources/recitations (terverifikasi curl 2026-10-20; field API:
+ * id, reciter_name, style, translated_name.name). Default aplikasi sejak
+ * awal = id 7 (Mishari Rashid al-'Afasy, RECITER_ALAFASY).
+ */
+export const DAFTAR_QARI = [
+  { id: 7, nama: "Mishari Rashid al-'Afasy", gaya: null },
+  { id: 3, nama: 'Abdur-Rahman as-Sudais', gaya: null },
+  { id: 10, nama: "Sa'ud ash-Shuraym", gaya: null },
+  { id: 6, nama: 'Mahmoud Khalil Al-Husary', gaya: null },
+  { id: 2, nama: 'AbdulBaset AbdulSamad', gaya: 'Murattal' },
+  { id: 9, nama: 'Mohamed Siddiq al-Minshawi', gaya: 'Murattal' },
+  { id: 4, nama: 'Abu Bakr al-Shatri', gaya: null },
+  { id: 5, nama: 'Hani ar-Rifai', gaya: null },
+];
 export const TRANSLATION_KEMENAG = 33; // Indonesian Islamic Affairs Ministry
 
 async function getJson(path) {
@@ -112,9 +129,16 @@ export async function fetchWordTranslations(id) {
   return all;
 }
 
-/** Audio satu file utuh per surah + timestamps per ayat & segments per kata (Cara 2). */
-export function fetchChapterRecitation(id) {
-  return getJson(`/chapter_recitations/${RECITER_ALAFASY}/${id}?segments=true`).then(
+/**
+ * Audio satu file utuh per surah + timestamps per ayat & segments per kata
+ * (Cara 2) untuk qari terpilih (default: Al-Afasy, perilaku lama).
+ * Terverifikasi curl 2026-10-20: qari populer lain (3, 6, 2, …) juga
+ * membalas timestamps + segments per kata yang kompatibel; repository
+ * tetap memeriksa ketersediaannya dan SurahPage jatuh ke mode bab biasa
+ * bila suatu qari tidak menyediakannya.
+ */
+export function fetchChapterRecitation(id, reciterId = RECITER_ALAFASY) {
+  return getJson(`/chapter_recitations/${reciterId}/${id}?segments=true`).then(
     (d) => d.audio_file
   );
 }

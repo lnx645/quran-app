@@ -108,7 +108,21 @@ const Chip = styled.button`
   }
 `;
 
-export default function ReadingControls({ pref, ubah, tambahArab, kurangArab }) {
+const PilihQari = styled.select`
+  min-height: 44px;
+  max-width: 168px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  background: ${({ theme }) => theme.colors.surface};
+  color: ${({ theme }) => theme.colors.primary};
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  flex-shrink: 0;
+`;
+
+export default function ReadingControls({ pref, ubah, tambahArab, kurangArab, qari, daftarQari, ubahQari }) {
   return (
     <Bar role="group" aria-label="Kontrol baca">
       <GrupFont>
@@ -135,6 +149,22 @@ export default function ReadingControls({ pref, ubah, tambahArab, kurangArab }) 
           Per Kata
         </Chip>
       </GrupChip>
+      {daftarQari && ubahQari && (
+        <>
+          <Pembatas aria-hidden="true" />
+          <PilihQari
+            value={qari}
+            onChange={(e) => ubahQari(e.target.value)}
+            aria-label="Pilih qari murottal"
+          >
+            {daftarQari.map((q) => (
+              <option key={q.id} value={q.id}>
+                {q.gaya ? `${q.nama} (${q.gaya})` : q.nama}
+              </option>
+            ))}
+          </PilihQari>
+        </>
+      )}
     </Bar>
   );
 }

@@ -4,6 +4,8 @@ import styled from '@emotion/styled';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { FaExclamationTriangle } from 'react-icons/fa';
 import { QuranRepositoryImpl } from '../../data/repositories/QuranRepositoryImpl.js';
+import { DAFTAR_QARI, RECITER_ALAFASY } from '../../data/quranApi.js';
+import { useQari } from '../hooks/useQari.js';
 import { useSurah } from '../hooks/useSurah.js';
 import { useAudioSync } from '../hooks/useAudioSync.js';
 import { useReadingPrefs } from '../hooks/useReadingPrefs.js';
@@ -91,8 +93,15 @@ export default function SurahPage() {
     const n = Number(searchParams.get('ayat'));
     return Number.isInteger(n) && n > 0 ? n : 0;
   })();
-  const { loading, error, data } = useSurah(id);
+  const { qari, ubahQari } = useQari();
+  const { loading, error, data } = useSurah(id, qari);
   const sync = useAudioSync(data?.ayahs, data?.audioUrl, data?.audioDurationMs);
+  // Fallback qari non-default: segments tak kompatibel → sorotan kata
+  // dimatikan (highlight ayat dari timestamps tetap jalan bila ada);
+  // timestamps pun absen → timing ayat null, audio berjalan sebagai
+  // mode bab biasa tanpa highlight. Mode default (Al-Afasy) tak berubah.
+  const sorotKataAktif = qari === RECITER_ALAFASY || Boolean(data?.sorotKataTersedia);
+  const sinkronKurang = qari !== RECITER_ALAFASY && data && (!data.sinkronAyatTersedia || !data.sorotKataTersedia);
   const { pref, ubah, tambahArab, kurangArab } = useReadingPrefs();
   const sentinelRef = useRef(null);
   const [miniTampil, setMiniTampil] = useState(false);
@@ -188,12 +197,18 @@ export default function SurahPage() {
                 : 'Memuat terjemahan per kata…'}
           </p>
         )}
+        {sinkronKurang && (
+          <p role="note" css={{ fontSize: 12.5, lineHeight: 1.6, margin: '0 0 12px' }}>
+            Catatan: qari ini tidak menyediakan data sinkronisasi lengkap di API — audio
+            diputar per bab tanpa sorotan {data.sinkronAyatTersedia ? 'kata' : 'ayat/kata'}.
+          </p>
+        )}
         {ayahs.map((ayat, i) => (
           <AyatCard
             key={ayat.key}
             ayah={ayat}
             aktif={sync.activeIndex === i}
-            kataAktif={sync.activeIndex === i ? sync.activeWord : -1}
+            kataAktif={sync.activeIndex === i && sorotKataAktif ? sync.activeWord : -1}
             onSelect={() => sync.seekToAyah(i)}
             juzAwal={juzMulaiPada(ayat.key)}
             arabSize={pref.arabSize}
@@ -207,7 +222,15 @@ export default function SurahPage() {
         {/* Spacer bawah: konten terakhir tidak tertutup ReadingControls + PlayerBar (fixed) */}
         <div aria-hidden="true" css={{ height: 'calc(166px + 54px + 28px + env(safe-area-inset-bottom))' }} />
       </MushafFrame>
-      <ReadingControls pref={pref} ubah={ubah} tambahArab={tambahArab} kurangArab={kurangArab} />
+      <ReadingControls
+        pref={pref}
+        ubah={ubah}
+        tambahArab={tambahArab}
+        kurangArab={kurangArab}
+        qari={qari}
+        daftarQari={DAFTAR_QARI}
+        ubahQari={ubahQari}
+      />
       <PlayerBar
         playing={sync.playing}
         onToggle={sync.toggle}

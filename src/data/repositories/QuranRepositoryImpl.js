@@ -31,20 +31,26 @@ export const QuranRepositoryImpl = {
     return chapters.map(mapChapter);
   },
 
-  async getSurahDetail(surahId) {
+  async getSurahDetail(surahId, reciterId) {
     const chapter = await fetchChapter(surahId);
     const [verses, audioFile] = await Promise.all([
       fetchAllVersesByChapter(surahId),
-      fetchChapterRecitation(surahId),
+      fetchChapterRecitation(surahId, reciterId),
     ]);
-    const timingByKey = mapTimings(audioFile?.timestamps ?? []);
+    const timestamps = audioFile?.timestamps ?? [];
+    const timingByKey = mapTimings(timestamps);
     const ayahs = verses.map((v) => mapVerse(v, timingByKey));
-    const last = audioFile?.timestamps?.[audioFile.timestamps.length - 1];
+    const last = timestamps[timestamps.length - 1];
     return {
       surah: mapChapter(chapter),
       ayahs,
       audioUrl: audioFile?.audio_url ?? '',
       audioDurationMs: last?.timestamp_to ?? 0,
+      // Bendera kompatibilitas sinkronisasi qari terpilih: SurahPage
+      // memakai ini untuk mematikan highlight dengan anggun (fallback
+      // mode bab biasa) bila qari tidak menyediakan timestamps/segments.
+      sinkronAyatTersedia: timestamps.length > 0,
+      sorotKataTersedia: timestamps.some((t) => (t.segments ?? []).length > 0),
     };
   },
 
