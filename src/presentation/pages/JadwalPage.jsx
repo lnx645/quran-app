@@ -430,6 +430,7 @@ export default function JadwalPage() {
     izin: izinNotif,
     didukung: notifDidukung,
     mintaIzin: mintaIzinNotif,
+    native: platformNative,
   } = usePengingat();
   const [bannerAdzan, setBannerAdzan] = useState(null);
   const teriakTerakhir = useRef('');
@@ -661,15 +662,21 @@ export default function JadwalPage() {
       </SectionTitle>
       <Card>
         <p css={(t) => ({ fontSize: 13.5, color: t.colors.muted, lineHeight: 1.55, marginBottom: 12 })}>
-          Pengingat tampil selama aplikasi atau peramban terbuka di perangkat ini.
+          {platformNative
+            ? 'Pengingat terjadwal di perangkat — tetap bunyi walau aplikasi ditutup.'
+            : 'Pengingat tampil selama aplikasi atau peramban terbuka di perangkat ini.'}
         </p>
         {!notifDidukung ? (
           <p css={(t) => ({ fontSize: 13.5, color: t.colors.muted, lineHeight: 1.55, marginBottom: 12 })}>
-            Peramban ini tidak mendukung notifikasi.
+            {platformNative
+              ? 'Perangkat ini tidak mendukung notifikasi.'
+              : 'Peramban ini tidak mendukung notifikasi.'}
           </p>
         ) : izinNotif === 'denied' ? (
           <p css={(t) => ({ fontSize: 13.5, color: t.colors.muted, lineHeight: 1.55, marginBottom: 12 })}>
-            Izin notifikasi ditolak — aktifkan lewat pengaturan peramban.
+            {platformNative
+              ? 'Izin notifikasi ditolak — aktifkan lewat pengaturan aplikasi.'
+              : 'Izin notifikasi ditolak — aktifkan lewat pengaturan peramban.'}
           </p>
         ) : izinNotif === 'default' ? (
           <div css={{ marginBottom: 12 }}>
