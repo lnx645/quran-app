@@ -46,7 +46,7 @@ const MiniBar = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  margin: 0 -4px 10px;
+  margin: 0 -2px 10px;
   padding: 8px 12px;
   border-radius: 10px;
   background: linear-gradient(180deg, #fffdf4, ${({ theme }) => theme.colors.paper});
@@ -57,8 +57,12 @@ const MiniBar = styled.div`
   transition: opacity 0.25s ease, transform 0.25s ease;
   pointer-events: ${({ tampil }) => (tampil ? 'auto' : 'none')};
   .nama {
+    display: flex;
+    align-items: center;
+    min-width: 0;
     font-family: ${({ theme }) => theme.fonts.arabic};
     font-size: 17px;
+    line-height: 1.5;
     color: ${({ theme }) => theme.colors.primaryDeep};
     white-space: nowrap;
     overflow: hidden;
@@ -67,10 +71,12 @@ const MiniBar = styled.div`
   .ayat {
     font-size: 11.5px;
     font-weight: 800;
+    line-height: 1.4;
     letter-spacing: 1.2px;
     text-transform: uppercase;
     color: ${({ theme }) => theme.colors.goldDeep};
     flex-shrink: 0;
+    white-space: nowrap;
   }
 `;
 

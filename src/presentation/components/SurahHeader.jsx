@@ -24,6 +24,10 @@ const Panel = styled.section`
 
 const IsiPanel = styled.div`
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px; /* ritme konsisten: medali → nama → meta */
   padding: 13px 6px 11px;
 `;
 
@@ -44,20 +48,22 @@ const NamaLatin = styled.h1`
   font-weight: 600;
   letter-spacing: 0.4px;
   color: ${({ theme }) => theme.colors.primary};
-  margin-top: 2px;
 `;
 
 const Meta = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 9px;
-  margin-top: 7px;
+  justify-content: space-evenly;
+  flex-wrap: nowrap;
+  width: 100%;
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 2.2px;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
   color: ${({ theme }) => theme.colors.goldDeep};
+  .item {
+    white-space: nowrap;
+  }
 `;
 
 const BerlianKecil = styled.span`
@@ -71,21 +77,26 @@ const BerlianKecil = styled.span`
 
 const BlokBasmalah = styled.div`
   text-align: center;
-  margin: 4px 0 10px;
+  margin: 10px 0 12px;
   ${mountUp}
   ${reduceMotion}
   .basmalah-teks {
     font-family: ${({ theme }) => theme.fonts.arabic};
-    font-size: 30px;
+    /* clamp: mengecil halus di HP sempit agar basmalah utuh SATU baris */
+    font-size: clamp(20px, 6.9vw, 30px);
     line-height: 1.9;
     color: ${({ theme }) => theme.colors.text};
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 14px;
+    gap: 12px;
+  }
+  .teks {
+    white-space: nowrap;
   }
   .garis {
-    flex: 0 1 64px;
+    flex: 1 1 0;
+    max-width: 76px;
     height: 1px;
     background: linear-gradient(90deg, transparent, ${({ theme }) => theme.colors.gold});
   }
@@ -103,7 +114,7 @@ export default function SurahHeader({ surah }) {
           <GirihPaper opacity={0.16} tile={120} />
         </div>
         <IsiPanel>
-          <div css={{ display: 'flex', justifyContent: 'center', marginBottom: 2 }} aria-hidden="true">
+          <div css={{ display: 'flex', justifyContent: 'center' }} aria-hidden="true">
             <RubElHizb size={52} />
           </div>
           <NamaArab dir="rtl" lang="ar">
@@ -113,11 +124,11 @@ export default function SurahHeader({ surah }) {
             Surah {surah.nameLatin} — {surah.translationId}
           </NamaLatin>
           <Meta>
-            <span>{tempat}</span>
+            <span className="item">{tempat}</span>
             <BerlianKecil />
-            <span>{surah.versesCount} Ayat</span>
+            <span className="item">{surah.versesCount} Ayat</span>
             <BerlianKecil />
-            <span>Surah ke-{surah.id}</span>
+            <span className="item">Surah ke-{surah.id}</span>
           </Meta>
         </IsiPanel>
         <div css={{ position: 'relative', height: 24, overflow: 'hidden' }} aria-hidden="true">
@@ -129,7 +140,7 @@ export default function SurahHeader({ surah }) {
         <BlokBasmalah>
           <div className="basmalah-teks" dir="rtl" lang="ar">
             <span className="garis kanan" aria-hidden="true" />
-            <span>بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</span>
+            <span className="teks">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</span>
             <span className="garis" aria-hidden="true" />
           </div>
         </BlokBasmalah>
