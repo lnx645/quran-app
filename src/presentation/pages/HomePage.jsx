@@ -16,8 +16,7 @@ import { kunciHari, hariAktif } from '../../domain/usecases/streakIbadah.js';
 import { useBahasa } from '../../app/bahasa.js';
 import { Page, SectionTitle, MenuCard, Card } from '../components/common.jsx';
 import LanjutkanMembaca from '../components/LanjutkanMembaca.jsx';
-import HaditsHariIni from '../components/HaditsHariIni.jsx';
-import AyatHariIni from '../components/AyatHariIni.jsx';
+import KartuHarian from '../components/KartuHarian.jsx';
 import Logo from '../components/Logo.jsx';
 import OrnamentDivider from '../components/OrnamentDivider.jsx';
 import { GirihPattern, OrnamentBand, CornerOrnament, MosqueSilhouette, MoonStar } from '../components/ornaments/index.js';
@@ -469,8 +468,7 @@ export default function HomePage() {
         )}
       </KartuStreak>
       <LanjutkanMembaca />
-      <HaditsHariIni />
-      <AyatHariIni />
+      <KartuHarian />
       {SEKSI.map((seksi) => (
         <div key={seksi.kunciNama}>
           <SectionTitle>
