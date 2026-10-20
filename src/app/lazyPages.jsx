@@ -89,6 +89,7 @@ const _Konverter = lazy(() => import('../presentation/pages/KonverterPage.jsx'))
 const _Statistik = lazy(() => import('../presentation/pages/StatistikPage.jsx'));
 const _DataProgres = lazy(() => import('../presentation/pages/DataProgresPage.jsx'));
 const _Radio = lazy(() => import('../presentation/pages/RadioPage.jsx'));
+const _TesBaca = lazy(() => import('../presentation/pages/TesBacaPage.jsx'));
 
 export function SurahPage() {
   return (
@@ -481,6 +482,14 @@ export function RadioPage() {
   return (
     <Suspense fallback={<PageFallback />}>
       <_Radio />
+    </Suspense>
+  );
+}
+
+export function TesBacaPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_TesBaca />
     </Suspense>
   );
 }

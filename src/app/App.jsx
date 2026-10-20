@@ -105,6 +105,7 @@ const JUDUL_RUTE = [
   [/^\/sujud$/, 'Panduan Sujud Sahwi, Syukur & Tilawah'],
   [/^\/kuis$/, 'Kuis Islami'],
   [/^\/radio$/, 'Radio Murottal'],
+  [/^\/tes-baca$/, 'Tes Baca (Eksperimental)'],
   [/^\/panduan-nikah$/, 'Panduan Nikah'],
   [/^\/fikih-keluarga$/, 'Fikih Keluarga'],
   [/^\/muamalah$/, 'Fikih Muamalah'],

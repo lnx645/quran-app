@@ -7,7 +7,7 @@ import {
   FaQuran, FaBookOpen, FaHeart, FaMosque, FaVenus, FaCalculator, FaBookReader,
   FaHandPointer, FaCloudSun, FaPrayingHands, FaClipboardCheck, FaCompass,
   FaCalendarAlt, FaListUl, FaBook, FaGraduationCap, FaUniversalAccess,
-  FaSearch, FaBookmark, FaBrain, FaPalette, FaTint, FaMoon, FaBroadcastTower,
+  FaSearch, FaBookmark, FaBrain, FaPalette, FaTint, FaMoon, FaBroadcastTower, FaMicrophone,
   FaBalanceScale, FaKaaba, FaBaby, FaGift, FaHandHoldingHeart, FaTasks,
   FaDownload,
 } from 'react-icons/fa';
@@ -296,6 +296,7 @@ const MENU = [
       { to: '/indeks-tematik', icon: <FaListUl />, label: 'Indeks Tematik' },
       { to: '/kuis', icon: <FaBrain />, label: 'Kuis Islami' },
       { to: '/radio', icon: <FaBroadcastTower />, label: 'Radio Murottal' },
+      { to: '/tes-baca', icon: <FaMicrophone />, label: 'Tes Baca' },
     ],
   },
   {

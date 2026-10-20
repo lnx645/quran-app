@@ -6,7 +6,7 @@ import {
   FaQuran, FaBookOpen, FaClock, FaCoins, FaBookReader, FaGraduationCap,
   FaHandPointer, FaCloudSun, FaPrayingHands, FaClipboardCheck, FaCompass,
   FaCalendarAlt, FaListUl, FaBook, FaHeart, FaMoon, FaVenus,
-  FaSearch, FaBookmark, FaBrain, FaPalette, FaTint, FaTasks, FaBroadcastTower,
+  FaSearch, FaBookmark, FaBrain, FaPalette, FaTint, FaTasks, FaBroadcastTower, FaMicrophone,
   FaBalanceScale, FaKaaba, FaBaby, FaGift, FaHandHoldingHeart, FaMosque,
   FaDownload, FaTimes,
 } from 'react-icons/fa';
@@ -123,6 +123,7 @@ const SEKSI = [
       { to: '/indeks-tematik', icon: <FaListUl />, judul: 'Indeks Tematik', desc: 'Ayat per topik: sabar, rezeki, sembuh' },
       { to: '/kuis', icon: <FaBrain />, judul: 'Kuis Islami', desc: 'Sambung ayat, tebak surah & fikih' },
       { to: '/radio', icon: <FaBroadcastTower />, judul: 'Radio Murottal', desc: 'Putar murottal terus-menerus + timer tidur' },
+      { to: '/tes-baca', icon: <FaMicrophone />, judul: 'Tes Baca', desc: 'Latihan baca dengan mikrofon (eksperimental)' },
     ],
   },
   {
