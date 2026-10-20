@@ -97,6 +97,7 @@ const DAFTAR_FITUR = [
   { tujuan: '/panduan-jenazah', judul: 'Panduan Jenazah', sub: 'Memandikan sampai menguburkan', kata: 'jenazah panduan memandikan mengkafani menyolatkan menguburkan mayit mayat' },
   { tujuan: '/ziarah', judul: 'Ziarah Kubur', sub: 'Adab & doa ziarah kubur', kata: 'ziarah kubur makam adab doa ahli kubur salam mayit peziarah' },
   { tujuan: '/sholat-jenazah', judul: 'Sholat Jenazah', sub: 'Empat takbir & bacaannya', kata: 'sholat jenazah takbir menyolatkan mayit mayat janazah' },
+  { tujuan: '/tahlil', judul: 'Tahlil & Doa Arwah', sub: 'Rangkaian tahlil terpandu', kata: 'tahlil doa arwah yasin kirim doa mayit haul la ilaha illallah istighfar' },
   { tujuan: '/aqiqah-kurban', judul: 'Aqiqah & Kurban', sub: 'Syarat, waktu & kalkulator hewan', kata: 'aqiqah aqiqoh kurban qurban hewan syarat kalkulator kambing sapi kelahiran' },
   { tujuan: '/muslimah', judul: 'Ruang Muslimah', sub: 'Kalkulator haid, doa & fikih wanita', kata: 'muslimah wanita perempuan ruang khusus akhwat' },
   { tujuan: '/muslimah/kalkulator', judul: 'Kalkulator Haid', sub: 'Vonis haid/istihadah (PIN pribadi)', kata: 'kalkulator haid nifas istihadah wanita muslimah siklus menstruasi datang bulan vonis' },

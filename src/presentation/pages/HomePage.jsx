@@ -144,6 +144,7 @@ const SEKSI = [
       { to: '/sholat-sunnah', icon: <FaMoon />, kunci: 'menu.sholatSunnah', desc: 'Dhuha, tahajud, witir & lainnya' },
       { to: '/dzikir-bada-sholat', icon: <FaCloudSun />, kunci: 'menu.dzikirBada', desc: 'Wirid sesudah sholat dengan penghitung' },
       { to: '/sholat-jenazah', icon: <FaBook />, kunci: 'menu.sholatJenazah', desc: 'Empat takbir & bacaan tiap takbir' },
+      { to: '/tahlil', icon: <FaPrayingHands />, kunci: 'menu.tahlil', desc: 'Rangkaian tahlil terpandu & doa arwah' },
       { to: '/sholat-id', icon: <FaMoon />, kunci: 'beranda.sholatId', desc: 'Idul Fitri & Adha plus teks takbiran' },
       { to: '/sholat-musafir', icon: <FaBookOpen />, kunci: 'beranda.sholatMusafir', desc: "Jama' & qashar plus hitung jarak safar" },
       { to: '/sholat-sakit', icon: <FaBook />, kunci: 'menu.sholatSakit', desc: 'Duduk, berbaring, isyarat & kendaraan' },

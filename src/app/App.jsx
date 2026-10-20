@@ -84,6 +84,7 @@ const JUDUL_RUTE = [
   [/^\/sholat-sunnah$/, 'judul.sholatSunnah'],
   [/^\/dzikir-bada-sholat$/, 'judul.dzikirBada'],
   [/^\/sholat-jenazah$/, 'judul.sholatJenazah'],
+  [/^\/tahlil$/, 'judul.tahlil'],
   [/^\/panduan-puasa$/, 'judul.puasa'],
   [/^\/qadha-puasa$/, 'judul.qadha'],
   [/^\/ramadhan$/, 'judul.ramadhan'],

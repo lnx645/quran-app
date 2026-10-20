@@ -314,6 +314,7 @@ const MENU = [
       { to: '/sholat-sunnah', icon: <FaMoon />, kunci: 'menu.sholatSunnah' },
       { to: '/dzikir-bada-sholat', icon: <FaCloudSun />, kunci: 'menu.dzikirBada' },
       { to: '/sholat-jenazah', icon: <FaBook />, kunci: 'menu.sholatJenazah' },
+      { to: '/tahlil', icon: <FaPrayingHands />, kunci: 'menu.tahlil' },
       { to: '/sholat-id', icon: <FaMoon />, kunci: 'menu.sholatId' },
       { to: '/sholat-musafir', icon: <FaBookOpen />, kunci: 'menu.sholatMusafir' },
       { to: '/sholat-sakit', icon: <FaBook />, kunci: 'menu.sholatSakit' },
