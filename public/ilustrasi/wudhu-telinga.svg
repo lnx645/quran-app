@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160">
+  <!-- bahu -->
+  <path d="M44 152 Q48 118 80 112 Q112 118 116 152 Z" fill="#0B5345"/>
+  <rect x="73" y="84" width="14" height="30" rx="6" fill="#0B5345"/>
+  <!-- lengan ke telinga -->
+  <path d="M48 122 Q34 96 40 72" fill="none" stroke="#0B5345" stroke-width="10.5" stroke-linecap="round"/>
+  <path d="M112 122 Q126 96 120 72" fill="none" stroke="#0B5345" stroke-width="10.5" stroke-linecap="round"/>
+  <!-- kepala -->
+  <circle cx="80" cy="62" r="23" fill="#0B5345"/>
+  <!-- telinga emas -->
+  <circle cx="56" cy="64" r="7.5" fill="#C9A227"/>
+  <circle cx="104" cy="64" r="7.5" fill="#C9A227"/>
+  <circle cx="56" cy="64" r="3.4" fill="#06312A"/>
+  <circle cx="104" cy="64" r="3.4" fill="#06312A"/>
+  <!-- tangan menyentuh telinga -->
+  <ellipse cx="45" cy="66" rx="8" ry="11.5" fill="#06312A" transform="rotate(14 45 66)"/>
+  <ellipse cx="115" cy="66" rx="8" ry="11.5" fill="#06312A" transform="rotate(-14 115 66)"/>
+</svg>

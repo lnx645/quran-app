@@ -1,10 +1,11 @@
 # Sumber Ilustrasi — Aplikasi Noor (quran-app)
 
 Tanggal riset & pemasangan: 2026-10-20.
-Semua gambar di folder ini berasal dari **Wikimedia Commons** dan dipilih
+Gambar unduhan di folder ini berasal dari **Wikimedia Commons** dan dipilih
 HANYA yang lisensinya jelas bebas (domain publik / CC0 / CC-BY). Setiap
 gambar diverifikasi lisensinya di API Wikimedia Commons dan diperiksa
-visualnya sebelum dipakai.
+visualnya sebelum dipakai. Pengecualian: ilustrasi langkah wudhu
+(`wudhu-*.svg`) adalah **karya orisinal proyek** — lihat bagian 4.
 
 ---
 
@@ -62,11 +63,35 @@ aplikasi (modifikasi diizinkan CC0):
   TIDAK ditemukan set ilustrasi langkah berlisensi bebas di Wikimedia
   Commons. Pencarian "wudu", "wudhu steps", "wudu diagram", "taharah",
   "ablution islam" hanya menghasilkan foto orang asli yang berbeda-beda
-  (tidak konsisten sebagai set langkah) dan PDF buku teks. Karena itu
-  langkah wudhu di aplikasi tetap memakai daftar bernomor dengan ikon,
-  ditambah satu foto praktik di atas.
+  (tidak konsisten sebagai set langkah) dan PDF buku teks. **Solusi:
+  langkah wudhu kini memakai ilustrasi orisinal buatan proyek sendiri —
+  lihat bagian 4 di bawah.**
 - **Ilustrasi tayammum per langkah:** juga tidak ditemukan sumber bebas;
   tab Tayammum tetap teks bernomor.
+
+## 4. Panduan Wudhu — ilustrasi langkah ORISINAL proyek (dipakai)
+
+Karena set ilustrasi langkah wudhu berlisensi bebas tidak ditemukan,
+delapan figur berikut **digambar sendiri oleh tim proyek** (SVG buatan
+tangan, bukan unduhan dan bukan hasil tracing karya orang lain):
+
+### `wudhu-tangan.svg`, `wudhu-kumur.svg`, `wudhu-hidung.svg`, `wudhu-wajah.svg`, `wudhu-lengan.svg`, `wudhu-kepala.svg`, `wudhu-telinga.svg`, `wudhu-kaki.svg` (dipakai)
+- **Pembuat:** tim proyek Noor (karya orisinal, 2026-10-20)
+- **Lisensi:** karya proyek sendiri — bebas dipakai di dalam aplikasi ini
+- **Gaya:** satu bahasa visual dengan siluet sholat di bagian 2 — figur
+  siluet emerald tunggal tanpa detail wajah, bagian tubuh yang dibasuh
+  pada langkah tersebut disorot warna emas, air digambarkan sebagai
+  tetes/gelombang biru lembut beraksen emas.
+- **Pemetaan langkah:** telapak tangan di bawah keran (langkah 1),
+  berkumur & istinsyaq/membersihkan hidung (langkah 2, dua figur
+  berdampingan), wajah (3), tangan sampai siku (4), kepala (5),
+  telinga (6), kaki sampai mata kaki (7). Niat, basmalah, dan doa
+  memang teks saja.
+- **Uji kualitas:** setiap figur dirender ke PNG dan diperiksa visual
+  (proporsi & keterbacaan langkah dalam mode terang dan gelap) sebelum
+  dipasang; figur yang gagal proporsi digambar ulang sampai pantas.
+- Foto praktik Süleymaniye (bagian 3) tetap dipertahankan sebagai
+  gambar konteks di kepala tab Wudhu, bukan di langkah.
 - Foto hitam-putih "A Muslim man performs ablution (wudu) during the holy
   month of Ramadan" (CC BY-SA 4.0) dievaluasi tetapi TIDAK dipakai —
   monokrom dan suasana dokumenter, tidak selaras gaya panduan.
@@ -83,3 +108,11 @@ aplikasi (modifikasi diizinkan CC0):
 | sholat-duduk.png | CC0 (ekstrak dari poster) | dipakai |
 | sholat-sujud.png | CC0 (ekstrak dari poster) | dipakai |
 | wudhu-praktik.jpg | CC BY 2.0 (np&djjewell) | dipakai + kredit di halaman |
+| wudhu-tangan.svg | Karya orisinal proyek | dipakai |
+| wudhu-kumur.svg | Karya orisinal proyek | dipakai |
+| wudhu-hidung.svg | Karya orisinal proyek | dipakai |
+| wudhu-wajah.svg | Karya orisinal proyek | dipakai |
+| wudhu-lengan.svg | Karya orisinal proyek | dipakai |
+| wudhu-kepala.svg | Karya orisinal proyek | dipakai |
+| wudhu-telinga.svg | Karya orisinal proyek | dipakai |
+| wudhu-kaki.svg | Karya orisinal proyek | dipakai |

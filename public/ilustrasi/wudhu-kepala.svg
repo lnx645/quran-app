@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160">
+  <!-- lengan naik ke kepala (di belakang bahu) -->
+  <path d="M52 124 Q42 74 58 44" fill="none" stroke="#0B5345" stroke-width="9.5" stroke-linecap="round"/>
+  <path d="M108 124 Q118 74 102 44" fill="none" stroke="#0B5345" stroke-width="9.5" stroke-linecap="round"/>
+  <!-- bahu -->
+  <path d="M44 152 Q48 114 80 108 Q112 114 116 152 Z" fill="#0B5345"/>
+  <rect x="73" y="78" width="14" height="32" rx="6" fill="#0B5345"/>
+  <!-- kepala -->
+  <ellipse cx="80" cy="58" rx="20" ry="23" fill="#0B5345"/>
+  <!-- pita usapan emas MENEMPEL di bagian atas kepala -->
+  <path d="M62 48 A20 23 0 0 1 98 48 L94 58 A15 16 0 0 0 66 58 Z" fill="#C9A227"/>
+  <!-- kedua telapak tangan menempel di atas kepala -->
+  <ellipse cx="65" cy="41" rx="11" ry="6.5" fill="#06312A" transform="rotate(-16 65 41)"/>
+  <ellipse cx="95" cy="41" rx="11" ry="6.5" fill="#06312A" transform="rotate(16 95 41)"/>
+  <!-- tetes di sisi kepala -->
+  <path d="M55 76 q-2.6 6 0 8.6 q2.6 -2.6 0 -8.6Z" fill="#7FB3D5"/>
+  <path d="M105 76 q-2.6 6 0 8.6 q2.6 -2.6 0 -8.6Z" fill="#7FB3D5"/>
+</svg>

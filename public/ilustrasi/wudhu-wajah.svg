@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160">
+  <!-- bahu -->
+  <path d="M42 152 Q46 112 80 106 Q114 112 118 152 Z" fill="#0B5345"/>
+  <rect x="73" y="76" width="14" height="34" rx="6" fill="#0B5345"/>
+  <!-- kepala -->
+  <ellipse cx="80" cy="54" rx="21" ry="25" fill="#0B5345"/>
+  <!-- wajah (emas lembut, yang dibasuh) -->
+  <ellipse cx="80" cy="57" rx="14.5" ry="18" fill="#E7C65A"/>
+  <!-- tangan di pipi -->
+  <ellipse cx="55" cy="66" rx="7.5" ry="13" fill="#06312A" transform="rotate(18 55 66)"/>
+  <ellipse cx="105" cy="66" rx="7.5" ry="13" fill="#06312A" transform="rotate(-18 105 66)"/>
+  <!-- tetes air dari dagu -->
+  <path d="M68 84 q-3 7 0 10 q3 -3 0 -10Z" fill="#7FB3D5"/>
+  <path d="M80 88 q-3 7 0 10 q3 -3 0 -10Z" fill="#7FB3D5"/>
+  <path d="M92 84 q-3 7 0 10 q3 -3 0 -10Z" fill="#7FB3D5"/>
+</svg>

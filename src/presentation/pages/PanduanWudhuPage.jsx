@@ -86,6 +86,109 @@ const Nomor = styled.span`
   margin-top: 1px;
 `;
 
+// Ilustrasi orisinal proyek (SVG buatan tangan, gaya siluet emerald yang
+// sama dengan ilustrasi sholat; bagian yang dibasuh disorot emas).
+// Pemetaan per indeks langkah WUDHU.langkah — langkah terakhir
+// (tertib & doa) teks saja. Lihat public/ilustrasi/SUMBER.md.
+const ILUSTRASI_WUDHU = [
+  [
+    {
+      src: '/ilustrasi/wudhu-tangan.svg',
+      alt: 'Ilustrasi membasuh kedua telapak tangan di bawah aliran air keran',
+      ket: 'Telapak tangan',
+    },
+  ],
+  [
+    {
+      src: '/ilustrasi/wudhu-kumur.svg',
+      alt: 'Ilustrasi berkumur: memasukkan air ke dalam mulut',
+      ket: 'Berkumur',
+    },
+    {
+      src: '/ilustrasi/wudhu-hidung.svg',
+      alt: 'Ilustrasi istinsyaq: menghirup air ke hidung dari telapak tangan yang menampung air',
+      ket: 'Membersihkan hidung',
+    },
+  ],
+  [
+    {
+      src: '/ilustrasi/wudhu-wajah.svg',
+      alt: 'Ilustrasi membasuh seluruh wajah dengan kedua tangan',
+      ket: 'Wajah',
+    },
+  ],
+  [
+    {
+      src: '/ilustrasi/wudhu-lengan.svg',
+      alt: 'Ilustrasi membasuh lengan sampai siku sambil digosok dengan tangan sebelahnya',
+      ket: 'Tangan sampai siku',
+    },
+  ],
+  [
+    {
+      src: '/ilustrasi/wudhu-kepala.svg',
+      alt: 'Ilustrasi mengusap kepala dengan kedua tangan yang basah',
+      ket: 'Kepala',
+    },
+  ],
+  [
+    {
+      src: '/ilustrasi/wudhu-telinga.svg',
+      alt: 'Ilustrasi mengusap bagian luar dan dalam kedua telinga',
+      ket: 'Telinga',
+    },
+  ],
+  [
+    {
+      src: '/ilustrasi/wudhu-kaki.svg',
+      alt: 'Ilustrasi membasuh kedua kaki sampai mata kaki',
+      ket: 'Kaki sampai mata kaki',
+    },
+  ],
+  null,
+];
+
+const GambarLangkah = styled.div`
+  margin: 0 0 12px;
+  padding: 14px 10px 10px;
+  border-radius: 14px;
+  background: ${({ theme }) => theme.colors.surfaceAlt};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  figure {
+    margin: 0;
+    text-align: center;
+  }
+  img {
+    height: 136px;
+    width: auto;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+  figcaption {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: ${({ theme }) => theme.colors.muted};
+    margin-top: 6px;
+  }
+`;
+
+const JudulLangkah = styled.h3`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15.5px;
+  margin-bottom: 6px;
+`;
+
+const DescLangkah = styled.p`
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: ${({ theme }) => theme.colors.muted};
+`;
+
 export default function PanduanWudhuPage() {
   const [tab, setTab] = useState('wudhu'); // wudhu | tayammum
 
@@ -135,17 +238,25 @@ export default function PanduanWudhuPage() {
               </figcaption>
             </figure>
           </Card>
-          <Card>
-            {WUDHU.langkah.map((s, i) => (
-              <Step key={i}>
+          {WUDHU.langkah.map((s, i) => (
+            <Card key={i}>
+              {ILUSTRASI_WUDHU[i] && (
+                <GambarLangkah>
+                  {ILUSTRASI_WUDHU[i].map((g) => (
+                    <figure key={g.src}>
+                      <img src={g.src} alt={g.alt} loading="lazy" />
+                      {ILUSTRASI_WUDHU[i].length > 1 && <figcaption>{g.ket}</figcaption>}
+                    </figure>
+                  ))}
+                </GambarLangkah>
+              )}
+              <JudulLangkah>
                 <Nomor>{i + 1}</Nomor>
-                <div>
-                  <div className="t">{s.judul}</div>
-                  <div className="c">{s.desc}</div>
-                </div>
-              </Step>
-            ))}
-          </Card>
+                <span>{s.judul}</span>
+              </JudulLangkah>
+              <DescLangkah>{s.desc}</DescLangkah>
+            </Card>
+          ))}
 
           <SectionTitle>Hal yang Membatalkan Wudhu</SectionTitle>
           <Card>

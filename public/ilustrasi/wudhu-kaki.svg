@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160">
+  <!-- tungkai emas turun ke baskom -->
+  <path d="M57 26 L59 106" stroke="#C9A227" stroke-width="13" stroke-linecap="round"/>
+  <path d="M101 26 L99 106" stroke="#C9A227" stroke-width="13" stroke-linecap="round"/>
+  <!-- baskom -->
+  <path d="M26 116 h108 l-9 24 a10 10 0 0 1 -9.5 7 h-71 a10 10 0 0 1 -9.5 -7 Z" fill="#06312A"/>
+  <ellipse cx="80" cy="116" rx="54" ry="8" fill="#0B5345"/>
+  <ellipse cx="80" cy="115" rx="47" ry="6" fill="#AED6F1"/>
+  <!-- telapak kaki emas, jari menonjol di sisi kanan tiap kaki -->
+  <ellipse cx="64" cy="111" rx="12.5" ry="6.5" fill="#C9A227"/>
+  <ellipse cx="90" cy="111" rx="12.5" ry="6.5" fill="#C9A227"/>
+  <circle cx="79" cy="105" r="3" fill="#C9A227"/>
+  <circle cx="81" cy="112" r="3.2" fill="#C9A227"/>
+  <circle cx="79" cy="119" r="3" fill="#C9A227"/>
+  <circle cx="105" cy="105" r="3" fill="#C9A227"/>
+  <circle cx="107" cy="112" r="3.2" fill="#C9A227"/>
+  <circle cx="105" cy="119" r="3" fill="#C9A227"/>
+  <!-- tangan menggosok punggung kaki kanan -->
+  <path d="M134 144 L108 110" stroke="#0B5345" stroke-width="11" stroke-linecap="round"/>
+  <ellipse cx="101" cy="103" rx="10.5" ry="7.5" fill="#06312A" transform="rotate(-22 101 103)"/>
+  <!-- gelombang di badan baskom -->
+  <path d="M46 132 q6 -5 12 0 q6 5 12 0 M88 132 q6 -5 12 0 q6 5 12 0" fill="none" stroke="#7FB3D5" stroke-width="2.6" stroke-linecap="round"/>
+  <!-- percikan -->
+  <path d="M42 92 q-3 7 0 10 q3 -3 0 -10Z" fill="#7FB3D5"/>
+  <path d="M124 86 q-3 7 0 10 q3 -3 0 -10Z" fill="#7FB3D5"/>
+</svg>

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160">
+  <!-- badan -->
+  <path d="M64 152 L68 98 Q96 84 122 98 L126 152 Z" fill="#0B5345"/>
+  <!-- leher + kepala profil menengadah (menghadap kiri) -->
+  <rect x="88" y="56" width="14" height="16" rx="5" fill="#0B5345"/>
+  <circle cx="96" cy="44" r="16" fill="#0B5345"/>
+  <circle cx="81" cy="45" r="4.2" fill="#0B5345"/>
+  <!-- lengan di depan badan, memegang cangkir -->
+  <path d="M82 116 Q64 102 62 76" fill="none" stroke="#0B5345" stroke-width="10.5" stroke-linecap="round"/>
+  <!-- cangkir emas menempel mulut -->
+  <path d="M50 54 h30 l-5 18 h-20 Z" fill="#C9A227"/>
+  <path d="M50 57 q-9 3 0 11" fill="none" stroke="#C9A227" stroke-width="4" stroke-linecap="round"/>
+  <ellipse cx="65" cy="54" rx="15" ry="3.4" fill="#AED6F1"/>
+  <!-- tetes -->
+  <path d="M56 82 q-3 6 0 9 q3 -3 0 -9Z" fill="#7FB3D5"/>
+  <path d="M68 88 q-3 6 0 9 q3 -3 0 -9Z" fill="#7FB3D5"/>
+</svg>

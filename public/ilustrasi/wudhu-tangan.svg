@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160">
+  <!-- keran -->
+  <path d="M28 8 V36 H62 V48" fill="none" stroke="#06312A" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="28" cy="8" r="6.5" fill="#C9A227"/>
+  <rect x="56" y="44" width="12" height="7" rx="2" fill="#06312A"/>
+  <!-- aliran air -->
+  <path d="M58 58 q2 8 0 16 M66 58 q-2 8 0 16 M74 58 q2 8 0 14" fill="none" stroke="#7FB3D5" stroke-width="3" stroke-linecap="round"/>
+  <!-- lengan -->
+  <path d="M14 152 L54 106" stroke="#0B5345" stroke-width="13" stroke-linecap="round"/>
+  <path d="M146 152 L106 106" stroke="#0B5345" stroke-width="13" stroke-linecap="round"/>
+  <!-- tangan menadah (emas) -->
+  <path d="M50 98 Q80 124 110 98 Q104 118 80 118 Q56 118 50 98 Z" fill="#C9A227"/>
+  <circle cx="58" cy="97" r="5" fill="#C9A227"/>
+  <circle cx="70" cy="93" r="5" fill="#C9A227"/>
+  <circle cx="82" cy="92" r="5" fill="#C9A227"/>
+  <circle cx="94" cy="93" r="5" fill="#C9A227"/>
+  <circle cx="103" cy="97" r="5" fill="#C9A227"/>
+  <!-- air di telapak -->
+  <ellipse cx="80" cy="99" rx="23" ry="5.5" fill="#AED6F1"/>
+  <!-- percikan -->
+  <path d="M40 108 q-3 6 0 9 q3 -3 0 -9Z" fill="#7FB3D5"/>
+  <path d="M120 108 q-3 6 0 9 q3 -3 0 -9Z" fill="#7FB3D5"/>
+  <path d="M80 128 q-3 6 0 9 q3 -3 0 -9Z" fill="#7FB3D5"/>
+</svg>
