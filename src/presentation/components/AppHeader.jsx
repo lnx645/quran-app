@@ -8,6 +8,7 @@ import {
   FaHandPointer, FaCloudSun, FaPrayingHands, FaClipboardCheck, FaCompass,
   FaCalendarAlt, FaListUl, FaBook, FaGraduationCap, FaUniversalAccess,
   FaSearch, FaBookmark, FaBrain, FaPalette, FaTint, FaMoon,
+  FaBalanceScale, FaKaaba, FaBaby, FaGift, FaHandHoldingHeart, FaTasks,
 } from 'react-icons/fa';
 import Logo from './Logo.jsx';
 import { GirihPattern } from './ornaments/index.js';
@@ -308,6 +309,20 @@ const MENU = [
       { to: '/qadha-puasa', icon: <FaClipboardCheck />, label: 'Tracker Qadha Puasa' },
       { to: '/ramadhan', icon: <FaMoon />, label: 'Mode Ramadhan' },
       { to: '/hisnul-muslim', icon: <FaPrayingHands />, label: 'Hisnul Muslim' },
+      { to: '/mutabaah', icon: <FaTasks />, label: "Mutaba'ah Yaumiyah" },
+    ],
+  },
+  {
+    nama: 'Panduan & Hitungan',
+    items: [
+      { to: '/waris', icon: <FaBalanceScale />, label: 'Kalkulator Waris' },
+      { to: '/fidyah', icon: <FaHandHoldingHeart />, label: 'Kalkulator Fidyah' },
+      { to: '/kafarat', icon: <FaBookOpen />, label: 'Kafarat' },
+      { to: '/haji-umrah', icon: <FaKaaba />, label: 'Panduan Haji & Umrah' },
+      { to: '/panduan-jenazah', icon: <FaBook />, label: 'Panduan Jenazah' },
+      { to: '/aqiqah-kurban', icon: <FaGift />, label: 'Aqiqah & Kurban' },
+      { to: '/nama-bayi', icon: <FaBaby />, label: 'Nama Bayi Islami' },
+      { to: '/masjid-terdekat', icon: <FaMosque />, label: 'Masjid Terdekat' },
     ],
   },
   {

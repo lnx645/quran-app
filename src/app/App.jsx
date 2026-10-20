@@ -87,6 +87,15 @@ const JUDUL_RUTE = [
   [/^\/hadits$/, 'Hadits Arbain Nawawi'],
   [/^\/hisnul-muslim$/, 'Hisnul Muslim'],
   [/^\/sirah$/, 'Sirah Nabawiyah'],
+  [/^\/waris$/, 'Kalkulator Waris'],
+  [/^\/fidyah$/, 'Kalkulator Fidyah'],
+  [/^\/kafarat$/, 'Kafarat'],
+  [/^\/haji-umrah$/, 'Panduan Haji & Umrah'],
+  [/^\/panduan-jenazah$/, 'Panduan Jenazah'],
+  [/^\/aqiqah-kurban$/, 'Aqiqah & Kurban'],
+  [/^\/mutabaah$/, "Mutaba'ah Yaumiyah"],
+  [/^\/nama-bayi$/, 'Nama Bayi Islami'],
+  [/^\/masjid-terdekat$/, 'Masjid Terdekat'],
 ];
 
 function judulUntuk(pathname) {

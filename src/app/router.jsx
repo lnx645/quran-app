@@ -9,7 +9,8 @@ import {
   AksesibilitasPage, CariPage, PanduanTajwidPage, HafalanPage, BookmarkPage,
   PanduanWudhuPage, PanduanSholatPage, SholatSunnahPage, DzikirBadaSholatPage,
   SholatJenazahPage, PanduanPuasaPage, QadhaPuasaPage, RamadhanPage, HaditsPage,
-  HisnulMuslimPage, SirahPage,
+  HisnulMuslimPage, SirahPage, WarisPage, FidyahPage, KafaratPage, HajiUmrahPage,
+  PanduanJenazahPage, AqiqahKurbanPage, MutabaahPage, NamaBayiPage, MasjidTerdekatPage,
 } from './lazyPages.jsx';
 
 // HomePage eager (chunk awal); halaman lain lazy lewat lazyPages.jsx.
@@ -35,6 +36,15 @@ const router = createBrowserRouter([
       { path: 'hadits', element: <HaditsPage /> },
       { path: 'hisnul-muslim', element: <HisnulMuslimPage /> },
       { path: 'sirah', element: <SirahPage /> },
+      { path: 'waris', element: <WarisPage /> },
+      { path: 'fidyah', element: <FidyahPage /> },
+      { path: 'kafarat', element: <KafaratPage /> },
+      { path: 'haji-umrah', element: <HajiUmrahPage /> },
+      { path: 'panduan-jenazah', element: <PanduanJenazahPage /> },
+      { path: 'aqiqah-kurban', element: <AqiqahKurbanPage /> },
+      { path: 'mutabaah', element: <MutabaahPage /> },
+      { path: 'nama-bayi', element: <NamaBayiPage /> },
+      { path: 'masjid-terdekat', element: <MasjidTerdekatPage /> },
       { path: 'muslimah', element: <MuslimahHubPage /> },
       { path: 'muslimah/kalkulator', element: <MuslimahKalkulatorPage /> },
       { path: 'muslimah/mandi-wajib', element: <MuslimahMandiWajibPage /> },

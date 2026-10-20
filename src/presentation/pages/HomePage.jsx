@@ -4,7 +4,8 @@ import {
   FaQuran, FaBookOpen, FaClock, FaCoins, FaBookReader, FaGraduationCap,
   FaHandPointer, FaCloudSun, FaPrayingHands, FaClipboardCheck, FaCompass,
   FaCalendarAlt, FaListUl, FaBook, FaHeart, FaMoon, FaVenus,
-  FaSearch, FaBookmark, FaBrain, FaPalette, FaTint,
+  FaSearch, FaBookmark, FaBrain, FaPalette, FaTint, FaTasks,
+  FaBalanceScale, FaKaaba, FaBaby, FaGift, FaHandHoldingHeart, FaMosque,
 } from 'react-icons/fa';
 import { Page, SectionTitle, MenuCard } from '../components/common.jsx';
 import LanjutkanMembaca from '../components/LanjutkanMembaca.jsx';
@@ -104,6 +105,21 @@ const SEKSI = [
       { to: '/qadha-puasa', icon: <FaClipboardCheck />, judul: 'Tracker Qadha', desc: 'Catat utang & pembayaran puasa' },
       { to: '/ramadhan', icon: <FaMoon />, judul: 'Mode Ramadhan', desc: 'Hitung mundur, imsakiyah & tarawih' },
       { to: '/hisnul-muslim', icon: <FaPrayingHands />, judul: 'Hisnul Muslim', desc: '37 doa per aktivitas & situasi' },
+      { to: '/mutabaah', icon: <FaTasks />, judul: "Mutaba'ah Yaumiyah", desc: 'Checklist amal harian & ringkasan 7 hari' },
+    ],
+  },
+  {
+    nama: 'Panduan & Hitungan',
+    ikon: <FaBalanceScale />,
+    items: [
+      { to: '/waris', icon: <FaBalanceScale />, judul: 'Kalkulator Waris', desc: 'Hitung faraidh dasar + penjelasan' },
+      { to: '/fidyah', icon: <FaHandHoldingHeart />, judul: 'Kalkulator Fidyah', desc: 'Fidyah puasa per hari & harga pokok' },
+      { to: '/kafarat', icon: <FaBookOpen />, judul: 'Kafarat', desc: 'Sumpah, zhihar & lainnya — ringkas' },
+      { to: '/haji-umrah', icon: <FaKaaba />, judul: 'Haji & Umrah', desc: 'Manasik per tahap + checklist barang' },
+      { to: '/panduan-jenazah', icon: <FaBook />, judul: 'Panduan Jenazah', desc: 'Memandikan sampai menguburkan' },
+      { to: '/aqiqah-kurban', icon: <FaGift />, judul: 'Aqiqah & Kurban', desc: 'Syarat, waktu & kalkulator hewan' },
+      { to: '/nama-bayi', icon: <FaBaby />, judul: 'Nama Bayi Islami', desc: '110 nama + arti, bisa dicari' },
+      { to: '/masjid-terdekat', icon: <FaMosque />, judul: 'Masjid Terdekat', desc: 'Cari masjid di sekitarmu + rute' },
     ],
   },
   {

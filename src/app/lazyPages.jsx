@@ -58,6 +58,15 @@ const _Ramadhan = lazy(() => import('../presentation/pages/RamadhanPage.jsx'));
 const _Hadits = lazy(() => import('../presentation/pages/HaditsPage.jsx'));
 const _HisnulMuslim = lazy(() => import('../presentation/pages/HisnulMuslimPage.jsx'));
 const _Sirah = lazy(() => import('../presentation/pages/SirahPage.jsx'));
+const _Waris = lazy(() => import('../presentation/pages/WarisPage.jsx'));
+const _Fidyah = lazy(() => import('../presentation/pages/FidyahPage.jsx'));
+const _Kafarat = lazy(() => import('../presentation/pages/KafaratPage.jsx'));
+const _HajiUmrah = lazy(() => import('../presentation/pages/HajiUmrahPage.jsx'));
+const _PanduanJenazah = lazy(() => import('../presentation/pages/PanduanJenazahPage.jsx'));
+const _AqiqahKurban = lazy(() => import('../presentation/pages/AqiqahKurbanPage.jsx'));
+const _Mutabaah = lazy(() => import('../presentation/pages/MutabaahPage.jsx'));
+const _NamaBayi = lazy(() => import('../presentation/pages/NamaBayiPage.jsx'));
+const _MasjidTerdekat = lazy(() => import('../presentation/pages/MasjidTerdekatPage.jsx'));
 
 export function SurahPage() {
   return (
@@ -315,6 +324,69 @@ export function SirahPage() {
   return (
     <Suspense fallback={<PageFallback />}>
       <_Sirah />
+    </Suspense>
+  );
+}
+export function WarisPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_Waris />
+    </Suspense>
+  );
+}
+export function FidyahPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_Fidyah />
+    </Suspense>
+  );
+}
+export function KafaratPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_Kafarat />
+    </Suspense>
+  );
+}
+export function HajiUmrahPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_HajiUmrah />
+    </Suspense>
+  );
+}
+export function PanduanJenazahPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_PanduanJenazah />
+    </Suspense>
+  );
+}
+export function AqiqahKurbanPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_AqiqahKurban />
+    </Suspense>
+  );
+}
+export function MutabaahPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_Mutabaah />
+    </Suspense>
+  );
+}
+export function NamaBayiPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_NamaBayi />
+    </Suspense>
+  );
+}
+export function MasjidTerdekatPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_MasjidTerdekat />
     </Suspense>
   );
 }
