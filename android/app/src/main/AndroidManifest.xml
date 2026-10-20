@@ -38,4 +38,7 @@
     <!-- Permissions -->
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Getar kompas kiblat (navigator.vibrate di KiblatPage): izin normal,
+         tanpa prompt runtime; tanpa deklarasi ini getar diabaikan WebView. -->
+    <uses-permission android:name="android.permission.VIBRATE" />
 </manifest>
