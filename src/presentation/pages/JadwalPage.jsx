@@ -16,7 +16,8 @@ import {
 import { useToast } from '../components/feedback/toastStore.js';
 import { umumkan } from '../components/feedback/umumkan.js';
 import { useAkses } from '../a11y/pengaturanStore.js';
-import { usePengingat } from '../hooks/usePengingat.js';
+import { usePengingat, simpanJadwalTerakhirUntukPengingat } from '../hooks/usePengingat.js';
+import { hitungAwalSepertigaMalamTerakhir } from '../../domain/usecases/pengingatIbadah.js';
 
 // Banner adzan PERSISTEN (untuk pengguna tuli & lingkungan senyap):
 // menetap sampai ditutup manual — bukan toast sesaat yang mudah terlewat.
@@ -434,6 +435,20 @@ export default function JadwalPage() {
     didukung: notifDidukung,
     mintaIzin: mintaIzinNotif,
   } = usePengingat();
+  // Pengingat Tahajud: simpan snapshot jadwal termuat terakhir (Maghrib &
+  // Subuh) agar runner pengingat bisa menghitung awal sepertiga malam
+  // terakhir; hitungan hari ini ditampilkan di seksi Pengingat di bawah.
+  // Pasangan Maghrib/Subuh dari hari yang sama adalah perkiraan Subuh besok
+  // (selisih ±1 menit) — karena itu labelnya memakai "±".
+  useEffect(() => {
+    if (data) simpanJadwalTerakhirUntukPengingat(data);
+  }, [data]);
+  const infoTahajud = useMemo(() => {
+    if (!data) return null;
+    const maghrib = data.waktu.find((w) => w.kunci === 'Maghrib')?.jam;
+    const subuh = data.waktu.find((w) => w.kunci === 'Fajr')?.jam;
+    return hitungAwalSepertigaMalamTerakhir(maghrib, subuh);
+  }, [data]);
   const [bannerAdzan, setBannerAdzan] = useState(null);
   const teriakTerakhir = useRef('');
   const suaraAdzan = pref.suaraAdzan;
@@ -711,6 +726,17 @@ export default function JadwalPage() {
           nyala={prefPengingat.targetBaca}
           onToggle={() => ubahPengingat('targetBaca', !prefPengingat.targetBaca)}
         />
+        <BarisPengingat
+          judul="Tahajud"
+          desc="Pengingat bangun di sepertiga malam terakhir — membuka halaman Jadwal."
+          nyala={prefPengingat.tahajud}
+          onToggle={() => ubahPengingat('tahajud', !prefPengingat.tahajud)}
+        />
+        {infoTahajud && (
+          <p css={(t) => ({ fontSize: 12.5, color: t.colors.muted, lineHeight: 1.55, marginTop: 8 })}>
+            Sepertiga malam terakhir mulai ±{infoTahajud.jamLabel} — dari jadwal tersimpan.
+          </p>
+        )}
       </Card>
 
       {loading && <JadwalSkeleton />}

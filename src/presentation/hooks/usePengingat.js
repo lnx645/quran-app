@@ -2,6 +2,8 @@ import { useCallback, useEffect, useState } from 'react';
 import {
   DEFINISI_PENGINGAT,
   definisiPengingat,
+  hitungAwalSepertigaMalamTerakhir,
+  jamKeMenit,
   kunciTanggalLokal,
   normalisasiPrefPengingat,
   tentukanPengingatJatuhTempo,
@@ -11,7 +13,16 @@ import {
  * usePengingat — pengingat ibadah lokal Noor (Gelombang 6, item 6).
  *
  * Preferensi tersimpan di localStorage `noor.pengingat.v1`:
- *   { dzikirPagi: bool, dzikirPetang: bool, targetBaca: bool } (bawaan semua false)
+ *   { dzikirPagi: bool, dzikirPetang: bool, targetBaca: bool, tahajud: bool }
+ *   (bawaan semua false; pref lama tanpa `tahajud` dinormalisasi aditif)
+ *
+ * Pengingat Tahajud bersifat DINAMIS: waktunya (awal sepertiga malam
+ * terakhir) dihitung dari jadwal sholat TERSIMPAN TERAKHIR di localStorage
+ * `noor.jadwal.terakhir.v1`: { maghrib: 'HH:MM', subuh: 'HH:MM', tanggal }.
+ * Snapshot itu ditulis JadwalPage setiap jadwal termuat (lihat
+ * simpanJadwalTerakhirUntukPengingat) — repository/useJadwal sendiri tidak
+ * menyimpan jadwal ke localStorage. Bila snapshot tak tersedia/rusak,
+ * tahajud dilewati diam-diam (tidak crash, tidak menembak sembarangan).
  * Status izin TIDAK disimpan terpisah — selalu dibaca langsung dari
  * Notification.permission.
  *
@@ -26,6 +37,7 @@ import {
 
 export const KUNCI_PREF_PENGINGAT = 'noor.pengingat.v1';
 export const KUNCI_TERAKHIR_PENGINGAT = 'noor.pengingat.terakhir.v1';
+export const KUNCI_JADWAL_TERAKHIR_PENGINGAT = 'noor.jadwal.terakhir.v1';
 
 // Interval pemeriksaan penjadwalan: 45 detik (rentang yang diminta 30–60 dtk).
 const INTERVAL_PERIKSA_MS = 45_000;
@@ -59,6 +71,60 @@ export function bacaTerakhirPengingat() {
   } catch {
     return {};
   }
+}
+
+/**
+ * Simpan snapshot jadwal terakhir (Maghrib & Subuh) untuk pengingat Tahajud.
+ * Menerima bentuk data useJadwal/mapJadwal ({ waktu: [{kunci, nama, jam}] })
+ * atau daftar waktunya langsung. Mengembalikan true bila tersimpan.
+ */
+export function simpanJadwalTerakhirUntukPengingat(data) {
+  try {
+    const daftar = Array.isArray(data) ? data : data?.waktu;
+    if (!Array.isArray(daftar)) return false;
+    const cariJam = (kunci, nama) =>
+      daftar.find((w) => w?.kunci === kunci || w?.nama === nama)?.jam;
+    const maghrib = cariJam('Maghrib', 'Maghrib');
+    const subuh = cariJam('Fajr', 'Subuh');
+    if (jamKeMenit(maghrib) === null || jamKeMenit(subuh) === null) return false;
+    localStorage.setItem(
+      KUNCI_JADWAL_TERAKHIR_PENGINGAT,
+      JSON.stringify({ maghrib, subuh, tanggal: kunciTanggalLokal(new Date()) }),
+    );
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/** Baca snapshot jadwal terakhir untuk Tahajud, atau null bila tak valid. */
+export function bacaJadwalTerakhirUntukPengingat() {
+  try {
+    const data = JSON.parse(localStorage.getItem(KUNCI_JADWAL_TERAKHIR_PENGINGAT) ?? 'null');
+    if (!data || typeof data !== 'object') return null;
+    if (jamKeMenit(data.maghrib) === null || jamKeMenit(data.subuh) === null) return null;
+    return {
+      maghrib: data.maghrib,
+      subuh: data.subuh,
+      tanggal: typeof data.tanggal === 'string' ? data.tanggal : null,
+    };
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Info tahajud dari jadwal tersimpan terakhir: hasil hitung domain +
+ * menit Subuh (akhir jendela). Null bila jadwal tak tersedia/rusak.
+ * Catatan: Maghrib & Subuh berasal dari jadwal hari yang sama yang tersimpan
+ * terakhir — selisihnya dengan pasangan semalam hanya ±1 menit.
+ */
+export function hitungTahajudDariJadwalTerakhir() {
+  const jadwal = bacaJadwalTerakhirUntukPengingat();
+  if (!jadwal) return null;
+  const hasil = hitungAwalSepertigaMalamTerakhir(jadwal.maghrib, jadwal.subuh);
+  if (!hasil) return null;
+  return { ...hasil, menitSubuh: jamKeMenit(jadwal.subuh), ...jadwal };
 }
 
 function catatTerakhirPengingat(kunci, tanggalKunci) {
@@ -127,7 +193,21 @@ export async function periksaPengingatSekarang(sekarang = new Date()) {
 
   const pref = bacaPrefPengingat();
   const terakhir = bacaTerakhirPengingat();
-  const jatuhTempo = tentukanPengingatJatuhTempo(pref, sekarang, terakhir);
+  // Konteks dinamis Tahajud dari jadwal tersimpan terakhir; null (tanpa
+  // konteks) berarti jenis itu dilewati diam-diam oleh fungsi domain.
+  let konteks;
+  try {
+    const infoTahajud = pref.tahajud ? hitungTahajudDariJadwalTerakhir() : null;
+    if (infoTahajud) {
+      konteks = {
+        menitTahajud: infoTahajud.menitDariTengahMalam,
+        menitSubuh: infoTahajud.menitSubuh,
+      };
+    }
+  } catch {
+    konteks = undefined;
+  }
+  const jatuhTempo = tentukanPengingatJatuhTempo(pref, sekarang, terakhir, konteks);
   const hariIni = kunciTanggalLokal(sekarang);
 
   const ditembak = [];
