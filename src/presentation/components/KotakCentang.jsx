@@ -23,9 +23,8 @@ export const KotakVisual = styled.span`
   flex-shrink: 0;
   width: 24px;
   height: 24px;
-  margin-top: 1px;
   border-radius: 7px;
-  border: 1.5px solid ${({ theme }) => theme.colors.border};
+  border: 2px solid ${({ theme }) => theme.colors.border};
   background: ${({ theme }) => theme.colors.surface};
   display: inline-flex;
   align-items: center;
@@ -46,10 +45,10 @@ export const KotakVisual = styled.span`
 const Label = styled.label`
   position: relative;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 11px;
   min-height: 44px;
-  padding: 9px 0;
+  padding: 7px 0;
   cursor: pointer;
   font-size: 14.5px;
   line-height: 1.5;
