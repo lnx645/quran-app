@@ -3,15 +3,18 @@
 // Kueri: node/way amenity=place_of_worship + religion=muslim dalam radius meter
 // dari titik (way diambil titik tengahnya via `out center`).
 
-// Beberapa cermin Overpass publik — dicoba bergantian sampai ada yang merespons
-// (server utama kadang lambat/tidak terjangkau dari sebagian jaringan).
+// Beberapa cermin Overpass publik. Server utama (overpass-api.de) terukur
+// sangat lambat di jam sibuk (>25 detik untuk kueri kecil) sehingga strategi
+// "coba satu-satu" selalu kehabisan waktu di browser. Strateginya: BALAP
+// semua cermin sekaligus — respons sukses pertama yang dipakai, sisanya
+// dibatalkan. Satu pencarian dipicu pengguna, bukan polling berkala.
 const ENDPOINTS = [
-  'https://overpass-api.de/api/interpreter',
   'https://overpass.kumi.systems/api/interpreter',
+  'https://overpass-api.de/api/interpreter',
   'https://overpass.private.coffee/api/interpreter',
   'https://overpass.nchc.org.tw/api/interpreter',
 ];
-const TIMEOUT_MS = 20000;
+const TIMEOUT_MS = 45000;
 export const ATRIBUSI_OSM = '© OpenStreetMap contributors';
 
 const bangunKueri = (lat, lon, radius) => `
@@ -37,36 +40,32 @@ const gabungAlamat = (tags) => {
  * @returns Promise<Array<{ id, nama, lat, lon, alamat, jenis }>>
  */
 async function ambilDariCermin(body) {
-  let galatTerakhir = null;
-  for (const endpoint of ENDPOINTS) {
-    const kontrol = new AbortController();
+  const kontrols = ENDPOINTS.map(() => new AbortController());
+  const balapan = ENDPOINTS.map((endpoint, i) => {
+    const kontrol = kontrols[i];
     const timer = setTimeout(() => kontrol.abort(), TIMEOUT_MS);
-    try {
-      const res = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
-        body: body.toString(),
-        signal: kontrol.signal,
-      });
-      if (res.status === 429 || res.status === 503 || res.status === 504) {
-        galatTerakhir = new Error('sibuk');
-        continue;
-      }
-      if (!res.ok) {
-        galatTerakhir = new Error(`kode ${res.status}`);
-        continue;
-      }
-      return await res.json();
-    } catch (e) {
-      galatTerakhir = e;
-    } finally {
-      clearTimeout(timer);
-    }
+    return fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+      body: body.toString(),
+      signal: kontrol.signal,
+    })
+      .then(async (res) => {
+        if (!res.ok) throw new Error(`kode ${res.status}`);
+        return res.json();
+      })
+      .finally(() => clearTimeout(timer));
+  });
+  try {
+    const json = await Promise.any(balapan);
+    // Batalkan cermin yang belum selesai — pemenang sudah didapat.
+    kontrols.forEach((k) => k.abort());
+    return json;
+  } catch {
+    throw new Error(
+      'Semua server OpenStreetMap sedang lambat/sibuk. Tunggu sebentar lalu coba lagi.',
+    );
   }
-  if (galatTerakhir?.message === 'sibuk') {
-    throw new Error('Semua server OpenStreetMap sedang sibuk. Coba lagi sebentar.');
-  }
-  throw new Error('Tidak dapat menghubungi OpenStreetMap. Periksa koneksi internet Anda.');
 }
 
 export async function cariMasjidTerdekat(lat, lon, radius = 3000) {
