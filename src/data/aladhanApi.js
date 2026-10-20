@@ -11,9 +11,10 @@ async function getJson(path) {
 const ddmmYyyy = (date) =>
   `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${date.getFullYear()}`;
 
-export function fetchTimingsByCity(kota, tanggal) {
+export function fetchTimingsByCity(kota, tanggal, method = 20) {
+  const metode = Number.isFinite(Number(method)) ? Number(method) : 20;
   return getJson(
-    `/timingsByCity/${ddmmYyyy(tanggal)}?city=${encodeURIComponent(kota)}&country=Indonesia&method=20`
+    `/timingsByCity/${ddmmYyyy(tanggal)}?city=${encodeURIComponent(kota)}&country=Indonesia&method=${metode}`
   );
 }
 

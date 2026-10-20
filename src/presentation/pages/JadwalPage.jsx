@@ -7,7 +7,7 @@ import {
 import { useJadwal, KOTA_OPSI } from '../hooks/useJadwal.js';
 import { CornerOrnament } from '../components/ornaments/index.js';
 import {
-  Page, PageTitle, PageSubtitle, Card, GoldCard, SelectInput, Field,
+  Page, PageTitle, PageSubtitle, Card, GoldCard, SelectInput, TextInput, Field,
   ErrorBox, SectionTitle, Skeleton, GhostButton,
 } from '../components/common.jsx';
 import { useToast } from '../components/feedback/toastStore.js';
@@ -159,6 +159,32 @@ const CountdownBox = styled.div`
   letter-spacing: 2px;
 `;
 
+// Kartu hitung mundur iqamah: tampil hanya saat adzan sudah masuk dan
+// iqamah (waktu sholat + offset) belum tiba.
+const IqamahBox = styled(GoldCard)`
+  text-align: center;
+  .label {
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: ${({ theme }) => theme.colors.goldDeep};
+  }
+  .hitung {
+    font-family: ${({ theme }) => theme.fonts.display};
+    font-size: 38px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 2px;
+    color: ${({ theme }) => theme.colors.judul};
+    margin: 4px 0 2px;
+  }
+  .ket {
+    font-size: 13px;
+    color: ${({ theme }) => theme.colors.muted};
+  }
+`;
+
 const menitDariJam = (jam) => {
   const [h, m] = jam.split(':').map(Number);
   return h * 60 + m;
@@ -198,23 +224,73 @@ const fmtCountdown = (detik) => {
   return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(r).padStart(2, '0')}`;
 };
 
-// Pref jadwal sholat (localStorage): pilihan suara saat waktu sholat tiba.
-// suaraAdzan: 'asli' (rekaman adzan Commons) | 'bip' (beep WebAudio) | 'mati'.
-const KUNCI_PREF_JADWAL = 'noor.jadwal.v1';
+// Metode perhitungan Aladhan — id TERVERIFIKASI dari GET /v1/methods
+// (api.aladhan.com, dicek 2026-10-20): nama resmi → id.
+const METODE_OPSI = [
+  { id: 20, label: 'Kemenag RI — Kementerian Agama Republik Indonesia' },
+  { id: 3, label: 'MWL — Muslim World League' },
+  { id: 17, label: 'JAKIM — Malaysia' },
+  { id: 11, label: 'MUIS — Singapura' },
+  { id: 4, label: 'Umm al-Qura — Makkah' },
+  { id: 5, label: 'Mesir — Egyptian General Authority of Survey' },
+  { id: 2, label: 'ISNA — Amerika Utara' },
+  { id: 13, label: 'Diyanet — Turki' },
+  { id: 16, label: 'Dubai' },
+  { id: 9, label: 'Kuwait' },
+  { id: 10, label: 'Qatar' },
+  { id: 8, label: 'Wilayah Teluk (Gulf Region)' },
+  { id: 1, label: 'Karachi — University of Islamic Sciences' },
+];
+const METODE_VALID = METODE_OPSI.map((m) => m.id);
 
-function bacaSuaraAdzan() {
+// Sholat wajib yang memiliki iqamah (Terbit/Syuruq tidak termasuk).
+const SHOLAT_IQAMAH = ['Subuh', 'Dzuhur', 'Ashar', 'Maghrib', 'Isya'];
+
+const clampMenit = (n) => Math.min(60, Math.max(0, Math.round(Number(n) || 0)));
+
+// Pref jadwal sholat (localStorage) — SATU objek bersama di kunci
+// `noor.jadwal.v1`, DIPERLUAS bertahap (migrasi aman: field lama dipertahankan,
+// field baru yang belum ada jatuh ke nilai bawaan):
+// - suaraAdzan: 'asli' | 'bip' | 'mati'        (gelombang 4)
+// - metode: id metode Aladhan                  (gelombang 5, bawaan 20 Kemenag)
+// - iqamahGlobal: offset iqamah global (menit) (gelombang 5, bawaan 10)
+// - iqamahPer: { [namaSholat]: menit } timpaan per sholat (gelombang 5)
+const KUNCI_PREF_JADWAL = 'noor.jadwal.v1';
+const PREF_JADWAL_BAWAAN = { suaraAdzan: 'asli', metode: 20, iqamahGlobal: 10, iqamahPer: {} };
+
+function bacaPrefJadwal() {
   try {
     const data = JSON.parse(localStorage.getItem(KUNCI_PREF_JADWAL) ?? '{}');
-    return ['asli', 'bip', 'mati'].includes(data.suaraAdzan) ? data.suaraAdzan : 'asli';
+    const iqamahPer = {};
+    if (data.iqamahPer && typeof data.iqamahPer === 'object') {
+      for (const nama of SHOLAT_IQAMAH) {
+        if (data.iqamahPer[nama] != null && Number.isFinite(Number(data.iqamahPer[nama]))) {
+          iqamahPer[nama] = clampMenit(data.iqamahPer[nama]);
+        }
+      }
+    }
+    return {
+      suaraAdzan: ['asli', 'bip', 'mati'].includes(data.suaraAdzan)
+        ? data.suaraAdzan
+        : PREF_JADWAL_BAWAAN.suaraAdzan,
+      metode: METODE_VALID.includes(Number(data.metode))
+        ? Number(data.metode)
+        : PREF_JADWAL_BAWAAN.metode,
+      iqamahGlobal:
+        data.iqamahGlobal != null && Number.isFinite(Number(data.iqamahGlobal))
+          ? clampMenit(data.iqamahGlobal)
+          : PREF_JADWAL_BAWAAN.iqamahGlobal,
+      iqamahPer,
+    };
   } catch {
-    return 'asli';
+    return { ...PREF_JADWAL_BAWAAN };
   }
 }
 
-function simpanSuaraAdzan(nilai) {
+function simpanPrefJadwal(patch) {
   try {
     const data = JSON.parse(localStorage.getItem(KUNCI_PREF_JADWAL) ?? '{}');
-    localStorage.setItem(KUNCI_PREF_JADWAL, JSON.stringify({ ...data, suaraAdzan: nilai }));
+    localStorage.setItem(KUNCI_PREF_JADWAL, JSON.stringify({ ...data, ...patch }));
   } catch {
     /* penyimpanan tidak tersedia — pilihan berlaku sesi ini saja */
   }
@@ -252,19 +328,28 @@ function beepAdzan() {
 
 export default function JadwalPage() {
   const [kota, setKota] = useState('Sumedang');
-  const { loading, error, data } = useJadwal(kota);
+  const [pref, setPref] = useState(bacaPrefJadwal);
+  const { loading, error, data } = useJadwal(kota, pref.metode);
   const [sekarang, setSekarang] = useState(new Date());
   const toast = useToast();
   const { pengaturan } = useAkses();
   const [bannerAdzan, setBannerAdzan] = useState(null);
   const teriakTerakhir = useRef('');
-  const [suaraAdzan, setSuaraAdzan] = useState(bacaSuaraAdzan);
+  const suaraAdzan = pref.suaraAdzan;
   const adzanAudioRef = useRef(null);
 
-  const ubahSuaraAdzan = (nilai) => {
-    setSuaraAdzan(nilai);
-    simpanSuaraAdzan(nilai);
-  };
+  const ubahPref = useCallback((patch) => {
+    setPref((p) => ({ ...p, ...patch }));
+    simpanPrefJadwal(patch);
+  }, []);
+
+  const ubahSuaraAdzan = (nilai) => ubahPref({ suaraAdzan: nilai });
+
+  // Offset iqamah efektif per sholat: timpaan per-sholat menang atas global.
+  const offsetIqamah = useCallback(
+    (nama) => pref.iqamahPer[nama] ?? pref.iqamahGlobal,
+    [pref.iqamahPer, pref.iqamahGlobal],
+  );
 
   // Putar suara sesuai pref. Dipicu HANYA oleh pemicu yang sudah ada:
   // efek waktu sholat tiba (pengaturan notifikasi pengguna) dan tombol
@@ -308,6 +393,29 @@ export default function JadwalPage() {
       : (berikutnya.menit - menitSkrg) * 60 - sekarang.getSeconds();
     return { list, berikutnya, detik, untukBesok };
   }, [data, sekarang]);
+
+  // Hitung mundur iqamah: sholat wajib terakhir yang adzannya sudah masuk
+  // dan waktu iqamahnya (adzan + offset) belum lewat.
+  const statusIqamah = useMemo(() => {
+    if (!data) return null;
+    const detikSkrg =
+      sekarang.getHours() * 3600 + sekarang.getMinutes() * 60 + sekarang.getSeconds();
+    for (const w of data.waktu) {
+      if (!SHOLAT_IQAMAH.includes(w.nama)) continue;
+      const offset = offsetIqamah(w.nama);
+      if (offset <= 0) continue;
+      const detikAdzan = menitDariJam(w.jam) * 60;
+      const detikIqamah = detikAdzan + offset * 60;
+      if (detikSkrg >= detikAdzan && detikSkrg < detikIqamah) {
+        return {
+          nama: w.nama,
+          jamIqamah: tambahMenit(w.jam, offset),
+          detikSisa: detikIqamah - detikSkrg,
+        };
+      }
+    }
+    return null;
+  }, [data, sekarang, offsetIqamah]);
 
   // Notifikasi saat waktu sholat tiba (tab terbuka).
   useEffect(() => {
@@ -354,7 +462,10 @@ export default function JadwalPage() {
       <PageTitle>
         <FaClock /> Jadwal Sholat
       </PageTitle>
-      <PageSubtitle>Metode Kementerian Agama RI. Countdown otomatis setiap detik.</PageSubtitle>
+      <PageSubtitle>
+        Metode: {METODE_OPSI.find((m) => m.id === pref.metode)?.label ?? 'Kemenag RI'}. Countdown
+        otomatis setiap detik.
+      </PageSubtitle>
 
       <Field>
         <label htmlFor="kota">Kota</label>
@@ -362,6 +473,21 @@ export default function JadwalPage() {
           {KOTA_OPSI.map((k) => (
             <option key={k} value={k}>
               {k}
+            </option>
+          ))}
+        </SelectInput>
+      </Field>
+
+      <Field>
+        <label htmlFor="metode">Metode Perhitungan</label>
+        <SelectInput
+          id="metode"
+          value={String(pref.metode)}
+          onChange={(e) => ubahPref({ metode: Number(e.target.value) })}
+        >
+          {METODE_OPSI.map((m) => (
+            <option key={m.id} value={String(m.id)}>
+              {m.label}
             </option>
           ))}
         </SelectInput>
@@ -388,6 +514,50 @@ export default function JadwalPage() {
         </div>
       </Field>
 
+      <SectionTitle>Iqamah</SectionTitle>
+      <Card>
+        <p css={(t) => ({ fontSize: 13.5, color: t.colors.muted, lineHeight: 1.55, marginBottom: 12 })}>
+          Jeda antara adzan dan iqamah. Setelah waktu sholat masuk, hitung mundur ke iqamah tampil
+          otomatis. Isi 0 untuk menonaktifkan. Nilai per sholat menimpa nilai umum.
+        </p>
+        <Field>
+          <label htmlFor="iqamah-global">Jeda iqamah umum (menit)</label>
+          <TextInput
+            id="iqamah-global"
+            type="number"
+            inputMode="numeric"
+            min="0"
+            max="60"
+            value={String(pref.iqamahGlobal)}
+            onChange={(e) => ubahPref({ iqamahGlobal: clampMenit(e.target.value) })}
+          />
+        </Field>
+        <div css={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))', gap: 10 }}>
+          {SHOLAT_IQAMAH.map((nama) => (
+            <Field key={nama}>
+              <label htmlFor={`iqamah-${nama.toLowerCase()}`}>{nama} (menit)</label>
+              <TextInput
+                id={`iqamah-${nama.toLowerCase()}`}
+                type="number"
+                inputMode="numeric"
+                min="0"
+                max="60"
+                placeholder={String(pref.iqamahGlobal)}
+                value={pref.iqamahPer[nama] != null ? String(pref.iqamahPer[nama]) : ''}
+                onChange={(e) => {
+                  const mentah = e.target.value;
+                  const baru = { ...pref.iqamahPer };
+                  if (mentah === '') delete baru[nama];
+                  else baru[nama] = clampMenit(mentah);
+                  ubahPref({ iqamahPer: baru });
+                }}
+                aria-label={`Jeda iqamah ${nama} dalam menit, kosong berarti ikut nilai umum`}
+              />
+            </Field>
+          ))}
+        </div>
+      </Card>
+
       {loading && <JadwalSkeleton />}
       {error && <ErrorBox>Gagal memuat jadwal: {error}</ErrorBox>}
 
@@ -409,6 +579,16 @@ export default function JadwalPage() {
               <CountdownBox>{fmtCountdown(status.detik)}</CountdownBox>
             </div>
           </HeaderJadwal>
+
+          {statusIqamah && (
+            <IqamahBox role="status" aria-live="polite">
+              <div className="label">Menuju Iqamah {statusIqamah.nama}</div>
+              <div className="hitung">{fmtCountdown(statusIqamah.detikSisa)}</div>
+              <div className="ket">
+                Iqamah pukul {statusIqamah.jamIqamah} — bersiaplah, luruskan dan rapatkan saf.
+              </div>
+            </IqamahBox>
+          )}
 
           <SectionTitle>Jadwal Hari Ini</SectionTitle>
           {status.list.map((w) => {
@@ -433,7 +613,14 @@ export default function JadwalPage() {
                   <span css={{ fontWeight: 600 }}>{w.nama}</span>
                 )}
                 {s === 'berikutnya' && <span className="lencana">Berikutnya</span>}
-                <span className="jam">{w.jam}</span>
+                <span css={{ marginLeft: 'auto', textAlign: 'right' }}>
+                  <span className="jam" css={{ marginLeft: 0 }}>{w.jam}</span>
+                  {SHOLAT_IQAMAH.includes(w.nama) && offsetIqamah(w.nama) > 0 && (
+                    <span css={{ display: 'block', fontSize: 11.5, opacity: 0.8, marginTop: 1 }}>
+                      Iqamah {tambahMenit(w.jam, offsetIqamah(w.nama))}
+                    </span>
+                  )}
+                </span>
               </BarisWaktu>
             );
           })}
