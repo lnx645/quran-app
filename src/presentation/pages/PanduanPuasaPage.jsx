@@ -74,27 +74,13 @@ const Baris = styled.div`
   }
 `;
 
-const Nomor = styled.span`
-  flex-shrink: 0;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: ${({ theme }) => theme.colors.primarySoft};
-  color: ${({ theme }) => theme.colors.primary};
-  font-weight: 800;
-  font-size: 13.5px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 1px;
-`;
 
 function DaftarBernomor({ daftar }) {
   return (
     <Card>
       {daftar.map((item, i) => (
         <Baris key={i}>
-          <Nomor>{i + 1}</Nomor>
+          <NomorMedali nomor={i + 1} ukuran={30} />
           <div className="c">{item}</div>
         </Baris>
       ))}

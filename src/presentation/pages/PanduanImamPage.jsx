@@ -34,19 +34,6 @@ const KartuTeks = styled(Card)`
 const KartuNomor = styled(Card)`
   display: flex;
   gap: 12px;
-  .no {
-    flex-shrink: 0;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background: ${({ theme }) => theme.gradients.header};
-    color: ${({ theme }) => theme.colors.goldLight};
-    font-size: 14px;
-    font-weight: 800;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
   .nama {
     font-size: 15px;
     font-weight: 800;
@@ -166,7 +153,7 @@ export default function PanduanImamPage() {
       </SectionTitle>
       {URUTAN_IMAM.map((u, i) => (
         <KartuNomor key={u.judul}>
-          <span className="no" aria-hidden="true">{i + 1}</span>
+          <NomorMedali nomor={i + 1} ukuran={30} />
           <div>
             <div className="nama">{u.judul}</div>
             <p className="isi">{u.isi}</p>

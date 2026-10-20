@@ -71,20 +71,6 @@ const Catatan = styled.p`
   }
 `;
 
-const Nomor = styled.span`
-  flex-shrink: 0;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: ${({ theme }) => theme.colors.primarySoft};
-  color: ${({ theme }) => theme.colors.primary};
-  font-weight: 800;
-  font-size: 13.5px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 1px;
-`;
 
 
 
@@ -154,7 +140,7 @@ export default function PanduanWudhuPage() {
           {WUDHU.langkah.map((s, i) => (
             <Card key={i}>
               <JudulLangkah>
-                <Nomor>{i + 1}</Nomor>
+                <NomorMedali nomor={i + 1} ukuran={30} />
                 <span>{s.judul}</span>
               </JudulLangkah>
               <DescLangkah>{s.desc}</DescLangkah>
@@ -198,7 +184,7 @@ export default function PanduanWudhuPage() {
           <Card>
             {TAYAMMUM.langkah.map((s, i) => (
               <Step key={i}>
-                <Nomor>{i + 1}</Nomor>
+                <NomorMedali nomor={i + 1} ukuran={30} />
                 <div>
                   <div className="t">{s.judul}</div>
                   <div className="c">{s.desc}</div>

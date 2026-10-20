@@ -54,20 +54,6 @@ const KepalaKartu = styled.button`
   text-align: left;
   cursor: pointer;
   color: ${({ theme }) => theme.colors.text};
-  .nomor {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    flex-shrink: 0;
-    border-radius: 50%;
-    background: ${({ theme }) => theme.gradients.header};
-    color: ${({ theme }) => theme.colors.goldLight};
-    font-weight: 800;
-    font-size: 15px;
-    box-shadow: inset 0 0 0 1px rgba(231, 198, 90, 0.45);
-  }
   .teks {
     flex: 1;
     min-width: 0;
@@ -197,9 +183,7 @@ export default function HaditsPage() {
               aria-label={`Hadits ${h.nomor}: ${h.judul}, perawi ${h.perawi}`}
               onClick={() => setTerbuka(isOpen ? null : h.nomor)}
             >
-              <span className="nomor" aria-hidden="true">
-                {h.nomor}
-              </span>
+              <NomorMedali nomor={h.nomor} ukuran={40} />
               <span className="teks">
                 <span className="judul">{h.judul}</span>
                 <span className="perawi">Perawi: {h.perawi}</span>

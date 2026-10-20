@@ -74,19 +74,6 @@ const JudulLangkah = styled.h3`
   gap: 10px;
   font-size: 16px;
   margin-bottom: 6px;
-  .no {
-    flex-shrink: 0;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background: ${({ theme }) => theme.gradients.header};
-    color: ${({ theme }) => theme.colors.goldLight};
-    font-size: 14px;
-    font-weight: 800;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
   svg.tipe {
     color: ${({ theme }) => theme.colors.goldDeep};
     font-size: 18px;
@@ -145,7 +132,7 @@ export default function PanduanSholatPage() {
       {GERAKAN_SHOLAT.map((g, i) => (
         <Card key={i}>
           <JudulLangkah>
-            <span className="no">{i + 1}</span>
+            <NomorMedali nomor={i + 1} ukuran={30} />
             <span css={{ flex: 1 }}>{g.nama}</span>
             <span className="tipe" aria-hidden="true">
               {IKON[g.ikon]}
