@@ -4,13 +4,14 @@ import styled from '@emotion/styled';
 import { useTheme } from '@emotion/react';
 import {
   FaCompass, FaMapMarkerAlt, FaCrosshairs, FaInfoCircle, FaExclamationTriangle,
-  FaMagnet, FaMobileAlt, FaSyncAlt, FaRedo, FaSatellite,
+  FaMagnet, FaMobileAlt, FaSyncAlt, FaRedo, FaSatellite, FaVolumeUp,
 } from 'react-icons/fa';
 import {
   hitungBearingKiblat, jarakKeKabahKm, SUMEDANG,
   getDeclination,
 } from '../../domain/usecases/hitungKiblatAkurat.js';
 import { useKompas } from '../hooks/useKompas.js';
+import { umumkan } from '../components/feedback/umumkan.js';
 import {
   Page, PageHero, Card, GoldCard, SectionTitle, Field, TextInput,
   ResultRow, PrimaryButton, GhostButton, ErrorBox,
@@ -88,20 +89,26 @@ function KompasDial({ bearing, heading, rotasi }) {
   const dekat = selisih != null && selisih < 15;
   const sejajar = selisih != null && selisih <= 3;
 
-  // Getar SEKALI per masuk zona sejajar (flag ref; reset saat keluar zona).
-  const getarRef = useRef(false);
+  // Getar bertingkat sesuai zona kedekatan (non-visual): ≤10° getar 2×,
+  // ≤5° lebih rapat, ≤3° getar panjang — tiap masuk zona yang lebih dekat.
+  const zonaRef = useRef('');
   useEffect(() => {
-    if (sejajar && !getarRef.current) {
-      getarRef.current = true;
+    if (selisih == null) return;
+    const zona =
+      selisih <= 3 ? 'sejajar' : selisih <= 5 ? 'dekat5' : selisih <= 10 ? 'dekat10' : '';
+    if (zona && zona !== zonaRef.current) {
+      zonaRef.current = zona;
+      const pola = { dekat10: [60, 40, 60], dekat5: [60, 40, 60, 40, 60], sejajar: [250] };
       try {
-        navigator.vibrate?.(80);
+        navigator.vibrate?.(pola[zona]);
       } catch {
         /* perangkat tanpa vibrate — abaikan */
       }
-    } else if (!sejajar) {
-      getarRef.current = false;
+      if (zona === 'sejajar') umumkan('Kamu sudah menghadap kiblat.', 'tegas');
+    } else if (!zona) {
+      zonaRef.current = '';
     }
-  }, [sejajar]);
+  }, [selisih]);
 
   const ticks = [];
   for (let d = 0; d < 360; d += 5) {
@@ -270,6 +277,40 @@ export default function KiblatPage() {
     () => jarakKeKabahKm({ lat: lokasi.lat, lng: lokasi.lng }),
     [lokasi.lat, lokasi.lng],
   );
+
+  // --- Kompas non-visual: instruksi arah sebagai teks + ucapan (TTS) ---
+  const [teksArah, setTeksArah] = useState('');
+  const sebutkanArah = useCallback(() => {
+    let teks;
+    if (heading == null) {
+      teks = `Arah kiblat dari ${lokasi.nama} adalah ${Math.round(bearing)} derajat dari utara. Aktifkan kompas untuk mengetahui arah hadapmu saat ini.`;
+    } else {
+      const sel = (((bearing - heading + 540) % 360) + 360) % 360 - 180;
+      if (Math.abs(sel) <= 3) {
+        teks = `Kamu sudah menghadap kiblat. Arah kiblat ${Math.round(bearing)} derajat, arah hadapmu ${Math.round(heading)} derajat.`;
+      } else {
+        const putar = sel > 0 ? 'kanan' : 'kiri';
+        teks = `Arah kiblat ${Math.round(bearing)} derajat. Kamu menghadap ${Math.round(heading)} derajat. Putar ke ${putar} ${Math.abs(Math.round(sel))} derajat lagi.`;
+      }
+    }
+    setTeksArah(teks);
+    umumkan(teks);
+    try {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(teks);
+        const suaraId = window.speechSynthesis
+          .getVoices()
+          .find((v) => v.lang && v.lang.toLowerCase().startsWith('id'));
+        if (suaraId) u.voice = suaraId;
+        u.lang = suaraId?.lang ?? 'id-ID';
+        u.rate = 1;
+        window.speechSynthesis.speak(u);
+      }
+    } catch {
+      /* TTS tidak tersedia — teks di layar tetap tampil */
+    }
+  }, [bearing, heading, lokasi.nama]);
 
   // GPS otomatis saat halaman dibuka (seperti referensi): memperbarui lokasi
   // & bearing terus-menerus. Input manual / pilihan lokasi menghentikannya.
@@ -478,6 +519,20 @@ export default function KiblatPage() {
             </PrimaryButton>
           </div>
         )}
+
+        {/* Panduan non-visual untuk tunanetra/low-vision: ucapan + teks */}
+        <div css={{ marginTop: 14 }}>
+          <GhostButton onClick={sebutkanArah} aria-describedby="teks-arah">
+            <FaVolumeUp /> Sebutkan Arah
+          </GhostButton>
+          <p
+            id="teks-arah"
+            role="status"
+            css={{ fontSize: 14, lineHeight: 1.6, marginTop: 10, minHeight: 22 }}
+          >
+            {teksArah}
+          </p>
+        </div>
 
         {status === 'ditolak' && (
           <ErrorBox css={{ marginTop: 12, textAlign: 'left' }}>
