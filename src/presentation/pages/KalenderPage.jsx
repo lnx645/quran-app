@@ -58,6 +58,10 @@ const SLUG_PERISTIWA = {
   "Nuzulul Qur'an": 'nuzulul-quran',
 };
 
+// Peta hari besar per kunci "hari-bulanHijriah" — level modul agar aman dari
+// urutan deklarasi di dalam komponen (useMemo berjalan sebelum const di bawahnya).
+const PETA_HARI_BESAR = new Map(HARI_BESAR.map((hb) => [`${hb.hari}-${hb.bulanHijriah}`, hb]));
+
 const TautanPeristiwa = styled(Link)`
   display: inline-flex;
   align-items: center;
@@ -370,7 +374,7 @@ export default function KalenderPage() {
     return {
       ...sel,
       puasa: puasaSunnahPadaHari({ hijri: sel.hijri, weekday: sel.masehi.weekday }),
-      hariBesar: petaHariBesar.get(`${sel.hijri.day}-${sel.hijri.month}`) ?? null,
+      hariBesar: PETA_HARI_BESAR.get(`${sel.hijri.day}-${sel.hijri.month}`) ?? null,
     };
   }, [selBulan, kunciTerpilih]);
 
@@ -379,7 +383,6 @@ export default function KalenderPage() {
   });
   const offsetAwal = selBulan?.length ? (selBulan[0].masehi.weekday + 6) % 7 : 0;
   const kunciHariIni = kunciTgl(sekarang.getFullYear(), sekarang.getMonth() + 1, sekarang.getDate());
-  const petaHariBesar = new Map(HARI_BESAR.map((hb) => [`${hb.hari}-${hb.bulanHijriah}`, hb]));
   const rentangHijri = (() => {
     if (!selBulan?.length) return '';
     const awal = selBulan[0].hijri;
@@ -472,7 +475,7 @@ export default function KalenderPage() {
               {selBulan.map((sel) => {
                 const kunci = kunciTgl(sel.masehi.year, sel.masehi.month, sel.masehi.day);
                 const puasa = puasaSunnahPadaHari({ hijri: sel.hijri, weekday: sel.masehi.weekday });
-                const hb = petaHariBesar.get(`${sel.hijri.day}-${sel.hijri.month}`);
+                const hb = PETA_HARI_BESAR.get(`${sel.hijri.day}-${sel.hijri.month}`);
                 const labelPuasa = puasa.length ? `, puasa sunnah: ${puasa.map((p) => p.nama).join(', ')}` : '';
                 const labelBesar = hb ? `, hari besar: ${hb.nama}` : '';
                 return (
