@@ -11,6 +11,7 @@ import {
 import Logo from './Logo.jsx';
 import { GirihPattern } from './ornaments/index.js';
 import { reduceMotion } from './motion.js';
+import { useAkses } from '../a11y/pengaturanStore.js';
 
 // ===== Header ramping (~60px) =====
 // Kiri: logo + "Noor" satu baris. Kanan: tombol hamburger saja.
@@ -253,6 +254,26 @@ const PanelFoot = styled.div`
   border-top: 1px solid ${({ theme }) => theme.colors.border};
 `;
 
+// Pilihan mode tema di drawer: Sistem / Terang / Gelap / Kontras (≥44px).
+const SegTema = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 0 2px;
+`;
+
+const SegBtn = styled.button`
+  min-height: 44px;
+  padding: 8px 6px;
+  border-radius: 12px;
+  border: 1.5px solid
+    ${({ theme, aktif }) => (aktif ? theme.colors.gold : theme.colors.border)};
+  background: ${({ theme, aktif }) => (aktif ? theme.colors.primarySoft : theme.colors.surface)};
+  color: ${({ theme }) => theme.colors.text};
+  font-size: 13px;
+  font-weight: 700;
+`;
+
 // Daftar menu drawer — mengikuti rute router.jsx & seksi Home.
 const MENU = [
   {
@@ -307,6 +328,7 @@ const MENU = [
 export default function AppHeader() {
   const [open, setOpen] = useState(false);
   const location = useLocation();
+  const { pengaturan, ubah } = useAkses();
   const closeRef = useRef(null);
   const menuBtnRef = useRef(null);
   const panelRef = useRef(null);
@@ -415,6 +437,27 @@ export default function AppHeader() {
               ))}
             </div>
           ))}
+          <div>
+            <GroupLabel>Tampilan</GroupLabel>
+            <SegTema role="group" aria-label="Mode tema tampilan">
+              {[
+                ['ikut', 'Ikut Sistem'],
+                ['terang', 'Terang'],
+                ['gelap', 'Mode Gelap'],
+                ['kontras', 'Kontras Tinggi'],
+              ].map(([nilai, label]) => (
+                <SegBtn
+                  key={nilai}
+                  type="button"
+                  aktif={pengaturan.modeTema === nilai}
+                  aria-pressed={pengaturan.modeTema === nilai}
+                  onClick={() => ubah({ modeTema: nilai })}
+                >
+                  {label}
+                </SegBtn>
+              ))}
+            </SegTema>
+          </div>
         </PanelNav>
         <PanelFoot>Noor — menemani ibadah harian</PanelFoot>
       </Panel>

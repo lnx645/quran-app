@@ -1,12 +1,14 @@
 /** @jsxImportSource @emotion/react */
-import { StrictMode } from 'react';
+import { StrictMode, useMemo } from 'react';
 import { createRoot } from 'react-dom/client';
 import { ThemeProvider, Global, css } from '@emotion/react';
 import { RouterProvider } from 'react-router-dom';
-import theme from './theme.js';
+import { buatTema } from './theme.js';
 import router from './router.jsx';
 import ToastProvider from '../presentation/components/feedback/Toast.jsx';
 import DialogProvider from '../presentation/components/feedback/Dialog.jsx';
+import PengaturanProvider from '../presentation/a11y/PengaturanProvider.jsx';
+import { useAkses } from '../presentation/a11y/pengaturanStore.js';
 
 const globalStyles = (t) => css`
   *, *::before, *::after { box-sizing: border-box; }
@@ -39,11 +41,24 @@ const globalStyles = (t) => css`
       scroll-behavior: auto !important;
     }
   }
+  /* Override manual "Kurangi animasi" dari Pengaturan Aksesibilitas */
+  html.noor-kurangi-gerakan *, html.noor-kurangi-gerakan *::before, html.noor-kurangi-gerakan *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 `;
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <ThemeProvider theme={theme}>
+// Lapisan dalam: tema dibangun dari pengaturan aksesibilitas aktif.
+function Aplikasi() {
+  const { pengaturan, modeEfektif } = useAkses();
+  const tema = useMemo(
+    () => buatTema(modeEfektif, { fontDisleksia: pengaturan.fontDisleksia }),
+    [modeEfektif, pengaturan.fontDisleksia],
+  );
+  return (
+    <ThemeProvider theme={tema}>
       <Global styles={globalStyles} />
       <DialogProvider>
         <ToastProvider>
@@ -51,5 +66,13 @@ createRoot(document.getElementById('root')).render(
         </ToastProvider>
       </DialogProvider>
     </ThemeProvider>
+  );
+}
+
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <PengaturanProvider>
+      <Aplikasi />
+    </PengaturanProvider>
   </StrictMode>
 );

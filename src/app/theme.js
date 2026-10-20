@@ -95,3 +95,82 @@ export const theme = {
 };
 
 export default theme;
+
+// ===== Varian tampilan aksesibilitas (P1-1) =====
+// Mode GELAP: latar gelap redup-silau, teks terang berkontras tinggi.
+// Mode KONTRASTINGGI: putih/hijau pekat — semua teks ≥ 7:1 sebisa mungkin.
+// Token lain (tipografi, spasi, animasi) diwarisi dari tema dasar.
+const varianGelap = {
+  colors: {
+    primary: '#35B48F',
+    primaryMid: '#2E9E7D',
+    primarySoft: '#14352B',
+    goldDeep: '#D9AE3F', // 5,1:1 di latar gelap; 5,7:1 di goldSoft gelap
+    goldSoft: '#3A2F0E',
+    bg: '#0E1512',
+    surface: '#18211C',
+    surfaceAlt: '#1F2B24',
+    text: '#EDEBE3', // 15,5:1 di bg gelap
+    muted: '#A9B8AF', // 9,0:1
+    faint: '#8FA398', // ≈6,5:1 — tetap lolos AA
+    border: '#2E4638',
+    paper: '#171D18',
+    paperCard: '#1C241E',
+    paperDeep: '#26200F',
+    danger: '#F87171',
+    success: '#4ADE80',
+  },
+  gradients: {
+    goldSoftCard: 'linear-gradient(180deg, #22301F 0%, #18211C 58%)',
+  },
+};
+
+const varianKontras = {
+  colors: {
+    primary: '#00473A', // ≈10:1 di putih
+    primaryMid: '#005C4B',
+    primaryDark: '#00382D',
+    primaryDeep: '#002A22',
+    primarySoft: '#D9EDE5',
+    gold: '#7A6200',
+    goldLight: '#FFE27A',
+    goldDeep: '#6E570B', // 6,9:1 di putih
+    goldSoft: '#FFF3C4',
+    bg: '#FFFFFF',
+    surface: '#FFFFFF',
+    surfaceAlt: '#F2F2F2',
+    text: '#000000', // 21:1
+    muted: '#333333',
+    faint: '#444444',
+    border: '#595959',
+    paper: '#FFFFFF',
+    paperCard: '#FFFFFF',
+    paperDeep: '#FFEFA8',
+    danger: '#B00020',
+    success: '#00691F',
+  },
+  gradients: {
+    goldSoftCard: 'linear-gradient(180deg, #FFF3C4 0%, #FFFFFF 58%)',
+  },
+};
+
+/**
+ * buatTema(modeEfektif, opsi) — gabung tema dasar + varian tampilan.
+ * modeEfektif: 'terang' | 'gelap' | 'kontras'.
+ * opsi.fontDisleksia: pakai Atkinson Hyperlegible untuk teks Latin.
+ */
+export function buatTema(modeEfektif, opsi = {}) {
+  const varian =
+    modeEfektif === 'gelap' ? varianGelap : modeEfektif === 'kontras' ? varianKontras : null;
+  const hasil = {
+    ...theme,
+    colors: { ...theme.colors, ...(varian?.colors ?? {}) },
+    gradients: { ...theme.gradients, ...(varian?.gradients ?? {}) },
+    fonts: { ...theme.fonts },
+    mode: modeEfektif,
+  };
+  if (opsi.fontDisleksia) {
+    hasil.fonts.body = "'Atkinson Hyperlegible', 'Inter', system-ui, sans-serif";
+  }
+  return hasil;
+}
