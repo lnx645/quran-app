@@ -5,6 +5,7 @@ import {
   KAFARAT_LIST, DISCLAIMER_KAFARAT, CATATAN_URUTAN,
 } from '../../data/sources/kafaratData.js';
 import { Page, PageHero, Card, SectionTitle } from '../components/common.jsx';
+import NomorMedali from '../components/NomorMedali.jsx';
 
 const NamaKartu = styled.h3`
   font-family: ${({ theme }) => theme.fonts.display};
@@ -28,20 +29,6 @@ const Sebab = styled.p`
   margin-bottom: 12px;
 `;
 
-const SumberChip = styled.span`
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 12px;
-  min-height: 32px;
-  border-radius: 999px;
-  font-size: 12.5px;
-  font-weight: 700;
-  background: ${({ theme }) => theme.colors.primarySoft};
-  color: ${({ theme }) => theme.colors.judul};
-  border: 1px solid ${({ theme }) => theme.colors.primarySoft};
-`;
-
 const Urutan = styled.ol`
   list-style: none;
   margin: 0 0 12px;
@@ -57,20 +44,6 @@ const Langkah = styled.li`
   font-size: 14px;
   line-height: 1.65;
   color: ${({ theme }) => theme.colors.text};
-  .nomor {
-    flex-shrink: 0;
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    background: ${({ theme }) => theme.gradients.gold};
-    color: ${({ theme }) => theme.colors.primaryDeep};
-    font-size: 13px;
-    font-weight: 800;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 1px;
-  }
 `;
 
 const Catatan = styled.p`
@@ -117,14 +90,14 @@ export default function KafaratPage() {
           <Urutan aria-label={`Urutan kafarat ${k.nama}`}>
             {k.urutan.map((langkah, i) => (
               <Langkah key={i}>
-                <span className="nomor">{i + 1}</span>
+                <NomorMedali nomor={i + 1} ukuran={30} />
                 <span>{langkah}</span>
               </Langkah>
             ))}
           </Urutan>
-          <SumberChip>
-            <FaBookOpen /> {k.sumber}
-          </SumberChip>
+          <Catatan>
+            <FaBookOpen /> <strong>Sumber:</strong>&nbsp;{k.sumber}
+          </Catatan>
         </Card>
       ))}
 
