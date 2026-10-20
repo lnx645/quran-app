@@ -5,6 +5,7 @@ import {
   FaClock, FaMapMarkerAlt, FaBell, FaSun, FaMoon, FaCloudSun,
 } from 'react-icons/fa';
 import { useJadwal, KOTA_OPSI } from '../hooks/useJadwal.js';
+import { CornerOrnament } from '../components/ornaments/index.js';
 import {
   Page, PageTitle, PageSubtitle, Card, GoldCard, SelectInput, Field,
   ErrorBox, LoadingBox, Spinner, SectionTitle,
@@ -234,6 +235,8 @@ export default function JadwalPage() {
       {data && status && (
         <>
           <HeaderJadwal>
+            <CornerOrnament corner="tl" size={52} style={{ top: 4, left: 4 }} />
+            <CornerOrnament corner="br" size={52} style={{ bottom: 4, right: 4 }} />
             <div css={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, fontSize: 13, marginBottom: 6 }}>
               <FaMapMarkerAlt /> {data.kota} — {data.tanggalMasehi}
             </div>

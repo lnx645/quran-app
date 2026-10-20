@@ -7,7 +7,7 @@ import {
   HARGA_EMAS_DEFAULT, HARGA_BERAS_DEFAULT, EMAS_NISAB_GRAM,
 } from '../../domain/usecases/hitungZakat.js';
 import {
-  Page, PageTitle, PageSubtitle, Card, SectionTitle, Field, TextInput, ResultRow, GoldCard,
+  Page, PageHero, Card, SectionTitle, Field, TextInput, ResultRow, GoldCard,
 } from '../components/common.jsx';
 
 const Tab = styled.button`
@@ -74,13 +74,15 @@ export default function ZakatPage() {
 
   return (
     <Page>
-      <PageTitle>
-        <FaCoins /> Kalkulator Zakat
-      </PageTitle>
-      <PageSubtitle>
-        Hitung zakat mal, zakat profesi, dan zakat fitrah. Nisab acuan: {EMAS_NISAB_GRAM} gram
-        emas, kadar 2,5%.
-      </PageSubtitle>
+      <PageHero>
+        <h2>
+          <FaCoins /> Kalkulator Zakat
+        </h2>
+        <p>
+          Hitung zakat mal, zakat profesi, dan zakat fitrah. Nisab acuan: {EMAS_NISAB_GRAM} gram
+          emas, kadar 2,5%.
+        </p>
+      </PageHero>
 
       <div css={{ display: 'flex', gap: 8, marginBottom: 16 }}>
         <Tab aktif={tab === 'mal'} onClick={() => setTab('mal')}>
@@ -212,7 +214,7 @@ export default function ZakatPage() {
       )}
 
       <SectionTitle>Catatan</SectionTitle>
-      <Card css={{ fontSize: 13.5, color: '#64748B' }}>
+      <Card css={{ fontSize: 13.5, color: '#6B7A72' }}>
         Kalkulator ini alat bantu hitung. Untuk penetapan resmi (termasuk utang/piutang dan haul),
         silakan konsultasikan ke amil zakat / BAZNAS setempat.
       </Card>

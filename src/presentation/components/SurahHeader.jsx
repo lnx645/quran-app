@@ -2,32 +2,27 @@
 import styled from '@emotion/styled';
 import { FaMapMarkerAlt, FaListOl } from 'react-icons/fa';
 import OrnamentDivider from './OrnamentDivider.jsx';
+import { GirihPattern, CornerOrnament, OrnamentBand } from './ornaments/index.js';
 
 const Box = styled.section`
   position: relative;
   overflow: hidden;
   text-align: center;
-  background: linear-gradient(140deg, ${({ theme }) => theme.colors.primaryDark}, ${({ theme }) => theme.colors.primary});
+  background: linear-gradient(150deg, ${({ theme }) => theme.colors.primaryDeep}, ${({ theme }) => theme.colors.primary} 55%, ${({ theme }) => theme.colors.primaryMid});
   color: #fff;
   border-radius: ${({ theme }) => theme.radii.lg}px;
-  padding: 26px 20px 18px;
+  padding: 28px 18px 6px;
   margin-bottom: 20px;
-  box-shadow: ${({ theme }) => theme.shadows.card};
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: ${({ theme }) => theme.pattern};
-    background-size: 56px 56px;
-    opacity: 0.15;
-  }
+  box-shadow: ${({ theme }) => theme.shadows.lift};
 `;
 
 const Arab = styled.div`
   position: relative;
   font-family: ${({ theme }) => theme.fonts.arabic};
-  font-size: 44px;
+  font-size: 46px;
   line-height: 1.5;
+  color: ${({ theme }) => theme.colors.goldLight};
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
 `;
 
 const Latin = styled.h1`
@@ -43,12 +38,15 @@ const Meta = styled.div`
   justify-content: center;
   gap: 16px;
   font-size: 13px;
-  color: ${({ theme }) => theme.colors.goldLight};
+  color: rgba(255, 255, 255, 0.9);
   margin-top: 6px;
   span {
     display: inline-flex;
     align-items: center;
     gap: 5px;
+  }
+  svg {
+    color: ${({ theme }) => theme.colors.goldLight};
   }
 `;
 
@@ -57,12 +55,15 @@ const Bismillah = styled.p`
   font-family: ${({ theme }) => theme.fonts.arabic};
   font-size: 30px;
   text-align: center;
-  margin-top: 14px;
+  margin-top: 10px;
 `;
 
 export default function SurahHeader({ surah }) {
   return (
     <Box>
+      <GirihPattern opacity={0.13} />
+      <CornerOrnament corner="tl" style={{ top: 6, left: 6 }} />
+      <CornerOrnament corner="tr" style={{ top: 6, right: 6 }} />
       <Arab dir="rtl">{surah.nameArabic}</Arab>
       <Latin>
         Surah {surah.nameLatin} ({surah.translationId})
@@ -78,7 +79,9 @@ export default function SurahHeader({ surah }) {
       {surah.bismillahPre && surah.id !== 9 && (
         <Bismillah dir="rtl">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</Bismillah>
       )}
-      <OrnamentDivider />
+      <div css={{ position: 'relative', marginTop: 10 }}>
+        <OrnamentBand height={16} opacity={0.7} />
+      </div>
     </Box>
   );
 }

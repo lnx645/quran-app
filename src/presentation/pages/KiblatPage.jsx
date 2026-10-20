@@ -64,7 +64,7 @@ export default function KiblatPage() {
 
       <KompasBox>
         <svg width="240" height="240" viewBox="0 0 240 240" role="img" aria-label="Kompas kiblat">
-          <circle cx="120" cy="120" r="112" fill="#F5EFE2" stroke="#C9A227" strokeWidth="2" />
+          <circle cx="120" cy="120" r="112" fill="#F3EBD6" stroke="#C9A227" strokeWidth="2" />
           <circle cx="120" cy="120" r="86" fill="none" stroke="#E7DFC9" strokeWidth="1" />
           {['U', 'T', 'S', 'B'].map((huruf, i) => {
             const sudut = (i * 90 * Math.PI) / 180;
@@ -77,7 +77,7 @@ export default function KiblatPage() {
             );
           })}
           <g transform={`rotate(${sudutJarum} 120 120)`}>
-            <polygon points="120,26 130,120 120,110 110,120" fill="#0D7C6C" />
+            <polygon points="120,26 130,120 120,110 110,120" fill="#0B5345" />
             <polygon points="120,214 110,120 120,130 130,120" fill="#94A3B8" />
           </g>
           <rect x="106" y="106" width="28" height="28" rx="4" fill="#1E293B" />

@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import styled from '@emotion/styled';
 import { FaHandPointer, FaRedoAlt, FaCog } from 'react-icons/fa';
-import { Page, PageTitle, PageSubtitle, Card, SectionTitle, GhostButton } from '../components/common.jsx';
+import { Page, PageHero, Card, SectionTitle, GhostButton } from '../components/common.jsx';
 
 const DZIKIR_OPSI = [
   { arab: 'سُبْحَانَ اللَّهِ', latin: 'Subhanallah', arti: 'Maha Suci Allah' },
@@ -115,8 +115,12 @@ export default function TasbihPage() {
 
   return (
     <Page>
-      <PageTitle>Tasbih Digital</PageTitle>
-      <PageSubtitle>Ketuk tombol bulat untuk menghitung. Getar tanda target tercapai.</PageSubtitle>
+      <PageHero>
+        <h2>
+          <FaHandPointer /> Tasbih Digital
+        </h2>
+        <p>Ketuk tombol bulat untuk menghitung. Getar tanda target tercapai.</p>
+      </PageHero>
 
       <SectionTitle>Dzikir</SectionTitle>
       {DZIKIR_OPSI.map((d) => (
@@ -132,7 +136,7 @@ export default function TasbihPage() {
       <CounterCard css={{ marginTop: 16 }}>
         <ArabBesar dir="rtl">{dzikir.arab}</ArabBesar>
         <Angka>{hitung}</Angka>
-        <div css={{ fontSize: 12.5, color: '#64748B', marginBottom: 12 }}>
+        <div css={{ fontSize: 12.5, color: '#6B7A72', marginBottom: 12 }}>
           {persen.toFixed(0)}% dari target {target}
         </div>
         <div>

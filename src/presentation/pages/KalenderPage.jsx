@@ -100,7 +100,7 @@ export default function KalenderPage() {
       <PageSubtitle>Tanggal hari ini dan hari-hari besar Islam tahun Hijriah berjalan.</PageSubtitle>
 
       <GoldCard css={{ textAlign: 'center' }}>
-        <div css={{ fontSize: 13, color: '#64748B' }}>{tanggalMasehiStr}</div>
+        <div css={{ fontSize: 13, color: '#6B7A72' }}>{tanggalMasehiStr}</div>
         {hijriahHariIni ? (
           <>
             <div css={{ fontFamily: "'Playfair Display', serif", fontSize: 27, fontWeight: 700, marginTop: 4 }}>

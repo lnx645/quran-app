@@ -7,50 +7,52 @@ import {
 } from 'react-icons/fa';
 import { Page, SectionTitle, MenuCard } from '../components/common.jsx';
 import OrnamentDivider from '../components/OrnamentDivider.jsx';
+import { GirihPattern, OrnamentBand, CornerOrnament, MosqueSilhouette } from '../components/ornaments/index.js';
 
 const Hero = styled.section`
   position: relative;
   overflow: hidden;
   border-radius: ${({ theme }) => theme.radii.lg}px;
-  padding: 26px 20px;
-  background: linear-gradient(135deg, ${({ theme }) => theme.colors.primary}, ${({ theme }) => theme.colors.primaryDark});
+  background: linear-gradient(160deg, ${({ theme }) => theme.colors.primaryDeep}, ${({ theme }) => theme.colors.primary} 55%, ${({ theme }) => theme.colors.primaryMid});
   color: #fff;
   text-align: center;
-  margin-bottom: 8px;
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: ${({ theme }) => theme.pattern};
-    background-size: 56px 56px;
-    opacity: 0.15;
-  }
+  margin: 2px -2px 6px;
+  box-shadow: ${({ theme }) => theme.shadows.lift};
+`;
+
+const HeroIsi = styled.div`
+  position: relative;
+  padding: 30px 20px 8px;
   .arab-hero {
-    position: relative;
     font-family: ${({ theme }) => theme.fonts.arabic};
-    font-size: 34px;
-    line-height: 1.7;
+    font-size: 33px;
+    line-height: 1.8;
+    color: ${({ theme }) => theme.colors.goldLight};
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
   }
   h1 {
-    position: relative;
     font-family: ${({ theme }) => theme.fonts.display};
-    font-size: 26px;
-    margin-top: 6px;
+    font-size: 30px;
+    font-weight: 700;
+    margin-top: 8px;
+    letter-spacing: 0.4px;
   }
   p {
-    position: relative;
     font-size: 13.5px;
-    color: ${({ theme }) => theme.colors.goldLight};
-    margin-top: 6px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
+    margin-top: 7px;
+    padding: 0 6px;
   }
 `;
 
 const GridMenu = styled.div`
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 10px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 11px;
   @media (min-width: ${({ theme }) => theme.breakpoints.md}px) {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
   }
 `;
 
@@ -101,12 +103,23 @@ export default function HomePage() {
   return (
     <Page>
       <Hero>
-        <div className="arab-hero" lang="ar">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
-        <h1>Ahlan wa Sahlan</h1>
-        <p>
-          <FaMoon style={{ display: 'inline', verticalAlign: '-2px' }} /> Noor menemani ibadah
-          harian dan perjalanan belajar Al-Qur&apos;an Anda.
-        </p>
+        <GirihPattern opacity={0.14} />
+        <CornerOrnament corner="tl" style={{ top: 6, left: 6 }} />
+        <CornerOrnament corner="tr" style={{ top: 6, right: 6 }} />
+        <HeroIsi>
+          <div className="arab-hero" lang="ar">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+          <h1>Ahlan wa Sahlan</h1>
+          <p>
+            <FaMoon style={{ display: 'inline', verticalAlign: '-2px' }} /> Noor menemani ibadah
+            harian dan perjalanan belajar Al-Qur&apos;an Anda.
+          </p>
+        </HeroIsi>
+        <div css={{ position: 'relative', marginTop: 6 }}>
+          <MosqueSilhouette opacity={0.16} height={86} />
+          <div css={{ position: 'absolute', left: 0, right: 0, bottom: 0 }}>
+            <OrnamentBand height={16} opacity={0.75} />
+          </div>
+        </div>
       </Hero>
       <OrnamentDivider />
       {SEKSI.map((seksi) => (

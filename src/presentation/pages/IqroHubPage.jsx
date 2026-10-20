@@ -4,16 +4,17 @@ import styled from '@emotion/styled';
 import { FaBookOpen, FaGraduationCap } from 'react-icons/fa';
 import { IqroRepositoryImpl } from '../../data/repositories/IqroRepositoryImpl.js';
 import {
-  Page, PageTitle, PageSubtitle, MenuCard, ErrorBox, LoadingBox, Spinner,
+  Page, PageHero, MenuCard, ErrorBox, LoadingBox, Spinner,
 } from '../components/common.jsx';
 import OrnamentDivider from '../components/OrnamentDivider.jsx';
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 11px;
   @media (min-width: ${({ theme }) => theme.breakpoints.md}px) {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
   }
 `;
 
@@ -29,13 +30,15 @@ export default function IqroHubPage() {
 
   return (
     <Page>
-      <PageTitle>
-        <FaGraduationCap /> Belajar Iqro
-      </PageTitle>
-      <PageSubtitle>
-        Metode Iqro dari Jilid 1 sampai 6 — mulai dari mengenal huruf hijaiyah hingga membaca
-        Al-Qur&apos;an dengan tajwid dasar.
-      </PageSubtitle>
+      <PageHero>
+        <h2>
+          <FaGraduationCap /> Belajar Iqro
+        </h2>
+        <p>
+          Metode Iqro dari Jilid 1 sampai 6 — mulai dari mengenal huruf hijaiyah hingga membaca
+          Al-Qur&apos;an dengan tajwid dasar.
+        </p>
+      </PageHero>
       <OrnamentDivider />
       {error && <ErrorBox>{error}</ErrorBox>}
       {!list && !error && (

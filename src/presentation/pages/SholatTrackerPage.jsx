@@ -58,13 +58,13 @@ export default function SholatTrackerPage() {
         <div css={{ display: 'flex', justifyContent: 'center', gap: 26 }}>
           <div>
             <div className="angka">{streak}</div>
-            <div css={{ fontSize: 12.5, color: '#64748B' }}>
+            <div css={{ fontSize: 12.5, color: '#6B7A72' }}>
               <FaFire /> Hari beruntun lengkap
             </div>
           </div>
           <div>
             <div className="angka">{selesaiHariIni}/5</div>
-            <div css={{ fontSize: 12.5, color: '#64748B' }}>Hari ini</div>
+            <div css={{ fontSize: 12.5, color: '#6B7A72' }}>Hari ini</div>
           </div>
         </div>
       </StreakBox>
@@ -78,7 +78,7 @@ export default function SholatTrackerPage() {
             <span className="kanan">{hariIni[w] ? 'SUDAH' : 'BELUM'}</span>
           </Baris>
         ))}
-        <p css={{ fontSize: 13, color: '#64748B', marginTop: 6 }}>
+        <p css={{ fontSize: 13, color: '#6B7A72', marginTop: 6 }}>
           Streak dihitung dari hari-hari dengan kelima sholat wajib tuntas. Terus jaga — Allah
           mencintai amal yang konsisten walau sedikit.
         </p>
