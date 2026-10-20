@@ -115,7 +115,9 @@ export function useAudioSync(ayahs, audioUrl, totalMs) {
     if (activeIndex < 0) return -1;
     const segs = ayahs[activeIndex]?.timing?.segments ?? [];
     for (let i = segs.length - 1; i >= 0; i--) {
-      if (positionMs >= segs[i][1] && positionMs < segs[i][2]) return segs[i][0];
+      const sg = segs[i];
+      if (!Array.isArray(sg) || sg.length < 3) continue;
+      if (positionMs >= sg[1] && positionMs < sg[2]) return sg[0];
     }
     return -1;
   }, [ayahs, activeIndex, positionMs]);

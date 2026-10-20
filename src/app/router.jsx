@@ -1,5 +1,6 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import App from './App.jsx';
+import HalamanGalat from '../presentation/pages/HalamanGalat.jsx';
 import HomePage from '../presentation/pages/HomePage.jsx';
 import {
   SurahPage, IqroHubPage, IqroJilidPage, JadwalPage, ZakatPage, KhatamPage,
@@ -21,6 +22,7 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
+    errorElement: <HalamanGalat />,
     children: [
       { index: true, element: <HomePage /> },
       { path: 'quran', element: <QuranListPage /> },

@@ -44,7 +44,22 @@ export function mapVerse(verse, timingByKey) {
     sajdah: verse.sajdah_number != null || adalahAyatSajdah(verse.verse_key),
     words,
     timing: t
-      ? { fromMs: t.timestamp_from, toMs: t.timestamp_to, segments: t.segments ?? [] }
+      ? {
+          fromMs: t.timestamp_from,
+          toMs: t.timestamp_to,
+          // Sanitasi: API nyata terbukti mengirim entri segments cacat
+          // (panjang 1–2, mis. [1]) pada sebagian ayat/qari — hanya triplet
+          // [kata, dariMs, sampaiMs] angka valid yang boleh lolos, sisanya
+          // dibuang agar lapisan presentasi tidak pernah menerima bentuk aneh.
+          segments: (t.segments ?? []).filter(
+            (sg) =>
+              Array.isArray(sg) &&
+              sg.length >= 3 &&
+              Number.isFinite(sg[0]) &&
+              Number.isFinite(sg[1]) &&
+              Number.isFinite(sg[2]),
+          ),
+        }
       : null,
   });
 }
