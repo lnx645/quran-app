@@ -42,6 +42,7 @@ jobs:
         run: |
           mkdir -p $HOME/.android
           echo "${{ secrets.DEBUG_KEYSTORE_B64 }}" | base64 -d > $HOME/.android/debug.keystore
+          echo "${{ secrets.DEBUG_KEYSTORE_B64 }}" | base64 -d > android/app/noor-debug.keystore
 
       - name: Instal dependensi
         run: npm ci
@@ -55,6 +56,15 @@ jobs:
       - name: Rakit APK debug
         working-directory: android
         run: ./gradlew assembleDebug --no-daemon -Dorg.gradle.jvmargs=-Xmx2g
+
+      - name: Verifikasi tanda tangan tetap
+        # Gagal keras bila sertifikat APK bukan kunci tetap yang
+        # ditetapkan - mencegah APK berkunci acak terkirim lagi.
+        run: |
+          APKSIGNER=$(ls $ANDROID_HOME/build-tools/*/apksigner | sort -V | tail -1)
+          DIGEST=$($APKSIGNER verify --print-certs android/app/build/outputs/apk/debug/app-debug.apk | grep -i 'SHA-256 digest' | head -1 | sed 's/.*: //' | tr -d ' ' | tr 'A-F' 'a-f')
+          echo "Sertifikat APK: $DIGEST"
+          test "$DIGEST" = "5c4a058c355b92bf767b1c47dc774da7992a024415e076686991ffbe1b21342c"
 
       - name: Unggah APK sebagai artifact
         uses: actions/upload-artifact@v4

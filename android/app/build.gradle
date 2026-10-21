@@ -16,7 +16,21 @@ android {
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    signingConfigs {
+        // Kunci debug TETAP (berkas didekode CI dari secret repo
+        // DEBUG_KEYSTORE_B64). Tanpa ini AGP membuat kunci acak per
+        // mesin dan Android menolak update ("paket bentrok").
+        tetap {
+            storeFile file('noor-debug.keystore')
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+    }
     buildTypes {
+        debug {
+            signingConfig signingConfigs.tetap
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
