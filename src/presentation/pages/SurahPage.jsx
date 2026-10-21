@@ -383,13 +383,13 @@ export default function SurahPage() {
         ))}
         </div>
         {/* Spacer bawah: konten terakhir tidak tertutup bilah fixed —
-            tingginya mengikuti keadaan: pemutar tampil (188px) + strip
+            tingginya mengikuti keadaan: pemutar tampil (180px) + strip
             (54px) + napas 28px; pemutar tutup, jatah pemutar dibuang. */}
         <div
           aria-hidden="true"
           css={{
             height: playerTampil
-              ? 'calc(188px + 54px + 28px + env(safe-area-inset-bottom))'
+              ? 'calc(180px + 54px + 28px + env(safe-area-inset-bottom))'
               : 'calc(54px + 28px + env(safe-area-inset-bottom))',
           }}
         />
