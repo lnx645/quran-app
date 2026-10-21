@@ -680,3 +680,11 @@ export function TentangPage() {
     </Suspense>
   );
 }
+
+export function KebijakanPrivasiPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_KebijakanPrivasi />
+    </Suspense>
+  );
+}
