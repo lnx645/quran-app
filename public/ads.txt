@@ -1,4 +1,1 @@
-# ads.txt untuk nurqalam.my.id — daftar penjual iklan resmi (standar IAB).
-# Baris Google AdSense diaktifkan setelah pendaftaran AdSense disetujui:
-# ganti PUB_ID dengan ID penayang (contoh: pub-1234567890123456), lalu hapus tanda #.
-# google.com, PUB_ID, DIRECT, f08c47fec0942fa0
+google.com, pub-6015832275105491, DIRECT, f08c47fec0942fa0
