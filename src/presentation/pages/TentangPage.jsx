@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import {
   FaInfoCircle, FaDatabase, FaShieldAlt, FaExclamationTriangle, FaHeart, FaExternalLinkAlt,
@@ -238,10 +239,19 @@ export default function TentangPage() {
             Semua data pribadi (catatan, profil keluarga, progres ibadah) tersimpan <strong>lokal di
             perangkat pengguna</strong> dan tidak dikirim ke server mana pun.
           </li>
-          <li>Aplikasi <strong>tidak melacak pengguna</strong> — tanpa analitik dan tanpa pelacak pihak ketiga.</li>
+          <li>Aplikasi <strong>tidak memasang analitik</strong> dan tidak melacak aktivitas ibadah pengguna.</li>
+          <li>
+            Versi situs web dapat menampilkan iklan Google AdSense yang memakai cookie. Versi
+            aplikasi Android hanya menampilkan iklan <strong>sukarela</strong> (AdMob) yang muncul
+            bila pengguna sendiri menekan tombol dukungannya — tidak ada iklan yang memaksa.
+            Data ibadah lokal tidak pernah dibagikan kepada pengiklan.
+          </li>
           <li>
             Koneksi internet hanya dilakukan ke API Qur&rsquo;an, jadwal sholat, dan peta masjid yang
             tercantum pada bagian Sumber Data di atas.
+          </li>
+          <li>
+            Penjelasan lengkap tersedia di <Link to="/kebijakan-privasi">Kebijakan Privasi</Link>.
           </li>
         </Daftar>
       </Card>
@@ -266,7 +276,7 @@ export default function TentangPage() {
       </SectionTitle>
       <Card>
         <Teks>
-          Noor disediakan gratis dan tanpa iklan. Bagi pengguna yang merasa terbantu dan berkenan
+          Noor disediakan gratis untuk semua pengguna. Bagi pengguna yang merasa terbantu dan berkenan
           mendukung biaya pengembangan serta pemeliharaan data, dukungan dapat disalurkan melalui
           saluran berikut. Tidak ada kewajiban apa pun — menggunakan dan membagikan Noor pun sudah
           merupakan dukungan yang berarti.

@@ -230,6 +230,7 @@ export const KAMUS = {
     'judul.statistik': 'Statistik Ibadah',
     'judul.dataProgres': 'Data Progres (Ekspor & Impor)',
     'judul.tentang': 'Tentang Aplikasi',
+    'judul.kebijakanPrivasi': 'Kebijakan Privasi',
     // ——— PlayerBar ———
     'player.putar': 'Putar',
     'player.jeda': 'Jeda',
@@ -460,6 +461,7 @@ export const KAMUS = {
     'judul.statistik': 'Worship Statistics',
     'judul.dataProgres': 'Progress Data (Export & Import)',
     'judul.tentang': 'About This App',
+    'judul.kebijakanPrivasi': 'Privacy Policy',
     // ——— PlayerBar ———
     'player.putar': 'Play',
     'player.jeda': 'Pause',
