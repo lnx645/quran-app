@@ -8,7 +8,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -26,12 +26,22 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        // Kunci RILIS tetap (berkas didekode CI dari secret repo
+        // RELEASE_KEYSTORE_B64; kata sandi & alias lewat env
+        // RELEASE_KEYSTORE_PASSWORD / RELEASE_KEY_ALIAS).
+        rilis {
+            storeFile file('noor-release.keystore')
+            storePassword System.getenv('RELEASE_KEYSTORE_PASSWORD')
+            keyAlias System.getenv('RELEASE_KEY_ALIAS') ?: 'noor'
+            keyPassword System.getenv('RELEASE_KEYSTORE_PASSWORD')
+        }
     }
     buildTypes {
         debug {
             signingConfig signingConfigs.tetap
         }
         release {
+            signingConfig signingConfigs.rilis
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

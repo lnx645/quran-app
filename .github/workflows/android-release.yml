@@ -1,0 +1,94 @@
+name: Android Rilis (AAB + APK ke GitHub Release)
+
+# Build rilis Noor bertanda tangan kunci tetap (secret RELEASE_*):
+# menghasilkan AAB (untuk Play Console) + APK (instal langsung),
+# lalu menerbitkannya sebagai GitHub Release pada tag v*.
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-rilis:
+    name: Build & terbitkan rilis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Siapkan Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Siapkan JDK 21 (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Pasang keystore rilis tetap
+        run: |
+          echo "${{ secrets.RELEASE_KEYSTORE_B64 }}" | base64 -d > android/app/noor-release.keystore
+
+      - name: Instal dependensi
+        run: npm ci
+
+      - name: Build web
+        run: npm run build
+
+      - name: Sinkronkan Capacitor (Android)
+        run: npx cap sync android
+
+      - name: Rakit AAB + APK rilis
+        env:
+          RELEASE_KEYSTORE_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
+          RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
+        run: |
+          cd android
+          ./gradlew bundleRelease assembleRelease --no-daemon
+
+      - name: Verifikasi tanda tangan rilis
+        # Gagal keras bila sertifikat bukan kunci rilis yang ditetapkan.
+        run: |
+          APKSIGNER=$(ls $ANDROID_HOME/build-tools/*/apksigner | sort -V | tail -1)
+          DIGEST=$($APKSIGNER verify --print-certs android/app/build/outputs/apk/release/app-release.apk | grep -i 'SHA-256 digest' | head -1 | sed 's/.*: //' | tr -d ' ' | tr 'A-F' 'a-f')
+          echo "Sertifikat APK rilis: $DIGEST"
+          test "$DIGEST" = "29efa67031137eccfd98cdf24c76469dec0e26f6f8ea566cd0b95995d35337c3"
+
+      - name: Siapkan berkas rilis
+        run: |
+          mkdir -p rilis
+          cp android/app/build/outputs/apk/release/app-release.apk rilis/noor.apk
+          cp android/app/build/outputs/bundle/release/app-release.aab rilis/noor.aab
+          ls -la rilis
+
+      - name: Unggah sebagai artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: noor-release
+          path: rilis/
+          if-no-files-found: error
+
+      - name: Terbitkan GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ "${{ github.ref_type }}" = "tag" ]; then
+            TAG="${{ github.ref_name }}"
+          else
+            TAG="v1.0.0"
+          fi
+          gh release create "$TAG" rilis/noor.apk rilis/noor.aab \
+            --title "Noor $TAG" \
+            --notes "Rilis Noor $TAG — Al-Qur'an & Ibadah.
+
+          - **noor.apk** — instal langsung di Android.
+          - **noor.aab** — untuk Google Play Console.
+
+          Aplikasi gratis, tanpa akun, tanpa iklan. Semua data pribadi tersimpan lokal di perangkat."
