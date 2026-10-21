@@ -12,7 +12,7 @@ import { useBahasa } from '../../app/bahasa.js';
  * Preferensi dikelola useReadingPrefs (localStorage) di SurahPage.
  * POSISI: merapat ke tepi bawah layar. Bila PlayerBar sedang tampil
  * (prop diAtasPemutar), strip naik menempel persis di atasnya (geser
- * 180px — tinggi PlayerBar terukur 179px, dibulatkan pas 180px agar menempel rapat menyatu); pemutar tutup, strip turun lagi
+ * 188px — tinggi PlayerBar terukur 179px + napas 9px); pemutar tutup, strip turun lagi
  * ke tepi bawah. Tanpa prop, bawaan lama (di atas pemutar) dipertahankan.
  */
 
@@ -21,7 +21,7 @@ const Bar = styled.div`
   left: 50%;
   transform: translateX(-50%);
   bottom: calc(
-    ${({ diAtasPemutar }) => (diAtasPemutar === false ? '0px' : '180px')} +
+    ${({ diAtasPemutar }) => (diAtasPemutar === false ? '0px' : '188px')} +
       env(safe-area-inset-bottom)
   );
   z-index: 55;
@@ -45,7 +45,7 @@ const Bar = styled.div`
   -webkit-backdrop-filter: blur(8px) saturate(1.15);
   /* Sembunyi pintar (OPT-IN lewat prop sembunyi dari SurahPage): geser
      turun keluar layar sebagai satu unit dengan PlayerBar — jaraknya =
-     offset bawah strip (180px + safe-area) + tinggi strip itu sendiri
+     offset bawah strip (188px + safe-area) + tinggi strip itu sendiri
      (100%). Tanpa prop (undefined) perilaku persis seperti sebelumnya.
      translateX(-50%) penengah dipertahankan di kedua keadaan. Transisi
      memakai token anim yang sama dengan PlayerBar agar sinkron; aturan
@@ -58,7 +58,7 @@ const Bar = styled.div`
       transform: translateX(-50%)
         translateY(${
           sembunyi
-            ? `calc(${diAtasPemutar === false ? '0px' : '180px'} + 100% + env(safe-area-inset-bottom))`
+            ? `calc(${diAtasPemutar === false ? '0px' : '188px'} + 100% + env(safe-area-inset-bottom))`
             : '0'
         });
       pointer-events: ${sembunyi ? 'none' : 'auto'};

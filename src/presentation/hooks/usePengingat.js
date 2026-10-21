@@ -9,6 +9,13 @@ import {
   tentukanKonteksPuasaBesok,
   tentukanPengingatJatuhTempo,
 } from '../../domain/usecases/pengingatIbadah.js';
+import {
+  adalahPlatformNative,
+  cekIzinNotifikasiNative,
+  daftarkanAksiKlikNative,
+  mintaIzinNotifikasiNative,
+  sinkronkanPengingatNative,
+} from '../../data/platform/pengingatNative.js';
 
 /**
  * usePengingat — pengingat ibadah lokal Noor (Gelombang 6, item 6).
@@ -38,9 +45,14 @@ import {
  *   { [kunciJenis]: 'YYYY-MM-DD' } — dedupe agar tiap pengingat hanya
  *   tampil sekali per hari.
  *
- * JUJUR: pengingat hanya bisa tampil selama aplikasi/peramban terbuka di
- * perangkat ini (tidak ada server/push) — tidak ada penjadwalan latar
- * belakang saat aplikasi tertutup total.
+ * JUJUR: di platform WEB pengingat hanya bisa tampil selama aplikasi/
+ * peramban terbuka di perangkat ini (tidak ada server/push) — tidak ada
+ * penjadwalan latar belakang saat aplikasi tertutup total.
+ *
+ * Di shell NATIVE (Capacitor) penjadwalan diserahkan ke sistem Android
+ * lewat lapisan data/platform (pengingatNative): notifikasi berulang
+ * harian yang tetap berbunyi walau aplikasi ditutup. Mesin timer web di
+ * bawah ini tidak berjalan di native.
  */
 
 export const KUNCI_PREF_PENGINGAT = 'noor.pengingat.v1';
@@ -51,6 +63,7 @@ export const KUNCI_JADWAL_TERAKHIR_PENGINGAT = 'noor.jadwal.terakhir.v1';
 const INTERVAL_PERIKSA_MS = 45_000;
 
 export function didukungNotifikasi() {
+  if (adalahPlatformNative()) return true;
   return typeof window !== 'undefined' && 'Notification' in window;
 }
 
@@ -152,6 +165,8 @@ function catatTerakhirPengingat(kunci, tanggalKunci) {
  * fallback ke `new Notification` dengan onclick fokus + navigasi.
  */
 export async function tembakNotifikasiPengingat(def) {
+  // Di native, notifikasi ditembakkan penjadwal sistem — bukan dari sini.
+  if (adalahPlatformNative()) return false;
   if (!def || !didukungNotifikasi()) return false;
   if (Notification.permission !== 'granted') return false;
 
@@ -196,6 +211,8 @@ export async function tembakNotifikasiPengingat(def) {
  * Diam total (tanpa error) bila izin bukan 'granted'.
  */
 export async function periksaPengingatSekarang(sekarang = new Date()) {
+  // Di native, penjadwal sistem yang bekerja — pemeriksaan web dilewati.
+  if (adalahPlatformNative()) return [];
   if (!didukungNotifikasi()) return [];
   if (Notification.permission !== 'granted') return [];
 
@@ -258,21 +275,52 @@ export async function periksaPengingatSekarang(sekarang = new Date()) {
  * pref + ubah per jenis + status izin + minta izin.
  */
 export function usePengingat() {
+  const [native] = useState(adalahPlatformNative);
   const [pref, setPref] = useState(bacaPrefPengingat);
   const [didukung] = useState(didukungNotifikasi);
-  const [izin, setIzin] = useState(() =>
-    didukungNotifikasi() ? Notification.permission : 'tidak-didukung',
+  const [izin, setIzin] = useState(() => {
+    if (native) return 'default'; // dibaca asinkron dari plugin di efek bawah
+    return didukungNotifikasi() ? Notification.permission : 'tidak-didukung';
+  });
+
+  // Status izin native diketahui asinkron lewat plugin.
+  useEffect(() => {
+    if (!native) return undefined;
+    let batal = false;
+    cekIzinNotifikasiNative().then((hasil) => {
+      if (!batal) setIzin(hasil);
+    });
+    return () => {
+      batal = true;
+    };
+  }, [native]);
+
+  const ubah = useCallback(
+    (kunci, nilai) => {
+      setPref((lama) => {
+        const baru = { ...lama, [kunci]: Boolean(nilai) };
+        simpanPrefPengingat(baru);
+        // Native: sakelar berubah → samakan jadwal sistem (batalkan id lama,
+        // jadwalkan ulang yang aktif). Berjalan di latar, diam bila gagal.
+        if (native) {
+          sinkronkanPengingatNative(baru).catch(() => {});
+        }
+        return baru;
+      });
+    },
+    [native],
   );
 
-  const ubah = useCallback((kunci, nilai) => {
-    setPref((lama) => {
-      const baru = { ...lama, [kunci]: Boolean(nilai) };
-      simpanPrefPengingat(baru);
-      return baru;
-    });
-  }, []);
-
   const mintaIzin = useCallback(async () => {
+    if (native) {
+      const hasil = await mintaIzinNotifikasiNative();
+      setIzin(hasil);
+      // Izin baru diberikan → terapkan pref yang tersimpan ke jadwal sistem.
+      if (hasil === 'granted') {
+        sinkronkanPengingatNative(bacaPrefPengingat()).catch(() => {});
+      }
+      return hasil;
+    }
     if (!didukungNotifikasi()) return 'tidak-didukung';
     try {
       const hasil = await Notification.requestPermission();
@@ -284,9 +332,9 @@ export function usePengingat() {
       setIzin(hasil);
       return hasil;
     }
-  }, []);
+  }, [native]);
 
-  return { pref, ubah, izin, didukung, mintaIzin, definisi: DEFINISI_PENGINGAT };
+  return { pref, ubah, izin, didukung, mintaIzin, definisi: DEFINISI_PENGINGAT, native };
 }
 
 /**
@@ -297,6 +345,15 @@ export function usePengingat() {
  */
 export function usePengingatRunner() {
   useEffect(() => {
+    // Native: serahkan ke penjadwal sistem Android. Samakan jadwal dengan
+    // pref tersimpan (idempoten) dan daftarkan penangan ketukan notifikasi.
+    // Mesin interval web di bawah TIDAK berjalan di native.
+    if (adalahPlatformNative()) {
+      sinkronkanPengingatNative(bacaPrefPengingat()).catch(() => {});
+      daftarkanAksiKlikNative().catch(() => {});
+      return undefined;
+    }
+
     let batal = false;
 
     const periksa = () => {
