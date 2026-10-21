@@ -34,6 +34,15 @@ jobs:
           distribution: temurin
           java-version: '21'
 
+      - name: Pasang keystore debug tetap
+        # Runner Actions selalu mesin baru -> tanpa keystore tetap, kunci
+        # debug berganti tiap build dan Android menolak update ("paket
+        # bentrok"). Keystore tetap disimpan sebagai secret repo
+        # DEBUG_KEYSTORE_B64; AGP memakainya otomatis dari ~/.android/.
+        run: |
+          mkdir -p $HOME/.android
+          echo "${{ secrets.DEBUG_KEYSTORE_B64 }}" | base64 -d > $HOME/.android/debug.keystore
+
       - name: Instal dependensi
         run: npm ci
 
