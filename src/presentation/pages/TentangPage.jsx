@@ -4,8 +4,11 @@ import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import {
   FaInfoCircle, FaDatabase, FaShieldAlt, FaExclamationTriangle, FaHeart, FaExternalLinkAlt,
-  FaHandHoldingHeart, FaCopy, FaCheck,
+  FaHandHoldingHeart, FaCopy, FaCheck, FaPlay,
 } from 'react-icons/fa';
+import {
+  iklanDukunganTersedia, tontonIklanDukungan,
+} from '../../data/platform/iklanAdmob.js';
 import {
   Page, PageHero, Card, SectionTitle,
 } from '../components/common.jsx';
@@ -173,6 +176,26 @@ const SUMBER_DATA = [
 
 export default function TentangPage() {
   const [tersalin, setTersalin] = useState(false);
+  const [memuatIklan, setMemuatIklan] = useState(false);
+  const [statusIklan, setStatusIklan] = useState('');
+  const dukungViaIklan = async () => {
+    setMemuatIklan(true);
+    setStatusIklan('Menyiapkan iklan…');
+    const hasil = await tontonIklanDukungan();
+    setMemuatIklan(false);
+    if (hasil.status === 'berhadiah') {
+      let jumlah = 1;
+      try {
+        jumlah = (parseInt(localStorage.getItem('noor_jumlah_dukungan_iklan') || '0', 10) || 0) + 1;
+        localStorage.setItem('noor_jumlah_dukungan_iklan', String(jumlah));
+      } catch { /* penyimpanan tidak tersedia */ }
+      setStatusIklan(
+        `Terima kasih — iklan dukungan ke-${jumlah} dari perangkat ini sudah tercatat. Semoga menjadi amal jariyah.`,
+      );
+    } else {
+      setStatusIklan('Iklan belum selesai atau sedang tidak tersedia. Terima kasih sudah berkenan mencoba.');
+    }
+  };
   const salinNomor = async () => {
     try {
       await navigator.clipboard.writeText(NOMOR_DONASI);
@@ -299,6 +322,21 @@ export default function TentangPage() {
             )}
           </TombolSalin>
         </BarisDonasi>
+        {iklanDukunganTersedia() && (
+          <>
+            <BarisDonasi>
+              <span className="saluran">
+                Dukung via Iklan (sukarela)
+                <br />
+                <span className="nomor">Video pendek ±30 detik</span>
+              </span>
+              <TombolSalin type="button" onClick={dukungViaIklan} disabled={memuatIklan}>
+                <FaPlay /> {memuatIklan ? 'Memuat…' : 'Tonton Iklan'}
+              </TombolSalin>
+            </BarisDonasi>
+            {statusIklan && <Teks css={{ marginTop: 8 }}>{statusIklan}</Teks>}
+          </>
+        )}
       </Card>
 
       <SectionTitle>
