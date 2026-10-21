@@ -241,9 +241,10 @@ export default function TentangPage() {
           </li>
           <li>Aplikasi <strong>tidak memasang analitik</strong> dan tidak melacak aktivitas ibadah pengguna.</li>
           <li>
-            Versi situs web dapat menampilkan iklan Google AdSense yang memakai cookie; versi
-            aplikasi Android tidak menampilkan iklan. Data ibadah lokal tidak pernah dibagikan
-            kepada pengiklan.
+            Versi situs web dapat menampilkan iklan Google AdSense yang memakai cookie. Versi
+            aplikasi Android hanya menampilkan iklan <strong>sukarela</strong> (AdMob) yang muncul
+            bila pengguna sendiri menekan tombol dukungannya — tidak ada iklan yang memaksa.
+            Data ibadah lokal tidak pernah dibagikan kepada pengiklan.
           </li>
           <li>
             Koneksi internet hanya dilakukan ke API Qur&rsquo;an, jadwal sholat, dan peta masjid yang

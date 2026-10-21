@@ -122,8 +122,11 @@ export default function KebijakanPrivasiPage() {
           <li>Kategori iklan sensitif (mis. judi dan konten dewasa) diblokir dari penayangan.</li>
         </Daftar>
         <Teks>
-          Iklan hanya tampil pada versi situs web. Data ibadah Anda yang tersimpan lokal tidak
-          pernah dibagikan kepada pengiklan.
+          Pada aplikasi Android, iklan bersifat <strong>sukarela</strong> (format reward dari
+          Google AdMob): iklan hanya muncul bila Anda sendiri menekan tombol dukungannya, dan
+          tidak pernah mengunci konten ibadah. AdMob juga memakai pengenal iklan perangkat
+          sesuai kebijakan Google. Data ibadah Anda yang tersimpan lokal tidak pernah dibagikan
+          kepada pengiklan.
         </Teks>
       </Card>
 
