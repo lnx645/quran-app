@@ -1,7 +1,9 @@
 /** @jsxImportSource @emotion/react */
+import { useState } from 'react';
 import styled from '@emotion/styled';
 import {
   FaInfoCircle, FaDatabase, FaShieldAlt, FaExclamationTriangle, FaHeart, FaExternalLinkAlt,
+  FaHandHoldingHeart, FaCopy, FaCheck,
 } from 'react-icons/fa';
 import {
   Page, PageHero, Card, SectionTitle,
@@ -57,6 +59,46 @@ const Daftar = styled.ul`
     }
   }
 `;
+
+const BarisDonasi = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid ${({ theme }) => theme.colors.border};
+  .saluran {
+    font-size: ${({ theme }) => theme.type.bodySm.size}px;
+    line-height: ${({ theme }) => theme.type.bodySm.lineHeight};
+    color: ${({ theme }) => theme.colors.muted};
+  }
+  .nomor {
+    font-weight: 700;
+    color: ${({ theme }) => theme.colors.judul};
+    letter-spacing: 0.4px;
+  }
+`;
+
+const TombolSalin = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  padding: 8px 14px;
+  border-radius: ${({ theme }) => theme.radii.pill}px;
+  border: 1.5px solid ${({ theme }) => theme.colors.border};
+  background: transparent;
+  color: ${({ theme }) => theme.colors.primary};
+  font-size: ${({ theme }) => theme.type.caption.size}px;
+  font-weight: ${({ theme }) => theme.type.caption.weight};
+  cursor: pointer;
+  &:active {
+    transform: scale(0.96);
+  }
+`;
+
+const NOMOR_DONASI = '08155292003';
 
 const BarisIdentitas = styled.div`
   display: flex;
@@ -129,6 +171,21 @@ const SUMBER_DATA = [
 ];
 
 export default function TentangPage() {
+  const [tersalin, setTersalin] = useState(false);
+  const salinNomor = async () => {
+    try {
+      await navigator.clipboard.writeText(NOMOR_DONASI);
+    } catch {
+      const ta = document.createElement('textarea');
+      ta.value = NOMOR_DONASI;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    }
+    setTersalin(true);
+    setTimeout(() => setTersalin(false), 2000);
+  };
   return (
     <Page>
       <PageHero>
@@ -202,6 +259,36 @@ export default function TentangPage() {
             setempat untuk keputusan keagamaan.
           </li>
         </Daftar>
+      </Card>
+
+      <SectionTitle>
+        <FaHandHoldingHeart /> Dukung Pengembangan
+      </SectionTitle>
+      <Card>
+        <Teks>
+          Noor disediakan gratis dan tanpa iklan. Bagi pengguna yang merasa terbantu dan berkenan
+          mendukung biaya pengembangan serta pemeliharaan data, dukungan dapat disalurkan melalui
+          saluran berikut. Tidak ada kewajiban apa pun — menggunakan dan membagikan Noor pun sudah
+          merupakan dukungan yang berarti.
+        </Teks>
+        <BarisDonasi>
+          <span className="saluran">
+            DANA / GoPay
+            <br />
+            <span className="nomor">{NOMOR_DONASI}</span>
+          </span>
+          <TombolSalin type="button" onClick={salinNomor} aria-live="polite">
+            {tersalin ? (
+              <>
+                <FaCheck /> Tersalin
+              </>
+            ) : (
+              <>
+                <FaCopy /> Salin Nomor
+              </>
+            )}
+          </TombolSalin>
+        </BarisDonasi>
       </Card>
 
       <SectionTitle>
