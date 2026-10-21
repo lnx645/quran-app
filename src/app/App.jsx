@@ -139,6 +139,57 @@ function judulUntuk(pathname, t) {
   return cocok ? t(cocok[1]) : 'Noor';
 }
 
+// Deskripsi per rute untuk meta description & Open Graph — cuplikan yang
+// dilihat mesin pencari dan pratinjau saat tautan dibagikan. Bahasa
+// Indonesia (bahasa utama konten); rute tanpa entri memakai bawaan.
+const DESKRIPSI_BAWAAN =
+  'Noor — aplikasi Al-Qur\'an & ibadah: mushaf 114 surah dengan terjemahan Kemenag & audio, jadwal sholat, kiblat, dzikir, doa, dan panduan ibadah. Gratis di nurqalam.my.id.';
+
+const DESKRIPSI_RUTE = [
+  [/^\/$/, DESKRIPSI_BAWAAN],
+  [/^\/quran$/, 'Baca Al-Qur\'an 114 surah: teks Utsmani, transliterasi, terjemahan Kemenag, tafsir, dan audio per ayat dengan penanda kata di Noor.'],
+  [/^\/surah\/\d+$/, 'Baca surah Al-Qur\'an dengan teks Utsmani, terjemahan Kemenag, tafsir, dan audio murottal dengan penanda kata/ayat di Noor.'],
+  [/^\/jadwal$/, 'Jadwal sholat harian metode Kemenag dengan hitung mundur waktu berikutnya, pengingat adzan, dan kalender Hijriah di Noor.'],
+  [/^\/kiblat$/, 'Arah kiblat akurat berbasis lokasi & kompas perangkat, dilengkapi jarak ke Ka\'bah — di aplikasi Noor.'],
+  [/^\/kalender$/, 'Kalender Hijriah lengkap dengan konverter tanggal Masehi–Hijriah dan penanda hari penting Islam di Noor.'],
+  [/^\/masjid-terdekat$/, 'Temukan masjid terdekat dari lokasi Anda lengkap dengan jarak dan petunjuk arah — fitur Noor berbasis OpenStreetMap.'],
+  [/^\/zakat$/, 'Kalkulator zakat mal, profesi, fitrah, dan emas/perak sesuai ketentuan syariat — hitung zakat Anda di Noor.'],
+  [/^\/waris$/, 'Kalkulator waris Islam (faraidh): hitung pembagian harta warisan sesuai syariat dengan penjelasan ahli waris di Noor.'],
+  [/^\/tasbih$/, 'Tasbih digital dengan target hitungan, getar, dan rangkaian dzikir — gratis di aplikasi Noor.'],
+  [/^\/dzikir$/, 'Dzikir pagi & petang lengkap dengan teks Arab, latin, arti, dan penghitung — sesuai tuntunan, di Noor.'],
+  [/^\/doa$/, 'Kumpulan doa harian dan doa pilihan Al-Qur\'an & hadits dengan teks Arab, latin, dan terjemahan di Noor.'],
+  [/^\/hisnul-muslim$/, 'Hisnul Muslim: 101 doa perlindungan muslim dari Al-Qur\'an & sunnah, dikelompokkan per situasi — di Noor.'],
+  [/^\/hafalan$/, 'Mode hafalan Al-Qur\'an: sembunyikan ayat bertahap, ulangi per ayat, dan pantau progres hafalan Anda di Noor.'],
+  [/^\/panduan-tajwid$/, 'Panduan tajwid interaktif: makhraj, hukum nun mati, mad, dan lainnya dengan contoh ayat — belajar tajwid di Noor.'],
+  [/^\/iqro(\/\d+)?$/, 'Belajar Iqro jilid 1–6 dengan audio per huruf/halaman — untuk anak dan pemula, gratis di Noor.'],
+  [/^\/anak(\/|$)/, 'Mode Anak Noor: hijaiyah ber-audio, Iqro, doa anak, dan panduan sholat anak dengan bahasa yang ramah.'],
+  [/^\/kisah$/, 'Kisah 25 nabi dan kisah pilihan Islami dengan pelajaran di setiap cerita — baca di Noor.'],
+  [/^\/sirah$/, 'Sirah Nabawiyah: perjalanan hidup Rasulullah ﷺ dari kelahiran hingga wafat, diringkas runtut di Noor.'],
+  [/^\/radio$/, 'Radio murottal Al-Qur\'an streaming 24 jam dari para qari pilihan, dengan sleep timer — di Noor.'],
+  [/^\/kuis$/, 'Kuis Islami: uji pengetahuan seputar Al-Qur\'an, sirah, dan ibadah dengan skor & pembahasan di Noor.'],
+  [/^\/muslimah\/kalkulator$/, 'Kalkulator haid & nifas sesuai fikih Syafi\'i: catat siklus, hitung masa suci, dan ketahui status ibadah — di Noor.'],
+  [/^\/nama-bayi$/, 'Inspirasi nama bayi Islami beserta artinya untuk laki-laki & perempuan — cari nama terbaik di Noor.'],
+  [/^\/asmaul-husna$/, 'Asmaul Husna: 99 nama Allah dengan tulisan Arab, latin, dan maknanya — baca & hafalkan di Noor.'],
+  [/^\/tentang$/, 'Tentang Noor: aplikasi Al-Qur\'an & ibadah gratis — sumber data, privasi (data tersimpan lokal), dan info dukungan pengembangan.'],
+  [/^\/kebijakan-privasi$/, 'Kebijakan Privasi Noor: data tersimpan lokal di perangkat Anda, tanpa akun; penjelasan layanan pihak ketiga & iklan versi web.'],
+];
+
+function deskripsiUntuk(pathname) {
+  const cocok = DESKRIPSI_RUTE.find(([pola]) => pola.test(pathname));
+  return cocok ? cocok[1] : DESKRIPSI_BAWAAN;
+}
+
+// Tulis/segarkan satu tag meta di <head>.
+function setMeta(selektor, atribut, kunci, nilai) {
+  let el = document.head.querySelector(selektor);
+  if (!el) {
+    el = document.createElement('meta');
+    el.setAttribute(atribut, kunci);
+    document.head.appendChild(el);
+  }
+  el.setAttribute('content', nilai);
+}
+
 export default function App() {
   const { t } = useBahasa();
   const location = useLocation();
@@ -148,7 +199,14 @@ export default function App() {
   // Setiap ganti rute: perbarui judul dokumen & pindahkan fokus ke konten
   // utama, supaya pengguna keyboard/screen reader mulai dari awal halaman baru.
   useEffect(() => {
-    document.title = `${judulUntuk(location.pathname, t)} — Noor`;
+    const judul = `${judulUntuk(location.pathname, t)} — Noor`;
+    document.title = judul;
+    const deskripsi = deskripsiUntuk(location.pathname);
+    setMeta('meta[name="description"]', 'name', 'description', deskripsi);
+    setMeta('meta[property="og:title"]', 'property', 'og:title', judul);
+    setMeta('meta[property="og:description"]', 'property', 'og:description', deskripsi);
+    setMeta('meta[name="twitter:title"]', 'name', 'twitter:title', judul);
+    setMeta('meta[name="twitter:description"]', 'name', 'twitter:description', deskripsi);
     window.scrollTo(0, 0);
     if (!pertamaRef.current) {
       mainRef.current?.focus({ preventScroll: true });
