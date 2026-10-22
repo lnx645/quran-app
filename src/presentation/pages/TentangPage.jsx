@@ -200,16 +200,16 @@ export default function TentangPage() {
         <BarisIdentitas>
           <Logo size={64} />
           <div>
-            <div className="nama">Noor — Al-Qur&rsquo;an &amp; Ibadah</div>
+            <div className="nama">NurQalam — Al-Qur&rsquo;an &amp; Ibadah</div>
             <div className="versi">Versi {version}</div>
           </div>
         </BarisIdentitas>
         <Teks css={{ marginTop: 12 }}>
-          Noor dapat diakses di{' '}
+          NurQalam dapat diakses di{' '}
           <a href="https://nurqalam.my.id" target="_blank" rel="noreferrer">
             nurqalam.my.id
           </a>
-          . Misi Noor sederhana: menghadirkan semua kebutuhan ibadah harian dalam satu aplikasi yang ringan,
+          . Misi NurQalam sederhana: menghadirkan semua kebutuhan ibadah harian dalam satu aplikasi yang ringan,
           tanpa akun, dan menghormati privasi penggunanya.
         </Teks>
       </Card>
@@ -234,7 +234,7 @@ export default function TentangPage() {
       </SectionTitle>
       <Card>
         <Daftar>
-          <li>Noor bekerja <strong>tanpa akun</strong> — tidak ada pendaftaran dan tidak ada login.</li>
+          <li>NurQalam bekerja <strong>tanpa akun</strong> — tidak ada pendaftaran dan tidak ada login.</li>
           <li>
             Semua data pribadi (catatan, profil keluarga, progres ibadah) tersimpan <strong>lokal di
             perangkat pengguna</strong> dan tidak dikirim ke server mana pun.
@@ -276,9 +276,9 @@ export default function TentangPage() {
       </SectionTitle>
       <Card>
         <Teks>
-          Noor disediakan gratis untuk semua pengguna. Bagi pengguna yang merasa terbantu dan berkenan
+          NurQalam disediakan gratis untuk semua pengguna. Bagi pengguna yang merasa terbantu dan berkenan
           mendukung biaya pengembangan serta pemeliharaan data, dukungan dapat disalurkan melalui
-          saluran berikut. Tidak ada kewajiban apa pun — menggunakan dan membagikan Noor pun sudah
+          saluran berikut. Tidak ada kewajiban apa pun — menggunakan dan membagikan NurQalam pun sudah
           merupakan dukungan yang berarti.
         </Teks>
         <BarisDonasi>
@@ -306,11 +306,11 @@ export default function TentangPage() {
       </SectionTitle>
       <Card>
         <Teks>
-          Kode sumber Noor terbuka di GitHub:{' '}
+          Kode sumber NurQalam terbuka di GitHub:{' '}
           <a href="https://github.com/lnx645/quran-app" target="_blank" rel="noreferrer">
             github.com/lnx645/quran-app
           </a>
-          . Noor dibangun dengan React dan perangkat lunak sumber terbuka. Terima kasih kepada seluruh
+          . NurQalam dibangun dengan React dan perangkat lunak sumber terbuka. Terima kasih kepada seluruh
           penyedia data di atas yang membuat aplikasi ini dapat hadir dan bermanfaat.
         </Teks>
       </Card>

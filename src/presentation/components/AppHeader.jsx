@@ -21,7 +21,7 @@ import { useAkses } from '../a11y/pengaturanStore.js';
 import { useBahasa } from '../../app/bahasa.js';
 
 // ===== Header ramping (~60px) =====
-// Kiri: logo + "Noor" satu baris. Kanan: tombol hamburger saja.
+// Kiri: logo + "NurQalam" satu baris. Kanan: tombol hamburger saja.
 // Semua navigasi pindah ke drawer geser (kanan).
 const Bar = styled.header`
   position: sticky;
@@ -451,10 +451,10 @@ export default function AppHeader() {
           <GirihPattern opacity={0.1} />
         </div>
         <Inner>
-          <Brand to="/" aria-label={`Noor — ${t('umum.beranda')}`}>
+          <Brand to="/" aria-label={`NurQalam — ${t('umum.beranda')}`}>
             <Logo size={38} />
             <Wordmark>
-              Noor
+              NurQalam
               <span className="tag">{t('umum.tagline')}</span>
             </Wordmark>
           </Brand>
@@ -480,7 +480,7 @@ export default function AppHeader() {
           </div>
           <Logo size={42} />
           <PanelTitle>
-            Noor
+            NurQalam
             <span className="sub">{t('umum.tagline')}</span>
           </PanelTitle>
           <CloseBtn ref={closeRef} type="button" onClick={() => setOpen(false)} aria-label={t('umum.tutupMenu')}>

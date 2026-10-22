@@ -1,7 +1,7 @@
 import { createContext, createElement, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 /**
- * Bahasa Antarmuka Noor (Gelombang 6 — Item 7).
+ * Bahasa Antarmuka NurQalam (Gelombang 6 — Item 7).
  *
  * Pola mengikuti pengaturanStore.js: konteks + hook dalam satu modul.
  * LanguageProvider memakai createElement (bukan JSX) agar modul ini tetap
@@ -32,9 +32,9 @@ export const KAMUS = {
     'umum.menuNavigasi': 'Menu navigasi',
     'umum.menuUtama': 'Menu utama',
     'umum.tagline': "Al-Qur'an & Ibadah",
-    'umum.footerDrawer': 'Noor — menemani ibadah harian',
+    'umum.footerDrawer': 'NurQalam — menemani ibadah harian',
     'umum.profilAktif': 'Profil Aktif',
-    'umum.install': 'Install Noor',
+    'umum.install': 'Install NurQalam',
     'umum.tampilan': 'Tampilan',
     'umum.modeTemaAria': 'Mode tema tampilan',
     'umum.modeIkut': 'Ikut Sistem',
@@ -146,8 +146,8 @@ export const KAMUS = {
     // ——— Beranda: chrome lain (bar cari & banner pasang) ———
     'beranda.bukaPencarian': 'Buka pencarian',
     'beranda.cariPlaceholder': 'Cari surah, doa, fitur, topik…',
-    'beranda.bannerAria': 'Pasang aplikasi Noor',
-    'beranda.bannerTeks': 'Pasang Noor di layar utama — akses cepat & bisa offline',
+    'beranda.bannerAria': 'Pasang aplikasi NurQalam',
+    'beranda.bannerTeks': 'Pasang NurQalam di layar utama — akses cepat & bisa offline',
     'beranda.pasang': 'Pasang',
     'beranda.tutupBanner': 'Tutup banner pasang aplikasi',
     // ——— Judul dokumen per rute (document.title) ———
@@ -263,9 +263,9 @@ export const KAMUS = {
     'umum.menuNavigasi': 'Navigation menu',
     'umum.menuUtama': 'Main menu',
     'umum.tagline': "Al-Qur'an & Worship",
-    'umum.footerDrawer': 'Noor — your daily worship companion',
+    'umum.footerDrawer': 'NurQalam — your daily worship companion',
     'umum.profilAktif': 'Active Profile',
-    'umum.install': 'Install Noor',
+    'umum.install': 'Install NurQalam',
     'umum.tampilan': 'Appearance',
     'umum.modeTemaAria': 'Display theme',
     'umum.modeIkut': 'System',
@@ -377,8 +377,8 @@ export const KAMUS = {
     // ——— Home: other chrome (search bar & install banner) ———
     'beranda.bukaPencarian': 'Open search',
     'beranda.cariPlaceholder': 'Search surahs, prayers, features, topics…',
-    'beranda.bannerAria': 'Install Noor app',
-    'beranda.bannerTeks': 'Install Noor on your home screen — quick access & works offline',
+    'beranda.bannerAria': 'Install NurQalam app',
+    'beranda.bannerTeks': 'Install NurQalam on your home screen — quick access & works offline',
     'beranda.pasang': 'Install',
     'beranda.tutupBanner': 'Close install banner',
     // ——— Document titles per route ———

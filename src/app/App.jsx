@@ -136,42 +136,42 @@ const JUDUL_RUTE = [
 
 function judulUntuk(pathname, t) {
   const cocok = JUDUL_RUTE.find(([pola]) => pola.test(pathname));
-  return cocok ? t(cocok[1]) : 'Noor';
+  return cocok ? t(cocok[1]) : 'NurQalam';
 }
 
 // Deskripsi per rute untuk meta description & Open Graph — cuplikan yang
 // dilihat mesin pencari dan pratinjau saat tautan dibagikan. Bahasa
 // Indonesia (bahasa utama konten); rute tanpa entri memakai bawaan.
 const DESKRIPSI_BAWAAN =
-  'Noor — aplikasi Al-Qur\'an & ibadah: mushaf 114 surah dengan terjemahan Kemenag & audio, jadwal sholat, kiblat, dzikir, doa, dan panduan ibadah. Gratis di nurqalam.my.id.';
+  'NurQalam — aplikasi Al-Qur\'an & ibadah: mushaf 114 surah dengan terjemahan Kemenag & audio, jadwal sholat, kiblat, dzikir, doa, dan panduan ibadah. Gratis di nurqalam.my.id.';
 
 const DESKRIPSI_RUTE = [
   [/^\/$/, DESKRIPSI_BAWAAN],
-  [/^\/quran$/, 'Baca Al-Qur\'an 114 surah: teks Utsmani, transliterasi, terjemahan Kemenag, tafsir, dan audio per ayat dengan penanda kata di Noor.'],
-  [/^\/surah\/\d+$/, 'Baca surah Al-Qur\'an dengan teks Utsmani, terjemahan Kemenag, tafsir, dan audio murottal dengan penanda kata/ayat di Noor.'],
-  [/^\/jadwal$/, 'Jadwal sholat harian metode Kemenag dengan hitung mundur waktu berikutnya, pengingat adzan, dan kalender Hijriah di Noor.'],
-  [/^\/kiblat$/, 'Arah kiblat akurat berbasis lokasi & kompas perangkat, dilengkapi jarak ke Ka\'bah — di aplikasi Noor.'],
-  [/^\/kalender$/, 'Kalender Hijriah lengkap dengan konverter tanggal Masehi–Hijriah dan penanda hari penting Islam di Noor.'],
-  [/^\/masjid-terdekat$/, 'Temukan masjid terdekat dari lokasi Anda lengkap dengan jarak dan petunjuk arah — fitur Noor berbasis OpenStreetMap.'],
-  [/^\/zakat$/, 'Kalkulator zakat mal, profesi, fitrah, dan emas/perak sesuai ketentuan syariat — hitung zakat Anda di Noor.'],
-  [/^\/waris$/, 'Kalkulator waris Islam (faraidh): hitung pembagian harta warisan sesuai syariat dengan penjelasan ahli waris di Noor.'],
-  [/^\/tasbih$/, 'Tasbih digital dengan target hitungan, getar, dan rangkaian dzikir — gratis di aplikasi Noor.'],
-  [/^\/dzikir$/, 'Dzikir pagi & petang lengkap dengan teks Arab, latin, arti, dan penghitung — sesuai tuntunan, di Noor.'],
-  [/^\/doa$/, 'Kumpulan doa harian dan doa pilihan Al-Qur\'an & hadits dengan teks Arab, latin, dan terjemahan di Noor.'],
-  [/^\/hisnul-muslim$/, 'Hisnul Muslim: 101 doa perlindungan muslim dari Al-Qur\'an & sunnah, dikelompokkan per situasi — di Noor.'],
-  [/^\/hafalan$/, 'Mode hafalan Al-Qur\'an: sembunyikan ayat bertahap, ulangi per ayat, dan pantau progres hafalan Anda di Noor.'],
-  [/^\/panduan-tajwid$/, 'Panduan tajwid interaktif: makhraj, hukum nun mati, mad, dan lainnya dengan contoh ayat — belajar tajwid di Noor.'],
-  [/^\/iqro(\/\d+)?$/, 'Belajar Iqro jilid 1–6 dengan audio per huruf/halaman — untuk anak dan pemula, gratis di Noor.'],
-  [/^\/anak(\/|$)/, 'Mode Anak Noor: hijaiyah ber-audio, Iqro, doa anak, dan panduan sholat anak dengan bahasa yang ramah.'],
-  [/^\/kisah$/, 'Kisah 25 nabi dan kisah pilihan Islami dengan pelajaran di setiap cerita — baca di Noor.'],
-  [/^\/sirah$/, 'Sirah Nabawiyah: perjalanan hidup Rasulullah ﷺ dari kelahiran hingga wafat, diringkas runtut di Noor.'],
-  [/^\/radio$/, 'Radio murottal Al-Qur\'an streaming 24 jam dari para qari pilihan, dengan sleep timer — di Noor.'],
-  [/^\/kuis$/, 'Kuis Islami: uji pengetahuan seputar Al-Qur\'an, sirah, dan ibadah dengan skor & pembahasan di Noor.'],
-  [/^\/muslimah\/kalkulator$/, 'Kalkulator haid & nifas sesuai fikih Syafi\'i: catat siklus, hitung masa suci, dan ketahui status ibadah — di Noor.'],
-  [/^\/nama-bayi$/, 'Inspirasi nama bayi Islami beserta artinya untuk laki-laki & perempuan — cari nama terbaik di Noor.'],
-  [/^\/asmaul-husna$/, 'Asmaul Husna: 99 nama Allah dengan tulisan Arab, latin, dan maknanya — baca & hafalkan di Noor.'],
-  [/^\/tentang$/, 'Tentang Noor: aplikasi Al-Qur\'an & ibadah gratis — sumber data, privasi (data tersimpan lokal), dan info dukungan pengembangan.'],
-  [/^\/kebijakan-privasi$/, 'Kebijakan Privasi Noor: data tersimpan lokal di perangkat Anda, tanpa akun; penjelasan layanan pihak ketiga & iklan versi web.'],
+  [/^\/quran$/, 'Baca Al-Qur\'an 114 surah: teks Utsmani, transliterasi, terjemahan Kemenag, tafsir, dan audio per ayat dengan penanda kata di NurQalam.'],
+  [/^\/surah\/\d+$/, 'Baca surah Al-Qur\'an dengan teks Utsmani, terjemahan Kemenag, tafsir, dan audio murottal dengan penanda kata/ayat di NurQalam.'],
+  [/^\/jadwal$/, 'Jadwal sholat harian metode Kemenag dengan hitung mundur waktu berikutnya, pengingat adzan, dan kalender Hijriah di NurQalam.'],
+  [/^\/kiblat$/, 'Arah kiblat akurat berbasis lokasi & kompas perangkat, dilengkapi jarak ke Ka\'bah — di aplikasi NurQalam.'],
+  [/^\/kalender$/, 'Kalender Hijriah lengkap dengan konverter tanggal Masehi–Hijriah dan penanda hari penting Islam di NurQalam.'],
+  [/^\/masjid-terdekat$/, 'Temukan masjid terdekat dari lokasi Anda lengkap dengan jarak dan petunjuk arah — fitur NurQalam berbasis OpenStreetMap.'],
+  [/^\/zakat$/, 'Kalkulator zakat mal, profesi, fitrah, dan emas/perak sesuai ketentuan syariat — hitung zakat Anda di NurQalam.'],
+  [/^\/waris$/, 'Kalkulator waris Islam (faraidh): hitung pembagian harta warisan sesuai syariat dengan penjelasan ahli waris di NurQalam.'],
+  [/^\/tasbih$/, 'Tasbih digital dengan target hitungan, getar, dan rangkaian dzikir — gratis di aplikasi NurQalam.'],
+  [/^\/dzikir$/, 'Dzikir pagi & petang lengkap dengan teks Arab, latin, arti, dan penghitung — sesuai tuntunan, di NurQalam.'],
+  [/^\/doa$/, 'Kumpulan doa harian dan doa pilihan Al-Qur\'an & hadits dengan teks Arab, latin, dan terjemahan di NurQalam.'],
+  [/^\/hisnul-muslim$/, 'Hisnul Muslim: 101 doa perlindungan muslim dari Al-Qur\'an & sunnah, dikelompokkan per situasi — di NurQalam.'],
+  [/^\/hafalan$/, 'Mode hafalan Al-Qur\'an: sembunyikan ayat bertahap, ulangi per ayat, dan pantau progres hafalan Anda di NurQalam.'],
+  [/^\/panduan-tajwid$/, 'Panduan tajwid interaktif: makhraj, hukum nun mati, mad, dan lainnya dengan contoh ayat — belajar tajwid di NurQalam.'],
+  [/^\/iqro(\/\d+)?$/, 'Belajar Iqro jilid 1–6 dengan audio per huruf/halaman — untuk anak dan pemula, gratis di NurQalam.'],
+  [/^\/anak(\/|$)/, 'Mode Anak NurQalam: hijaiyah ber-audio, Iqro, doa anak, dan panduan sholat anak dengan bahasa yang ramah.'],
+  [/^\/kisah$/, 'Kisah 25 nabi dan kisah pilihan Islami dengan pelajaran di setiap cerita — baca di NurQalam.'],
+  [/^\/sirah$/, 'Sirah Nabawiyah: perjalanan hidup Rasulullah ﷺ dari kelahiran hingga wafat, diringkas runtut di NurQalam.'],
+  [/^\/radio$/, 'Radio murottal Al-Qur\'an streaming 24 jam dari para qari pilihan, dengan sleep timer — di NurQalam.'],
+  [/^\/kuis$/, 'Kuis Islami: uji pengetahuan seputar Al-Qur\'an, sirah, dan ibadah dengan skor & pembahasan di NurQalam.'],
+  [/^\/muslimah\/kalkulator$/, 'Kalkulator haid & nifas sesuai fikih Syafi\'i: catat siklus, hitung masa suci, dan ketahui status ibadah — di NurQalam.'],
+  [/^\/nama-bayi$/, 'Inspirasi nama bayi Islami beserta artinya untuk laki-laki & perempuan — cari nama terbaik di NurQalam.'],
+  [/^\/asmaul-husna$/, 'Asmaul Husna: 99 nama Allah dengan tulisan Arab, latin, dan maknanya — baca & hafalkan di NurQalam.'],
+  [/^\/tentang$/, 'Tentang NurQalam: aplikasi Al-Qur\'an & ibadah gratis — sumber data, privasi (data tersimpan lokal), dan info dukungan pengembangan.'],
+  [/^\/kebijakan-privasi$/, 'Kebijakan Privasi NurQalam: data tersimpan lokal di perangkat Anda, tanpa akun; penjelasan layanan pihak ketiga & iklan versi web.'],
 ];
 
 function deskripsiUntuk(pathname) {
@@ -199,7 +199,7 @@ export default function App() {
   // Setiap ganti rute: perbarui judul dokumen & pindahkan fokus ke konten
   // utama, supaya pengguna keyboard/screen reader mulai dari awal halaman baru.
   useEffect(() => {
-    const judul = `${judulUntuk(location.pathname, t)} — Noor`;
+    const judul = `${judulUntuk(location.pathname, t)} — NurQalam`;
     document.title = judul;
     const deskripsi = deskripsiUntuk(location.pathname);
     setMeta('meta[name="description"]', 'name', 'description', deskripsi);

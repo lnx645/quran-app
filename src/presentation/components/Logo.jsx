@@ -3,7 +3,7 @@ import { useId } from 'react';
 import { khatamPath } from './ornaments/geometry.js';
 
 /**
- * Logo "Noor" — emblem SVG ORISINAL (desain sendiri):
+ * Logo "NurQalam" — emblem SVG ORISINAL (desain sendiri):
  * - Badge squircle emerald (#0B5345 → #117A65) dengan border emas (#C9A227)
  * - Bulan sabit emas (evenodd) membuka ke kanan-atas
  * - Bintang khatam-8 emas kecil di lekuk sabit (konstruksi matematis via khatamPath)
@@ -11,7 +11,7 @@ import { khatamPath } from './ornaments/geometry.js';
  * Dipakai: header (~36px), hero Home (~72px), drawer (~40px).
  * Versi statis: public/logo.svg (favicon).
  */
-export default function Logo({ size = 36, label = 'Noor' }) {
+export default function Logo({ size = 36, label = 'NurQalam' }) {
   const uid = useId().replace(/[^a-zA-Z0-9]/g, '');
   const eg = `noor-eg-${uid}`;
   const gg = `noor-gg-${uid}`;

@@ -230,7 +230,7 @@ export default function RadioPage() {
       navigator.mediaSession.metadata = new MediaMetadata({
         title: `Radio Murottal — ${babAktif.nameLatin}`,
         artist: qariAktif?.nama ?? '',
-        album: 'Noor',
+        album: 'NurQalam',
       });
     } catch {
       /* Media Session tidak tersedia/parsial — abaikan */

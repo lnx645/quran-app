@@ -25,7 +25,7 @@
 //     (bukan kutipan Arab) dari hadits-hadits masyhur, dengan sumber
 //     riwayat tercantum pada tiap entri.
 //
-// CAKUPAN (disengaja sempit): Noor hanya memuat sholawat yang
+// CAKUPAN (disengaja sempit): NurQalam hanya memuat sholawat yang
 // redaksinya bersumber jelas dari Al-Qur'an/hadits — sholawat susunan
 // ulama yang redaksinya diperselisihkan (mis. Nariyah, Munfarijah,
 // Fatih) TIDAK dimuat. Lihat CATATAN_CAKUPAN_SHOLAWAT.
@@ -146,4 +146,4 @@ export const KEUTAMAAN_SHOLAWAT = [
 ];
 
 export const CATATAN_CAKUPAN_SHOLAWAT =
-  'Noor hanya memuat sholawat yang redaksinya bersumber jelas dari Al-Qur’an/hadits — sholawat susunan ulama yang redaksinya diperselisihkan tidak dimuat.';
+  'NurQalam hanya memuat sholawat yang redaksinya bersumber jelas dari Al-Qur’an/hadits — sholawat susunan ulama yang redaksinya diperselisihkan tidak dimuat.';

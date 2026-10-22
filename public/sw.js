@@ -26,7 +26,7 @@ const HALAMAN_OFFLINE = `<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Noor — Anda offline</title>
+<title>NurQalam — Anda offline</title>
 <style>
 body{font-family:system-ui,sans-serif;background:#FAF6EC;color:#1E2A26;margin:0;
 display:flex;min-height:100vh;align-items:center;justify-content:center;padding:24px}
@@ -38,7 +38,7 @@ text-decoration:none;padding:12px 22px;border-radius:12px;font-weight:700}
 </style>
 </head>
 <body><main>
-<h1>Noor</h1>
+<h1>NurQalam</h1>
 <p><strong>Anda offline.</strong></p>
 <p>Halaman ini belum pernah dibuka sehingga belum tersimpan di perangkat.
 Surah dan jadwal yang pernah dibuka tetap bisa diakses dari cache.</p>

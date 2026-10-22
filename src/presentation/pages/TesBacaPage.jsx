@@ -356,7 +356,7 @@ export default function TesBacaPage() {
           <StateKosong
             ikon={<FaMicrophoneSlash />}
             judul="Peramban Tidak Mendukung"
-            deskripsi="Tes Baca butuh fitur pengenalan suara (Speech Recognition) yang belum tersedia di peramban ini, jadi tombol rekam tidak dapat ditampilkan. Coba buka Noor dengan Chrome di Android — hasil terbaik memang di sana. Anda tetap bisa membaca dan mengulang ayat dari halaman surah seperti biasa."
+            deskripsi="Tes Baca butuh fitur pengenalan suara (Speech Recognition) yang belum tersedia di peramban ini, jadi tombol rekam tidak dapat ditampilkan. Coba buka NurQalam dengan Chrome di Android — hasil terbaik memang di sana. Anda tetap bisa membaca dan mengulang ayat dari halaman surah seperti biasa."
           />
         </Card>
       ) : (

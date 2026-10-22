@@ -10,14 +10,14 @@
  * latar emerald tua (token theme colors.primaryDeep), panel emeraldPanel,
  * bingkai garis ganda emas dengan berlian sudut, teks Arab font Amiri
  * (sudah dimuat aplikasi via Google Fonts), terjemahan/arti, sumber, dan
- * kaki "Noor — Al-Qur'an & Ibadah • nurqalam.my.id".
+ * kaki "NurQalam — Al-Qur'an & Ibadah • nurqalam.my.id".
  */
 import { theme } from '../../app/theme.js';
 
 const LEBAR = 1080;
 const TINGGI = 1350;
 const LEBAR_TEKS = 824; // 1080 - 2 × 128 (margin isi di dalam bingkai)
-const KAKI_TEKS = "Noor — Al-Qur'an & Ibadah • nurqalam.my.id";
+const KAKI_TEKS = "NurQalam — Al-Qur'an & Ibadah • nurqalam.my.id";
 
 /** Bungkus teks menjadi baris-baris yang muat selebar lebarMaks di ctx. */
 function bungkusTeks(ctx, teks, lebarMaks) {
@@ -252,7 +252,7 @@ export async function bagikanGambarHarian(payload, namaBerkas = 'noor-harian.png
     try {
       await navigator.share({
         files: [berkas],
-        title: payload.label ?? 'Noor — Harian',
+        title: payload.label ?? 'NurQalam — Harian',
         text: payload.sumber ?? '',
       });
       return 'dibagikan';

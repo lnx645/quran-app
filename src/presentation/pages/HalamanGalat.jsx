@@ -113,7 +113,7 @@ export default function HalamanGalat() {
           })}
         >
           {tidakDitemukan
-            ? 'Alamat yang Anda tuju tidak ada di Noor. Silakan kembali ke Beranda dan lanjutkan dari sana.'
+            ? 'Alamat yang Anda tuju tidak ada di NurQalam. Silakan kembali ke Beranda dan lanjutkan dari sana.'
             : 'Halaman ini mengalami gangguan sesaat. Coba muat ulang — data dan progres Anda tersimpan aman di perangkat.'}
         </p>
         <div

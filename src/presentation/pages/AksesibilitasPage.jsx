@@ -247,11 +247,11 @@ export default function AksesibilitasPage() {
 
       <Card>
         <SectionTitle css={{ marginTop: 0 }}>
-          <FaInfoCircle /> Tentang Aksesibilitas Noor
+          <FaInfoCircle /> Tentang Aksesibilitas NurQalam
         </SectionTitle>
         <div css={{ fontSize: 13.5, lineHeight: 1.7 }}>
           <p css={{ marginBottom: 8 }}>
-            Noor dirancang mengikuti pedoman WCAG 2.2 AA: semua fitur bisa dioperasikan
+            NurQalam dirancang mengikuti pedoman WCAG 2.2 AA: semua fitur bisa dioperasikan
             keyboard &amp; screen reader, teks berkontras cukup, target sentuh besar, dan
             setiap penanda penting hadir di lebih dari satu indra (visual + bunyi/getar +
             pengumuman suara).

@@ -45,13 +45,13 @@ export default function KebijakanPrivasiPage() {
       <PageHero
         icon={<FaShieldAlt />}
         title="Kebijakan Privasi"
-        desc="Bagaimana Noor memperlakukan data Anda. Terakhir diperbarui: 21 Oktober 2026."
+        desc="Bagaimana NurQalam memperlakukan data Anda. Terakhir diperbarui: 22 Oktober 2026."
       />
 
       <SectionTitle>Ringkasan</SectionTitle>
       <Card>
         <Teks>
-          Noor adalah aplikasi Al-Qur&rsquo;an &amp; ibadah yang bekerja <strong>tanpa akun</strong>.
+          NurQalam adalah aplikasi Al-Qur&rsquo;an &amp; ibadah yang bekerja <strong>tanpa akun</strong>.
           Kami tidak meminta pendaftaran, tidak mengumpulkan data pribadi ke server, dan tidak
           menjual data kepada siapa pun. Hampir seluruh data Anda tersimpan <strong>di perangkat
           Anda sendiri</strong>.
@@ -97,7 +97,7 @@ export default function KebijakanPrivasiPage() {
       <SectionTitle>Iklan (Google AdSense)</SectionTitle>
       <Card>
         <Teks>
-          Untuk mendukung biaya pengembangan, situs web Noor dapat menampilkan iklan dari
+          Untuk mendukung biaya pengembangan, situs web NurQalam dapat menampilkan iklan dari
           <strong> Google AdSense</strong>. Sehubungan dengan iklan tersebut:
         </Teks>
         <Daftar>
@@ -135,7 +135,7 @@ export default function KebijakanPrivasiPage() {
         <Teks>
           Kebijakan ini dapat diperbarui seiring perkembangan aplikasi; tanggal pembaruan
           terakhir selalu tercantum di bagian atas halaman. Pertanyaan mengenai privasi dapat
-          disampaikan melalui repositori GitHub Noor:{' '}
+          disampaikan melalui repositori GitHub NurQalam:{' '}
           <a href="https://github.com/lnx645/quran-app" target="_blank" rel="noreferrer">
             github.com/lnx645/quran-app
           </a>

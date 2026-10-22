@@ -120,15 +120,15 @@ export const HUKUM_NUN_SUKUN = [
   },
   {
     nama: 'Idgham (lebur)',
-    isi: 'Melebur ke huruf berikutnya — ya, nun, mim, wau dengan dengung; lam dan ra tanpa dengung. Di Noor, titik leburnya berwarna hijau.',
+    isi: 'Melebur ke huruf berikutnya — ya, nun, mim, wau dengan dengung; lam dan ra tanpa dengung. Di NurQalam, titik leburnya berwarna hijau.',
   },
   {
     nama: 'Iqlab (tukar)',
-    isi: 'Khusus bertemu ba: bunyi nun berubah menjadi mim samar berdengung. Di Noor berwarna magenta.',
+    isi: 'Khusus bertemu ba: bunyi nun berubah menjadi mim samar berdengung. Di NurQalam berwarna magenta.',
   },
   {
     nama: 'Ikhfa (samar)',
-    isi: 'Sebelum 15 huruf lainnya nun dibaca samar antara izhar dan idgham, disertai dengung ringan. Di Noor berwarna ungu.',
+    isi: 'Sebelum 15 huruf lainnya nun dibaca samar antara izhar dan idgham, disertai dengung ringan. Di NurQalam berwarna ungu.',
   },
 ];
 

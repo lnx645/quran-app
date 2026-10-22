@@ -321,7 +321,7 @@ export default function RiyadhusPage() {
         <p css={{ fontSize: 13.5, lineHeight: 1.7, display: 'flex', gap: 8 }}>
           <FaBookOpen aria-hidden="true" />
           <span>
-            Riyadhus Shalihin memuat lebih dari 1.800 hadits dalam versi lengkapnya; edisi Noor
+            Riyadhus Shalihin memuat lebih dari 1.800 hadits dalam versi lengkapnya; edisi NurQalam
             ini menghadirkan bab-bab inti di awal kitab sebagai permulaan. Bab 9 (Tafakur) tidak
             ditampilkan karena bab tersebut hanya memuat ayat-ayat Al-Qur\u2019an tanpa hadits.
           </span>

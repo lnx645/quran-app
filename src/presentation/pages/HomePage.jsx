@@ -418,7 +418,7 @@ export default function HomePage() {
           <div className="arab-hero" lang="ar">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
           <h1>Ahlan wa Sahlan</h1>
           <p>
-            <FaMoon style={{ display: 'inline', verticalAlign: '-2px' }} /> Noor menemani ibadah
+            <FaMoon style={{ display: 'inline', verticalAlign: '-2px' }} /> NurQalam menemani ibadah
             harian dan perjalanan belajar Al-Qur&apos;an Anda.
           </p>
         </HeroIsi>
