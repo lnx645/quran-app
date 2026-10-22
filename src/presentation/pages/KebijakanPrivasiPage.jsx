@@ -51,8 +51,10 @@ export default function KebijakanPrivasiPage() {
       <SectionTitle>Ringkasan</SectionTitle>
       <Card>
         <Teks>
-          NurQalam adalah aplikasi Al-Qur&rsquo;an &amp; ibadah yang bekerja <strong>tanpa akun</strong>.
-          Kami tidak meminta pendaftaran, tidak mengumpulkan data pribadi ke server, dan tidak
+          NurQalam adalah aplikasi Al-Qur&rsquo;an &amp; ibadah yang dapat dipakai sepenuhnya
+          <strong> tanpa akun</strong>. Akun bersifat opsional (untuk sinkronisasi progres
+          antarperangkat, dijelaskan di bagiannya sendiri di bawah). Tanpa akun, kami tidak
+          meminta pendaftaran dan tidak mengumpulkan data pribadi ke server, dan kami tidak
           menjual data kepada siapa pun. Hampir seluruh data Anda tersimpan <strong>di perangkat
           Anda sendiri</strong>.
         </Teks>
@@ -77,6 +79,19 @@ export default function KebijakanPrivasiPage() {
         </Teks>
       </Card>
 
+      <SectionTitle>Akun &amp; Sinkronisasi (Opsional)</SectionTitle>
+      <Card>
+        <Teks>
+          Bila pengelola situs mengaktifkan fitur ini dan Anda memilih masuk, aplikasi menyimpan
+          <strong> potret data progres</strong> Anda (penanda, streak, tracker, hafalan, jurnal,
+          dan pengaturan) di layanan <strong>Supabase</strong> agar bisa diterapkan di perangkat
+          lain dengan akun yang sama. Yang <strong>tidak pernah</strong> ikut disinkronkan:
+          data &amp; PIN Muslimah serta registri unduhan audio — keduanya tetap hanya di
+          perangkat. Anda dapat menghapus potret awan kapan saja dari halaman Akun
+          (&ldquo;Hapus Data Awan&rdquo;); keluar akun tidak menghapus data lokal Anda.
+        </Teks>
+      </Card>
+
       <SectionTitle>Layanan Pihak Ketiga</SectionTitle>
       <Card>
         <Teks>
@@ -87,6 +102,7 @@ export default function KebijakanPrivasiPage() {
           <li><strong>Quran.com API</strong> — teks Al-Qur&rsquo;an, terjemahan, tafsir, dan audio.</li>
           <li><strong>Aladhan API</strong> — jadwal sholat dan kalender Hijriah (mengirim koordinat kota yang Anda pilih).</li>
           <li><strong>OpenStreetMap (Overpass &amp; Photon)</strong> — pencarian masjid terdekat (mengirim koordinat saat fitur dipakai, atas izin lokasi dari Anda).</li>
+          <li><strong>Supabase</strong> — hanya bila Anda memakai akun: menyimpan potret data progres milik akun Anda (lihat bagian Akun &amp; Sinkronisasi).</li>
         </Daftar>
         <Teks>
           Fitur Tes Baca menggunakan pengenalan suara bawaan peramban; pemrosesan mengikuti

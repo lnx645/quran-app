@@ -210,7 +210,7 @@ export default function TentangPage() {
             nurqalam.my.id
           </a>
           . Misi NurQalam sederhana: menghadirkan semua kebutuhan ibadah harian dalam satu aplikasi yang ringan,
-          tanpa akun, dan menghormati privasi penggunanya.
+          dapat dipakai tanpa akun, dan menghormati privasi penggunanya.
         </Teks>
       </Card>
 
@@ -234,10 +234,12 @@ export default function TentangPage() {
       </SectionTitle>
       <Card>
         <Daftar>
-          <li>NurQalam bekerja <strong>tanpa akun</strong> — tidak ada pendaftaran dan tidak ada login.</li>
+          <li>NurQalam dapat dipakai sepenuhnya <strong>tanpa akun</strong>. Akun bersifat opsional — hanya untuk sinkronisasi progres antarperangkat.</li>
           <li>
             Semua data pribadi (catatan, profil keluarga, progres ibadah) tersimpan <strong>lokal di
-            perangkat pengguna</strong> dan tidak dikirim ke server mana pun.
+            perangkat pengguna</strong> dan tidak dikirim ke server mana pun — kecuali bila pengguna
+            sendiri mengaktifkan sinkronisasi awan lewat akun (data &amp; PIN Muslimah tidak pernah
+            ikut disinkronkan).
           </li>
           <li>Aplikasi <strong>tidak memasang analitik</strong> dan tidak melacak aktivitas ibadah pengguna.</li>
           <li>
