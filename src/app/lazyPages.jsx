@@ -96,6 +96,8 @@ const _Riyadhus = lazyDenganPemulihan(() => import('../presentation/pages/Riyadh
 const _Konverter = lazyDenganPemulihan(() => import('../presentation/pages/KonverterPage.jsx'));
 const _Statistik = lazyDenganPemulihan(() => import('../presentation/pages/StatistikPage.jsx'));
 const _DataProgres = lazyDenganPemulihan(() => import('../presentation/pages/DataProgresPage.jsx'));
+const _Unduhan = lazyDenganPemulihan(() => import('../presentation/pages/UnduhanPage.jsx'));
+const _Akun = lazyDenganPemulihan(() => import('../presentation/pages/AkunPage.jsx'));
 const _Tentang = lazyDenganPemulihan(() => import('../presentation/pages/TentangPage.jsx'));
 const _KebijakanPrivasi = lazyDenganPemulihan(() => import('../presentation/pages/KebijakanPrivasiPage.jsx'));
 const _Radio = lazyDenganPemulihan(() => import('../presentation/pages/RadioPage.jsx'));
@@ -670,6 +672,22 @@ export function DataProgresPage() {
   return (
     <Suspense fallback={<PageFallback />}>
       <_DataProgres />
+    </Suspense>
+  );
+}
+
+export function UnduhanPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_Unduhan />
+    </Suspense>
+  );
+}
+
+export function AkunPage() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <_Akun />
     </Suspense>
   );
 }

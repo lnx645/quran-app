@@ -231,7 +231,7 @@ export default function SedekahPage() {
     });
     setData(baru);
     // Streak ibadah gabungan: catatan BERTANGGAL HARI INI menghidupkan
-    // streak Noor; catatan untuk tanggal lain tidak mengubah streak.
+    // streak NurQalam; catatan untuk tanggal lain tidak mengubah streak.
     if (tanggal === kunciHariIni) catatAktivitasGlobal('sedekah');
     setNominalStr('');
     setCatatanStr('');
@@ -618,7 +618,7 @@ export default function SedekahPage() {
           <FaInfoCircle />
           <span>
             Catatan jujur: halaman ini adalah pencatat pribadi di perangkatmu — bukan bukti
-            pembayaran atau penyaluran resmi, dan aplikasi Noor tidak menerima atau menyalurkan
+            pembayaran atau penyaluran resmi, dan aplikasi NurQalam tidak menerima atau menyalurkan
             dana sedekah apa pun. Salurkan sedekahmu langsung kepada penerima atau melalui
             lembaga yang amanah dan terpercaya.
           </span>

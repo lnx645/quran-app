@@ -11,7 +11,7 @@ import StateKosong from '../components/StateKosong.jsx';
 import { useDialog } from '../components/feedback/dialogStore.js';
 import { useToast } from '../components/feedback/toastStore.js';
 
-// Label ramah untuk kunci data Noor yang dikenal; kunci lain tampil apa adanya.
+// Label ramah untuk kunci data NurQalam yang dikenal; kunci lain tampil apa adanya.
 const LABEL_KUNCI = {
   'noor.sholat-tracker.v1': 'Sholat Tracker',
   'noor.mutabaah.v1': "Mutaba'ah Harian",
@@ -120,13 +120,13 @@ export default function DataProgresPage() {
 
   const ekspor = () => {
     if (daftar.length === 0) {
-      toast.peringatan('Belum ada data Noor yang bisa diekspor.');
+      toast.peringatan('Belum ada data NurQalam yang bisa diekspor.');
       return;
     }
     const data = {};
     for (const d of daftar) data[d.kunci] = d.nilai;
     const berkas = {
-      aplikasi: 'Noor',
+      aplikasi: 'NurQalam',
       jenis: 'noor-data-progres',
       versi: 1,
       dieksporPada: new Date().toISOString(),
@@ -154,7 +154,7 @@ export default function DataProgresPage() {
       toast.error('Berkas tidak valid: bukan JSON yang bisa dibaca.');
       return;
     }
-    // Terima bentuk ekspor Noor ({ data: {...} }) maupun peta kunci datar.
+    // Terima bentuk ekspor NurQalam ({ data: {...} }) maupun peta kunci datar.
     const peta =
       parsed && typeof parsed === 'object' && !Array.isArray(parsed)
         ? parsed.data && typeof parsed.data === 'object' && !Array.isArray(parsed.data)
@@ -162,7 +162,7 @@ export default function DataProgresPage() {
           : parsed
         : null;
     if (!peta) {
-      toast.error('Berkas tidak valid: struktur data Noor tidak ditemukan.');
+      toast.error('Berkas tidak valid: struktur data NurQalam tidak ditemukan.');
       return;
     }
     const diterima = [];
@@ -178,7 +178,7 @@ export default function DataProgresPage() {
     const sepakat = await dialog.confirm({
       judul: 'Timpa Data di Perangkat Ini?',
       pesan:
-        `${diterima.length} kunci data akan ditulis dan menimpa data Noor saat ini di perangkat ini` +
+        `${diterima.length} kunci data akan ditulis dan menimpa data NurQalam saat ini di perangkat ini` +
         (ditolak.length > 0 ? `. ${ditolak.length} kunci ditolak validasi dan dilewati` : '') +
         '. Halaman akan dimuat ulang setelah impor. Lanjutkan?',
       teksYa: 'Ya, Impor',
@@ -211,7 +211,7 @@ export default function DataProgresPage() {
         <FaDatabase /> Data &amp; Progres
       </PageTitle>
       <PageSubtitle>
-        Cadangkan seluruh data Noor di perangkat ini (tracker, progres, preferensi) ke satu berkas
+        Cadangkan seluruh data NurQalam di perangkat ini (tracker, progres, preferensi) ke satu berkas
         JSON, atau pulihkan dari berkas cadangan.
       </PageSubtitle>
 
@@ -238,7 +238,7 @@ export default function DataProgresPage() {
       </SectionTitle>
       <Card>
         <p css={(t) => ({ fontSize: 14, lineHeight: 1.6, color: t.colors.text, marginBottom: 12 })}>
-          Pilih berkas cadangan Noor (.json). Hanya kunci berawalan <strong>noor.</strong> dengan
+          Pilih berkas cadangan NurQalam (.json). Hanya kunci berawalan <strong>noor.</strong> dengan
           nilai valid yang ditulis; kamu akan diminta konfirmasi sebelum data saat ini ditimpa.
         </p>
         <input
@@ -246,7 +246,7 @@ export default function DataProgresPage() {
           type="file"
           accept="application/json,.json"
           onChange={onPilihBerkas}
-          aria-label="Pilih berkas cadangan JSON Noor"
+          aria-label="Pilih berkas cadangan JSON NurQalam"
           css={{ display: 'none' }}
         />
         <GhostButton
@@ -277,7 +277,7 @@ export default function DataProgresPage() {
           <StateKosong
             ikon={<FaDatabase />}
             judul="Belum ada data"
-            deskripsi="Data akan muncul di sini setelah kamu memakai fitur tracker, progres, atau mengubah preferensi di Noor."
+            deskripsi="Data akan muncul di sini setelah kamu memakai fitur tracker, progres, atau mengubah preferensi di NurQalam."
           />
         ) : (
           daftar.map((d) => (

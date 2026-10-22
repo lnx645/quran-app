@@ -14,7 +14,7 @@ import {
   PanduanJenazahPage, ZiarahPage, AqiqahKurbanPage, MutabaahPage, JurnalSyukurPage, ProfilPage, NamaBayiPage, MasjidTerdekatPage,
   SholatIdPage, SholatMusafirPage, SholatSakitPage, DoaQunutPage, PanduanImamPage,
   IndeksTematikPage, SujudPage, KuisPage,
-  PanduanNikahPage, FikihKeluargaPage, MuamalahPage, WakafWasiatPage, HalalPage, ItikafPage, RuqyahPage, KhutbahPage, PeristiwaPage, RiyadhusPage, KonverterPage, StatistikPage, DataProgresPage, TentangPage, KebijakanPrivasiPage, RadioPage, TesBacaPage, AnakPage, AnakSholatPage,
+  PanduanNikahPage, FikihKeluargaPage, MuamalahPage, WakafWasiatPage, HalalPage, ItikafPage, RuqyahPage, KhutbahPage, PeristiwaPage, RiyadhusPage, KonverterPage, StatistikPage, DataProgresPage, UnduhanPage, AkunPage, TentangPage, KebijakanPrivasiPage, RadioPage, TesBacaPage, AnakPage, AnakSholatPage,
 } from './lazyPages.jsx';
 
 // HomePage eager (chunk awal); halaman lain lazy lewat lazyPages.jsx.
@@ -80,6 +80,8 @@ const router = createBrowserRouter([
       { path: 'konverter', element: <KonverterPage /> },
       { path: 'statistik', element: <StatistikPage /> },
       { path: 'data-progres', element: <DataProgresPage /> },
+      { path: 'unduhan', element: <UnduhanPage /> },
+      { path: 'akun', element: <AkunPage /> },
       { path: 'tentang', element: <TentangPage /> },
       { path: 'kebijakan-privasi', element: <KebijakanPrivasiPage /> },
       { path: 'muslimah', element: <MuslimahHubPage /> },

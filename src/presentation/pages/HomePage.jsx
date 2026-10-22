@@ -16,6 +16,7 @@ import { kunciHari, hariAktif } from '../../domain/usecases/streakIbadah.js';
 import { useBahasa } from '../../app/bahasa.js';
 import { Page, SectionTitle, MenuCard, Card } from '../components/common.jsx';
 import LanjutkanMembaca from '../components/LanjutkanMembaca.jsx';
+import SlotIklanHalal from '../components/SlotIklanHalal.jsx';
 import KartuHarian from '../components/KartuHarian.jsx';
 import Logo from '../components/Logo.jsx';
 import OrnamentDivider from '../components/OrnamentDivider.jsx';
@@ -418,7 +419,7 @@ export default function HomePage() {
           <div className="arab-hero" lang="ar">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
           <h1>Ahlan wa Sahlan</h1>
           <p>
-            <FaMoon style={{ display: 'inline', verticalAlign: '-2px' }} /> Noor menemani ibadah
+            <FaMoon style={{ display: 'inline', verticalAlign: '-2px' }} /> NurQalam menemani ibadah
             harian dan perjalanan belajar Al-Qur&apos;an Anda.
           </p>
         </HeroIsi>
@@ -481,6 +482,7 @@ export default function HomePage() {
           </GridMenu>
         </div>
       ))}
+      <SlotIklanHalal />
     </Page>
   );
 }

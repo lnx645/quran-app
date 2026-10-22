@@ -25,7 +25,7 @@ import {
 } from '../components/common.jsx';
 
 /**
- * Pencarian global Noor (rute /cari) — satu pintu untuk seluruh ekosistem:
+ * Pencarian global NurQalam (rute /cari) — satu pintu untuk seluruh ekosistem:
  * - Hasil LOKAL (indeks domain indeksPencarian): surah, fitur, topik ayat,
  *   doa, hadits, kisah, peristiwa, Asmaul Husna, nama bayi, iqro. Live saat
  *   mengetik, berkelompok per kategori + chip filter.
@@ -450,7 +450,7 @@ export default function CariPage() {
       <PageTitle>
         <FaSearch /> Cari
       </PageTitle>
-      <PageSubtitle>Cari apa pun di Noor — surah, ayat, doa, fitur, dan lainnya.</PageSubtitle>
+      <PageSubtitle>Cari apa pun di NurQalam — surah, ayat, doa, fitur, dan lainnya.</PageSubtitle>
 
       <Formulir onSubmit={kirim} role="search">
         <BarisCari>

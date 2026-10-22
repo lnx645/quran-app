@@ -170,7 +170,7 @@ const BarisLatihan = styled.div`
   }
 `;
 
-/* ---- Audio baris latihan (Jilid 1 saja) ---- */
+/* ---- Audio baris latihan (semua jilid) ---- */
 
 // Pembungkus baris + tombol dengar; garis putus-putus pindah ke sini agar
 // tombol ikut di dalam baris yang sama.
@@ -328,7 +328,7 @@ export default function IqroJilidPage() {
   const [pilihan, setPilihan] = useState(1); // index huruf terpilih (Ba)
   const [halamanIdx, setHalamanIdx] = useState(0);
   const [kunciTerbuka, setKunciTerbuka] = useState({});
-  // Audio baris latihan Jilid 1: indeks baris global yang sedang diputar /
+  // Audio baris latihan: indeks baris global yang sedang diputar /
   // gagal diputar (null = tidak ada). Satu elemen Audio bersama.
   const [barisDiputar, setBarisDiputar] = useState(null);
   const [barisGagal, setBarisGagal] = useState(null);
@@ -395,7 +395,7 @@ export default function IqroJilidPage() {
   const toggleKunci = (nomor) =>
     setKunciTerbuka((s) => ({ ...s, [nomor]: !s[nomor] }));
 
-  // Putar bunyi satu baris latihan Jilid 1. idxGlobal = indeks baris stabil
+  // Putar bunyi satu baris latihan. idxGlobal = indeks baris stabil
   // dari data (jumlah baris halaman-halaman sebelumnya + indeks dalam
   // halaman), BUKAN indeks render — nama berkas j1-<idxGlobal+1 dua digit>
   // mengikuti urutan yang sama (lihat public/audio/iqro/SUMBER.md).
@@ -414,7 +414,7 @@ export default function IqroJilidPage() {
         return;
       }
       pemutar.pause();
-      pemutar.src = `/audio/iqro/j1-${String(idxGlobal + 1).padStart(2, '0')}.mp3`;
+      pemutar.src = `/audio/iqro/j${full.jilid}-${String(idxGlobal + 1).padStart(2, '0')}.mp3`;
       pemutar.onended = () =>
         setBarisDiputar((cur) => (cur === idxGlobal ? null : cur));
       pemutar.onerror = () => {
@@ -462,8 +462,7 @@ export default function IqroJilidPage() {
           <FaInfoCircle /> <span>{halaman.petunjuk}</span>
         </Petunjuk>
         {halaman.baris.map((b, i) => {
-          // Jilid 2–6: tanpa tombol audio sama sekali.
-          if (full.jilid !== 1) return <BarisLatihan key={i}>{b}</BarisLatihan>;
+          // Semua jilid (1–6) punya audio per baris.
           // Indeks global stabil dari data: total baris halaman sebelumnya
           // (sesuai urutan di iqroFull) + indeks baris dalam halaman ini.
           const idxGlobal =

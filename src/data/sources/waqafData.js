@@ -114,7 +114,7 @@ export const TANDA_WAQAF = [
     glif: '۩',
     nama: 'Ayat Sajdah (Sujud Tilawah)',
     hukum: 'Disunnahkan sujud tilawah',
-    isi: 'Tanda ini menandai akhir ayat sajdah. Pembaca yang melewatinya disunnahkan melakukan sujud tilawah satu kali (di luar sholat; ketentuan di dalam sholat mengikuti panduan sujud tilawah). Di Noor, ayat-ayat sajdah sudah ditandai di halaman baca dan panduan sujud tilawah tersedia di halaman Sujud — setelah sujud, lanjutkan bacaan dari kata sesudah tanda ini.',
+    isi: 'Tanda ini menandai akhir ayat sajdah. Pembaca yang melewatinya disunnahkan melakukan sujud tilawah satu kali (di luar sholat; ketentuan di dalam sholat mengikuti panduan sujud tilawah). Di NurQalam, ayat-ayat sajdah sudah ditandai di halaman baca dan panduan sujud tilawah tersedia di halaman Sujud — setelah sujud, lanjutkan bacaan dari kata sesudah tanda ini.',
     contohArab: 'خَرُّوا سُجَّدًا وَسَبَّحُوا بِحَمْدِ رَبِّهِمْ وَهُمْ لَا يَسْتَكْبِرُونَ ۩',
     contohRef: 'QS. As-Sajdah [32]: 15',
     contohKeterangan:
