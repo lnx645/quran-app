@@ -9,17 +9,26 @@
  *   TIDAK pernah disajikan dari cache maupun disimpan ke cache.
  * - GET api.quran.com & api.aladhan.com: cache-first runtime (maks 200 entri)
  *   agar surah/jadwal yang pernah dibuka bisa dibaca offline.
- * - Selain itu (POST, API lain, audio dari host lain): tidak di-cache,
- *   diteruskan ke jaringan apa adanya.
+ * - Audio murottal (verses.quran.com & download.quranicaudio.com):
+ *   cache-first dari cache unduhan 'noor-audio-v1' SAJA — berkas masuk
+ *   cache hanya lewat unduhan eksplisit pengguna (halaman surah /
+ *   /unduhan); streaming biasa tidak disimpan. Range dilayani 206.
+ * - Selain itu (POST, API lain): tidak di-cache, diteruskan apa adanya.
  */
 const VERSI = 'v2';
 const CACHE_ASET = `noor-aset-${VERSI}`;
 const CACHE_RUNTIME = `noor-runtime-${VERSI}`;
 const CACHE_NAVIGASI = `noor-navigasi-${VERSI}`;
-const SEMUA_CACHE = [CACHE_ASET, CACHE_RUNTIME, CACHE_NAVIGASI];
+// Cache unduhan murottal SENGAJA tidak ikut VERSI: unduhan pengguna
+// (belasan MB per surah) tidak boleh ikut terhapus saat kerangka
+// aplikasi diperbarui. Dikelola eksplisit oleh unduhanMurottal.js.
+const CACHE_AUDIO = 'noor-audio-v1';
+const SEMUA_CACHE = [CACHE_ASET, CACHE_RUNTIME, CACHE_NAVIGASI, CACHE_AUDIO];
 const MAKS_ENTRI_RUNTIME = 200;
 
 const HOST_API_CACHE = new Set(['api.quran.com', 'api.aladhan.com']);
+// Host berkas audio bab & per-ayat (CORS * di kedua host).
+const HOST_AUDIO = new Set(['verses.quran.com', 'download.quranicaudio.com']);
 
 const HALAMAN_OFFLINE = `<!doctype html>
 <html lang="id">
@@ -55,6 +64,23 @@ self.addEventListener('install', (event) => {
         await cache.add('/index.html');
       } catch {
         /* abaikan: fallback inline tetap tersedia */
+      }
+      // Precache juga aset MASUK yang dirujuk index.html (JS/CSS ber-hash):
+      // tanpa ini, kunjungan PERTAMA belum sempat meng-cache aset lewat
+      // jalur SWR (SW belum mengendalikan halaman saat aset dimuat),
+      // sehingga muat-ulang offline pertama menghasilkan halaman kosong.
+      try {
+        const html = await (await fetch('/index.html')).text();
+        const urls = new Set();
+        for (const m of html.matchAll(/(?:src|href)="(\/assets\/[^"]+)"/g)) {
+          urls.add(m[1]);
+        }
+        if (urls.size > 0) {
+          const aset = await caches.open(CACHE_ASET);
+          await aset.addAll([...urls]);
+        }
+      } catch {
+        /* abaikan: SWR tetap mengisi cache pada kunjungan berikutnya */
       }
       await self.skipWaiting();
     })(),
@@ -146,6 +172,50 @@ self.addEventListener('fetch', (event) => {
             .catch(() => {});
         }
         return segar;
+      })(),
+    );
+    return;
+  }
+
+  // (d) Audio murottal: cache-first dari cache UNDUHAN saja. Berkas yang
+  // belum diunduh diteruskan ke jaringan TANPA disimpan (streaming biasa
+  // tidak boleh memenuhi penyimpanan diam-diam). Permintaan Range (seek
+  // pemutar) dilayani dengan potongan 206 dari berkas cache utuh.
+  if (HOST_AUDIO.has(url.hostname) && url.pathname.endsWith('.mp3')) {
+    event.respondWith(
+      (async () => {
+        const cache = await caches.open(CACHE_AUDIO);
+        const tersimpan = await cache.match(url.href);
+        if (!tersimpan) return fetch(request);
+        const range = request.headers.get('range');
+        if (!range) return tersimpan;
+        try {
+          const blob = await tersimpan.blob();
+          const cocok = /^bytes=(\d*)-(\d*)$/.exec(range.trim());
+          if (!cocok) return tersimpan;
+          let awal = cocok[1] === '' ? null : Number(cocok[1]);
+          let akhir = cocok[2] === '' ? null : Number(cocok[2]);
+          if (awal === null) {
+            // Bentuk akhiran: bytes=-N → N byte terakhir.
+            awal = Math.max(0, blob.size - (akhir ?? 0));
+            akhir = blob.size - 1;
+          } else if (akhir === null || akhir >= blob.size) {
+            akhir = blob.size - 1;
+          }
+          if (awal > akhir) return tersimpan;
+          const potong = blob.slice(awal, akhir + 1);
+          return new Response(potong, {
+            status: 206,
+            headers: {
+              'Content-Type': blob.type || 'audio/mpeg',
+              'Content-Length': String(potong.size),
+              'Content-Range': `bytes ${awal}-${akhir}/${blob.size}`,
+              'Accept-Ranges': 'bytes',
+            },
+          });
+        } catch {
+          return tersimpan;
+        }
       })(),
     );
     return;

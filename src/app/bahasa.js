@@ -126,6 +126,7 @@ export const KAMUS = {
     'menu.konverter': 'Konverter Hijriah',
     'menu.statistik': 'Statistik Ibadah',
     'menu.dataProgres': 'Data Progres (Ekspor/Impor)',
+    'menu.unduhan': 'Unduhan Murottal',
     'menu.aksesibilitas': 'Aksesibilitas',
     'menu.tentang': 'Tentang Aplikasi',
     // ——— Beranda: judul kartu yang redaksinya berbeda dari drawer ———
@@ -229,6 +230,7 @@ export const KAMUS = {
     'judul.konverter': 'Konverter Hijriah',
     'judul.statistik': 'Statistik Ibadah',
     'judul.dataProgres': 'Data Progres (Ekspor & Impor)',
+    'judul.unduhan': 'Unduhan Murottal',
     'judul.tentang': 'Tentang Aplikasi',
     'judul.kebijakanPrivasi': 'Kebijakan Privasi',
     // ——— PlayerBar ———
@@ -357,6 +359,7 @@ export const KAMUS = {
     'menu.konverter': 'Hijri Converter',
     'menu.statistik': 'Worship Statistics',
     'menu.dataProgres': 'Progress Data (Export/Import)',
+    'menu.unduhan': 'Murottal Downloads',
     'menu.aksesibilitas': 'Accessibility',
     'menu.tentang': 'About This App',
     // ——— Home: card titles that differ from the drawer ———
@@ -460,6 +463,7 @@ export const KAMUS = {
     'judul.konverter': 'Hijri Converter',
     'judul.statistik': 'Worship Statistics',
     'judul.dataProgres': 'Progress Data (Export & Import)',
+    'judul.unduhan': 'Murottal Downloads',
     'judul.tentang': 'About This App',
     'judul.kebijakanPrivasi': 'Privacy Policy',
     // ——— PlayerBar ———

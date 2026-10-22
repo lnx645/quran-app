@@ -130,6 +130,7 @@ const JUDUL_RUTE = [
   [/^\/konverter$/, 'judul.konverter'],
   [/^\/statistik$/, 'judul.statistik'],
   [/^\/data-progres$/, 'judul.dataProgres'],
+  [/^\/unduhan$/, 'judul.unduhan'],
   [/^\/tentang$/, 'judul.tentang'],
   [/^\/kebijakan-privasi$/, 'judul.kebijakanPrivasi'],
 ];
@@ -170,6 +171,7 @@ const DESKRIPSI_RUTE = [
   [/^\/muslimah\/kalkulator$/, 'Kalkulator haid & nifas sesuai fikih Syafi\'i: catat siklus, hitung masa suci, dan ketahui status ibadah — di NurQalam.'],
   [/^\/nama-bayi$/, 'Inspirasi nama bayi Islami beserta artinya untuk laki-laki & perempuan — cari nama terbaik di NurQalam.'],
   [/^\/asmaul-husna$/, 'Asmaul Husna: 99 nama Allah dengan tulisan Arab, latin, dan maknanya — baca & hafalkan di NurQalam.'],
+  [/^\/unduhan$/, 'Unduhan Murottal NurQalam: surah yang audionya tersimpan di perangkat untuk diputar offline — kelola unduhan, lihat ukuran, dan hapus yang tidak diperlukan.'],
   [/^\/tentang$/, 'Tentang NurQalam: aplikasi Al-Qur\'an & ibadah gratis — sumber data, privasi (data tersimpan lokal), dan info dukungan pengembangan.'],
   [/^\/kebijakan-privasi$/, 'Kebijakan Privasi NurQalam: data tersimpan lokal di perangkat Anda, tanpa akun; penjelasan layanan pihak ketiga & iklan versi web.'],
 ];

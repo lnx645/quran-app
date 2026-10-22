@@ -14,6 +14,7 @@ import SurahHeader from '../components/SurahHeader.jsx';
 import AyatCard from '../components/AyatCard.jsx';
 import PlayerBar from '../components/PlayerBar.jsx';
 import ReadingControls from '../components/ReadingControls.jsx';
+import KartuUnduhSurah from '../components/KartuUnduhSurah.jsx';
 import MushafFrame from '../components/ornaments/MushafFrame.jsx';
 import { juzMulaiPada } from '../components/ornaments/index.js';
 import { Page, ErrorBox, Skeleton } from '../components/common.jsx';
@@ -329,6 +330,7 @@ export default function SurahPage() {
       <MushafFrame>
         <div ref={sentinelRef} aria-hidden="true" />
         <SurahHeader surah={surah} />
+        <KartuUnduhSurah nomor={Number(id)} namaLatin={surah.nameLatin} />
         <MiniBar tampil={miniTampil} aria-hidden={!miniTampil}>
           <span className="nama" dir="rtl">
             {surah.nameArabic} — {surah.nameLatin}

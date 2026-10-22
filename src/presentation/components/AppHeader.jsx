@@ -387,6 +387,7 @@ const MENU = [
       { to: '/konverter', icon: <FaCalendarAlt />, kunci: 'menu.konverter' },
       { to: '/statistik', icon: <FaClipboardCheck />, kunci: 'menu.statistik' },
       { to: '/data-progres', icon: <FaTasks />, kunci: 'menu.dataProgres' },
+      { to: '/unduhan', icon: <FaDownload />, kunci: 'menu.unduhan' },
       { to: '/aksesibilitas', icon: <FaUniversalAccess />, kunci: 'menu.aksesibilitas' },
       { to: '/tentang', icon: <FaInfoCircle />, kunci: 'menu.tentang' },
     ],
