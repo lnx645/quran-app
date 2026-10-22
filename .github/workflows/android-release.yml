@@ -1,6 +1,6 @@
 name: Android Rilis (AAB + APK ke GitHub Release)
 
-# Build rilis Noor bertanda tangan kunci tetap (secret RELEASE_*):
+# Build rilis NurQalam bertanda tangan kunci tetap (secret RELEASE_*):
 # menghasilkan AAB (untuk Play Console) + APK (instal langsung),
 # lalu menerbitkannya sebagai GitHub Release pada tag v*.
 on:
